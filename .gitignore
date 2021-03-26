@@ -1,0 +1,8 @@
+.idea/
+.vscode/
+node_modules/
+vendor/
+build/
+dist/
+yarn-error.log
+test.php
