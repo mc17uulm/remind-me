@@ -39,8 +39,12 @@ if(!defined("WP_REMINDER_BASE_URL")) {
     define("WP_REMINDER_BASE_URL", plugin_dir_url(__FILE__));
 }
 
+if(!defined("WP_REMINDER_BASE_DIR")) {
+    define("WP_REMINDER_BASE_DIR", __DIR__);
+}
+
 if(!defined("WP_REMINDER_DEBUG")) {
-    define("WP_REMINDER_BASE_DEBUG", true);
+    define("WP_REMINDER_DEBUG", true);
 }
 
 if(!defined("WP_REMINDER_SCHEMA_DIR")) {
