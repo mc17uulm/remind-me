@@ -46,13 +46,21 @@ final class Loader {
             'Dashboard',
             'WP Reminder',
             'manage_options',
-            'wp-reminder-dashboard',
+            'wp-reminder',
             function() { echo '<div id="wp_reminder_container"></div>'; },
             'dashicons-megaphone'
         );
 
         add_submenu_page(
-            'wp-reminder-dashboard',
+            'wp-reminder',
+            'Dashboard',
+            'Dashboard',
+            'manage_options',
+            'wp-reminder'
+        );
+
+        add_submenu_page(
+            'wp-reminder',
             'Events',
             'Events',
             'manage_options',
@@ -61,7 +69,7 @@ final class Loader {
         );
 
         add_submenu_page(
-            'wp-reminder-dashboard',
+            'wp-reminder',
             'Subscribers',
             'Subscribers',
             'manage_options',
@@ -70,7 +78,7 @@ final class Loader {
         );
 
         add_submenu_page(
-            'wp-reminder-dashboard',
+            'wp-reminder',
             'Settings',
             'Settings',
             'manage_options',
@@ -82,7 +90,7 @@ final class Loader {
     private function get_token (?string $site) : string {
         if(is_null($site)) return "";
         switch($site) {
-            case 'wp-reminder-dashboard': return 'dashboard';
+            case 'wp-reminder': return 'dashboard';
             case 'wp-reminder-events': return 'events';
             case 'wp-reminder-subscribers': return 'subscribers';
             case 'wp-reminder-settings': return 'settings';
@@ -91,10 +99,10 @@ final class Loader {
     }
 
     private function register_backend_scripts() : void {
-        $token = $this->get_token($_GET["PAGE"]);
+        $token = $this->get_token($_GET["page"]);
         if($token !== "") {
 
-            $base = defined("WP_REMINDER_BASE_DIR") ? WP_REMINDER_BASE_DIR : "";
+            $base = defined("WP_REMINDER_BASE_URL") ? WP_REMINDER_BASE_URL : "";
 
             wp_enqueue_script(
                 'wp_reminder_handler.js',
