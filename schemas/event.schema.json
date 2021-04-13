@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer"
+    },
+    "name": {
+      "type": "string"
+    },
+    "template": {
+      "type": "integer"
+    },
+    "repeat": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "clocking": {
+          "type": "integer"
+        },
+        "day": {
+          "type": "integer"
+        },
+        "start": {
+          "type": "integer"
+        },
+        "end": {
+          "type": "integer"
+        }
+      },
+      "required": ["clocking", "day", "start", "end"],
+      "additionalProperties": false
+    }
+  },
+  "required": ["name", "template"],
+  "additionalProperties": false
+}
