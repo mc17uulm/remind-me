@@ -22,6 +22,8 @@ final class Loader {
             define( 'WP_DEBUG_LOG', true );
         }
 
+        load_plugin_textdomain('wp-reminder', false, WP_REMINDER_BASE_DIR . "/lang/");
+
         add_shortcode('wp_reminder', fn(array $attr) => $this->handle_shortcode($attr));
 
         register_activation_hook($file, fn() => Database::initialize());
@@ -53,16 +55,16 @@ final class Loader {
 
         add_submenu_page(
             'wp-reminder',
-            'Dashboard',
-            'Dashboard',
+            __('Dashboard', 'wp-reminder'),
+            __('Dashboard', 'wp-reminder'),
             'manage_options',
             'wp-reminder'
         );
 
         add_submenu_page(
             'wp-reminder',
-            'Events',
-            'Events',
+            __('Events', 'wp-reminder'),
+            __('Events', 'wp-reminder'),
             'manage_options',
             'wp-reminder-events',
             function() { echo '<div id="wp_reminder_container"></div>'; }
@@ -70,8 +72,8 @@ final class Loader {
 
         add_submenu_page(
             'wp-reminder',
-            'Subscribers',
-            'Subscribers',
+            __('Subscribers', 'wp-reminder'),
+            __('Subscribers', 'wp-reminder'),
             'manage_options',
             'wp-reminder-subscribers',
             function() { echo '<div id="wp_reminder_container"></div>'; }
@@ -79,8 +81,8 @@ final class Loader {
 
         add_submenu_page(
             'wp-reminder',
-            'Settings',
-            'Settings',
+            __('Settings', 'wp-reminder'),
+            __('Settings', 'wp-reminder'),
             'manage_options',
             'wp-reminder-subscribers',
             function() { echo '<div id="wp_reminder_container"></div>'; }
@@ -107,7 +109,7 @@ final class Loader {
             wp_enqueue_script(
                 'wp_reminder_handler.js',
                 "$base/dist/js/wp-reminder-$token-handler.js",
-                [],
+                ['wp-i18n'],
                 '0.1.0',
                 true
             );
@@ -124,6 +126,8 @@ final class Loader {
                     'base' => admin_url('admin.php')
                 ]
             );
+
+            wp_set_script_translations('wp-reminder', 'wp-reminder', WP_REMINDER_BASE_DIR . "/lang/");
 
         }
     }
