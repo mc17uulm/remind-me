@@ -31,8 +31,9 @@ export class View {
 
         const elem = document.getElementById("wp_reminder_container");
         elem ? ReactDOM.render(
-            <Container>
-                <h1>{title}</h1>
+            <Container style={{width: "90%"}}>
+                <h1>WP Reminder</h1>
+                <h3>{title}</h3>
                 {element}
                 <ToastContainer position="bottom-center" autoClose={2000} />
             </Container>,

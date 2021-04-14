@@ -1,0 +1,57 @@
+# Copyright (C) 2021 mc17
+# This file is distributed under the same license as the WP Reminder plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: WP Reminder 0.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/_wp_reminder\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2021-04-14T10:49:12+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.4.0\n"
+"X-Domain: wp-reminder\n"
+
+#. Plugin Name of the plugin
+msgid "WP Reminder"
+msgstr ""
+
+#. Description of the plugin
+msgid "WP Plugin for reminder handling"
+msgstr ""
+
+#. Author of the plugin
+msgid "mc17"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://github.com/mc17uulm"
+msgstr ""
+
+#: plugin/WPReminder/Loader.php:58
+#: plugin/WPReminder/Loader.php:59
+msgid "Dashboard"
+msgstr ""
+
+#: plugin/WPReminder/Loader.php:66
+#: plugin/WPReminder/Loader.php:67
+#: dist/js/wp-reminder-events-handler.js:91590
+#: dist/js/wp-reminder-events-handler.js:91634
+msgid "Events"
+msgstr ""
+
+#: plugin/WPReminder/Loader.php:75
+#: plugin/WPReminder/Loader.php:76
+msgid "Subscribers"
+msgstr ""
+
+#: plugin/WPReminder/Loader.php:84
+#: plugin/WPReminder/Loader.php:85
+msgid "Settings"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:91629
+msgid "Add Event"
+msgstr ""

@@ -6,7 +6,7 @@
  * Author URI: https://github.com/mc17uulm
  * Version: 0.1
  * Text Domain: wp-reminder
- * Domain Path: /lang
+ * Domain Path: /lang/
  * License:
  * License URI:
  * Tags:
