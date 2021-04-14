@@ -78,10 +78,10 @@ final class Subscriber
      * @throws DatabaseException
      * @throws Exception
      */
-    public function get(int $id) : Subscriber
+    public static function get(int $id) : Subscriber
     {
         $db = Database::get_database();
-        $db_res = $db->select("SELECT * FROM {$db->get_table_name("subscriber")} WHERE id = %d", $id);
+        $db_res = $db->select("SELECT * FROM {$db->get_table_name("subscribers")} WHERE id = %d", $id);
         if(count($db_res) !== 1) throw new APIException("no dataset with given id in db");
         return new Subscriber($db_res[0]["email"], json_decode($db_res[0]["events"]), $db_res[0]["id"], new DateTime($db_res[0]["registered"]), $db_res[0]["active"]);
     }
@@ -90,10 +90,10 @@ final class Subscriber
      * @return array
      * @throws DatabaseException
      */
-    public function get_all() : array
+    public static function get_all() : array
     {
         $db = Database::get_database();
-        $db_res = $db->select("SELECT * FROM {$db->get_table_name("subscriber")}");
+        $db_res = $db->select("SELECT * FROM {$db->get_table_name("subscribers")}");
         return array_map(function(array $entry) {
             return new Subscriber($entry["email"], json_decode($entry["events"]), $entry["id"], new DateTime($entry["registered"], $entry["active"]));
         }, $db_res);
@@ -107,7 +107,7 @@ final class Subscriber
     public static function set(array $resource) : int {
         $db = Database::get_database();
         return $db->insert(
-            "INSERT INTO {$db->get_table_name("subscriber")} (email, events, registered, active) VALUES (%s, %s, NOW(), false)",
+            "INSERT INTO {$db->get_table_name("subscribers")} (email, events, registered, active) VALUES (%s, %s, NOW(), false)",
             $resource["email"],
             json_encode($resource["events"])
         );
@@ -122,7 +122,7 @@ final class Subscriber
     public static function update(int $id, array $resource) : bool {
         $db = Database::get_database();
         return $db->update(
-            "UPDATE {$db->get_table_name("subscriber")} SET email = %s, events = %s, active = %b WHERE id = %d",
+            "UPDATE {$db->get_table_name("subscribers")} SET email = %s, events = %s, active = %b WHERE id = %d",
             $resource["email"],
             json_encode($resource["events"]),
             $resource["active"],
@@ -138,7 +138,7 @@ final class Subscriber
     public static function delete(int $id) : bool {
         $db = Database::get_database();
         return $db->delete(
-            "DELETE FROM {$db->get_table_name("subscriber")} WHERE id = %d",
+            "DELETE FROM {$db->get_table_name("subscribers")} WHERE id = %d",
             $id
         );
     }

@@ -65,6 +65,7 @@ module.exports = {
     entry: {
         dashboard: "./src/index",
         events: "./src/events",
+        templates: './src/templates',
         subscribers: "./src/subscribers",
         settings: "./src/settings"
     },

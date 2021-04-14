@@ -1,10 +1,6 @@
 import Ajv, {JSONSchemaType} from "ajv";
 import {Either} from "./Either";
 
-export interface ResponseObject {
-    id: number
-}
-
 interface Response <S> {
     status: "error" | "success",
     message: "string",
@@ -48,6 +44,16 @@ const ResponseSchema = <T>(schema : JSONSchemaType<T>) : JSONSchemaType<Response
         additionalProperties: false
     }
 }
+
+export const PostResponseSchema : JSONSchemaType<number> = {
+    type: "number"
+}
+
+export const PutResponseSchema : JSONSchemaType<boolean> = {
+    type: "boolean"
+}
+
+export const DeleteResponseSchema = PutResponseSchema;
 
 export enum RequestType {
     GET = "GET",

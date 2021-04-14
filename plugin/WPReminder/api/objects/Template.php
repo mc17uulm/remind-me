@@ -61,7 +61,7 @@ final class Template
     public static function get(int $id) : Template
     {
         $db = Database::get_database();
-        $db_res = $db->select("SELECT * FROM {$db->get_table_name("template")} WHERE id = %d", $id);
+        $db_res = $db->select("SELECT * FROM {$db->get_table_name("templates")} WHERE id = %d", $id);
         if(count($db_res) !== 1) throw new APIException("no dataset with given id in db");
         return new Template($db_res[0]["name"], $db_res[0]["html"], $db_res[0]["id"]);
     }
@@ -72,7 +72,7 @@ final class Template
      */
     public static function get_all() : array {
         $db = Database::get_database();
-        $db_res = $db->select("SELECT * FROM {$db->get_table_name("template")}");
+        $db_res = $db->select("SELECT * FROM {$db->get_table_name("templates")}");
         return array_map(function(array $entry) {
             return new Template($entry["name"], $entry["html"], $entry["id"]);
         }, $db_res);
@@ -86,7 +86,7 @@ final class Template
     public static function set(array $resource) : int {
         $db = Database::get_database();
         return $db->insert(
-            "INSERT INTO {$db->get_table_name("template")} (name, html) VALUES (%s, %s)",
+            "INSERT INTO {$db->get_table_name("templates")} (name, html) VALUES (%s, %s)",
             $resource["name"],
             $resource["html"]
         );
@@ -101,7 +101,7 @@ final class Template
     public static function update(int $id, array $resource) : bool {
         $db = Database::get_database();
         return $db->update(
-            "UPDATE {$db->get_table_name("template")} SET name = %s, html = %s WHERE id = %d",
+            "UPDATE {$db->get_table_name("templates")} SET name = %s, html = %s WHERE id = %d",
             $resource["name"],
             $resource["html"],
             $id
@@ -115,7 +115,7 @@ final class Template
      */
     public static function delete(int $id) : bool {
         $db = Database::get_database();
-        return $db->delete("DELETE FROM {$db->get_table_name("template")} WHERE id = %d", $id);
+        return $db->delete("DELETE FROM {$db->get_table_name("templates")} WHERE id = %d", $id);
     }
 
 }

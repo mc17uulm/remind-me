@@ -14,9 +14,6 @@
     "repeat": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "integer"
-        },
         "clocking": {
           "type": "integer"
         },
