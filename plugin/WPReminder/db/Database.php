@@ -98,7 +98,7 @@ final class Database
      * @return bool
      */
     public function delete(string $query, ...$fields) : bool {
-        return $this->update($query, $fields);
+        return $this->update($query, ...$fields);
     }
 
     public static function initialize() : void {

@@ -1,0 +1,30 @@
+.wp-reminder-template-preview {
+
+  height: 180px;
+  filter: blur(1px);
+  overflow: hidden;
+  margin-bottom: 25px;
+
+  &:hover {
+    filter: blur(0);
+  }
+
+}
+
+.wp-reminder-add-link {
+  color: green !important;
+  cursor: pointer;
+}
+
+.wp-reminder-delete-link {
+  color: red !important;
+  cursor: pointer;
+}
+
+.wp-reminder-edit-link {
+  cursor: pointer;
+}
+
+.cards {
+  margin-top: 0 !important;
+}

@@ -1,9 +1,9 @@
-import {
+import Draft, {
     ContentBlock,
     Editor as MainEditor,
     EditorState,
     RichUtils,
-    DraftHandleValue, getDefaultKeyBinding
+    DraftHandleValue, getDefaultKeyBinding, convertFromHTML, ContentState
 } from "draft-js";
 import React from "react";
 import {useState} from "react";
@@ -24,12 +24,17 @@ const styleMap = {
 }
 
 interface EditorProps {
+    initialValue : string | null
     update: (value : string) => void
 }
 
 export const Editor = (props : EditorProps) => {
 
-    const [editorState, setEditorState] = useState(EditorState.createEmpty());
+    const prevState = (props.initialValue === null) ?
+        EditorState.createEmpty() :
+        EditorState.createWithContent(ContentState.createFromBlockArray(convertFromHTML(props.initialValue).contentBlocks));
+
+    const [editorState, setEditorState] = useState(prevState);
 
     const editor = React.useRef<MainEditor>(null);
 

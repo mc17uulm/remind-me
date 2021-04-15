@@ -1,6 +1,6 @@
 import {JSONSchemaType} from "ajv";
 import {Either} from "../Either";
-import {PostResponseSchema, Request} from "../Request";
+import {DeleteResponseSchema, PostResponseSchema, PutResponseSchema, Request} from "../Request";
 
 export interface Template {
     id: number | null,
@@ -49,6 +49,18 @@ export class TemplateHandler
 
     public static async set(template : Template) : Promise<Either<number>> {
         return await Request.post<number>('template', template, PostResponseSchema);
+    }
+
+    public static async update(index : number, template : Template) : Promise<Either<boolean>> {
+        return await Request.put<boolean>(
+            `template/${index}`,
+            template,
+            PutResponseSchema
+        );
+    }
+
+    public static async delete(index : number) : Promise<Either<boolean>> {
+        return await Request.delete<boolean>(`template/${index}`, DeleteResponseSchema);
     }
 
 }
