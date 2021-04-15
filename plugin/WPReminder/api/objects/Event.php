@@ -94,7 +94,7 @@ final class Event
         $db_res = $db->select("SELECT * FROM {$db->get_table_name("events")}");
         return array_map(function(array $entry) use($with_template) {
             $repeat = Repeat::get($entry["id"]);
-            $template = $entry["template"];
+            $template = intval($entry["template"]);
             if($with_template) {
                 $template = Template::get($template);
             }

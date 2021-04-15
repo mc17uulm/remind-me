@@ -22,7 +22,7 @@ final class APIHandler
             EventHandler::get($request, $response);
         });
 
-        $api->get("/events/", function (Request $request, Response $response) {
+        $api->get("/events", function (Request $request, Response $response) {
             EventHandler::get_all($request, $response);
         });
 

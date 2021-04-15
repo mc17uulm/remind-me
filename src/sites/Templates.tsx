@@ -1,16 +1,16 @@
-import React, {Fragment, useEffect, useState} from "react"
+import React, {Fragment, MouseEvent, useEffect, useState} from "react"
 import {Template, TemplateHandler} from "../api/handler/TemplateHandler";
 import {toast} from "react-toastify";
 import {Card} from "semantic-ui-react";
 import {__} from "@wordpress/i18n";
-import {HandleTemplateModal} from "../components/modals/AddTemplateModal";
+import {HandleTemplateModal} from "../components/modals/HandleTemplateModal";
 import "./../styles/template.scss";
-import {DeleteTemplateModal} from "../components/modals/DeleteTemplateModal";
+import {HandableModalType} from "../components/modals/HandableModal";
+
 
 export const Templates = () => {
 
-    const [addOpen, setAddOpen] = useState<boolean>(false);
-    const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
+    const [modal, setModal] = useState<HandableModalType>(HandableModalType.HIDE);
     const [selected, setSelected] = useState<Template | null>(null);
     const [templates, setTemplates] = useState<Template[]>([]);
 
@@ -27,9 +27,25 @@ export const Templates = () => {
         loadTemplates();
     }, []);
 
+    const onAdd = (e : MouseEvent) => {
+        e.preventDefault();
+        setSelected(null);
+        setModal(HandableModalType.ADD)
+    }
+
+    const onSuccess = async () => {
+        await loadTemplates();
+        setModal(HandableModalType.HIDE);
+    }
+
+    const onClose = () => {
+        setSelected(null);
+        setModal(HandableModalType.HIDE);
+    }
+
     return (
         <Fragment>
-            <a className="wp-reminder-add-link" onClick={(e) => {e.preventDefault(); setAddOpen(true);}}>{__('Add Template', 'wp-reminder')}</a>
+            <a className="wp-reminder-add-link" onClick={onAdd}>{__('Add Template', 'wp-reminder')}</a>
             <br />
             <Card.Group>
             {templates.map((template: Template, index : number) => (
@@ -44,12 +60,12 @@ export const Templates = () => {
                     <Card.Content extra>
                         <a
                             className="wp-reminder-edit-link"
-                            onClick={() => {setSelected(template); setAddOpen(true)}}
+                            onClick={() => {setSelected(template); setModal(HandableModalType.ADD)}}
                         >{__('Edit', 'wp-reminder')}</a>
                         <span className="right floated">
                             <a
                                 className="wp-reminder-delete-link"
-                                onClick={() => {setSelected(template); setDeleteOpen(true)}}
+                                onClick={() => {setSelected(template); setModal(HandableModalType.DELETE)}}
                             >
                                 {__('Delete', 'wp-reminder')}
                             </a>
@@ -59,16 +75,11 @@ export const Templates = () => {
             ))}
             </Card.Group>
             <HandleTemplateModal
-                open={addOpen}
-                template={selected}
-                onClose={() => setAddOpen(false)}
-                onSuccess={async () => {await loadTemplates(); setAddOpen(false);}}
-            />
-            <DeleteTemplateModal
-                open={deleteOpen}
-                onClose={() => setDeleteOpen(false)}
-                onSuccess={async () => {await loadTemplates(); setDeleteOpen(false)}}
-                template={selected}
+                open={modal !== HandableModalType.HIDE}
+                element={selected}
+                type={modal}
+                onClose={onClose}
+                onSuccess={onSuccess}
             />
         </Fragment>
     )

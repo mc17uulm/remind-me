@@ -24,9 +24,9 @@ final class Subscriber
      */
     private string $email;
     /**
-     * @var DateTime|null
+     * @var int|null
      */
-    private ?DateTime $registered;
+    private ?int $registered;
     /**
      * @var bool|null
      */
@@ -41,10 +41,10 @@ final class Subscriber
      * @param string $email
      * @param array $events
      * @param int|null $id
-     * @param DateTime|null $registered
+     * @param int|null $registered
      * @param bool|null $active
      */
-    public function __construct(string $email, array $events, ?int $id = null, ?DateTime $registered = null, ?bool $active = null) {
+    public function __construct(string $email, array $events, ?int $id = null, ?int $registered = null, ?bool $active = null) {
         $this->email = $email;
         $this->events = $events;
         $this->id = $id;
@@ -83,19 +83,20 @@ final class Subscriber
         $db = Database::get_database();
         $db_res = $db->select("SELECT * FROM {$db->get_table_name("subscribers")} WHERE id = %d", $id);
         if(count($db_res) !== 1) throw new APIException("no dataset with given id in db");
-        return new Subscriber($db_res[0]["email"], json_decode($db_res[0]["events"]), $db_res[0]["id"], new DateTime($db_res[0]["registered"]), $db_res[0]["active"]);
+        return new Subscriber($db_res[0]["email"], json_decode($db_res[0]["events"]), $db_res[0]["id"], $db_res[0]["registered"], $db_res[0]["active"]);
     }
 
     /**
      * @return array
      * @throws DatabaseException
+     * @throws Exception
      */
     public static function get_all() : array
     {
         $db = Database::get_database();
         $db_res = $db->select("SELECT * FROM {$db->get_table_name("subscribers")}");
         return array_map(function(array $entry) {
-            return new Subscriber($entry["email"], json_decode($entry["events"]), $entry["id"], new DateTime($entry["registered"], $entry["active"]));
+            return new Subscriber($entry["email"], json_decode($entry["events"]), $entry["id"], $entry["registered"], $entry["active"]);
         }, $db_res);
     }
 

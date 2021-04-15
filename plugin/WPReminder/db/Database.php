@@ -121,7 +121,8 @@ final class Database
             clocking BIT(4) NOT NULL,
             day int NOT NULL,
             start int NOT NULL,
-            end int NOT NULL
+            end int NOT NULL,
+            PRIMARY KEY (id)         
         ) ENGINE=InnoDB $charset;";
 
         $sql .= "CREATE TABLE `{$db->get_table_name("templates")}` (
@@ -158,9 +159,11 @@ final class Database
     public static function remove() : void {
         global $wpdb;
 
-        array_map(function (string $table) use ($wpdb) {
-            $wpdb->query("DROP IF TABLE EXISTS {$wpdb->base_prefix}$table");
-        }, self::TABLES);
+        $db = self::get_database();
+
+        array_map(function (string $table) use ($wpdb, $db) {
+            $wpdb->query("DROP IF TABLE EXISTS {$db->get_table_name($table)}");
+        }, array_keys(self::TABLES));
     }
 
 }
