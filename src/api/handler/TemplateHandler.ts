@@ -1,11 +1,19 @@
 import {JSONSchemaType} from "ajv";
 import {Either} from "../Either";
-import {Request} from "../Request";
+import {PostResponseSchema, Request} from "../Request";
 
 export interface Template {
     id: number | null,
     name: string,
     html: string
+}
+
+export const empty_template = () : Template => {
+    return {
+        id: null,
+        name: "",
+        html: ""
+    }
 }
 
 export const TemplateSchema : JSONSchemaType<Template> = {
@@ -35,8 +43,12 @@ export class TemplateHandler
 
     public static async get_all() : Promise<Either<Template[]>> {
         return await Request.get<Template[]>(
-            'template', TemplatesSchema
+            'templates', TemplatesSchema
         )
+    }
+
+    public static async set(template : Template) : Promise<Either<number>> {
+        return await Request.post<number>('template', template, PostResponseSchema);
     }
 
 }

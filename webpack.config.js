@@ -84,12 +84,13 @@ module.exports = {
     devtool: 'source-map',
     plugins: [
         new MiniCssExtractPlugin({
-            filename: 'css/wp-reminder-style.css'
+            filename: 'css/wp-reminder-[name]-style.css'
         })
     ],
     output: {
         filename: 'js/wp-reminder-[name]-handler.js',
-        path: resolve(__dirname, 'dist/')
+        path: resolve(__dirname, 'dist/'),
+        publicPath: '/wp-content/plugins/_wp_reminder/dist/'
     },
     externals: {'@wordpress/i18n': "wp.i18n"},
     resolve: {

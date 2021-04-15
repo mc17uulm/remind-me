@@ -3,7 +3,11 @@
   "type": "object",
   "properties": {
     "id": {
-      "type": "integer"
+      "oneOf": [{
+        "type": "integer"
+      }, {
+        "type": "null"
+      }]
     },
     "name": {
       "type": "string"

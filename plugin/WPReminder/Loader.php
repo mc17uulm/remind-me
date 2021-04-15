@@ -120,7 +120,7 @@ final class Loader {
 
             wp_enqueue_style(
                 'wp_reminder.css',
-                "$base/dist/css/wp-reminder-style.css",
+                "$base/dist/css/wp-reminder-$token-style.css",
                 [],
                 '0.1.0'
             );
