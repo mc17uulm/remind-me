@@ -3,6 +3,7 @@
 namespace WPReminder;
 
 use WPReminder\api\APIHandler;
+use WPReminder\cron\CronJob;
 use WPReminder\db\Database;
 
 /**
@@ -20,13 +21,19 @@ final class Loader {
 
         add_shortcode('wp_reminder', fn(array $attr) => $this->handle_shortcode($attr));
 
-        register_activation_hook($file, fn() => Database::initialize());
+        register_activation_hook($file, fn() => $this->activate());
         register_deactivation_hook($file, fn() => Database::remove());
 
         add_action('rest_api_init', fn() => APIHandler::run());
         add_action('admin_menu', fn() => $this->register_menu());
         add_action('admin_enqueue_scripts', fn() => $this->register_backend_scripts($file));
+        add_action('wp_reminder_cron_job', fn() => CronJob::run());
 
+    }
+
+    private function activate() : void {
+        Database::initialize();
+        CronJob::activate();
     }
 
     /**

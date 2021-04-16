@@ -46,6 +46,13 @@ final class Event
     }
 
     /**
+     * @return int
+     */
+    public function get_id() : int {
+        return $this->id;
+    }
+
+    /**
      * @return array
      */
     public function to_json() : array {

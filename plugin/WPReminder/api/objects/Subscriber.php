@@ -32,7 +32,7 @@ final class Subscriber
      */
     private ?bool $active;
     /**
-     * @var array<int>
+     * @var array<int | Event>
      */
     private array $events;
 
@@ -50,6 +50,20 @@ final class Subscriber
         $this->id = $id;
         $this->registered = $registered;
         $this->active = $active;
+    }
+
+    /**
+     * @param array $events
+     */
+    public function set_events(array $events) : void {
+        $this->events = $events;
+    }
+
+    /**
+     * @return array
+     */
+    public function get_events() : array {
+        return $this->events;
     }
 
     /**
