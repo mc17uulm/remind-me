@@ -1,0 +1,65 @@
+name: PHP Composer
+
+on:
+  push:
+    branches: [ development ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Cache Composer package
+        id: composer-cache
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        id: yarn-cache
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install composer dependencies
+        if: steps.composer-cache.outputs.cache-hit != 'true'
+        run: composer install --no-ansi --no-dev --no-interaction --no-plugins --no-progress --no-scripts --optimize-autoloader --prefer-dist --no-suggest
+
+      - name: Install yarn dependencies
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        run: yarn install --frozen-lockfile
+
+      - name: Build plugin
+        run: yarn build
+
+      - name: Sync to development server
+        env:
+          dest: '${{ secrets.USER }}@${{ secrets.HOST }}:/var/www/vhosts/code-leaf.de/development.code-leaf.de/wp-content/plugins/wp-reminder'
+        run: |
+          echo "${{ secrets.DEPLOY_KEY }}" > deploy_key
+          chmod 600 ./deploy_key
+          rysnc -chav --delete \
+            -e 'ssh -i ./deploy_key -p ${{ secrets.PORT }} -o StrictHostKeyChecking=no' \
+            --exclude /deploy_key \
+            --exlcude /.git/ \
+            --exclude /.github/ \
+            --exclude /node_modules/ \
+            --exclude /src/ \
+            --exclude /tests/ \
+            --exclude /phpstan.neon \
+            --exclude /tsconfig.json \
+            --exclude /webpack.config.js \
+            --exclude /yarn.lock \
+            ./ ${{ env.dest }}
