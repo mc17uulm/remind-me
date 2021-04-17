@@ -53,6 +53,13 @@ final class Event
     }
 
     /**
+     * @return Repeat
+     */
+    public function get_repeat() : Repeat {
+        return $this->repeat;
+    }
+
+    /**
      * @return array
      */
     public function to_json() : array {

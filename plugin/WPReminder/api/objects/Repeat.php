@@ -65,6 +65,50 @@ final class Repeat
     }
 
     /**
+     * Check if event is today and should be executed
+     *
+     * @return bool
+     */
+    public function execute_now() : bool {
+        $now = time();
+        // event hasn't started or ended already
+        if(($this->start > $now) || ($this->end < $now)) return false;
+        // is now in a repeating month of the event
+        if(!$this->is_correct_month($now)) return false;
+        $day_now = intval(date('j', $now));
+        // is now the same day, as the event day
+        return $this->day === $day_now;
+    }
+
+    /**
+     * Check if todays month is a repeating month of the event
+     *
+     * @param int $now Timestamp of now
+     * @return bool
+     */
+    public function is_correct_month(int $now) : bool {
+        $start = intval(date('n', $this->start));
+        $now = intval(date('n', $now));
+        $diff = $this->get_month_diff($start, $now);
+        return ($diff % $this->clocking) === 0;
+    }
+
+    /**
+     * Get the difference between two months
+     *
+     * @param int $start # of Month
+     * @param int $now # of Month
+     * @return int # of Months difference
+     */
+    public function get_month_diff(int $start, int $now) : int {
+        if($start > $now) {
+            $now = $now + 12;
+        }
+        return $now - $start;
+
+    }
+
+    /**
      * @param int $event_id
      * @return Repeat
      * @throws APIException

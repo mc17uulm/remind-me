@@ -10,6 +10,7 @@
     "start": "webpack --mode development --watch --progress",
     "build": "webpack --mode production",
     "php:analyse": "./vendor/bin/phpstan analyse --memory-limit=-1 -c phpstan.neon",
+    "php:test": "./vendor/bin/phpunit tests",
     "wp:lang:build": "wp i18n make-pot . ./languages/wp-reminder.pot --domain='wp-reminder' --include='./dist/js,./plugin'",
     "wp:lang:json": "wp i18n make-json ./languages"
   },

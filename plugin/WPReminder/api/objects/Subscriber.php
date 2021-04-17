@@ -53,14 +53,14 @@ final class Subscriber
     }
 
     /**
-     * @param array $events
+     * @param array<Event> $events
      */
     public function set_events(array $events) : void {
         $this->events = $events;
     }
 
     /**
-     * @return array
+     * @return array<Event | int>
      */
     public function get_events() : array {
         return $this->events;
