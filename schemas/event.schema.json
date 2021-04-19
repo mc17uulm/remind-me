@@ -8,29 +8,19 @@
     "name": {
       "type": "string"
     },
-    "template": {
+    "clocking": {
       "type": "integer"
     },
-    "repeat": {
-      "type": "object",
-      "properties": {
-        "clocking": {
-          "type": "integer"
-        },
-        "day": {
-          "type": "integer"
-        },
-        "start": {
-          "type": "integer"
-        },
-        "end": {
-          "type": "integer"
-        }
-      },
-      "required": ["clocking", "day", "start", "end"],
-      "additionalProperties": false
+    "day": {
+      "type": "integer"
+    },
+    "start": {
+      "type": "integer"
+    },
+    "end": {
+      "type": "integer"
     }
   },
-  "required": ["name", "template"],
+  "required": ["name", "clocking", "day", "start", "end"],
   "additionalProperties": false
 }

@@ -3,13 +3,13 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-use WPReminder\api\objects\Repeat;
+use WPReminder\api\objects\Event;
 
-final class RepeatTest extends TestCase
+final class EventTest extends TestCase
 {
 
     public function testCorrectMonthCalc() : void {
-        $repeat = new Repeat(0, 0,0,0,0);
+        $repeat = new Event("", 0,0,0,0);
 
         $this->assertEquals(
             5,
@@ -31,7 +31,7 @@ final class RepeatTest extends TestCase
         $start_three_months_ago = strtotime('-3 months');
         $end_in_one_year = strtotime('+1 year');
         $day = intval(date('j'));
-        $repeat = new Repeat(0, 3, $day, $start_three_months_ago, $end_in_one_year);
+        $repeat = new Event("", 3, $day, $start_three_months_ago, $end_in_one_year);
 
         $this->assertEquals(
             true,
@@ -42,7 +42,7 @@ final class RepeatTest extends TestCase
     public function testIsNotCorrectMonth() : void {
         $start_three_months_ago = strtotime('-3 months');
         $end_in_one_year = strtotime('+1 year');
-        $repeat = new Repeat(0, 2, 15, $start_three_months_ago, $end_in_one_year);
+        $repeat = new Event("", 2, 15, $start_three_months_ago, $end_in_one_year);
 
         $this->assertEquals(
             false,
@@ -53,7 +53,7 @@ final class RepeatTest extends TestCase
     public function testRepeatNotStarted() : void {
         $start = strtotime('+1 month');
         $end = strtotime('+1 year');
-        $repeat = new Repeat(0, 2, 1, $start, $end);
+        $repeat = new Event("", 2, 1, $start, $end);
         $this->assertEquals(
             false,
             $repeat->execute_now()
@@ -63,7 +63,7 @@ final class RepeatTest extends TestCase
     public function testRepeatAlreadyEnded() : void {
         $start = strtotime('-1 year');
         $end = strtotime('-1 day');
-        $repeat = new Repeat(0, 2, 1, $start, $end);
+        $repeat = new Event("", 2, 1, $start, $end);
         $this->assertEquals(
             false,
             $repeat->execute_now()

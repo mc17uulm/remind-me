@@ -66,12 +66,6 @@ export const AddEventModal = (props : ModalProps) => {
                                         onChange={formik_props.handleChange}
                                         error={formik_props.errors.name}
                                     />
-                                    <Form.Select
-                                        width={6}
-                                        value={formik_props.values.template}
-                                        options={templates}
-                                        label={__('Templates', 'wp-reminder')}
-                                    />
                                 </Form.Group>
                             </Form>
                         </Modal.Content>

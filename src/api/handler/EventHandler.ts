@@ -1,5 +1,3 @@
-import {Template, TemplateSchema} from "./TemplateHandler";
-import {Repeat, RepeatSchema} from "./RepeatHandler";
 import {JSONSchemaType} from "ajv";
 import {Either} from "../Either";
 import {DeleteResponseSchema, PostResponseSchema, PutResponseSchema, Request} from "../Request";
@@ -7,23 +5,20 @@ import {DeleteResponseSchema, PostResponseSchema, PutResponseSchema, Request} fr
 export interface Event {
     id: number | null,
     name: string,
-    template: number,
-    repeat: Repeat
+    clocking: number,
+    day: number,
+    start: number,
+    end: number
 }
 
 export const empty_event = () : Event => {
     return {
         id: null,
         name: "",
-        template: -1,
-        repeat: {
-            id: null,
-            event: -1,
-            clocking: 0,
-            day: 0,
-            start: 0,
-            end: 0
-        }
+        clocking: 0,
+        day: 0,
+        start: 0,
+        end: 0
     }
 }
 
@@ -36,12 +31,20 @@ const EventSchema : JSONSchemaType<Event> = {
         name: {
             type: "string"
         },
-        template: {
+        clocking: {
             type: "integer"
         },
-        repeat: RepeatSchema
+        day: {
+            type: "integer"
+        },
+        start: {
+            type: "integer"
+        },
+        end: {
+            type: "integer"
+        }
     },
-    required: ["id", "name", "template", "repeat"],
+    required: ["id", "name", "clocking", "day", "start", "end"],
     additionalProperties: false
 }
 
