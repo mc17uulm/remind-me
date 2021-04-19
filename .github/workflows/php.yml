@@ -43,6 +43,9 @@ jobs:
 
       - name: Build plugin
         run: yarn build
+        rules:
+          - changes:
+              - src/*.{tsx,ts}
 
       - name: Sync to development server
         env:
