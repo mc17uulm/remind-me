@@ -1,10 +1,10 @@
 <?php
 /**
  * Plugin Name: WP Reminder
- * Description: WP Plugin for reminder handling
- * Author: mc17
- * Author URI: https://github.com/mc17uulm
- * Version: 0.1
+ * Description: Plugin for reminder handling
+ * Author: CodeLeaf
+ * Author URI: https://code-leaf.de
+ * Version: 0.1.0
  * Text Domain: wp-reminder
  * Domain Path: /lang/
  * License:
@@ -14,7 +14,7 @@
  *
  * === Plugin Information ===
  *
- * Version: 0.1
+ * Version: 0.1.0
  * Date: 26.03.2021
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the GNU
@@ -34,6 +34,10 @@ if(!defined('PHP_VERSION_ID')) {
 
 if(PHP_VERSION_ID < 70400) {
     die("Plugin requires php version >= 7.4");
+}
+
+if(!defined("WP_REMINDER_VERSION")) {
+    define("WP_REMINDER_VERSION", "0.1.0");
 }
 
 if(!defined("WP_REMINDER_BASE_URL")) {

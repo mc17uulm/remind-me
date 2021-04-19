@@ -1,6 +1,7 @@
 import {JSONSchemaType} from "ajv";
 import {Either} from "../Either";
 import {DeleteResponseSchema, PostResponseSchema, PutResponseSchema, Request} from "../Request";
+import {__, sprintf} from "@wordpress/i18n";
 
 export interface Event {
     id: number | null,
@@ -9,6 +10,32 @@ export interface Event {
     day: number,
     start: number,
     end: number
+}
+
+export const is_event_active = (event : Event) : boolean => {
+    const now = Date.now();
+    return (event.start < now) && (event.end < now);
+}
+
+const get_clocking_str = (clocking : number) : string => {
+    switch(clocking) {
+        case 1: return __('every month', 'wp-reminder');
+        case 2:
+        case 4: return  sprintf(__('every %s month', 'wp-reminder'));
+        case 3: return __('quarterly', 'wp-reminder');
+        case 6: return __('half-yearly', 'wp-reminder');
+        case 12: return __('yearly', 'wp-reminder');
+        default: return __('Invalid clocking value', 'wp-reminder');
+    }
+}
+
+const get_next_execution = () => {
+
+}
+
+export const get_repetition = (event : Event) : string => {
+    const clocking = get_clocking_str(event.clocking);
+    return sprintf(__('Is repeated %s at the %d day.', 'wp-reminder'), clocking, event.day);
 }
 
 export const empty_event = () : Event => {

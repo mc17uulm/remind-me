@@ -3,6 +3,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require("terser-webpack-plugin");
 const mode = process.env.NODE_ENV !== 'production';
 
+const base = '/wp-content/plugins/wp-reminder/';
+
 const exclude = [
     /node_modules/,
     /dist/,
@@ -36,7 +38,7 @@ const rules = [
             options: {
                 name: '[name].[ext]',
                 outputPath: 'img/',
-                publicPath: '/wp-content/plugins/_wp_reminder/dist/img/'
+                publicPath: `${base}dist/img/`
             }
         }
     }, {
@@ -54,7 +56,7 @@ const rules = [
             options: {
                 name: '[name].[ext]',
                 outputPath: 'fonts/',
-                publicPath: '/wp-content/plugins/_wp_reminder/dist/fonts/'
+                publicPath: `${base}dist/fonts/`
             }
         }
     }
@@ -90,7 +92,7 @@ module.exports = {
     output: {
         filename: 'js/wp-reminder-[name]-handler.js',
         path: resolve(__dirname, 'dist/'),
-        publicPath: '/wp-content/plugins/_wp_reminder/dist/'
+        publicPath: base
     },
     externals: {'@wordpress/i18n': "wp.i18n"},
     resolve: {

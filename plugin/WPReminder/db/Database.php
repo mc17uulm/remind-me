@@ -113,7 +113,7 @@ final class Database
             clocking BIT(4) NOT NULL,
             day int NOT NULL,
             start int NOT NULL,
-            end int NOT NULL
+            end int NOT NULL,
             PRIMARY KEY (id)
         ) ENGINE=InnoDB $charset;";
 
@@ -144,7 +144,7 @@ final class Database
         $db = self::get_database();
 
         array_map(function (string $table) use ($wpdb, $db) {
-            $wpdb->query("DROP IF TABLE EXISTS {$db->get_table_name($table)}");
+            $wpdb->query("DROP TABLE IF EXISTS {$db->get_table_name($table)}");
         }, array_keys(self::TABLES));
     }
 
