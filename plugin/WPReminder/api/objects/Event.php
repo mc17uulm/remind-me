@@ -28,33 +28,33 @@ final class Event
     /**
      * @var int
      */
-    private int $day;
-    /**
-     * @var int
-     */
     private int $start;
     /**
      * @var int
      */
-    private int $end;
+    private int $last_execution;
+    /**
+     * @var bool
+     */
+    private bool $active;
 
     /**
      * Event constructor.
      * @param string $name
      * @param int $clocking
-     * @param int $day
      * @param int $start
-     * @param int $end
+     * @param int $last_execution
+     * @param bool $active
      * @param int|null $id
      */
-    public function __construct(string $name, int $clocking, int $day, int $start, int $end, ?int $id = null)
+    public function __construct(string $name, int $clocking, int $start, int $last_execution, bool $active, ?int $id = null)
     {
         $this->id = $id;
         $this->name = $name;
         $this->clocking = $clocking;
-        $this->day = $day;
         $this->start = $start;
-        $this->end = $end;
+        $this->last_execution = $last_execution;
+        $this->active = $active;
     }
 
     /**
@@ -72,12 +72,12 @@ final class Event
     public function execute_now() : bool {
         $now = time();
         // event hasn't started or ended already
-        if(($this->start > $now) || ($this->end < $now)) return false;
+        // DEPRECATED: if(($this->start > $now) || ($this->end < $now)) return false;
         // is now in a repeating month of the event
         if(!$this->is_correct_month($now)) return false;
         $day_now = intval(date('j', $now));
         // is now the same day, as the event day
-        return $this->day === $day_now;
+        return false;
     }
 
     /**
@@ -105,7 +105,6 @@ final class Event
             $now = $now + 12;
         }
         return $now - $start;
-
     }
 
     /**
@@ -115,9 +114,9 @@ final class Event
         $object = [
             "name" => $this->name,
             "clocking" => $this->clocking,
-            "day" => $this->day,
             "start" => $this->start,
-            "end" => $this->end
+            "last_execution" => $this->last_execution,
+            "active" => $this->active
         ];
         if(!is_null($this->id)) {
             $object["id"] = $this->id;
@@ -135,7 +134,7 @@ final class Event
         $db = Database::get_database();
         $db_res = $db->select("SELECT * FROM {$db->get_table_name("events")} WHERE id = %d", $id);
         if(count($db_res) !== 1) throw new APIException("no dataset for given id in db");
-        return new Event($db_res[0]["name"], $db_res[0]["clocking"], $db_res[0]["day"], $db_res[0]["start"], $db_res[0]["end"], $db_res[0]["id"]);
+        return new Event($db_res[0]["name"], $db_res[0]["clocking"], $db_res[0]["start"], $db_res[0]["last_execution"], $db_res[0]["active"], $db_res[0]["id"]);
     }
 
     /**
@@ -146,7 +145,7 @@ final class Event
         $db = Database::get_database();
         $db_res = $db->select("SELECT * FROM {$db->get_table_name("events")}");
         return array_map(function(array $entry) {
-            return new Event($entry["name"], $entry["clocking"], $entry["day"], $entry["start"], $entry["end"], $entry["id"]);
+            return new Event($entry["name"], $entry["clocking"], $entry["start"], $entry["last_execution"], $entry["active"], $entry["id"]);
         }, $db_res);
     }
 
@@ -158,12 +157,10 @@ final class Event
     public static function set(array $resource) : int {
         $db = Database::get_database();
         return $db->insert(
-            "INSERT INTO {$db->get_table_name("events")} (name, clocking, day, start, end) VALUES (%s, %d, %d, %d, %d)",
+            "INSERT INTO {$db->get_table_name("events")} (name, clocking, start, last_execution, active) VALUES (%s, %d, %d, 0, 1)",
             $resource["name"],
             $resource["clocking"],
-            $resource["day"],
-            $resource["start"],
-            $resource["end"]
+            $resource["start"]
         );
     }
 
@@ -176,12 +173,10 @@ final class Event
     public static function update(int $id, array $resource) : bool {
         $db = Database::get_database();
         return $db->update(
-            "UPDATE {$db->get_table_name("events")} SET name = %s, clocking = %d, day = %d, start = %d, end = %d WHERE id = %d",
+            "UPDATE {$db->get_table_name("events")} SET name = %s, clocking = %d, start = %d WHERE id = %d",
             $resource["name"],
             $resource["clocking"],
-            $resource["day"],
             $resource["start"],
-            $resource["end"],
             $id
         );
     }

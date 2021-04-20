@@ -11,16 +11,16 @@
     "clocking": {
       "type": "integer"
     },
-    "day": {
-      "type": "integer"
-    },
     "start": {
       "type": "integer"
     },
-    "end": {
+    "active": {
+      "type": "boolean"
+    },
+    "last_execution": {
       "type": "integer"
     }
   },
-  "required": ["name", "clocking", "day", "start", "end"],
+  "required": ["name", "clocking", "start"],
   "additionalProperties": false
 }

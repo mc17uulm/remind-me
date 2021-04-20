@@ -1,3 +1,5 @@
+@import "defaults";
+
 .wp-reminder-template-preview {
 
   height: 180px;
@@ -9,20 +11,6 @@
     filter: blur(0);
   }
 
-}
-
-.wp-reminder-add-link {
-  color: green !important;
-  cursor: pointer;
-}
-
-.wp-reminder-delete-link {
-  color: red !important;
-  cursor: pointer;
-}
-
-.wp-reminder-edit-link {
-  cursor: pointer;
 }
 
 .cards {

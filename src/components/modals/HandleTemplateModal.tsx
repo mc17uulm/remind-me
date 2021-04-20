@@ -6,6 +6,7 @@ import {Template, TemplateHandler} from "../../api/handler/TemplateHandler";
 import {toast} from "react-toastify";
 import {HandableModalType, ModalProps} from "./HandableModal";
 import {Icon} from "../Icon";
+import {DeleteModal} from "./DeleteModal";
 
 export const HandleTemplateModal = (props : ModalProps<Template>) => {
 
@@ -102,16 +103,12 @@ export const HandleTemplateModal = (props : ModalProps<Template>) => {
 
     const renderConfirmation = () => {
         return (
-            <Fragment>
-                <Modal.Header>{__('Delete Template', 'wp-reminder')}</Modal.Header>
-                <Modal.Content>
-                    {sprintf(__('Do you really like to delete the template "%s"?', 'wp-reminder'), props.element?.name)}
-                </Modal.Content>
-                <Modal.Actions>
-                    <Button color="black" onClick={props.onClose}>{__('Back', 'wp-reminder')}</Button>
-                    <Button color="red" onClick={onDelete}><Icon class="trash" /> {__('Delete', 'wp-reminder')}</Button>
-                </Modal.Actions>
-            </Fragment>
+            <DeleteModal
+                title={__('Delete Template', 'wp-reminder')}
+                content={sprintf(__('Do you really like to delete the template "%s"?', 'wp-reminder'), props.element?.name)}
+                onClose={props.onClose}
+                onDelete={onDelete}
+            />
         )
     }
 

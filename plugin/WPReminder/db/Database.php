@@ -111,9 +111,9 @@ final class Database
             id int NOT NULL AUTO_INCREMENT,
             name varchar(155) NOT NULL,
             clocking BIT(4) NOT NULL,
-            day int NOT NULL,
             start int NOT NULL,
-            end int NOT NULL,
+            last_execution int NOT NULL,
+            active BIT(1) NOT NULL,
             PRIMARY KEY (id)
         ) ENGINE=InnoDB $charset;";
 
