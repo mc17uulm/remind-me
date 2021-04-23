@@ -71,7 +71,7 @@ export class TemplateHandler
         const list = await Promise.all(index.map(async (elem : number) => {
             return await Request.delete<boolean>(`template/${elem}`, DeleteResponseSchema);
         }));
-        return Either.collapse(list, (t1 : boolean, t2: boolean) => t1 && t2);
+        return Either.collapse(list, true,(t1 : boolean, t2: boolean) => t1 && t2);
     }
 
 }

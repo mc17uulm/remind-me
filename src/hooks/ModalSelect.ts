@@ -15,8 +15,6 @@ export const useModalSelect = <T extends unknown>() : [HandableModalType, T[], M
     const [selected, setSelected] = useState<T[]>([]);
     const [type, setType] = useState<HandableModalType>(HandableModalType.HIDE);
 
-    console.log(selected);
-
     const onAdd = useCallback((e : MouseEvent) : void => {
         e.preventDefault();
         setSelected([]);

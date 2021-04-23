@@ -7,10 +7,12 @@ interface DeleteModalProps<S> {
     title: string,
     content : string
     onClose : () => void,
-    onDelete : () => Promise<void>
+    onDelete : () => Promise<void>,
+    loading? : boolean
 }
 
 export const DeleteModal = <T extends unknown>(props : DeleteModalProps<T>) => {
+    console.log("loading", props.loading);
     return (
         <Fragment>
             <Modal.Header>{props.title}</Modal.Header>
@@ -19,7 +21,7 @@ export const DeleteModal = <T extends unknown>(props : DeleteModalProps<T>) => {
             </Modal.Content>
             <Modal.Actions>
                 <Button color="black" onClick={props.onClose}>{__('Back', 'wp-reminder')}</Button>
-                <Button color="red" onClick={props.onDelete}><Icon class="trash" /> {__('Delete', 'wp-reminder')}</Button>
+                <Button color="red" loading={props.loading} onClick={props.onDelete}><Icon class="trash" /> {__('Delete', 'wp-reminder')}</Button>
             </Modal.Actions>
         </Fragment>
     )

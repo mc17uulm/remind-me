@@ -69,7 +69,8 @@ module.exports = {
         events: "./src/events",
         templates: './src/templates',
         subscribers: "./src/subscribers",
-        settings: "./src/settings"
+        settings: "./src/settings",
+        frontend: "./src/frontend"
     },
     optimization: {
         minimizer: [

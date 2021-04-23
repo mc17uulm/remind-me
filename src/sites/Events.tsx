@@ -4,7 +4,6 @@ import {
     Checkbox,
     Dimmer,
     Form,
-    Grid,
     Label,
     Loader, Placeholder,
     Segment,
@@ -28,8 +27,6 @@ export const Events = () => {
     const [checked, handleCheck] = useCheck<APIEvent>();
     const [events, setEvents] = useState<APIEvent[]>([]);
 
-    console.log(selectedElements);
-
     const loadEvents = async () : Promise<void> => {
         const resp = await EventHandler.get_all();
         if(resp.has_error()) {
@@ -46,6 +43,7 @@ export const Events = () => {
 
     const onSuccess = async () => {
         handleModalSelect.hide();
+        handleCheck.update_all(false);
         await loadEvents();
     }
 
@@ -152,19 +150,22 @@ export const Events = () => {
 
     return (
         <Fragment>
-            <Grid>
-                <Grid.Row columns={2}>
-                    <Grid.Column floated={"left"}>
-                        <h2>{__('Events', 'wp-reminder')}</h2>
-                    </Grid.Column>
-                    <Grid.Column floated={"right"}>
-                        <label>{__('Shortcode', 'wp-reminder')}</label>
-                        {renderShortcode()}
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
+            <div className="wp-reminder-header-container">
+                <h3 className="wp-reminder-float-left">
+                    {__('Events', 'wp-reminder')}
+                </h3>
+                <span className='wp-reminder-shortcode-container'>
+                    <label>{__('Shortcode', 'wp-reminder')}</label>
+                    {renderShortcode()}
+                </span>
+            </div>
             <a className="wp-reminder-add-link" onClick={handleModalSelect.onAdd}>{__('Add Event', 'wp-reminder')}</a>
             {events.length === 0 ? renderLoader() : renderTable()}
+            <a
+                className={"wp-reminder-delete-link" + (handleCheck.filtered().length === 0 ? " wp-reminder-disabled" : "")}
+                onClick={(e) => handleModalSelect.onMultipleDelete(e, events.filter((event, index) => handleCheck.get(index)))}>
+                {__('Delete selected', 'wp-reminder')}
+            </a>
             <HandleEventModal
                 open={modalType !== HandableModalType.HIDE}
                 onClose={handleModalSelect.onClose}
@@ -173,11 +174,6 @@ export const Events = () => {
                 element={selectedElements[0]}
                 type={modalType}
             />
-            <a 
-                className={"wp-reminder-delete-link" + (handleCheck.filtered().length === 0 ? " wp-reminder-disabled" : "")} 
-                onClick={(e) => handleModalSelect.onMultipleDelete(e, events.filter((event, index) => handleCheck.get(index)))}>
-                {__('Delete selected', 'wp-reminder')}
-            </a>
         </Fragment>
     );
 

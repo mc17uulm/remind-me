@@ -1,6 +1,7 @@
 @media only screen and (min-width: 1200px) {
   .ui.container {
     margin-left: 1em !important;
+    width: 95%;
   }
 }
 
@@ -29,4 +30,12 @@
 .wp-reminder-disabled {
   pointer-events: none;
   color: grey !important;
+}
+
+.wp-reminder-float-right {
+  float: right;
+}
+
+.wp-reminder-float-left {
+  float: left;
 }
