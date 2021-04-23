@@ -121,6 +121,7 @@ final class Database
             id int NOT NULL AUTO_INCREMENT,
             name varchar(155) NOT NULL,
             html TEXT NOT NULL,
+            active BIT(1) NOT NULL,
             PRIMARY KEY (id)
         ) ENGINE=InnoDB $charset;";
 

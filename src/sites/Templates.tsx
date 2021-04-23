@@ -1,18 +1,19 @@
-import React, {Fragment, MouseEvent, useEffect, useState} from "react"
+import React, {Fragment, useEffect, useState} from "react"
 import {Template, TemplateHandler} from "../api/handler/TemplateHandler";
 import {toast} from "react-toastify";
-import {Card} from "semantic-ui-react";
+import {Card, Label} from "semantic-ui-react";
 import {__} from "@wordpress/i18n";
 import {HandleTemplateModal} from "../components/modals/HandleTemplateModal";
 import "./../styles/template.scss";
 import {HandableModalType} from "../components/modals/HandableModal";
+import {ResponseObject} from "../api/Request";
+import {useModalSelect} from "../hooks/ModalSelect";
 
 
 export const Templates = () => {
 
-    const [modal, setModal] = useState<HandableModalType>(HandableModalType.HIDE);
-    const [selected, setSelected] = useState<Template | null>(null);
-    const [templates, setTemplates] = useState<Template[]>([]);
+    const [modal, selectedElements, handleModalCheck] = useModalSelect<ResponseObject<Template>>();
+    const [templates, setTemplates] = useState<ResponseObject<Template>[]>([]);
 
     const loadTemplates = async () : Promise<void> => {
         const resp = await TemplateHandler.get_all();
@@ -27,45 +28,45 @@ export const Templates = () => {
         loadTemplates();
     }, []);
 
-    const onAdd = (e : MouseEvent) => {
-        e.preventDefault();
-        setSelected(null);
-        setModal(HandableModalType.ADD)
-    }
-
     const onSuccess = async () => {
         await loadTemplates();
-        setModal(HandableModalType.HIDE);
+        handleModalCheck.hide();
     }
 
-    const onClose = () => {
-        setSelected(null);
-        setModal(HandableModalType.HIDE);
+    const renderLabel = (template : ResponseObject<Template>) => {
+        return (
+            <Label color={template.active ? 'green' : 'red'} horizontal>
+                {template.active ? __('active', 'wp-reminder') : __('not-active', 'wp-reminder')}
+            </Label>
+        )
     }
 
     return (
         <Fragment>
-            <a className="wp-reminder-add-link" onClick={onAdd}>{__('Add Template', 'wp-reminder')}</a>
+            <a className="wp-reminder-add-link" onClick={handleModalCheck.onAdd}>{__('Add Template', 'wp-reminder')}</a>
             <br />
             <Card.Group>
-            {templates.map((template: Template, index : number) => (
+            {templates.map((template: ResponseObject<Template>, index : number) => (
                 <Card key={`template_${index}`}>
                     <Card.Content>
                         <div
                             dangerouslySetInnerHTML={{__html: template.html}}
                             className="wp-reminder-template-preview">
                         </div>
-                        <Card.Header>{template.name}</Card.Header>
+                        <Card.Header>
+                            <span className="left floated">{template.name}</span>
+                            <span className="right floated">{renderLabel(template)}</span>
+                        </Card.Header>
                     </Card.Content>
                     <Card.Content extra>
                         <a
                             className="wp-reminder-edit-link"
-                            onClick={() => {setSelected(template); setModal(HandableModalType.ADD)}}
+                            onClick={(e) => handleModalCheck.onEdit(e, template)}
                         >{__('Edit', 'wp-reminder')}</a>
                         <span className="right floated">
                             <a
                                 className="wp-reminder-delete-link"
-                                onClick={() => {setSelected(template); setModal(HandableModalType.DELETE)}}
+                                onClick={(e) => handleModalCheck.onDelete(e, template)}
                             >
                                 {__('Delete', 'wp-reminder')}
                             </a>
@@ -76,9 +77,10 @@ export const Templates = () => {
             </Card.Group>
             <HandleTemplateModal
                 open={modal !== HandableModalType.HIDE}
-                element={selected}
+                elements={selectedElements}
+                element={selectedElements[0]}
                 type={modal}
-                onClose={onClose}
+                onClose={handleModalCheck.onClose}
                 onSuccess={onSuccess}
             />
         </Fragment>

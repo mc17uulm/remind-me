@@ -1,4 +1,4 @@
-import React, {Component, CSSProperties} from "react";
+import React, {Component} from "react";
 
 interface IconProps {
     class: string;
@@ -8,7 +8,6 @@ interface IconProps {
     list?: boolean;
     fixedWith?: boolean;
     size?: "normal" | "lg" | "2x" | "3x" | "4x" | "5x";
-    style?: CSSProperties;
 }
 
 interface IconState {}
@@ -43,7 +42,7 @@ export class Icon extends Component<IconProps, IconState>
                 (fixedWith ? " fa-fw" : "") +
                 (list ? " fa-li" : "") +
                 (spin ? " fa-spin" : "")
-            } style={this.props.style}/>
+            } />
         );
     }
 

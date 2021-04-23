@@ -5,16 +5,16 @@ import {StyleButton} from "./StyleButton";
 export interface Styles {
     label: string,
     style: string,
-    icon: string
+    icon?: string
 }
 
 const BLOCK_TYPES : Styles[] = [
-    {label: 'H1', style: 'header-one', icon: 'heading'},
-    {label: 'H2', style: 'header-two', icon: 'heading'},
-    {label: 'H3', style: 'header-three', icon: 'heading'},
-    {label: 'H4', style: 'header-four', icon: 'heading'},
-    {label: 'H5', style: 'header-five', icon: 'heading'},
-    {label: 'H6', style: 'header-six', icon: 'heading'},
+    {label: 'H1', style: 'header-one'},
+    {label: 'H2', style: 'header-two'},
+    {label: 'H3', style: 'header-three'},
+    {label: 'H4', style: 'header-four'},
+    {label: 'H5', style: 'header-five'},
+    {label: 'H6', style: 'header-six'},
     {label: 'Blockquote', style: 'blockquote', icon: 'quote-right'},
     {label: 'UL', style: 'unordered-list-item', icon: 'list-ul'},
     {label: 'OL', style: 'ordered-list-item', icon: 'list-ol'},

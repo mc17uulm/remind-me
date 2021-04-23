@@ -1,3 +1,13 @@
+@media only screen and (min-width: 1200px) {
+  .ui.container {
+    margin-left: 1em !important;
+  }
+}
+
+.ui.container {
+  margin-top: 1em;
+}
+
 .wp-reminder-add-link {
   color: green !important;
   cursor: pointer;
@@ -14,4 +24,9 @@
 
 .wp-reminder-small {
   font-size: 13px;
+}
+
+.wp-reminder-disabled {
+  pointer-events: none;
+  color: grey !important;
 }

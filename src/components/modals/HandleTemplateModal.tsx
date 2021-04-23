@@ -1,52 +1,41 @@
-import {Button, Form, Modal} from "semantic-ui-react";
+import {Button, Form, Modal, Popup} from "semantic-ui-react";
 import React, {Fragment, useEffect, useState} from "react";
-import {__, sprintf} from "@wordpress/i18n";
+import {__, _n, sprintf} from "@wordpress/i18n";
 import {Editor} from "../editor/Editor";
 import {Template, TemplateHandler} from "../../api/handler/TemplateHandler";
 import {toast} from "react-toastify";
-import {HandableModalType, ModalProps} from "./HandableModal";
-import {Icon} from "../Icon";
+import {HandableModalProps, HandableModalType} from "./HandableModal";
 import {DeleteModal} from "./DeleteModal";
+import {Either} from "../../api/Either";
+import {ResponseObject} from "../../api/Request";
+import {Info} from "../Info";
+import {Icon} from "../Icon";
 
-export const HandleTemplateModal = (props : ModalProps<Template>) => {
+export const HandleTemplateModal = (props : HandableModalProps<ResponseObject<Template>>) => {
 
     const [name, setName] = useState<string>("");
-    const [template, setTemplate] = useState<string>(props.element?.html ?? "");
+    const [template, setTemplate] = useState<string>("");
+    const [active, setActive] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        if(props.element !== null) {
+        if(props.type === HandableModalType.EDIT) {
             setName(props.element.name);
+            setTemplate(props.element.html);
+            setActive(props.element.active);
         } else {
             setName("");
+            setTemplate("");
+            setActive(false);
         }
-    }, [props.element]);
+    }, [props.type]);
 
     const onSubmit = async () => {
         if(name === "") {
             setError(__('Please insert a template name', 'wp-reminder'));
             return;
         }
-        let resp;
-        if(props.element !== null && props.element.id !== null) {
-            if(props.type === HandableModalType.EDIT) {
-                resp = await TemplateHandler.update(props.element.id, {
-                    id: props.element.id,
-                    name: name,
-                    html: template
-                });
-            } else if(props.type === HandableModalType.DELETE) {
-               resp = await TemplateHandler.delete(props.element.id);
-            } else {
-                return;
-            }
-        } else {
-            resp = await TemplateHandler.set({
-                id: null,
-                name: name,
-                html: template
-            });
-        }
+        const resp = await sendRequest();
         if(resp.has_error()) {
             toast.error(resp.get_error());
         } else {
@@ -55,30 +44,47 @@ export const HandleTemplateModal = (props : ModalProps<Template>) => {
         }
     }
 
-    const onDelete = async () => {
-        if(props.element !== null && props.element.id !== null) {
-            const resp = await TemplateHandler.delete(props.element.id ?? -1);
-            if(resp.has_error()) {
-                toast.error(resp.get_error());
-                props.onClose();
-            } else {
-                toast.success(__('Deleted template', 'wp-reminder'));
-                props.onSuccess();
-            }
+    const sendRequest = async () : Promise<Either<any>> => {
+        switch(props.type) {
+            case HandableModalType.EDIT:
+                return await TemplateHandler.update(props.element.id, {
+                    id: props.element.id,
+                    name: name,
+                    html: template,
+                    active: active
+                });
+            case HandableModalType.DELETE:
+                return await TemplateHandler.delete(props.elements.map(val => val.id));
+            case HandableModalType.ADD:
+                return await TemplateHandler.set({
+                    name: name,
+                    html: template,
+                    active: active
+                });
+            default: return Either.error("");
         }
     }
 
     const renderContent = () => {
+        const element = (props.type === HandableModalType.EDIT) ? props.element : null;
         return (
             <Fragment>
                 <Modal.Header>{__('Add Template', 'wp-reminder')}</Modal.Header>
                 <Modal.Content>
                     <Form onSubmit={onSubmit}>
                         <Form.Group>
+                            <Form.Checkbox
+                                toggle
+                                checked={active}
+                                onChange={(e, d) => {e.preventDefault(); setActive(d.checked ?? false)}}
+                                label={__('Active', 'wp-reminder')}
+                            />
+                            <Info>{__('Only one template can be active', 'wp-reminder')}</Info>
+                        </Form.Group>
+                        <Form.Group>
                             <Form.Input
                                 width={16}
                                 value={name}
-                                name="name"
                                 label={__('Template name', 'wp-reminder')}
                                 placeholder={__('Template name', 'wp-reminder')}
                                 onChange={(e) => {e.preventDefault(); setName(e.target.value)}}
@@ -88,7 +94,7 @@ export const HandleTemplateModal = (props : ModalProps<Template>) => {
                         <Form.Group>
                             <Form.Field width={16}>
                                 <label>{__('Template', 'wp-reminder')}</label>
-                                <Editor initialValue={props.element?.html ?? null} update={(value) => setTemplate(value)} />
+                                <Editor initialValue={element?.html ?? null} update={(value) => setTemplate(value)} />
                             </Form.Field>
                         </Form.Group>
                     </Form>
@@ -102,14 +108,28 @@ export const HandleTemplateModal = (props : ModalProps<Template>) => {
     }
 
     const renderConfirmation = () => {
-        return (
-            <DeleteModal
-                title={__('Delete Template', 'wp-reminder')}
-                content={sprintf(__('Do you really like to delete the template "%s"?', 'wp-reminder'), props.element?.name)}
-                onClose={props.onClose}
-                onDelete={onDelete}
-            />
-        )
+        if(props.type === HandableModalType.DELETE) {
+            return (
+                <DeleteModal
+                    title={__('Delete Template', 'wp-reminder')}
+                    content={
+                        sprintf(
+                            _n(
+                                'Do you really like to delete the template "%s"?',
+                                'Do you really like to delete the templates [%s]?',
+                                props.elements.length,
+                                'wp-reminder'
+                            ),
+                            props.elements[0].name,
+                            props.elements.map(val => val.name).join(", ")
+                        )
+                    }
+                    onClose={props.onClose}
+                    onDelete={onSubmit}
+                />
+            );
+        }
+        return "";
     }
 
     const getContent = () => {
@@ -119,8 +139,6 @@ export const HandleTemplateModal = (props : ModalProps<Template>) => {
                 return renderContent();
             case HandableModalType.DELETE:
                 return renderConfirmation();
-            default:
-                return <Fragment></Fragment>;
         }
     }
 

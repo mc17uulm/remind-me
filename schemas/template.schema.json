@@ -3,19 +3,18 @@
   "type": "object",
   "properties": {
     "id": {
-      "oneOf": [{
-        "type": "integer"
-      }, {
-        "type": "null"
-      }]
+      "type": "integer"
     },
     "name": {
       "type": "string"
     },
     "html": {
       "type": "string"
+    },
+    "active": {
+      "type": "boolean"
     }
   },
-  "required": ["name", "html"],
+  "required": ["name", "html", "active"],
   "additionalProperties": false
 }

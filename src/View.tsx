@@ -20,7 +20,7 @@ declare var wp_reminder_definitions : Definitions;
 
 export class View {
 
-    static run (title : string, element : React.ReactNode) : void {
+    static run (element : React.ReactNode) : void {
 
         Request.initialize(
             wp_reminder_definitions.root,
@@ -31,9 +31,8 @@ export class View {
 
         const elem = document.getElementById("wp_reminder_container");
         elem ? ReactDOM.render(
-            <Container style={{width: "90%"}}>
+            <Container>
                 <h1>WP Reminder</h1>
-                <h3>{title}</h3>
                 {element}
                 <ToastContainer position="bottom-center" autoClose={2000} />
             </Container>,

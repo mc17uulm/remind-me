@@ -7,7 +7,7 @@ interface StyleButtonProps {
     active: boolean,
     onToggle: (style : string) => void,
     style: string,
-    icon: string
+    icon?: string
 }
 
 export const StyleButton = (props : StyleButtonProps) => {
@@ -19,7 +19,9 @@ export const StyleButton = (props : StyleButtonProps) => {
 
     return (
         <span onMouseDown={onToggle} className={"RichEditor-styleButton" + (props.active ? " RichEditor-activeButton" : "")}>
-            <Icon class={`fa fa-${props.icon}`} />
+            {(typeof props.icon === "undefined") ? props.label : (
+                <Icon class={`fa fa-${props.icon}`} />
+            )}
         </span>
     )
 

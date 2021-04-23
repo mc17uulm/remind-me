@@ -1,8 +1,8 @@
 import {APIEvent, EventHandler, get_next_executions, get_repetition} from "../../api/handler/EventHandler";
-import {HandableModalType, ModalProps} from "./HandableModal";
+import {HandableModalProps, HandableModalType } from "./HandableModal";
 import React, {Fragment, useEffect, useState,} from "react";
 import {Button, DropdownItemProps, Form, List, Modal, ModalActions} from "semantic-ui-react";
-import {__, sprintf} from "@wordpress/i18n";
+import {__, _n, sprintf} from "@wordpress/i18n";
 import {DeleteModal} from "./DeleteModal";
 import moment from "moment";
 import {toast} from "react-toastify";
@@ -32,7 +32,7 @@ const MonthList : DropdownItemProps[] = [
     {key: '12', value: 11, text: __('December', 'wp-reminder')},
 ]
 
-export const HandleEventModal = (props : ModalProps<APIEvent>) => {
+export const HandleEventModal = (props : HandableModalProps<APIEvent>) => {
 
     const [name, setName] = useState<string>("");
     const [start, setStart] = useState<number>(0);
@@ -40,16 +40,16 @@ export const HandleEventModal = (props : ModalProps<APIEvent>) => {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        if(props.element === null) {
-            setStart(new Date().getTime());
-            setRepeat(1);
-            setName("");
-        } else {
+        if(props.type === HandableModalType.EDIT) {
             setStart(props.element.start * 1000);
             setRepeat(props.element.clocking);
             setName(props.element.name);
+        } else {
+            setStart(0);
+            setRepeat(1);
+            setName("");
         }
-    }, [props.element]);
+    }, [props.type]);
 
     const onSubmit = async () => {
         if(name === "") {
@@ -68,27 +68,25 @@ export const HandleEventModal = (props : ModalProps<APIEvent>) => {
     const sendRequest = async () : Promise<Either<any>> => {
         switch(props.type) {
             case HandableModalType.EDIT:
-                if(props.element === null) return Either.error("Element not defined");
                 return await EventHandler.update(props.element.id, {
                     name: name,
                     clocking: repeat,
                     start: Math.floor(start / 1000)
                 });
             case HandableModalType.DELETE:
-                if(props.element === null) return Either.error("Element not defined");
-                return await EventHandler.delete(props.element.id);
+                return await EventHandler.delete(props.elements.map(val => val.id));
             case HandableModalType.ADD:
                 return await EventHandler.set({
                     name: name,
                     clocking: repeat,
                     start: Math.floor(start / 1000)
                 });
-            default: return Either.error("Invalid type");
+            default: return Either.error("");
         }
     }
 
     const nextExecutions = () : Date[] => {
-        const last_execution = props.element?.last_execution ?? 0;
+        const last_execution = (props.type === HandableModalType.EDIT) ? props.element.last_execution : 0;
 
         return get_next_executions(last_execution, start, repeat, 4);
     }
@@ -183,14 +181,28 @@ export const HandleEventModal = (props : ModalProps<APIEvent>) => {
     }
 
     const renderConfirmation = () => {
-        return (
-            <DeleteModal
-                title={__('Delete Event', 'wp-reminder')}
-                content={sprintf(__('Do you really like to delete the event "%s"?', 'wp-reminder'), props.element?.name)}
-                onClose={props.onClose}
-                onDelete={onSubmit}
-            />
-        );
+        if(props.type === HandableModalType.DELETE) {
+            return (
+                <DeleteModal
+                    title={__('Delete Event', 'wp-reminder')}
+                    content={
+                        sprintf(
+                            _n(
+                            'Do you really like to delete the event "%s"?',
+                            'Do you really like to delete the events [%s]?',
+                                props.elements.length,
+                                'wp-reminder'
+                            ),
+                            (props.elements.length === 1) ? props.elements[0].name : props.elements.map(val => val.name).join(", ")
+                        )
+                    }
+                    onClose={props.onClose}
+                    onDelete={onSubmit}
+                />
+            );
+        } else {
+            return "";
+        }
     }
 
     const getContent = () => {
@@ -200,8 +212,6 @@ export const HandleEventModal = (props : ModalProps<APIEvent>) => {
                 return renderContent();
             case HandableModalType.DELETE:
                 return renderConfirmation();
-            default:
-                return <Fragment></Fragment>;
         }
     }
 
