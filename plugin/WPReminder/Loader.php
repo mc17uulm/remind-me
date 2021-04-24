@@ -79,15 +79,6 @@ final class Loader {
 
         add_submenu_page(
             'wp-reminder',
-            __('Templates', 'wp-reminder'),
-            __('Templates', 'wp-reminder'),
-            'manage_options',
-            'wp-reminder-templates',
-            function() { echo '<div id="wp_reminder_container"></div>'; }
-        );
-
-        add_submenu_page(
-            'wp-reminder',
             __('Subscribers', 'wp-reminder'),
             __('Subscribers', 'wp-reminder'),
             'manage_options',
@@ -110,7 +101,6 @@ final class Loader {
         switch($site) {
             case 'wp-reminder': return 'dashboard';
             case 'wp-reminder-events': return 'events';
-            case 'wp-reminder-templates': return 'templates';
             case 'wp-reminder-subscribers': return 'subscribers';
             case 'wp-reminder-settings': return 'settings';
             default: return '';

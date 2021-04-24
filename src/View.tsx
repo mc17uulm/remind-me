@@ -5,6 +5,7 @@ import {Container} from "semantic-ui-react";
 import {ToastContainer} from "react-toastify";
 import 'semantic-ui-css/semantic.min.css';
 import 'react-toastify/dist/ReactToastify.css';
+import 'font-awesome/css/font-awesome.css';
 import {Request} from "./api/Request";
 
 export interface Definitions {

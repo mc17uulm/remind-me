@@ -40,6 +40,7 @@ export const useCheck = <T extends unknown>() : [boolean[], CheckFunctions<T>] =
     }, [checked]);
 
     const all = useCallback(() : boolean => {
+        if(checked.length === 0) return false;
         return filtered().length === checked.length;
     }, [checked]);
 

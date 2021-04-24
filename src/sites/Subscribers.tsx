@@ -7,6 +7,7 @@ import {toast} from "react-toastify";
 import {Icon} from "../components/Icon";
 import moment from "moment";
 import {useCheck} from "../hooks/Check";
+import {LoadingContent} from "../components/LoadingContent";
 
 export const Subscribers = () => {
 
@@ -14,6 +15,7 @@ export const Subscribers = () => {
     const [subscribers, setSubscribers] = useState<APISubscriber[]>([]);
     const [events, setEvents] = useState<APIEvent[]>([]);
     const [openAccordion, setAccordionOpen] = useState<number>(-1);
+    const [initialized, setInitialized] = useState<boolean>(false);
 
     const loadSubscribers = async () => {
         const resp = await SubscriberHandler.get_all();
@@ -32,6 +34,7 @@ export const Subscribers = () => {
             toast.error(resp.get_error());
         } else {
             setEvents(resp.get_value());
+            setInitialized(true);
         }
     }
 
@@ -80,8 +83,8 @@ export const Subscribers = () => {
         )
     }
 
-    return (
-        <Fragment>
+    const renderTable = () => {
+        return (
             <Table striped>
                 <Table.Header>
                     <Table.Row>
@@ -113,6 +116,19 @@ export const Subscribers = () => {
                     ))}
                 </Table.Body>
             </Table>
+        );
+    }
+
+    return (
+        <Fragment>
+            <LoadingContent
+                initialized={initialized}
+                hasContent={subscribers.length !== 0}
+                header={__('No subscribers found', 'wp-reminder')}
+                icon='users'
+            >
+                {renderTable()}
+            </LoadingContent>
             <a
                 className={'wp-reminder-float-left wp-reminder-delete-link' + (handleCheck.filtered().length === 0 ? ' wp-reminder-disabled' : '')}
                 onClick={(e) => {}}
@@ -120,7 +136,7 @@ export const Subscribers = () => {
                 {__('Delete selected', 'wp-reminder')}
             </a>
             <a
-                className={'wp-reminder-float-right'}
+                className={'wp-reminder-float-right' + (handleCheck.filtered().length === 0 ? ' wp-reminder-disabled' : '')}
             >
                 {__('Export selected', 'wp-reminder')}
             </a>

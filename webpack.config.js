@@ -28,7 +28,7 @@ const rules = [
         test: /\.s?[ac]ss$/,
         use: [
             MiniCssExtractPlugin.loader,
-            {loader: 'css-loader', options: {url: false, sourceMap: true}},
+            {loader: 'css-loader', options: {sourceMap: true}},
             {loader: 'sass-loader', options: {sourceMap: true}}
         ]
     }, {
@@ -44,7 +44,7 @@ const rules = [
     }, {
         test: /\.svg$/,
         use: {
-            loader: "svg-loader",
+            loader: "svg-url-loader",
             options: {
                 limit: 10000
             }
@@ -67,7 +67,6 @@ module.exports = {
     entry: {
         dashboard: "./src/index",
         events: "./src/events",
-        templates: './src/templates',
         subscribers: "./src/subscribers",
         settings: "./src/settings",
         frontend: "./src/frontend"

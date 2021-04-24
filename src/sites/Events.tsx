@@ -2,11 +2,8 @@ import React, {Fragment, useEffect, useState} from "react";
 import {
     Button,
     Checkbox,
-    Dimmer,
     Form,
     Label,
-    Loader, Placeholder,
-    Segment,
     Table
 } from "semantic-ui-react";
 import {APIEvent, Event, EventHandler, get_next_executions, get_repetition} from "../api/handler/EventHandler";
@@ -20,12 +17,14 @@ import {Icon} from "../components/Icon";
 import CopyToClipboard from "react-copy-to-clipboard";
 import {useCheck} from "../hooks/Check";
 import {useModalSelect} from "../hooks/ModalSelect";
+import {LoadingContent} from "../components/LoadingContent";
 
 export const Events = () => {
 
     const [modalType, selectedElements, handleModalSelect] = useModalSelect<APIEvent>();
     const [checked, handleCheck] = useCheck<APIEvent>();
     const [events, setEvents] = useState<APIEvent[]>([]);
+    const [initialized, setInitialized] = useState<boolean>(false);
 
     const loadEvents = async () : Promise<void> => {
         const resp = await EventHandler.get_all();
@@ -34,6 +33,7 @@ export const Events = () => {
         } else {
             setEvents(resp.get_value());
             handleCheck.set(resp.get_value());
+            setInitialized(true);
         }
     }
 
@@ -94,18 +94,6 @@ export const Events = () => {
         )
     }
 
-    const renderLoader = () => {
-        return (
-            <Segment style={{height: "250px"}}>
-                <Dimmer active>
-                    <Loader>{__('Loading', 'wp-reminder')}</Loader>
-                </Dimmer>
-
-                <Placeholder />
-            </Segment>
-        );
-    }
-
     const renderTable = () => {
         return (
             <Table striped>
@@ -160,7 +148,17 @@ export const Events = () => {
                 </span>
             </div>
             <a className="wp-reminder-add-link" onClick={handleModalSelect.onAdd}>{__('Add Event', 'wp-reminder')}</a>
-            {events.length === 0 ? renderLoader() : renderTable()}
+            <LoadingContent
+                initialized={initialized}
+                hasContent={events.length !== 0}
+                header={__('No event found', 'wp-reminder')}
+                icon='calendar times'
+                button={
+                    <Button color='green' onClick={handleModalSelect.onAdd}>{__('Add Event', 'wp-reminder')}</Button>
+                }
+            >
+                {renderTable()}
+            </LoadingContent>
             <a
                 className={"wp-reminder-delete-link" + (handleCheck.filtered().length === 0 ? " wp-reminder-disabled" : "")}
                 onClick={(e) => handleModalSelect.onMultipleDelete(e, events.filter((event, index) => handleCheck.get(index)))}>
