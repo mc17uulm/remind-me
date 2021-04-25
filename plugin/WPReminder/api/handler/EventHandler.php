@@ -24,7 +24,7 @@ final class EventHandler implements RestHandler
         $id = $req->get_param("id");
         if(!is_numeric($id)) throw new APIException("'id' isn't set or not numeric");
 
-        $res->success(Event::get($id));
+        $res->success(Event::get($id)->to_json());
     }
 
     /**

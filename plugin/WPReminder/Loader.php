@@ -163,6 +163,17 @@ final class Loader {
             WP_REMINDER_VERSION
         );
 
+        wp_localize_script(
+            'wp-reminder-frontend.js',
+            'wp_reminder_definitions',
+            [
+                'root' => esc_url_raw(rest_url()),
+                'nonce' => wp_create_nonce('wp_rest'),
+                'slug' => 'wp-reminder',
+                'version' => 'v1'
+            ]
+        );
+
     }
 
 }

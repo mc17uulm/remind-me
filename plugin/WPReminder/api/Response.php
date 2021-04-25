@@ -29,7 +29,7 @@ final class Response
     }
 
     /**
-     * @param string $data
+     * @param mixed $data
      */
     public function success($data = "") : void {
         $this->send([

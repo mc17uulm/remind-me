@@ -20,7 +20,7 @@ final class APIHandler
 
         $api->get("/event/(?P<id>\d+)", function (Request $request, Response $response) {
             EventHandler::get($request, $response);
-        });
+        }, [], false);
 
         $api->get("/events", function (Request $request, Response $response) {
             EventHandler::get_all($request, $response);

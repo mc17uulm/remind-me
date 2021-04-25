@@ -31,40 +31,40 @@ final class API
      * @param string $path
      * @param callable $callback
      * @param array $args
-     * @param string $permission
+     * @param bool $needs_permission
      */
-    public function get(string $path, callable $callback, array $args = [], string $permission = 'edit_posts') : void {
-        $this->handle_request("GET", $path, $callback, $args, $permission);
+    public function get(string $path, callable $callback, array $args = [], bool $needs_permission = true) : void {
+        $this->handle_request("GET", $path, $callback, $args, $needs_permission);
     }
 
     /**
      * @param string $path
      * @param callable $callback
      * @param array $args
-     * @param string $permission
+     * @param bool $needs_permission
      */
-    public function post(string $path, callable $callback, array $args = [], string $permission = 'edit_posts') : void {
-        $this->handle_request("POST", $path, $callback, $args, $permission);
+    public function post(string $path, callable $callback, array $args = [], bool $needs_permission = true) : void {
+        $this->handle_request("POST", $path, $callback, $args, $needs_permission);
     }
 
     /**
      * @param string $path
      * @param callable $callback
      * @param array $args
-     * @param string $permission
+     * @param bool $needs_permission
      */
-    public function put(string $path, callable $callback, array $args = [], string $permission = 'edit_posts') : void {
-        $this->handle_request("PUT", $path, $callback, $args, $permission);
+    public function put(string $path, callable $callback, array $args = [], bool $needs_permission = true) : void {
+        $this->handle_request("PUT", $path, $callback, $args, $needs_permission);
     }
 
     /**
      * @param string $path
      * @param callable $callback
      * @param array $args
-     * @param string $permission
+     * @param bool $needs_permission
      */
-    public function delete(string $path, callable $callback, array $args = [], string $permission = 'edit_posts') : void {
-        $this->handle_request("DELETE", $path, $callback, $args, $permission);
+    public function delete(string $path, callable $callback, array $args = [], bool $needs_permission = true) : void {
+        $this->handle_request("DELETE", $path, $callback, $args, $needs_permission);
     }
 
     /**
@@ -72,11 +72,11 @@ final class API
      * @param string $path
      * @param callable $callback
      * @param array $args
-     * @param string $permission
+     * @param bool $needs_permission
      */
-    private function handle_request(string $type, string $path, callable $callback, array $args, string $permission) : void {
+    private function handle_request(string $type, string $path, callable $callback, array $args, bool $needs_permission) : void {
         if(in_array(strtoupper($type), ["GET", "POST", "PUT", "DELETE"])) {
-            register_rest_route($this->plugin_slug, $path, [
+            $route = [
                 'methods' => strtoupper($type),
                 'callback' => function(WP_REST_Request $req) use ($callback) {
                     $res = new Response();
@@ -89,11 +89,14 @@ final class API
                     }
                     return $res->build();
                 },
-                'args' => $args,
-                'permission_callback' => function() use($permission) {
-                    return current_user_can($permission);
-                }
-            ]);
+                'args' => $args
+            ];
+            if($needs_permission) {
+                $route['permission_callback'] = function() {
+                    return current_user_can('edit_posts');
+                };
+            }
+            register_rest_route($this->plugin_slug, $path, $route);
         }
     }
 

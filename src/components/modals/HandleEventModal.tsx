@@ -1,4 +1,4 @@
-import {APIEvent, EventHandler, get_next_executions, get_repetition} from "../../api/handler/EventHandler";
+import {APIEvent, Event, empty_event, EventHandler, get_next_executions, get_repetition} from "../../api/handler/EventHandler";
 import {HandableModalProps, HandableModalType } from "./HandableModal";
 import React, {Fragment, useEffect, useState,} from "react";
 import {Button, DropdownItemProps, Form, List, Modal, ModalActions} from "semantic-ui-react";
@@ -8,6 +8,7 @@ import moment from "moment";
 import {toast} from "react-toastify";
 import {Either} from "../../api/Either";
 import {useLoader} from "../../hooks/useLoader";
+import {useForm} from "../../hooks/useForm";
 
 const ClockingList : DropdownItemProps[] = [
     {key: '1', value: 1, text: __('monthly', 'wp-reminder')},
@@ -36,20 +37,22 @@ const MonthList : DropdownItemProps[] = [
 export const HandleEventModal = (props : HandableModalProps<APIEvent>) => {
 
     const [loading, doLoading] = useLoader();
-    const [name, setName] = useState<string>("");
-    const [start, setStart] = useState<number>(0);
-    const [repeat, setRepeat] = useState<number>(1);
+    const [form, setForm] = useForm<Event>(empty_event());
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         if(props.type === HandableModalType.EDIT) {
-            setStart(props.element.start * 1000);
-            setRepeat(props.element.clocking);
-            setName(props.element.name);
+            setForm({
+                start: props.element.start * 1000,
+                clocking: props.element.clocking,
+                name: props.element.name
+            });
         } else {
-            setStart(0);
-            setRepeat(1);
-            setName("");
+            setForm({
+                start: 0,
+                clocking: 1,
+                name: ""
+            });
         }
     }, [props.type]);
 
@@ -66,7 +69,7 @@ export const HandleEventModal = (props : HandableModalProps<APIEvent>) => {
     }
 
     const checkForm = () : boolean => {
-        if(name === "") {
+        if(form.values.name === "") {
             console.log("this error");
             setError(__('Please insert a event name', 'wp-reminder'));
             return false;
@@ -79,18 +82,18 @@ export const HandleEventModal = (props : HandableModalProps<APIEvent>) => {
             case HandableModalType.EDIT:
                 if(!checkForm()) return Either.error("");
                 return await EventHandler.update(props.element.id, {
-                    name: name,
-                    clocking: repeat,
-                    start: Math.floor(start / 1000)
+                    name: form.values.name,
+                    clocking: form.values.clocking,
+                    start: Math.floor(form.values.start / 1000)
                 });
             case HandableModalType.DELETE:
                 return await EventHandler.delete(props.elements.map(val => val.id));
             case HandableModalType.ADD:
                 if(!checkForm()) return Either.error("");
                 return await EventHandler.set({
-                    name: name,
-                    clocking: repeat,
-                    start: Math.floor(start / 1000)
+                    name: form.values.name,
+                    clocking: form.values.clocking,
+                    start: Math.floor(form.values.start / 1000)
                 });
             default: return Either.error("");
         }
@@ -99,7 +102,7 @@ export const HandleEventModal = (props : HandableModalProps<APIEvent>) => {
     const nextExecutions = () : Date[] => {
         const last_execution = (props.type === HandableModalType.EDIT) ? props.element.last_execution : 0;
 
-        return get_next_executions(last_execution, start, repeat, 4);
+        return get_next_executions(last_execution, form.values.start, form.values.clocking, 4);
     }
 
     const toDate = (timestamp : number) : Date => {
@@ -107,13 +110,11 @@ export const HandleEventModal = (props : HandableModalProps<APIEvent>) => {
     }
 
     const updateMonth = (value : any) : void => {
-        const _start = toDate(start);
-        setStart(_start.setMonth(parseInt(value)));
+        form.setValue('start', toDate(form.values.start).setMonth(parseInt(value)));
     }
 
     const updateDay = (value : string) : void => {
-        const _start = toDate(start);
-        setStart(_start.setDate(parseInt(value)));
+        form.setValue('start', toDate(form.values.start).setDate(parseInt(value)))
     }
 
     const renderContent = () => {
@@ -130,17 +131,17 @@ export const HandleEventModal = (props : HandableModalProps<APIEvent>) => {
                         <Form.Group>
                             <Form.Input
                                 width={6}
-                                value={name}
+                                value={form.values.name}
                                 name="name"
                                 label={__('Event name', 'wp-reminder')}
                                 placeholder={__('Event name', 'wp-reminder')}
-                                onChange={(e) => setName(e.target.value)}
-                                error={error}
+                                onChange={form.onChange}
+                                error={form.getError('name')}
                             />
                             <Form.Input
                                 width={2}
                                 label={__('Day', 'wp-reminder')}
-                                value={toDate(start).getDate()}
+                                value={toDate(form.values.start).getDate()}
                                 onChange={(e, d) => updateDay(d.value)}
                                 type="number"
                                 placeholder={1}
@@ -150,16 +151,16 @@ export const HandleEventModal = (props : HandableModalProps<APIEvent>) => {
                             <Form.Select
                                 width={4}
                                 label={__('Month', 'wp-reminder')}
-                                value={toDate(start).getMonth()}
+                                value={toDate(form.values.start).getMonth()}
                                 onChange={(e, d) => updateMonth(d.value)}
                                 options={MonthList}
                             />
                             <Form.Select
                                 width={3}
                                 label={__('Repeat', 'wp-reminder')}
-                                value={repeat}
+                                value={form.values.clocking}
                                 // @ts-ignore
-                                onChange={(event, data) => setRepeat(data.value)}
+                                onChange={(event, data) => handleForm.setValue('clocking', data.value)}
                                 options={ClockingList}
                             />
                         </Form.Group>
@@ -177,7 +178,7 @@ export const HandleEventModal = (props : HandableModalProps<APIEvent>) => {
                             <Form.Field>
                                 <label>{__('Summary', 'wp-reminder')}</label>
                                 <code>
-                                    {get_repetition(repeat, toDate(start).getDate())}
+                                    {get_repetition(form.values.clocking, toDate(form.values.start).getDate())}
                                 </code>
                             </Form.Field>
                         </Form.Group>

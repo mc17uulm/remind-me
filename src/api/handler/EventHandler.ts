@@ -66,7 +66,7 @@ export const empty_event = () : Event => {
     }
 }
 
-const EventSchema : JSONSchemaType<APIEvent> = {
+export const EventSchema : JSONSchemaType<APIEvent> = {
     type: "object",
     properties: {
         id: {
@@ -110,6 +110,13 @@ export class EventHandler {
             `event/${index}`,
             EventSchema
         );
+    }
+
+    public static async get_list(indices : number[]) : Promise<Either<APIEvent[]>> {
+        const list = await Promise.all(indices.map(async (elem : number) => {
+            return await Request.get<APIEvent>(`event/${elem}`, EventSchema);
+        }));
+        return Either.map<APIEvent>(list);
     }
 
     public static async set(event : Event) : Promise<Either<number>> {

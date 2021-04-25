@@ -25,6 +25,15 @@ export class Either<T> {
         return elem;
     }
 
+    public static map<T>(list : Either<T>[]) : Either<T[]> {
+        let _list : T[] = [];
+        list.forEach((item : Either<T>) => {
+            if(item.has_error()) return item;
+            _list.push(item.get_value());
+        });
+        return Either.success(_list);
+    }
+
     public has_error() : boolean {
         return typeof this.error_msg === "string";
     }
