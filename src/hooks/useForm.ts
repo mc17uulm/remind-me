@@ -1,3 +1,4 @@
+import * as yup from 'yup';
 import {ChangeEvent, FormEvent, useState} from "react";
 
 interface FormError {
@@ -26,7 +27,7 @@ function clone<S>(values : S) : Errors<S> {
 
 export const useForm = <T extends unknown>(defaultValue: T) : [Form<T>, (elem : T) => void] => {
 
-    const [state, setState] = useState<T>(defaultValue);
+    const [state, setStateValue] = useState<T>(defaultValue);
     const [errors, setErrors] = useState<Errors<T>>(clone(defaultValue));
 
     const onChange = (e : ChangeEvent<HTMLInputElement>) : void => {
@@ -36,13 +37,13 @@ export const useForm = <T extends unknown>(defaultValue: T) : [Form<T>, (elem : 
     }
 
     const setValue = (key : keyof T, value : any) : void => {
-        let _state = state;
+        let _state : T = Object.assign({}, state);
         _state[key] = value;
-        setState(_state);
+        setStateValue(_state);
     }
 
     const setForm = (element : T) : void => {
-        setState(element);
+        setStateValue(element);
     }
 
     const handleSubmit = (e : FormEvent) => {
@@ -55,8 +56,8 @@ export const useForm = <T extends unknown>(defaultValue: T) : [Form<T>, (elem : 
         return error.error ?? "";
     }
 
-    const validate = () => {
-
+    const validate = async (schema : yup.AnySchema) : Promise<boolean> => {
+        return await schema.isValid(state);
     }
 
     return [

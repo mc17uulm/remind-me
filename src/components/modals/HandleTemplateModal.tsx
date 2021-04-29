@@ -1,7 +1,6 @@
-import {Button, Form, Modal, Popup} from "semantic-ui-react";
+import {Button, Form, Modal} from "semantic-ui-react";
 import React, {Fragment, useEffect, useState} from "react";
 import {__, _n, sprintf} from "@wordpress/i18n";
-import {Editor} from "../editor/Editor";
 import {Template, TemplateHandler} from "../../api/handler/TemplateHandler";
 import {toast} from "react-toastify";
 import {HandableModalProps, HandableModalType} from "./HandableModal";
@@ -9,7 +8,6 @@ import {DeleteModal} from "./DeleteModal";
 import {Either} from "../../api/Either";
 import {ResponseObject} from "../../api/Request";
 import {Info} from "../Info";
-import {Icon} from "../Icon";
 
 export const HandleTemplateModal = (props : HandableModalProps<ResponseObject<Template>>) => {
 
@@ -94,7 +92,6 @@ export const HandleTemplateModal = (props : HandableModalProps<ResponseObject<Te
                         <Form.Group>
                             <Form.Field width={16}>
                                 <label>{__('Template', 'wp-reminder')}</label>
-                                <Editor initialValue={element?.html ?? null} update={(value) => setTemplate(value)} />
                             </Form.Field>
                         </Form.Group>
                     </Form>

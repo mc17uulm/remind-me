@@ -1,6 +1,6 @@
 import {JSONSchemaType} from "ajv";
 import {Either} from "../Either";
-import {DeleteResponseSchema, PutResponseSchema, Request} from "../Request";
+import {DeleteResponseSchema, PostResponseSchema, PutResponseSchema, Request} from "../Request";
 
 export interface Subscriber {
     id?: number,
@@ -61,6 +61,14 @@ export class SubscriberHandler
             `subscriber/${index}`,
             subscriber,
             PutResponseSchema
+        );
+    }
+
+    public static async set(subscriber : Subscriber) : Promise<Either<number>> {
+        return await Request.post<number>(
+            `subscribe`,
+            subscriber,
+            PostResponseSchema
         );
     }
 

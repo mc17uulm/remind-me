@@ -9,6 +9,7 @@ import {toast} from "react-toastify";
 import {Either} from "../../api/Either";
 import {useLoader} from "../../hooks/useLoader";
 import {useForm} from "../../hooks/useForm";
+import * as yup from 'yup';
 
 const ClockingList : DropdownItemProps[] = [
     {key: '1', value: 1, text: __('monthly', 'wp-reminder')},
@@ -32,7 +33,12 @@ const MonthList : DropdownItemProps[] = [
     {key: '10', value: 9, text: __('October', 'wp-reminder')},
     {key: '11', value: 10, text: __('November', 'wp-reminder')},
     {key: '12', value: 11, text: __('December', 'wp-reminder')},
-]
+];
+
+const schema = yup.object().shape({
+   name: yup.string().required(),
+   clocking: yup.number().required()
+});
 
 export const HandleEventModal = (props : HandableModalProps<APIEvent>) => {
 
@@ -70,7 +76,6 @@ export const HandleEventModal = (props : HandableModalProps<APIEvent>) => {
 
     const checkForm = () : boolean => {
         if(form.values.name === "") {
-            console.log("this error");
             setError(__('Please insert a event name', 'wp-reminder'));
             return false;
         }
@@ -159,8 +164,7 @@ export const HandleEventModal = (props : HandableModalProps<APIEvent>) => {
                                 width={3}
                                 label={__('Repeat', 'wp-reminder')}
                                 value={form.values.clocking}
-                                // @ts-ignore
-                                onChange={(event, data) => handleForm.setValue('clocking', data.value)}
+                                onChange={(event, data) => form.setValue('clocking', data.value)}
                                 options={ClockingList}
                             />
                         </Form.Group>

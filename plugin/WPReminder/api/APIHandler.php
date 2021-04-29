@@ -4,6 +4,7 @@ namespace WPReminder\api;
 
 use WP_REST_Request as Request;
 use WPReminder\api\handler\EventHandler;
+use WPReminder\api\handler\SettingsHandler;
 use WPReminder\api\handler\SubscriberHandler;
 use WPReminder\api\handler\TemplateHandler;
 
@@ -77,6 +78,26 @@ final class APIHandler
         $api->delete("/subscriber/(?P<id>\d+)", function (Request $request, Response $response) {
             SubscriberHandler::delete($request, $response);
         });
+
+        $api->get("/settings/", function (Request $request, Response $response) {
+            SettingsHandler::get($request, $response);
+        }, [], false);
+
+        $api->post("/settings/", function (Request $request, Response $response) {
+            SettingsHandler::set($request, $response);
+        });
+
+        $api->put("/settings/", function (Request $request, Response $response) {
+            SettingsHandler::update($request, $response);
+        });
+
+        $api->delete("/settings/", function (Request $request, Response $response) {
+            SettingsHandler::delete($request, $response);
+        });
+
+        $api->post('/subscribe', function(Request $request, Response $response) {
+            SubscriberHandler::set($request, $response);
+        }, [], false);
 
     }
 

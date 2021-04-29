@@ -3,6 +3,7 @@
 namespace WPReminder;
 
 use WPReminder\api\APIHandler;
+use WPReminder\api\objects\Settings;
 use WPReminder\cron\CronJob;
 use WPReminder\db\Database;
 
@@ -21,12 +22,12 @@ final class Loader {
         load_plugin_textdomain('wp-reminder', false, dirname(plugin_basename($file)) . "/languages/");
 
         register_activation_hook($file, fn() => $this->activate());
-        register_deactivation_hook($file, fn() => Database::remove());
+        register_deactivation_hook($file, fn() => $this->deactivate());
 
         add_action('rest_api_init', fn() => APIHandler::run());
         add_action('admin_menu', fn() => $this->register_menu());
         add_action('admin_enqueue_scripts', fn() => $this->register_backend_scripts($file));
-        add_action('wp_enqueue_scripts', fn() => $this->register_frontend_scripts());
+        add_action('wp_enqueue_scripts', fn() => $this->register_frontend_scripts($file));
         add_action('wp_reminder_cron_job', fn() => CronJob::run());
 
         add_shortcode('wp-reminder', fn(array $attr) => $this->handle_shortcode($attr));
@@ -35,7 +36,13 @@ final class Loader {
 
     private function activate() : void {
         Database::initialize();
+        Settings::create_default();
         CronJob::activate();
+    }
+
+    private function deactivate() : void {
+        Database::remove();
+        Settings::delete();
     }
 
     /**
@@ -145,7 +152,7 @@ final class Loader {
         }
     }
 
-    private function register_frontend_scripts() : void {
+    private function register_frontend_scripts(string $file) : void {
         $base = defined("WP_REMINDER_BASE_URL") ? WP_REMINDER_BASE_URL : "";
 
         wp_register_script(
@@ -172,6 +179,12 @@ final class Loader {
                 'slug' => 'wp-reminder',
                 'version' => 'v1'
             ]
+        );
+
+        wp_set_script_translations(
+            'wp_reminder-frontend.js',
+            'wp-reminder',
+            plugin_dir_path($file) . "/languages/"
         );
 
     }
