@@ -10,7 +10,7 @@ interface CheckFunctions<S> {
     indeterminate: () => boolean
 }
 
-export const useCheck = <T extends unknown>() : [boolean[], CheckFunctions<T>] => {
+export const useCheckbox = <T extends unknown>() : [boolean[], CheckFunctions<T>] => {
 
     const [checked, setChecked] = useState<boolean[]>([]);
 

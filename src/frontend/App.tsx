@@ -5,7 +5,7 @@ import {APIEvent, EventHandler} from "../api/handler/EventHandler";
 import {Request} from "../api/Request";
 import {Settings, SettingsHandler} from "../api/handler/SettingsHandler";
 import {__} from "@wordpress/i18n";
-import {useCheck} from "../hooks/Check";
+import {useCheckbox} from "../hooks/useCheckbox";
 import {SubscriberHandler} from "../api/handler/SubscriberHandler";
 import {toast} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -54,7 +54,7 @@ enum AppState {
 
 const App = (props : AppProps) => {
 
-    const [checked, handleCheck] = useCheck<APIEvent>();
+    const [checked, handleCheck] = useCheckbox<APIEvent>();
     const [state, setState] = useState<AppState>(AppState.LOADING);
     const [email, setEmail] = useState<string>("");
     const [emailError, setEmailError] = useState<boolean>(false);
@@ -62,8 +62,6 @@ const App = (props : AppProps) => {
     const [acceptGDPRError, setGDPRError] = useState<boolean>(false);
     const [events, setEvents] = useState<APIEvent[]>([]);
     const [settings, setSettings] = useState<Settings>();
-    const [initialized, setInitialized] = useState<boolean>(false);
-    const [send, setSend] = useState<boolean>(false);
 
     const load_events = async () => {
         const resp = await EventHandler.get_list(props.list);

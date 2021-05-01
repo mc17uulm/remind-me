@@ -6,12 +6,12 @@ import {APIEvent, Event, EventHandler} from "../api/handler/EventHandler";
 import {toast} from "react-toastify";
 import {Icon} from "../components/Icon";
 import moment from "moment";
-import {useCheck} from "../hooks/Check";
+import {useCheckbox} from "../hooks/useCheckbox";
 import {LoadingContent} from "../components/LoadingContent";
 
 export const Subscribers = () => {
 
-    const [checked, handleCheck] = useCheck();
+    const [checked, handleCheck] = useCheckbox();
     const [subscribers, setSubscribers] = useState<APISubscriber[]>([]);
     const [events, setEvents] = useState<APIEvent[]>([]);
     const [openAccordion, setAccordionOpen] = useState<number>(-1);

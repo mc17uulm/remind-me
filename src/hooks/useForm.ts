@@ -1,5 +1,7 @@
 import * as yup from 'yup';
 import {ChangeEvent, FormEvent, useState} from "react";
+import {Either} from "../api/Either";
+import {ValidationError} from "yup";
 
 interface FormError {
     hasError: boolean,
@@ -7,7 +9,7 @@ interface FormError {
 }
 
 type Errors<S> = {
-    [key in keyof S]: FormError
+    [key in keyof S]: string | null
 }
 
 interface Form<S> {
@@ -16,15 +18,20 @@ interface Form<S> {
     setValue: (key: keyof S, value: any) => void,
     handleSubmit: (e : FormEvent) => void,
     getError: (key : keyof S) => string | null,
+    validate: (schema : yup.SchemaOf<S>) => Promise<Either<S>>,
     errors: Errors<S>
 }
 
 function clone<S>(values : S) : Errors<S> {
-    return <{[key in keyof S]: FormError}>Object.entries(values).reduce(
-        (p, [k, v]) => Object.assign(p, {[k]: {hasError: false}}), {}
+    return <{[key in keyof S]: string | null}>Object.entries(values).reduce(
+        (p, [k, v]) => Object.assign(p, {[k]: null}), {}
     )
 }
 
+/**
+ * The useForm hook handles the state of a form.
+ * @param defaultValue
+ */
 export const useForm = <T extends unknown>(defaultValue: T) : [Form<T>, (elem : T) => void] => {
 
     const [state, setStateValue] = useState<T>(defaultValue);
@@ -37,6 +44,7 @@ export const useForm = <T extends unknown>(defaultValue: T) : [Form<T>, (elem : 
     }
 
     const setValue = (key : keyof T, value : any) : void => {
+        setErrors(clone(defaultValue));
         let _state : T = Object.assign({}, state);
         _state[key] = value;
         setStateValue(_state);
@@ -51,13 +59,27 @@ export const useForm = <T extends unknown>(defaultValue: T) : [Form<T>, (elem : 
     }
 
     const getError = (key : keyof T) : string | null => {
-        const error = errors[key];
-        if(!error.hasError) return null;
-        return error.error ?? "";
+        return errors[key];
     }
 
-    const validate = async (schema : yup.AnySchema) : Promise<boolean> => {
-        return await schema.isValid(state);
+    const validate = async (schema : yup.SchemaOf<T>) : Promise<Either<T>> => {
+        setErrors(clone(defaultValue));
+        try {
+            const res = await schema.validate(state, {
+                abortEarly: false
+            });
+            return Either.success(state);
+        }
+        // @ts-ignore
+        catch (e : ValidationError) {
+            let _errors = Object.assign({}, errors);
+            e.inner.map((el : ValidationError) => {
+                // @ts-ignore
+                _errors[el.path] = el.message;
+            });
+            setErrors(_errors);
+            return Either.error("");
+        }
     }
 
     return [
@@ -67,6 +89,7 @@ export const useForm = <T extends unknown>(defaultValue: T) : [Form<T>, (elem : 
             setValue: setValue,
             handleSubmit: handleSubmit,
             getError: getError,
+            validate: validate,
             errors: errors
         },
         setForm

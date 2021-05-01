@@ -15,14 +15,14 @@ import {HandableModalType} from "../components/modals/HandableModal";
 import "../styles/events.scss";
 import {Icon} from "../components/Icon";
 import CopyToClipboard from "react-copy-to-clipboard";
-import {useCheck} from "../hooks/Check";
+import {useCheckbox} from "../hooks/useCheckbox";
 import {useModalSelect} from "../hooks/ModalSelect";
 import {LoadingContent} from "../components/LoadingContent";
 
 export const Events = () => {
 
     const [modalType, selectedElements, handleModalSelect] = useModalSelect<APIEvent>();
-    const [checked, handleCheck] = useCheck<APIEvent>();
+    const [checked, handleCheck] = useCheckbox<APIEvent>();
     const [events, setEvents] = useState<APIEvent[]>([]);
     const [initialized, setInitialized] = useState<boolean>(false);
 
