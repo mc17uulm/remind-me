@@ -1,17 +1,21 @@
 import React, {Fragment, useEffect, useState} from "react";
-import {Accordion, Label, List, Table} from "semantic-ui-react";
+import {Accordion, Checkbox, Label, List, Table} from "semantic-ui-react";
 import {__} from "@wordpress/i18n";
-import {Subscriber, SubscriberHandler} from "../api/handler/SubscriberHandler";
-import {Event, EventHandler} from "../api/handler/EventHandler";
+import {APISubscriber, Subscriber, SubscriberHandler} from "../api/handler/SubscriberHandler";
+import {APIEvent, Event, EventHandler} from "../api/handler/EventHandler";
 import {toast} from "react-toastify";
 import {Icon} from "../components/Icon";
 import moment from "moment";
+import {useCheckbox} from "../hooks/useCheckbox";
+import {LoadingContent} from "../components/LoadingContent";
 
 export const Subscribers = () => {
 
-    const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
-    const [events, setEvents] = useState<Event[]>([]);
+    const [checked, handleCheck] = useCheckbox();
+    const [subscribers, setSubscribers] = useState<APISubscriber[]>([]);
+    const [events, setEvents] = useState<APIEvent[]>([]);
     const [openAccordion, setAccordionOpen] = useState<number>(-1);
+    const [initialized, setInitialized] = useState<boolean>(false);
 
     const loadSubscribers = async () => {
         const resp = await SubscriberHandler.get_all();
@@ -19,6 +23,7 @@ export const Subscribers = () => {
             toast.error(resp.get_error());
         } else {
             setSubscribers(resp.get_value());
+            handleCheck.set(resp.get_value());
             await loadEvents();
         }
     }
@@ -29,6 +34,7 @@ export const Subscribers = () => {
             toast.error(resp.get_error());
         } else {
             setEvents(resp.get_value());
+            setInitialized(true);
         }
     }
 
@@ -77,11 +83,18 @@ export const Subscribers = () => {
         )
     }
 
-    return (
-        <Fragment>
+    const renderTable = () => {
+        return (
             <Table striped>
                 <Table.Header>
                     <Table.Row>
+                        <Table.HeaderCell>
+                            <Checkbox
+                                indeterminate={handleCheck.indeterminate()}
+                                checked={handleCheck.all()}
+                                onChange={(e, d) => handleCheck.update_all(d.checked ?? false)}
+                            />
+                        </Table.HeaderCell>
                         <Table.HeaderCell>{__('Email address', 'wp-reminder')}</Table.HeaderCell>
                         <Table.HeaderCell>{__('Registered events', 'wp-reminder')}</Table.HeaderCell>
                         <Table.HeaderCell>{__('Registration date', 'wp-reminder')}</Table.HeaderCell>
@@ -91,7 +104,11 @@ export const Subscribers = () => {
                 <Table.Body>
                     {subscribers.map((subscriber : Subscriber, index : number) => (
                         <Table.Row key={`subscriber_${index}`}>
-                            <Table.Cell><a href={`mailto:${subscriber.email}`}>{subscriber.email}</a></Table.Cell>
+                            <Table.Cell><Checkbox checked={handleCheck.get(index)} onChange={() => handleCheck.update(index)} /></Table.Cell>
+                            <Table.Cell>
+                                <a href={`mailto:${subscriber.email}`}>{subscriber.email}</a><br />
+                                <a className="wp-reminder-edit-link">Edit</a> <a className="wp-reminder-delete-link">Delete</a>
+                            </Table.Cell>
                             <Table.Cell>{buildAccordion(index, subscriber)}</Table.Cell>
                             <Table.Cell>{renderDate(subscriber.registered ?? 0)}</Table.Cell>
                             <Table.Cell>{renderActive(subscriber.active ?? false)}</Table.Cell>
@@ -99,6 +116,30 @@ export const Subscribers = () => {
                     ))}
                 </Table.Body>
             </Table>
+        );
+    }
+
+    return (
+        <Fragment>
+            <LoadingContent
+                initialized={initialized}
+                hasContent={subscribers.length !== 0}
+                header={__('No subscribers found', 'wp-reminder')}
+                icon='users'
+            >
+                {renderTable()}
+            </LoadingContent>
+            <a
+                className={'wp-reminder-float-left wp-reminder-delete-link' + (handleCheck.filtered().length === 0 ? ' wp-reminder-disabled' : '')}
+                onClick={(e) => {}}
+            >
+                {__('Delete selected', 'wp-reminder')}
+            </a>
+            <a
+                className={'wp-reminder-float-right' + (handleCheck.filtered().length === 0 ? ' wp-reminder-disabled' : '')}
+            >
+                {__('Export selected', 'wp-reminder')}
+            </a>
         </Fragment>
     );
 

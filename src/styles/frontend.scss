@@ -1,0 +1,47 @@
+@import "defaults";
+
+.wp-reminder-registration-container {
+  padding-top: 1em;
+
+  .hidden {
+    display: none;
+  }
+
+  span {
+    font-size: 14px;
+  }
+
+  .wp-reminder-email-input input,label {
+    display: block;
+  }
+
+  .wp-reminder-email-input {
+    input {
+      width: 100%
+    }
+  }
+
+  .wp-reminder-gdpr-check {
+    padding-top: 1em;
+  }
+
+  .wp-reminder-form-submit {
+    button {
+      float: right;
+      padding: 0.5em;
+    }
+  }
+
+  .error {
+    input {
+      border-color: red;
+    }
+    color: red;
+  }
+
+  .error-text {
+    color: indianred;
+    font-size: 14px;
+    font-weight: bold;
+  }
+}

@@ -6,7 +6,6 @@ use WPReminder\api\objects\Event;
 use WPReminder\api\objects\Subscriber;
 use WPReminder\mail\MailHandler;
 use WPReminder\db\DatabaseException;
-use WPReminder\api\APIException;
 
 final class CronJob {
 
@@ -18,7 +17,6 @@ final class CronJob {
 
     /**
      * @throws DatabaseException
-     * @throws APIException
      */
     public static function run() : void {
         $subscribers = Subscriber::get_all();
@@ -32,7 +30,7 @@ final class CronJob {
                         // Is the event in the subscribed events of the subscriber? If not => event should not set
                         if(!in_array($event->get_id(), $subscriber->get_events())) return false;
                         // Check if event should be executed now
-                        return $event->get_repeat()->execute_now();
+                        return $event->execute_now();
                     }));
                     return $subscriber;
                 },

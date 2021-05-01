@@ -3,6 +3,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require("terser-webpack-plugin");
 const mode = process.env.NODE_ENV !== 'production';
 
+const base = '/wp-content/plugins/wp-reminder/';
+
 const exclude = [
     /node_modules/,
     /dist/,
@@ -26,7 +28,7 @@ const rules = [
         test: /\.s?[ac]ss$/,
         use: [
             MiniCssExtractPlugin.loader,
-            {loader: 'css-loader', options: {url: false, sourceMap: true}},
+            {loader: 'css-loader', options: {sourceMap: true}},
             {loader: 'sass-loader', options: {sourceMap: true}}
         ]
     }, {
@@ -36,13 +38,13 @@ const rules = [
             options: {
                 name: '[name].[ext]',
                 outputPath: 'img/',
-                publicPath: '/wp-content/plugins/_wp_reminder/dist/img/'
+                publicPath: `${base}dist/img/`
             }
         }
     }, {
         test: /\.svg$/,
         use: {
-            loader: "svg-loader",
+            loader: "svg-url-loader",
             options: {
                 limit: 10000
             }
@@ -54,7 +56,7 @@ const rules = [
             options: {
                 name: '[name].[ext]',
                 outputPath: 'fonts/',
-                publicPath: '/wp-content/plugins/_wp_reminder/dist/fonts/'
+                publicPath: `${base}dist/fonts/`
             }
         }
     }
@@ -65,9 +67,9 @@ module.exports = {
     entry: {
         dashboard: "./src/index",
         events: "./src/events",
-        templates: './src/templates',
         subscribers: "./src/subscribers",
-        settings: "./src/settings"
+        settings: "./src/settings",
+        frontend: "./src/frontend"
     },
     optimization: {
         minimizer: [
@@ -90,7 +92,7 @@ module.exports = {
     output: {
         filename: 'js/wp-reminder-[name]-handler.js',
         path: resolve(__dirname, 'dist/'),
-        publicPath: '/wp-content/plugins/_wp_reminder/dist/'
+        publicPath: base
     },
     externals: {'@wordpress/i18n': "wp.i18n"},
     resolve: {

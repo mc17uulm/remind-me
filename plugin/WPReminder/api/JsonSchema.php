@@ -25,7 +25,7 @@ class JsonSchema
     /**
      * @var array|null
      */
-    private ?array $result;
+    protected ?array $result;
 
     /**
      * JsonSchema constructor.

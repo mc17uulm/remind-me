@@ -10,7 +10,6 @@ final class Database
 {
 
     private const TABLES = [
-        "repeat" => "wp_reminder_repeat",
         "events" => "wp_reminder_events",
         "templates" => "wp_reminder_templates",
         "subscribers" => "wp_reminder_subscribers"
@@ -111,24 +110,18 @@ final class Database
         $sql = "CREATE TABLE `{$db->get_table_name("events")}` (
             id int NOT NULL AUTO_INCREMENT,
             name varchar(155) NOT NULL,
-            template int NOT NULL,
-            PRIMARY KEY (id)
-        ) ENGINE=InnoDB $charset;";
-
-        $sql .= "CREATE TABLE `{$db->get_table_name("repeat")}` (
-            id int NOT NULL AUTO_INCREMENT,
-            event int NOT NULL,
             clocking BIT(4) NOT NULL,
-            day int NOT NULL,
             start int NOT NULL,
-            end int NOT NULL,
-            PRIMARY KEY (id)         
+            last_execution int NOT NULL,
+            active BIT(1) NOT NULL,
+            PRIMARY KEY (id)
         ) ENGINE=InnoDB $charset;";
 
         $sql .= "CREATE TABLE `{$db->get_table_name("templates")}` (
             id int NOT NULL AUTO_INCREMENT,
             name varchar(155) NOT NULL,
             html TEXT NOT NULL,
+            active BIT(1) NOT NULL,
             PRIMARY KEY (id)
         ) ENGINE=InnoDB $charset;";
 
@@ -141,16 +134,6 @@ final class Database
             PRIMARY KEY (id)
         ) ENGINE=InnoDB $charset;";
 
-        $sql .= "ALTER TABLE {$db->get_table_name("templates")}
-            ADD FOREIGN KEY (id) REFERENCES {$db->get_table_name("events")}(template)
-            ON DELETE CASCADE ON UPDATE NO ACTION;    
-        ";
-
-        $sql .= "ALTER TABLE {$db->get_table_name("events")}
-            ADD FOREIGN KEY (id) REFERENCES {$db->get_table_name("repeat")}(event)
-            ON DELETE CASCADE ON UPDATE NO ACTION;
-        ";
-
         require_once (ABSPATH . 'wp-admin/includes/upgrade.php');
         dbDelta($sql);
 
@@ -162,7 +145,7 @@ final class Database
         $db = self::get_database();
 
         array_map(function (string $table) use ($wpdb, $db) {
-            $wpdb->query("DROP IF TABLE EXISTS {$db->get_table_name($table)}");
+            $wpdb->query("DROP TABLE IF EXISTS {$db->get_table_name($table)}");
         }, array_keys(self::TABLES));
     }
 

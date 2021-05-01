@@ -1,6 +1,8 @@
 import Ajv, {JSONSchemaType} from "ajv";
 import {Either} from "./Either";
 
+export type ResponseObject<T> = T & {id : number};
+
 interface Response <S> {
     status: "error" | "success",
     message: "string",

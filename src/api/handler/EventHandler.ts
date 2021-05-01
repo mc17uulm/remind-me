@@ -1,33 +1,72 @@
-import {Template, TemplateSchema} from "./TemplateHandler";
-import {Repeat, RepeatSchema} from "./RepeatHandler";
 import {JSONSchemaType} from "ajv";
 import {Either} from "../Either";
 import {DeleteResponseSchema, PostResponseSchema, PutResponseSchema, Request} from "../Request";
+import {__, sprintf} from "@wordpress/i18n";
 
 export interface Event {
-    id: number | null,
+    id?: number,
     name: string,
-    template: number,
-    repeat: Repeat
+    clocking: number,
+    start: number,
+    last_execution? : number,
+    active?: boolean
 }
 
-export const empty_event = () : Event => {
-    return {
-        id: null,
-        name: "",
-        template: -1,
-        repeat: {
-            id: null,
-            event: -1,
-            clocking: 0,
-            day: 0,
-            start: 0,
-            end: 0
-        }
+export interface APIEvent extends Event {
+    id: number,
+    last_execution : number,
+    active: boolean
+}
+
+const get_components = (clocking : number) : {divider : string, of: string, on : string} => {
+    switch(clocking) {
+        case 1: return {divider: "", of: __('month', 'wp-reminder'), on: __('month', 'wp-reminder')};
+        case 2:
+        case 4: return  {divider: `${clocking}. `, of: __('month', 'wp-reminder'), on: __('month', 'wp-reminder')}
+        case 3: return {divider: __('quarter ', 'wp-reminder'), of: __('year', 'wp-reminder'), on: __('month', 'wp-reminder')};
+        case 6: return {divider: __('half ', 'wp-reminder'), of: __('year', 'wp-reminder'), on: __('month', 'wp-reminder')};
+        case 12: return {divider: "", of: __('year', 'wp-reminder'), on: __('year', 'wp-reminder')};
+        default: return {divider: "", of: "", on: ''};
     }
 }
 
-const EventSchema : JSONSchemaType<Event> = {
+export const get_next_executions = (last_execution : number, start: number, clocking : number, steps : number = 1) : Date[] => {
+    let date : Date
+    if(last_execution === 0) {
+        date = new Date(start);
+    } else {
+        date = new Date(last_execution * 1000);
+    }
+    let iterator = Array.from(Array(steps + 1).keys());
+    iterator.shift();
+    return iterator.map((step : number) : Date => {
+        const comp = (date.getMonth() + (step * clocking));
+        const year = date.getFullYear() + Math.floor(comp / 12);
+        return new Date(year, comp % 12, date.getDate());
+    });
+}
+
+export const get_repetition = (clocking : number, day : number) : string => {
+    const components = get_components(clocking);
+    return sprintf(
+        __('Is executed every %s%s on the %d. of the %s', 'wp-reminder'),
+        components.divider,
+        components.of,
+        day,
+        components.on
+    );
+}
+
+export const empty_event = () : Event => {
+    const start = new Date();
+    return {
+        name: "",
+        clocking: 1,
+        start: start.getTime()
+    }
+}
+
+export const EventSchema : JSONSchemaType<APIEvent> = {
     type: "object",
     properties: {
         id: {
@@ -36,33 +75,48 @@ const EventSchema : JSONSchemaType<Event> = {
         name: {
             type: "string"
         },
-        template: {
+        clocking: {
             type: "integer"
         },
-        repeat: RepeatSchema
+        start: {
+            type: "integer"
+        },
+        last_execution: {
+            type: "integer"
+        },
+        active: {
+            type: "boolean"
+        }
     },
-    required: ["id", "name", "template", "repeat"],
+    required: ["id", "name", "clocking", "start", "active", "last_execution"],
     additionalProperties: false
 }
 
-const EventsSchema : JSONSchemaType<Event[]> = {
+const EventsSchema : JSONSchemaType<APIEvent[]> = {
     type: "array",
     items: EventSchema
 }
 
 export class EventHandler {
 
-    public static async get_all() : Promise<Either<Event[]>> {
-        return await Request.get<Event[]>(
+    public static async get_all() : Promise<Either<APIEvent[]>> {
+        return await Request.get<APIEvent[]>(
             'events', EventsSchema
         );
     }
 
-    public static async get(index : number) : Promise<Either<Event>> {
-        return await Request.get<Event>(
+    public static async get(index : number) : Promise<Either<APIEvent>> {
+        return await Request.get<APIEvent>(
             `event/${index}`,
             EventSchema
         );
+    }
+
+    public static async get_list(indices : number[]) : Promise<Either<APIEvent[]>> {
+        const list = await Promise.all(indices.map(async (elem : number) => {
+            return await Request.get<APIEvent>(`event/${elem}`, EventSchema);
+        }));
+        return Either.map<APIEvent>(list);
     }
 
     public static async set(event : Event) : Promise<Either<number>> {
@@ -77,8 +131,11 @@ export class EventHandler {
         );
     }
 
-    public static async delete(index : number) : Promise<Either<boolean>> {
-        return await Request.delete<boolean>(`event/${index}`, DeleteResponseSchema);
+    public static async delete(index : number[]) : Promise<Either<boolean>> {
+        const list = await Promise.all(index.map(async (elem : number) => {
+            return await Request.delete<boolean>(`event/${elem}`, DeleteResponseSchema);
+        }))
+        return Either.collapse(list, true,(t1 : boolean, t2 : boolean) => t1 && t2);
     }
 
 }

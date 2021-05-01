@@ -25,16 +25,22 @@ final class Template
      * @var string
      */
     private string $html;
+    /**
+     * @var bool
+     */
+    private bool $active;
 
     /**
      * Template constructor.
      * @param string $name
      * @param string $html
+     * @param bool $active
      * @param int|null $id
      */
-    public function __construct(string $name, string $html, ?int $id = null) {
+    public function __construct(string $name, string $html, bool $active, ?int $id = null) {
         $this->name = $name;
         $this->html = $html;
+        $this->active = $active;
         $this->id = $id;
     }
 
@@ -44,7 +50,8 @@ final class Template
     public function to_json() : array {
         $object = [
             "name" => $this->name,
-            "html" => $this->html
+            "html" => $this->html,
+            "active" => $this->active
         ];
         if(!is_null($this->id)) {
             $object["id"] = $this->id;
@@ -63,7 +70,7 @@ final class Template
         $db = Database::get_database();
         $db_res = $db->select("SELECT * FROM {$db->get_table_name("templates")} WHERE id = %d", $id);
         if(count($db_res) !== 1) throw new APIException("no dataset with given id in db");
-        return new Template($db_res[0]["name"], $db_res[0]["html"], $db_res[0]["id"]);
+        return new Template($db_res[0]["name"], $db_res[0]["html"], $db_res[0]["active"], $db_res[0]["id"]);
     }
 
     /**
@@ -74,7 +81,7 @@ final class Template
         $db = Database::get_database();
         $db_res = $db->select("SELECT * FROM {$db->get_table_name("templates")}");
         return array_map(function(array $entry) {
-            return new Template($entry["name"], $entry["html"], $entry["id"]);
+            return new Template($entry["name"], $entry["html"], $entry["active"], $entry["id"]);
         }, $db_res);
     }
 
@@ -85,11 +92,16 @@ final class Template
      */
     public static function set(array $resource) : int {
         $db = Database::get_database();
-        return $db->insert(
-            "INSERT INTO {$db->get_table_name("templates")} (name, html) VALUES (%s, %s)",
+        $id = $db->insert(
+            "INSERT INTO {$db->get_table_name("templates")} (name, html, active) VALUES (%s, %s, %d)",
             $resource["name"],
-            $resource["html"]
+            $resource["html"],
+            $resource["active"]
         );
+        if($resource["active"]) {
+            self::check_active($id);
+        }
+        return $id;
     }
 
     /**
@@ -100,12 +112,17 @@ final class Template
      */
     public static function update(int $id, array $resource) : bool {
         $db = Database::get_database();
-        return $db->update(
-            "UPDATE {$db->get_table_name("templates")} SET name = %s, html = %s WHERE id = %d",
+        $success = $db->update(
+            "UPDATE {$db->get_table_name("templates")} SET name = %s, html = %s, active = %d WHERE id = %d",
             $resource["name"],
             $resource["html"],
+            $resource["active"],
             $id
         );
+        if($resource["active"]) {
+            return self::check_active($id) && $success;
+        }
+        return $success;
     }
 
     /**
@@ -116,6 +133,14 @@ final class Template
     public static function delete(int $id) : bool {
         $db = Database::get_database();
         return $db->delete("DELETE FROM {$db->get_table_name("templates")} WHERE id = %d", $id);
+    }
+
+    private static function check_active(int $id) : bool {
+        $db = Database::get_database();
+        return $db->update(
+            "UPDATE {$db->get_table_name("templates")} SET active = 0 WHERE id != %d",
+            $id
+        );
     }
 
 }

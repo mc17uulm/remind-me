@@ -24,31 +24,19 @@ final class EventHandler implements RestHandler
         $id = $req->get_param("id");
         if(!is_numeric($id)) throw new APIException("'id' isn't set or not numeric");
 
-        $template = false;
-        $query = $req->get_query_params();
-        if(key_exists("template", $query)) {
-            $template = $query["template"] === "true";
-        }
-
-        $res->success(Event::get($id, $template));
+        $res->success(Event::get($id)->to_json());
     }
 
     /**
      * @param Request $req
      * @param Response $res
-     * @throws APIException
      * @throws DatabaseException
      */
     public static function get_all(Request $req, Response $res) : void {
-        $template = false;
-        $query = $req->get_query_params();
-        if(key_exists("template", $query)) {
-            $template = $query["template"] === "true";
-        }
 
         $res->success(array_map(function(Event $event) {
             return $event->to_json();
-        }, Event::get_all($template)));
+        }, Event::get_all()));
     }
 
     /**

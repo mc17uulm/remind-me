@@ -1,5 +1,6 @@
 import {View} from "./View";
-import {Settings} from "./sites/Settings";
+import {SettingsView} from "./sites/Settings";
 import React from "react";
+import './styles/settings.scss';
 
-View.run("WP Reminder | Settings", <Settings />);
+View.run(<SettingsView />);

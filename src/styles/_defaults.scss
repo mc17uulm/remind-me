@@ -1,0 +1,52 @@
+// reset wordpress styles
+
+div.error {
+  border-left-color: inherit !important;
+  background: 0 !important;
+  border: 0 !important;
+  border-left-width: medium !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+@media only screen and (min-width: 1200px) {
+  .ui.container {
+    margin-left: 1em !important;
+    width: 95%;
+  }
+}
+
+.ui.container {
+  margin-top: 1em;
+}
+
+.wp-reminder-add-link {
+  color: green !important;
+  cursor: pointer;
+}
+
+.wp-reminder-delete-link {
+  color: red !important;
+  cursor: pointer;
+}
+
+.wp-reminder-edit-link {
+  cursor: pointer;
+}
+
+.wp-reminder-small {
+  font-size: 13px;
+}
+
+.wp-reminder-disabled {
+  pointer-events: none;
+  color: grey !important;
+}
+
+.wp-reminder-float-right {
+  float: right;
+}
+
+.wp-reminder-float-left {
+  float: left;
+}

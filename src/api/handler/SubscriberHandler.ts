@@ -1,16 +1,22 @@
 import {JSONSchemaType} from "ajv";
 import {Either} from "../Either";
-import {Request} from "../Request";
+import {DeleteResponseSchema, PostResponseSchema, PutResponseSchema, Request} from "../Request";
 
 export interface Subscriber {
-    id: number | null,
+    id?: number,
     email: string,
-    registered: number | null,
-    active: boolean | null,
+    registered?: number,
+    active?: boolean,
     events: number[]
 }
 
-export const SubscriberSchema : JSONSchemaType<Subscriber> = {
+export interface APISubscriber extends Subscriber {
+    id: number,
+    registered: number,
+    active: boolean
+}
+
+export const SubscriberSchema : JSONSchemaType<APISubscriber> = {
     type: "object",
     properties: {
         id: {
@@ -36,7 +42,7 @@ export const SubscriberSchema : JSONSchemaType<Subscriber> = {
     additionalProperties: false
 }
 
-const SubscribersSchema : JSONSchemaType<Subscriber[]> = {
+const SubscribersSchema : JSONSchemaType<APISubscriber[]> = {
     type: "array",
     items: SubscriberSchema
 }
@@ -44,10 +50,33 @@ const SubscribersSchema : JSONSchemaType<Subscriber[]> = {
 export class SubscriberHandler
 {
 
-    public static async get_all() : Promise<Either<Subscriber[]>> {
-        return await Request.get<Subscriber[]>(
+    public static async get_all() : Promise<Either<APISubscriber[]>> {
+        return await Request.get<APISubscriber[]>(
             'subscribers', SubscribersSchema
         );
+    }
+
+    public static async update(index : number, subscriber : Subscriber) : Promise<Either<boolean>> {
+        return await Request.put<boolean>(
+            `subscriber/${index}`,
+            subscriber,
+            PutResponseSchema
+        );
+    }
+
+    public static async set(subscriber : Subscriber) : Promise<Either<number>> {
+        return await Request.post<number>(
+            `subscribe`,
+            subscriber,
+            PostResponseSchema
+        );
+    }
+
+    public static async delete(index : number[]) : Promise<Either<boolean>> {
+        const list = await Promise.all(index.map(async (elem : number) => {
+            return await Request.delete<boolean>(`subscriber/${elem}`, DeleteResponseSchema);
+        }));
+        return Either.collapse(list, true, (t1 : boolean, t2 : boolean) => t1 && t2);
     }
 
 }
