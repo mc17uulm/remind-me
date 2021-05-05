@@ -3,8 +3,10 @@
 namespace WPReminder\mail;
 
 use WPReminder\api\objects\Event;
+use WPReminder\api\objects\Settings;
 use WPReminder\api\objects\Subscriber;
-use WPReminder\api\objects\Template;
+use WPReminder\api\Template;
+use WPReminder\PluginException;
 use WPReminder\db\DatabaseException;
 
 final class MailHandler {
@@ -13,6 +15,7 @@ final class MailHandler {
      * @param Subscriber $subscriber
      * @return bool
      * @throws DatabaseException
+     * @throws PluginException
      */
     public static function send_to_subscriber(Subscriber $subscriber) : bool {
 
@@ -24,7 +27,8 @@ final class MailHandler {
         // if no events are found, there is nothing to send
         if(count($events) === 0) return true;
 
-        $template = Template::get_all();
+        $settings = Settings::get();
+
 
         // TODO: how to handle templates
         // TODO: build html by templates
@@ -32,6 +36,26 @@ final class MailHandler {
 
         return false;
 
+    }
+
+    public static function send_confirm(string $email, array $events, string $url) : bool {
+
+        $template = new Template('check');
+        $headers = [
+            'Content-Type: text/html; charset=UTF-8',
+            'From: ' . get_bloginfo('name') . '<' . get_bloginfo('admin_email') . '>'
+        ];
+
+        $t = wp_mail(
+            $email,
+            sprintf(__('Confirm your subscription | %s', 'wp-reminder'), get_bloginfo('name')),
+            $template->render_events($events, $url),
+            $headers
+        );
+        // TODO: email send not working
+        var_dump($t);
+
+        return true;
     }
 
 }

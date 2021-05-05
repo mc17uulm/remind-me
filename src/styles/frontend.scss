@@ -45,3 +45,21 @@
     font-weight: bold;
   }
 }
+
+.wp-reminder-message {
+  width: 100%;
+  padding: 1em;
+  border-radius: 3px;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  &.error {
+    border: medium solid red !important;
+    color: red !important;
+    background: indianred !important;
+  }
+  &.success {
+    border: medium solid green;
+    color: green;
+    background: darkseagreen;
+  }
+}

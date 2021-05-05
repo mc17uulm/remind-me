@@ -64,6 +64,10 @@ final class Event
         return $this->id;
     }
 
+    public function get_name() : string {
+        return $this->name;
+    }
+
     /**
      * Check if event is today and should be executed
      *

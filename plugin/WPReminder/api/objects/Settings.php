@@ -2,6 +2,7 @@
 
 namespace WPReminder\api\objects;
 
+use WPReminder\api\Template;
 use WPReminder\PluginException;
 
 /**
@@ -156,14 +157,8 @@ final class Settings {
      * @return string
      * @throws PluginException
      */
-    private static function load_template(string $key) : string {
-        $file = WP_REMINDER_BASE_DIR . "/templates/$key.html";
-        if(!file_exists($file)) throw new PluginException("Cannot find template file for key '$key'");
-        if(!is_readable($file)) throw new PluginException("Cannot read template file for key '$key'");
-
-        $content = file_get_contents($file);
-        if(!$content) throw new PluginException("No content in template file for key '$key'");
-        return $content;
+    public static function load_template(string $key) : string {
+        return (new Template($key))->get_content();
     }
 
 

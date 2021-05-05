@@ -14,10 +14,9 @@ import {HandleSubscriberModal} from "../components/modals/HandleSubscriberModal"
 export const Subscribers = () => {
 
     const [modal] = useModal<APISubscriber>();
-    const [checked, handleCheck] = useCheckbox();
+    const [checkbox] = useCheckbox();
     const [subscribers, setSubscribers] = useState<APISubscriber[]>([]);
     const [events, setEvents] = useState<APIEvent[]>([]);
-    const [openAccordion, setAccordionOpen] = useState<number>(-1);
     const [initialized, setInitialized] = useState<boolean>(false);
 
     const loadSubscribers = async () => {
@@ -26,7 +25,7 @@ export const Subscribers = () => {
             toast.error(resp.get_error());
         } else {
             setSubscribers(resp.get_value());
-            handleCheck.set(resp.get_value());
+            checkbox.set(resp.get_value());
             await loadEvents();
         }
     }
@@ -70,9 +69,9 @@ export const Subscribers = () => {
                     <Table.Row>
                         <Table.HeaderCell>
                             <Checkbox
-                                indeterminate={handleCheck.indeterminate()}
-                                checked={handleCheck.all()}
-                                onChange={(e, d) => handleCheck.update_all(d.checked ?? false)}
+                                indeterminate={checkbox.indeterminate()}
+                                checked={checkbox.all()}
+                                onChange={(e, d) => checkbox.update_all(d.checked ?? false)}
                             />
                         </Table.HeaderCell>
                         <Table.HeaderCell>{__('Email address', 'wp-reminder')}</Table.HeaderCell>
@@ -84,7 +83,7 @@ export const Subscribers = () => {
                 <Table.Body>
                     {subscribers.map((subscriber : APISubscriber, index : number) => (
                         <Table.Row key={`subscriber_${index}`}>
-                            <Table.Cell><Checkbox checked={handleCheck.get(index)} onChange={() => handleCheck.update(index)} /></Table.Cell>
+                            <Table.Cell><Checkbox checked={checkbox.get(index)} onChange={() => checkbox.update(index)} /></Table.Cell>
                             <Table.Cell>
                                 <a href={`mailto:${subscriber.email}`}>{subscriber.email}</a><br />
                                 <a
@@ -132,13 +131,13 @@ export const Subscribers = () => {
                 {renderTable()}
             </LoadingContent>
             <a
-                className={'wp-reminder-float-left wp-reminder-delete-link' + (handleCheck.filtered().length === 0 ? ' wp-reminder-disabled' : '')}
-                onClick={(e) => modal.delete(e, subscribers.filter((subscriber , index) => handleCheck.get(index)))}
+                className={'wp-reminder-float-left wp-reminder-delete-link' + (checkbox.filtered().length === 0 ? ' wp-reminder-disabled' : '')}
+                onClick={(e) => modal.delete(e, subscribers.filter((subscriber , index) => checkbox.get(index)))}
             >
                 {__('Delete selected', 'wp-reminder')}
             </a>
             <a
-                className={'wp-reminder-float-right' + (handleCheck.filtered().length === 0 ? ' wp-reminder-disabled' : '')}
+                className={'wp-reminder-float-right' + (checkbox.filtered().length === 0 ? ' wp-reminder-disabled' : '')}
             >
                 {__('Export selected', 'wp-reminder')}
             </a>

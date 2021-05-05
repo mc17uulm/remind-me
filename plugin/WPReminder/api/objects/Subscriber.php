@@ -2,11 +2,11 @@
 
 namespace WPReminder\api\objects;
 
-use DateTime;
 use WPReminder\api\APIException;
 use WPReminder\db\Database;
 use WPReminder\db\DatabaseException;
 use Exception;
+use WPReminder\mail\MailHandler;
 
 /**
  * Class Subscriber
@@ -19,6 +19,10 @@ final class Subscriber
      * @var int|null
      */
     private ?int $id;
+    /**
+     * @var string
+     */
+    private string $token;
     /**
      * @var string
      */
@@ -38,13 +42,15 @@ final class Subscriber
 
     /**
      * Subscriber constructor.
+     * @param string $token
      * @param string $email
      * @param array $events
      * @param int|null $id
      * @param int|null $registered
      * @param bool|null $active
      */
-    public function __construct(string $email, array $events, ?int $id = null, ?int $registered = null, ?bool $active = null) {
+    public function __construct(string $token, string $email, array $events, ?int $id = null, ?int $registered = null, ?bool $active = null) {
+        $this->token = $token;
         $this->email = $email;
         $this->events = $events;
         $this->id = $id;
@@ -67,10 +73,18 @@ final class Subscriber
     }
 
     /**
+     * @return string
+     */
+    public function get_token() : string {
+        return $this->token;
+    }
+
+    /**
      * @return array
      */
     public function to_json() : array {
         $object = [
+            "token" => $this->token,
             "email" => $this->email,
             "events" => $this->events
         ];
@@ -97,7 +111,7 @@ final class Subscriber
         $db = Database::get_database();
         $db_res = $db->select("SELECT * FROM {$db->get_table_name("subscribers")} WHERE id = %d", $id);
         if(count($db_res) !== 1) throw new APIException("no dataset with given id in db");
-        return new Subscriber($db_res[0]["email"], json_decode($db_res[0]["events"]), $db_res[0]["id"], $db_res[0]["registered"], $db_res[0]["active"]);
+        return new Subscriber($db_res[0]["token"], $db_res[0]["email"], json_decode($db_res[0]["events"]), $db_res[0]["id"], $db_res[0]["registered"], $db_res[0]["active"]);
     }
 
     /**
@@ -110,7 +124,7 @@ final class Subscriber
         $db = Database::get_database();
         $db_res = $db->select("SELECT * FROM {$db->get_table_name("subscribers")}");
         return array_map(function(array $entry) {
-            return new Subscriber($entry["email"], json_decode($entry["events"]), $entry["id"], $entry["registered"], $entry["active"]);
+            return new Subscriber($entry["token"], $entry["email"], json_decode($entry["events"]), $entry["id"], $entry["registered"], $entry["active"]);
         }, $db_res);
     }
 
@@ -121,11 +135,17 @@ final class Subscriber
      */
     public static function set(array $resource) : int {
         $db = Database::get_database();
-        return $db->insert(
-            "INSERT INTO {$db->get_table_name("subscribers")} (email, events, registered, active) VALUES (%s, %s, UNIX_TIMESTAMP(), false)",
+        $sub_token = bin2hex(random_bytes(16));
+        $id = $db->insert(
+            "INSERT INTO {$db->get_table_name("subscribers")} (token, email, events, registered, active) VALUES (%s, %s, %s, UNIX_TIMESTAMP(), false)",
+            $sub_token,
             $resource["email"],
             json_encode($resource["events"])
         );
+        $token = Token::create($id, "activate");
+        $url = get_site_url() . "?wp-reminder-token=" . $token->get_token();
+        MailHandler::send_confirm($resource["email"], $resource["events"], $url);
+        return $id;
     }
 
     /**
@@ -137,9 +157,10 @@ final class Subscriber
     public static function update(int $id, array $resource) : bool {
         $db = Database::get_database();
         return $db->update(
-            "UPDATE {$db->get_table_name("subscribers")} SET email = %s, events = %s WHERE id = %d",
+            "UPDATE {$db->get_table_name("subscribers")} SET email = %s, events = %s WHERE token = %s AND id = %d",
             $resource["email"],
             json_encode($resource["events"]),
+            $resource["token"],
             $id
         );
     }

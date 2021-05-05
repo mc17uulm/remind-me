@@ -21,7 +21,7 @@ import {LoadingContent} from "../components/LoadingContent";
 export const Events = () => {
 
     const [modal] = useModal<APIEvent>();
-    const [checked, handleCheck] = useCheckbox<APIEvent>();
+    const [checkbox] = useCheckbox<APIEvent>();
     const [events, setEvents] = useState<APIEvent[]>([]);
     const [initialized, setInitialized] = useState<boolean>(false);
 
@@ -31,7 +31,7 @@ export const Events = () => {
             toast.error(resp.get_error());
         } else {
             setEvents(resp.get_value());
-            handleCheck.set(resp.get_value());
+            checkbox.set(resp.get_value());
             setInitialized(true);
         }
     }
@@ -42,7 +42,7 @@ export const Events = () => {
 
     const onSuccess = async () => {
         modal.hide();
-        handleCheck.update_all(false);
+        checkbox.update_all(false);
         await loadEvents();
     }
 
@@ -58,18 +58,9 @@ export const Events = () => {
     }
 
     const generateShortcode = () : string => {
-        let shortcode = "[wp-reminder events='";
-        let added = false;
-        checked.forEach((is_checked : boolean, index : number) => {
-            if(is_checked) {
-                shortcode += events[index].id + ",";
-                added = true;
-            }
-        });
-        if(added) {
-            shortcode = shortcode.slice(0, -1);
-        }
-        return shortcode + "']";
+        return "[wp-reminder events='" +
+            checkbox.filtered().map((_, index : number) => events[index].id).join(',') +
+            "']";
     }
 
     const renderShortcode = () => {
@@ -100,9 +91,9 @@ export const Events = () => {
                     <Table.Row>
                         <Table.HeaderCell>
                             <Checkbox
-                                indeterminate={handleCheck.indeterminate()}
-                                checked={handleCheck.all()}
-                                onChange={(e, d) => handleCheck.update_all(d.checked ?? false)}
+                                indeterminate={checkbox.indeterminate()}
+                                checked={checkbox.all()}
+                                onChange={(e, d) => checkbox.update_all(d.checked ?? false)}
                             />
                         </Table.HeaderCell>
                         <Table.HeaderCell>{__("Event", "wp-reminder")}</Table.HeaderCell>
@@ -113,7 +104,7 @@ export const Events = () => {
                 <Table.Body>
                     {events.map((event: APIEvent, index : number) => (
                         <Table.Row key={`event_${index}`}>
-                            <Table.Cell><Checkbox checked={handleCheck.get(index)} onChange={() => handleCheck.update(index)} /></Table.Cell>
+                            <Table.Cell><Checkbox checked={checkbox.get(index)} onChange={() => checkbox.update(index)} /></Table.Cell>
                             <Table.Cell>
                                 <strong>{event.name}</strong><br />
                                 <a
@@ -165,8 +156,8 @@ export const Events = () => {
                 {renderTable()}
             </LoadingContent>
             <a
-                className={"wp-reminder-delete-link" + (handleCheck.filtered().length === 0 ? " wp-reminder-disabled" : "")}
-                onClick={(e) => modal.delete(e, events.filter((event, index) => handleCheck.get(index)))}>
+                className={"wp-reminder-delete-link" + (checkbox.filtered().length === 0 ? " wp-reminder-disabled" : "")}
+                onClick={(e) => modal.delete(e, events.filter((event, index) => checkbox.get(index)))}>
                 {__('Delete selected', 'wp-reminder')}
             </a>
             <HandleEventModal

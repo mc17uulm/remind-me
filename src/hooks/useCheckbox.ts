@@ -1,6 +1,7 @@
 import {useCallback, useState} from "react";
 
-interface CheckFunctions<S> {
+interface Checkbox<S> {
+    list: () => boolean[],
     set: (list : S[]) => void,
     update: (index: number) => void,
     update_all: (_checked: boolean) => void,
@@ -10,7 +11,7 @@ interface CheckFunctions<S> {
     indeterminate: () => boolean
 }
 
-export const useCheckbox = <T extends unknown>() : [boolean[], CheckFunctions<T>] => {
+export const useCheckbox = <T extends unknown>() : [Checkbox<T>] => {
 
     const [checked, setChecked] = useState<boolean[]>([]);
 
@@ -49,7 +50,12 @@ export const useCheckbox = <T extends unknown>() : [boolean[], CheckFunctions<T>
         return (_checked.length > 0) && (_checked.length < checked.length);
     }, [checked]);
 
-    return [checked, {
+    const list = () : boolean[] => {
+        return checked.slice();
+    }
+
+    return [{
+        list: list,
         set: set,
         update: update,
         update_all: update_all,
