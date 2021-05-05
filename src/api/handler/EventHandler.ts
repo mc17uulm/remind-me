@@ -35,7 +35,7 @@ export const get_next_executions = (last_execution : number, start: number, cloc
     if(last_execution === 0) {
         date = new Date(start);
     } else {
-        date = new Date(last_execution * 1000);
+        date = new Date(last_execution);
     }
     let iterator = Array.from(Array(steps + 1).keys());
     iterator.shift();

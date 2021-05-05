@@ -11,17 +11,16 @@ import {__} from "@wordpress/i18n";
 import {toast} from "react-toastify";
 import moment from "moment";
 import {HandleEventModal} from "../components/modals/HandleEventModal";
-import {HandableModalType} from "../components/modals/HandableModal";
 import "../styles/events.scss";
 import {Icon} from "../components/Icon";
 import CopyToClipboard from "react-copy-to-clipboard";
 import {useCheckbox} from "../hooks/useCheckbox";
-import {useModalSelect} from "../hooks/ModalSelect";
+import {useModal} from "../hooks/useModal";
 import {LoadingContent} from "../components/LoadingContent";
 
 export const Events = () => {
 
-    const [modalType, selectedElements, handleModalSelect] = useModalSelect<APIEvent>();
+    const [modal] = useModal<APIEvent>();
     const [checked, handleCheck] = useCheckbox<APIEvent>();
     const [events, setEvents] = useState<APIEvent[]>([]);
     const [initialized, setInitialized] = useState<boolean>(false);
@@ -42,7 +41,7 @@ export const Events = () => {
     }, []);
 
     const onSuccess = async () => {
-        handleModalSelect.hide();
+        modal.hide();
         handleCheck.update_all(false);
         await loadEvents();
     }
@@ -53,7 +52,7 @@ export const Events = () => {
                 <Label color={event.active ? 'green' : 'red'} horizontal>
                     {event.active ? __('active', 'wp-reminder') : __('not-active', 'wp-reminder')}
                 </Label>
-                {get_repetition(event.clocking, new Date(event.start * 1000).getDate())}<br />
+                {get_repetition(event.clocking, new Date(event.start).getDate())}<br />
             </Fragment>
         );
     }
@@ -117,17 +116,23 @@ export const Events = () => {
                             <Table.Cell><Checkbox checked={handleCheck.get(index)} onChange={() => handleCheck.update(index)} /></Table.Cell>
                             <Table.Cell>
                                 <strong>{event.name}</strong><br />
-                                <a className="wp-reminder-edit-link wp-reminder-small" onClick={(e) => handleModalSelect.onEdit(e, event)} color="blue">
-                                    <Icon class="cog" /> Edit
-                                </a>   <a className="wp-reminder-delete-link wp-reminder-small" onClick={(e) =>  handleModalSelect.onDelete(e, event)} color="red">
-                                <Icon class="trash" /> Delete
-                            </a>
+                                <a
+                                    className="wp-reminder-edit-link wp-reminder-small"
+                                    onClick={(e) => modal.edit(e, event)}
+                                >
+                                    <Icon class="cogs" /> Edit
+                                </a> <a
+                                    className="wp-reminder-delete-link wp-reminder-small"
+                                    onClick={(e) =>  modal.delete(e, [event])} color="red"
+                                >
+                                    <Icon class="trash" /> Delete
+                                </a>
                             </Table.Cell>
                             <Table.Cell>
                                 {renderRepetition(event)}
                             </Table.Cell>
                             <Table.Cell>
-                                <code>{moment(get_next_executions(event.last_execution, event.start * 1000, event.clocking)[0]).format('LLLL')}</code>
+                                <code>{moment(get_next_executions(event.last_execution, event.start, event.clocking)[0]).format('LLLL')}</code>
                             </Table.Cell>
                         </Table.Row>
                     ))}
@@ -147,30 +152,30 @@ export const Events = () => {
                     {renderShortcode()}
                 </span>
             </div>
-            <a className="wp-reminder-add-link" onClick={handleModalSelect.onAdd}>{__('Add Event', 'wp-reminder')}</a>
+            <a className="wp-reminder-add-link" onClick={modal.add}>{__('Add Event', 'wp-reminder')}</a>
             <LoadingContent
                 initialized={initialized}
                 hasContent={events.length !== 0}
                 header={__('No event found', 'wp-reminder')}
                 icon='calendar times'
                 button={
-                    <Button color='green' onClick={handleModalSelect.onAdd}>{__('Add Event', 'wp-reminder')}</Button>
+                    <Button color='green' onClick={modal.add}>{__('Add Event', 'wp-reminder')}</Button>
                 }
             >
                 {renderTable()}
             </LoadingContent>
             <a
                 className={"wp-reminder-delete-link" + (handleCheck.filtered().length === 0 ? " wp-reminder-disabled" : "")}
-                onClick={(e) => handleModalSelect.onMultipleDelete(e, events.filter((event, index) => handleCheck.get(index)))}>
+                onClick={(e) => modal.delete(e, events.filter((event, index) => handleCheck.get(index)))}>
                 {__('Delete selected', 'wp-reminder')}
             </a>
             <HandleEventModal
-                open={modalType !== HandableModalType.HIDE}
-                onClose={handleModalSelect.onClose}
+                open={modal.isOpen()}
+                onClose={modal.hide}
                 onSuccess={onSuccess}
-                elements={selectedElements}
-                element={selectedElements[0]}
-                type={modalType}
+                elements={modal.selected}
+                element={modal.selected[0]}
+                type={modal.state}
             />
         </Fragment>
     );

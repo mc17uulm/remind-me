@@ -10,6 +10,11 @@ export interface Subscriber {
     events: number[]
 }
 
+export const empty_subscriber : Subscriber = {
+    email: "",
+    events: []
+}
+
 export interface APISubscriber extends Subscriber {
     id: number,
     registered: number,

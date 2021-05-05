@@ -4,7 +4,8 @@ import "quill/dist/quill.snow.css";
 
 interface EditorProps {
     value : string,
-    onBlur: (value : string) => void
+    onChange: (value : string) => void,
+    error?: boolean
 }
 
 const ToolbarOptions = [
@@ -25,13 +26,14 @@ export const Editor = (props : EditorProps) => {
 
     useEffect(() => {
         setState(props.value);
-    }, [props.value]);
+    }, []);
 
-    const onBlur = () => {
-        props.onBlur(state);
+    const onChange = (content : string) => {
+        setState(content);
+        props.onChange(content);
     }
 
     return (
-        <ReactQuill theme="snow" modules={{toolbar: ToolbarOptions}} value={state} onChange={(val : string) => setState(val)} onBlur={onBlur} />
+        <ReactQuill className={(props.error) ? "error" : ""} theme="snow" modules={{toolbar: ToolbarOptions}} value={state} onChange={onChange} />
     )
 }

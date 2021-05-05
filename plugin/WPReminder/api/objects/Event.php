@@ -114,8 +114,8 @@ final class Event
         $object = [
             "name" => $this->name,
             "clocking" => $this->clocking,
-            "start" => $this->start,
-            "last_execution" => $this->last_execution,
+            "start" => $this->start * 1000,
+            "last_execution" => $this->last_execution * 1000,
             "active" => $this->active
         ];
         if(!is_null($this->id)) {
@@ -160,7 +160,7 @@ final class Event
             "INSERT INTO {$db->get_table_name("events")} (name, clocking, start, last_execution, active) VALUES (%s, %d, %d, 0, 1)",
             $resource["name"],
             $resource["clocking"],
-            $resource["start"]
+            $resource["start"] / 1000
         );
     }
 
@@ -176,7 +176,7 @@ final class Event
             "UPDATE {$db->get_table_name("events")} SET name = %s, clocking = %d, start = %d WHERE id = %d",
             $resource["name"],
             $resource["clocking"],
-            $resource["start"],
+            $resource["start"] / 1000,
             $id
         );
     }

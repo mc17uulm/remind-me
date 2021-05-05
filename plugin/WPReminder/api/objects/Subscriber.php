@@ -78,7 +78,7 @@ final class Subscriber
             $object["id"] = $this->id;
         }
         if(!is_null($this->registered)) {
-            $object["registered"] = $this->registered;
+            $object["registered"] = $this->registered * 1000;
         }
         if(!is_null($this->active)) {
             $object["active"] = $this->active;
@@ -122,7 +122,7 @@ final class Subscriber
     public static function set(array $resource) : int {
         $db = Database::get_database();
         return $db->insert(
-            "INSERT INTO {$db->get_table_name("subscribers")} (email, events, registered, active) VALUES (%s, %s, NOW(), false)",
+            "INSERT INTO {$db->get_table_name("subscribers")} (email, events, registered, active) VALUES (%s, %s, UNIX_TIMESTAMP(), false)",
             $resource["email"],
             json_encode($resource["events"])
         );
@@ -137,10 +137,9 @@ final class Subscriber
     public static function update(int $id, array $resource) : bool {
         $db = Database::get_database();
         return $db->update(
-            "UPDATE {$db->get_table_name("subscribers")} SET email = %s, events = %s, active = %b WHERE id = %d",
+            "UPDATE {$db->get_table_name("subscribers")} SET email = %s, events = %s WHERE id = %d",
             $resource["email"],
             json_encode($resource["events"]),
-            $resource["active"],
             $id
         );
     }
