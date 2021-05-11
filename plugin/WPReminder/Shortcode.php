@@ -14,14 +14,14 @@ final class Shortcode
      */
     private string $name;
     /**
-     * @var array<int>
+     * @var array
      */
     private array $events;
 
     /**
      * Shortcode constructor.
      * @param string $name
-     * @param array<int> $events
+     * @param array $events
      */
     public function __construct(string $name, array $events)
     {

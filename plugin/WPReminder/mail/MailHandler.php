@@ -46,16 +46,13 @@ final class MailHandler {
             'From: ' . get_bloginfo('name') . '<' . get_bloginfo('admin_email') . '>'
         ];
 
-        $t = wp_mail(
+        return wp_mail(
             $email,
             sprintf(__('Confirm your subscription | %s', 'wp-reminder'), get_bloginfo('name')),
             $template->render_events($events, $url),
             $headers
         );
         // TODO: email send not working
-        var_dump($t);
-
-        return true;
     }
 
 }

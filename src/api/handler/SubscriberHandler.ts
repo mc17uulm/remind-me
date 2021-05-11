@@ -18,6 +18,7 @@ export const empty_subscriber : Subscriber = {
 export interface APISubscriber extends Subscriber {
     id: number,
     registered: number,
+    token: string,
     active: boolean
 }
 
@@ -35,6 +36,9 @@ export const SubscriberSchema : JSONSchemaType<APISubscriber> = {
         },
         active: {
             type: "boolean"
+        },
+        token: {
+            type: "string"
         },
         events: {
             type: "array",

@@ -32,8 +32,8 @@ export const Events = () => {
         } else {
             setEvents(resp.get_value());
             checkbox.set(resp.get_value());
-            setInitialized(true);
         }
+        setInitialized(true);
     }
 
     useEffect(() => {

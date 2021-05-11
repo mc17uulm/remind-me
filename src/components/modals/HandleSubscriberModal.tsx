@@ -4,7 +4,7 @@ import {useForm} from "../../hooks/useForm";
 import {APIEvent, EventHandler} from "../../api/handler/EventHandler";
 import {Fragment, useEffect, useState} from "react";
 import React from "react";
-import {Button, DropdownItemProps, Form, Modal} from "semantic-ui-react";
+import {Button, DropdownItemProps, Form, Message, Modal} from "semantic-ui-react";
 import {DeleteModal} from "./DeleteModal";
 import {__, _n, sprintf} from "@wordpress/i18n";
 import {ModalProps, ModalState} from "../../hooks/useModal";
@@ -108,6 +108,10 @@ export const HandleSubscriberModal = (props : ModalProps<APISubscriber>) => {
                     }
                 </Modal.Header>
                 <Modal.Content>
+                    <Message warning>
+                        <Message.Header>{__('Important', 'wp-reminder')}</Message.Header>
+                        {__('Manually inserted email addresses require the consent of the email address owner! Add new subscribers only if you have their consent!', 'wp-reminder')}
+                    </Message>
                     <Form>
                         <Form.Group>
                             <Form.Input
@@ -133,6 +137,9 @@ export const HandleSubscriberModal = (props : ModalProps<APISubscriber>) => {
                     </Form>
                 </Modal.Content>
                 <Modal.Actions>
+                    <Message info>
+                        {__('The owner of the email address has to verify his subscription. If you save, a welcome email is sent to the new subscriber', 'wp-reminder')}
+                    </Message>
                     <Button color='black' onClick={props.onClose}>{__('Back', 'wp-reminder')}</Button>
                     <Button color='green' loading={loading} onClick={() => onSubmit()}>
                         {__('Save', 'wp-reminder')}

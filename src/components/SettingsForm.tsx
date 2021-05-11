@@ -23,6 +23,7 @@ const SettingsSchema : yup.SchemaOf<Settings> = yup.object({
     signin_msg: yup.string().required(),
     double_opt_in_msg: yup.string().required(),
     signout_msg: yup.string().required(),
+    settings_page: yup.string().required()
 });
 
 interface SettingsFormProps {
@@ -188,6 +189,18 @@ export const SettingsForm = (props : SettingsFormProps) => {
                     onChange={form.onChange}
                     error={form.errors.text_privacy}
                     label={__('Privacy text for shortcode', 'wp-reminder')}
+                />
+                <h2>{__('Edit subscription page')}</h2>
+                <Message info>
+                    {__('This site requires an [wp-reminder-settings] shortcode as content', 'wp-reminder')}
+                </Message>
+                <Form.Input
+                    value={form.values.settings_page}
+                    disabled={submitting}
+                    name='settings_page'
+                    onChange={form.onChange}
+                    error={form.errors.settings_page}
+                    label={__('WordPress page to display edit subscription page', 'wp-reminder')}
                 />
                 {renderError()}
                 <Button color='green' loading={submitting} onClick={onSubmit} floated={"right"}>{__('Submit', 'wp-reminder')}</Button>

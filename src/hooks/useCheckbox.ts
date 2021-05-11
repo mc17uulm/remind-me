@@ -11,12 +11,12 @@ interface Checkbox<S> {
     indeterminate: () => boolean
 }
 
-export const useCheckbox = <T extends unknown>() : [Checkbox<T>] => {
+export const useCheckbox = <T extends unknown>(list : T[] = []) : [Checkbox<T>] => {
 
-    const [checked, setChecked] = useState<boolean[]>([]);
+    const [checked, setChecked] = useState<boolean[]>(list.map(_ => false));
 
-    const set = useCallback((list : T[]) : void => {
-        setChecked(list.map(num => false));
+    const set = useCallback((_list : T[]) : void => {
+        setChecked(_list.map(_ => false));
     }, []);
 
     const update = useCallback((index : number) : void => {
@@ -50,12 +50,12 @@ export const useCheckbox = <T extends unknown>() : [Checkbox<T>] => {
         return (_checked.length > 0) && (_checked.length < checked.length);
     }, [checked]);
 
-    const list = () : boolean[] => {
+    const get_list = () : boolean[] => {
         return checked.slice();
     }
 
     return [{
-        list: list,
+        list: get_list,
         set: set,
         update: update,
         update_all: update_all,

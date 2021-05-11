@@ -36,7 +36,7 @@ const MonthList : DropdownItemProps[] = [
 ];
 
 const EventSchema : yup.SchemaOf<any> = yup.object({
-
+    name: yup.string().required(__('Please insert a event name'))
 });
 
 export const HandleEventModal = (props : ModalProps<APIEvent>) => {
@@ -62,7 +62,33 @@ export const HandleEventModal = (props : ModalProps<APIEvent>) => {
 
     const onSubmit = async () => {
         await doLoading(async () => {
-            const resp = await sendRequest();
+            let validate, resp;
+            switch(props.type) {
+                case ModalState.EDIT:
+                    validate = await form.validate(EventSchema);
+                    if(validate.has_error()) return;
+                    resp =await EventHandler.update(props.element.id, {
+                        name: form.values.name,
+                        clocking: form.values.clocking,
+                        start: Math.floor(form.values.start)
+                    });
+                    break;
+                case ModalState.DELETE:
+                    resp = await EventHandler.delete(props.elements.map(val => val.id));
+                    break;
+                case ModalState.ADD:
+                    validate = await form.validate(EventSchema);
+                    if(validate.has_error()) return;
+                    resp = await EventHandler.set({
+                        name: form.values.name,
+                        clocking: form.values.clocking,
+                        start: Math.floor(form.values.start)
+                    });
+                    break;
+                default:
+                    resp = Either.error("");
+                    break;
+            }
             if(resp.has_error()) {
                 toast.error(resp.get_error());
             } else {
@@ -72,31 +98,8 @@ export const HandleEventModal = (props : ModalProps<APIEvent>) => {
         })
     }
 
-    const sendRequest = async () : Promise<Either<any>> => {
-        switch(props.type) {
-            case ModalState.EDIT:
-                // TODO: validate
-                return await EventHandler.update(props.element.id, {
-                    name: form.values.name,
-                    clocking: form.values.clocking,
-                    start: Math.floor(form.values.start)
-                });
-            case ModalState.DELETE:
-                return await EventHandler.delete(props.elements.map(val => val.id));
-            case ModalState.ADD:
-                // TODO: validate
-                return await EventHandler.set({
-                    name: form.values.name,
-                    clocking: form.values.clocking,
-                    start: Math.floor(form.values.start)
-                });
-            default: return Either.error("");
-        }
-    }
-
     const nextExecutions = () : Date[] => {
         const last_execution = (props.type === ModalState.EDIT) ? props.element.last_execution : 0;
-        console.log(form.values.start);
         return get_next_executions(last_execution, form.values.start, form.values.clocking, 4);
     }
 

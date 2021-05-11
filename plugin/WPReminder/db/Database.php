@@ -123,7 +123,7 @@ final class Database
             email varchar(255) NOT NULL,
             registered int NOT NULL,
             active BIT(1) NOT NULL,
-            events JSON NOT NULL,
+            events TEXT NOT NULL,
             PRIMARY KEY (id)
         ) ENGINE=InnoDB $charset;";
 

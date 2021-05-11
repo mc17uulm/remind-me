@@ -1,7 +1,7 @@
-import React, {Fragment, useEffect, useState} from "react";
-import {Accordion, Button, Checkbox, Label, List, Table} from "semantic-ui-react";
-import {__} from "@wordpress/i18n";
-import {APISubscriber, Subscriber, SubscriberHandler} from "../api/handler/SubscriberHandler";
+import React, {Fragment, useEffect, useState, MouseEvent} from "react";
+import {Button, Checkbox, Label, List, Table} from "semantic-ui-react";
+import {__, subscribe} from "@wordpress/i18n";
+import {APISubscriber, SubscriberHandler} from "../api/handler/SubscriberHandler";
 import {APIEvent, Event, EventHandler} from "../api/handler/EventHandler";
 import {toast} from "react-toastify";
 import {Icon} from "../components/Icon";
@@ -28,6 +28,7 @@ export const Subscribers = () => {
             checkbox.set(resp.get_value());
             await loadEvents();
         }
+        setInitialized(true);
     }
 
     const loadEvents = async () => {
@@ -36,7 +37,6 @@ export const Subscribers = () => {
             toast.error(resp.get_error());
         } else {
             setEvents(resp.get_value());
-            setInitialized(true);
         }
     }
 
@@ -48,6 +48,24 @@ export const Subscribers = () => {
         return events.filter((event : Event) => {
             return ids.includes(event.id ?? -1);
         });
+    }
+
+    const handleExport = (e : MouseEvent) => {
+        e.preventDefault();
+        const selected = subscribers.filter((subscriber : APISubscriber, index : number) => checkbox.get(index));
+        let csv = "token,email,events,active\n";
+        csv += selected.map((subscriber : APISubscriber) => {
+            const _events = "[" + events.filter((event : APIEvent) => subscriber.events.includes(event.id)).map((event : APIEvent) => event.name).join("|") + "]";
+            return `${subscriber.token},${subscriber.email},${_events},${subscriber.active}`;
+        }).join("\n");
+        const dwnl = document.createElement('a');
+        dwnl.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv));
+        dwnl.setAttribute('download', 'export_subscribers.csv');
+        dwnl.style.display = 'none';
+        document.body.appendChild(dwnl);
+        dwnl.click();
+        document.body.removeChild(dwnl);
+
     }
 
     const renderActive = (active : boolean) => {
@@ -137,7 +155,8 @@ export const Subscribers = () => {
                 {__('Delete selected', 'wp-reminder')}
             </a>
             <a
-                className={'wp-reminder-float-right' + (checkbox.filtered().length === 0 ? ' wp-reminder-disabled' : '')}
+                onClick={handleExport}
+                className={'wp-reminder-float-right wp-reminder-link' + (checkbox.filtered().length === 0 ? ' wp-reminder-disabled' : '')}
             >
                 {__('Export selected', 'wp-reminder')}
             </a>

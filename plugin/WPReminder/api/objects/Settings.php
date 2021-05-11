@@ -4,6 +4,7 @@ namespace WPReminder\api\objects;
 
 use WPReminder\api\Template;
 use WPReminder\PluginException;
+use WPReminder\Site;
 
 /**
  * Class Settings
@@ -46,6 +47,10 @@ final class Settings {
      * @var string
      */
     public string $signout_msg;
+    /**
+     * @var string
+     */
+    public string $settings_page;
 
     /**
      * Settings constructor.
@@ -56,6 +61,7 @@ final class Settings {
      * @param string $signin_msg
      * @param string $double_opt_in_msg
      * @param string $signout_msg
+     * @param string $settings_page
      */
     public function __construct(
         string $text_privacy,
@@ -64,7 +70,8 @@ final class Settings {
         string $template_signout,
         string $signin_msg,
         string $double_opt_in_msg,
-        string $signout_msg
+        string $signout_msg,
+        string $settings_page
     )
     {
         $this->text_privacy = $text_privacy;
@@ -74,6 +81,7 @@ final class Settings {
         $this->signin_msg = $signin_msg;
         $this->double_opt_in_msg = $double_opt_in_msg;
         $this->signout_msg = $signout_msg;
+        $this->settings_page = $settings_page;
     }
 
     /**
@@ -87,7 +95,8 @@ final class Settings {
             'template_signout' => $this->template_signout,
             'signin_msg' => $this->signin_msg,
             'double_opt_in_msg' => $this->double_opt_in_msg,
-            'signout_msg' => $this->signout_msg
+            'signout_msg' => $this->signout_msg,
+            'settings_page' => $this->settings_page
         ];
     }
 
@@ -105,7 +114,8 @@ final class Settings {
                 $options['template_signout'],
                 $options['signin_msg'],
                 $options['double_opt_in_msg'],
-                $options['signout_msg']
+                $options['signout_msg'],
+                $options['settings_page']
             );
         }
         throw new PluginException("No options found");
@@ -116,6 +126,7 @@ final class Settings {
      * @throws PluginException
      */
     public static function create_default() : bool {
+
         return self::set(new Settings(
             __('I accept the privacy settings. By checking this field you accept the transport and processing of your data by the provider of this webpage.', 'wp-reminder'),
             self::load_template('check'),
@@ -123,7 +134,8 @@ final class Settings {
             self::load_template('signout'),
             __('You signed in successful. We send you an email to confirm your subscription', 'wp-reminder'),
             __('You confirmed your subscription successful.', 'wp-reminder'),
-            __('You signed out from the subscriptions', 'wp-reminder')
+            __('You signed out from the subscriptions', 'wp-reminder'),
+            Site::load('guid')
         ));
     }
 

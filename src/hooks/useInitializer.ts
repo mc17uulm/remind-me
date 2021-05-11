@@ -12,7 +12,7 @@ export enum InitializeStates {
 
 type useInitializerResponse<S> = [
     SuccessResponse<S> | ErrorResponse | LoadingResponse,
-    (callback : () => Promise<Either<S>>, show? : boolean, log? : boolean) => Promise<void>
+    (callback : () => Promise<Either<S>>) => Promise<Either<S>>
 ];
 
 interface SuccessResponse<S> {
@@ -40,18 +40,16 @@ export const useInitializer = <T extends unknown>() : useInitializerResponse<T> 
     const [state, setState] = useState<InitializeStates>(InitializeStates.Loading);
 
     // function is executed to asynchronously execute callback and handle Either response
-    const load = async (callback : () => Promise<Either<T>>, show : boolean = true, log : boolean = true) : Promise<void> => {
+    const load = async (callback : () => Promise<Either<T>>, handle: boolean = false, show : boolean = true, log : boolean = true) : Promise<Either<T>> => {
         setState(InitializeStates.Loading);
         const res = await callback();
         if(res.has_error()) {
-            if(show) toast.error(res.get_error());
-            if(log) console.error(res.get_error());
             setState(InitializeStates.Error)
-            return;
         } else {
-            setElem(res.get_value());
             setState(InitializeStates.Success);
+            setElem(res.get_value());
         }
+        return res;
     }
 
     /**

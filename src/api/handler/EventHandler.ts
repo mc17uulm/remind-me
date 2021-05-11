@@ -30,19 +30,28 @@ const get_components = (clocking : number) : {divider : string, of: string, on :
     }
 }
 
+const get_next_execution = (last_execution : Date, step : number, clocking : number) : Date => {
+    const comp = (last_execution.getMonth() + (step * clocking));
+    const year = last_execution.getFullYear() + Math.floor(comp / 12);
+    return new Date(year, comp % 12, last_execution.getDate());
+}
+
 export const get_next_executions = (last_execution : number, start: number, clocking : number, steps : number = 1) : Date[] => {
     let date : Date
     if(last_execution === 0) {
         date = new Date(start);
+        const now = new Date().getTime();
+        let tmp;
+        while((tmp = get_next_execution(date, 1, clocking)).getTime() < now) {
+            date = tmp;
+        }
     } else {
         date = new Date(last_execution);
     }
     let iterator = Array.from(Array(steps + 1).keys());
     iterator.shift();
     return iterator.map((step : number) : Date => {
-        const comp = (date.getMonth() + (step * clocking));
-        const year = date.getFullYear() + Math.floor(comp / 12);
-        return new Date(year, comp % 12, date.getDate());
+        return get_next_execution(date, step, clocking);
     });
 }
 
