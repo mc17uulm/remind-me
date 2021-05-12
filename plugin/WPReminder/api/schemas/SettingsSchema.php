@@ -27,11 +27,17 @@ final class SettingsSchema extends JsonSchema
         return new Settings(
             $this->result['text_privacy'],
             $this->result['template_check'],
+            $this->result['subject_check'],
             $this->result['template_accept'],
+            $this->result['subject_accept'],
             $this->result['template_signout'],
+            $this->result['subject_signout'],
+            $this->result['template_email'],
+            $this->result['subject_email'],
             $this->result['signin_msg'],
             $this->result['double_opt_in_msg'],
-            $this->result['signout_msg']
+            $this->result['signout_msg'],
+            $this->result['settings_page']
         );
     }
 

@@ -18,15 +18,15 @@ final class Subscriber
     /**
      * @var int|null
      */
-    private ?int $id;
+    public ?int $id;
     /**
      * @var string
      */
-    private string $token;
+    public string $token;
     /**
      * @var string
      */
-    private string $email;
+    public string $email;
     /**
      * @var int|null
      */
@@ -38,7 +38,7 @@ final class Subscriber
     /**
      * @var array<int | Event>
      */
-    private array $events;
+    public array $events;
 
     /**
      * Subscriber constructor.
@@ -132,19 +132,18 @@ final class Subscriber
      * @param array $resource
      * @return int
      * @throws DatabaseException
+     * @throws Exception
      */
     public static function set(array $resource) : int {
         $db = Database::get_database();
-        $sub_token = bin2hex(random_bytes(16));
+        $token = bin2hex(random_bytes(16));
         $id = $db->insert(
             "INSERT INTO {$db->get_table_name("subscribers")} (token, email, events, registered, active) VALUES (%s, %s, %s, UNIX_TIMESTAMP(), false)",
-            $sub_token,
+            $token,
             $resource["email"],
             json_encode($resource["events"])
         );
-        $token = Token::create($id, "activate");
-        $url = get_site_url() . "?wp-reminder-token=" . $token->get_token();
-        MailHandler::send_confirm($resource["email"], $resource["events"], $url);
+        MailHandler::send_confirm(new Subscriber($token, $resource["email"], $resource["events"], $id));
         return $id;
     }
 

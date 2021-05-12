@@ -18,8 +18,13 @@ const RequiredKeywords : {id : keyof Settings, keywords : string[]}[] = [
 const SettingsSchema : yup.SchemaOf<Settings> = yup.object({
     text_privacy: yup.string().required(__('Please insert a text for the privacy notice', 'wp-reminder')),
     template_check: yup.string().required(),
+    subject_check: yup.string().required(),
     template_accept: yup.string().required(),
+    subject_accept: yup.string().required(),
     template_signout: yup.string().required(),
+    subject_signout: yup.string().required(),
+    template_email: yup.string().required(),
+    subject_email: yup.string().required(),
     signin_msg: yup.string().required(),
     double_opt_in_msg: yup.string().required(),
     signout_msg: yup.string().required(),
@@ -100,9 +105,18 @@ export const SettingsForm = (props : SettingsFormProps) => {
                 <Message info>
                     {__('The email templates need some placeholders, marked with the ', 'wp-reminder')}<code>{'${}'}</code>{__(' identifier, to work correctly', 'wp-reminder')}
                 </Message>
+                <h3>{__('Confirm email address', 'wp-reminder')}</h3>
+                <Form.Input
+                    value={form.values.subject_check}
+                    onChange={form.onChange}
+                    name='subject_check'
+                    disabled={submitting}
+                    error={form.errors.subject_check}
+                    label={__('Subject | Confirm email address', 'wp-reminder')}
+                />
                 <Form.Field error={form.hasError('template_check')}>
                     <label>
-                        {__('Confirm email address', 'wp-reminder') + " "}
+                        {__('Template | Confirm email address', 'wp-reminder') + " "}
                          <Info>{__('This email template is send to the user if they subscribed to some events on the site. They have to activate their subscription by a click to the given link.')}</Info>
                     </label>
                     <Message info>
@@ -122,9 +136,18 @@ export const SettingsForm = (props : SettingsFormProps) => {
                         <div className='ui pointing prompt label'>{form.errors.template_check}</div>
                     ) : ""}
                 </Form.Field>
+                <h3>{__('Success message for subscription', 'wp-reminder')}</h3>
+                <Form.Input
+                    value={form.values.subject_accept}
+                    onChange={form.onChange}
+                    name='subject_accept'
+                    disabled={submitting}
+                    error={form.errors.subject_accept}
+                    label={__('Subject | Success message for subscription', 'wp-reminder')}
+                />
                 <Form.Field error={form.hasError('template_accept')}>
                     <label>
-                        {__('Success message for subscription', 'wp-reminder') + " "}
+                        {__('Template | Success message for subscription', 'wp-reminder') + " "}
                          <Info>{__('Is the user confirmed the subscription this success mail is send')}</Info>
                     </label>
                     <Message info>
@@ -142,9 +165,18 @@ export const SettingsForm = (props : SettingsFormProps) => {
                         <div className='ui pointing prompt label'>{form.errors.template_accept}</div>
                     ) : ""}
                 </Form.Field>
+                <h3>{__('Signout email', 'wp-reminder')}</h3>
+                <Form.Input
+                    value={form.values.subject_signout}
+                    onChange={form.onChange}
+                    name='subject_signout'
+                    disabled={submitting}
+                    error={form.errors.subject_signout}
+                    label={__('Subject | Signout email', 'wp-reminder')}
+                />
                 <Form.Field error={form.hasError('template_signout')}>
                     <label>
-                        {__('Signout email', 'wp-reminder') + " "}
+                        {__('Template | Signout email', 'wp-reminder') + " "}
                          <Info>{__('If the user signed out, this confirm message is send.')}</Info>
                     </label>
                     <Editor
@@ -154,6 +186,36 @@ export const SettingsForm = (props : SettingsFormProps) => {
                     />
                     {form.hasError('template_signout') ? (
                         <div className='ui pointing prompt label'>{form.errors.template_signout}</div>
+                    ) : ""}
+                </Form.Field>
+                <h3>{__('Reminder email', 'wp-reminder')}</h3>
+                <Form.Input
+                    value={form.values.subject_email}
+                    onChange={form.onChange}
+                    name='subject_email'
+                    disabled={submitting}
+                    error={form.errors.subject_email}
+                    label={__('Subject | Reminder email', 'wp-reminder')}
+                />
+                <Form.Field error={form.hasError('template_email')}>
+                    <label>
+                        {__('Template | Reminder email', 'wp-reminder') + " "}
+                        <Info>{__('The email template for your reminder messages', 'wp-reminder')}</Info>
+                    </label>
+                    <Message info>
+                        {__('Required placeholders:', 'wp-reminder')}
+                        <List bulleted>
+                            <List.Item><code>{'${event_list}'}</code>{__('Lists of events to be reminded', 'wp-reminder')}</List.Item>
+                            <List.Item><code>{'${unsubscribe_link}'}</code>{__('Link to unsubscribe from subscription', 'wp-reminder')}</List.Item>
+                        </List>
+                    </Message>
+                    <Editor
+                        value={form.values.template_email}
+                        error={form.hasError('template_email')}
+                        onChange={(val) => form.setValue('template_email', val)}
+                    />
+                    {form.hasError('template_email') ? (
+                        <div className='ui pointing prompt label'>{form.errors.template_email}</div>
                     ) : ""}
                 </Form.Field>
                 <h2>{__('Messages', 'wp-reminder')}</h2>

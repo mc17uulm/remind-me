@@ -3,7 +3,10 @@
 namespace WPReminder\api;
 
 use WPReminder\api\objects\Event;
+use WPReminder\api\objects\Settings;
+use WPReminder\api\objects\Subscriber;
 use WPReminder\PluginException;
+use WPReminder\db\DatabaseException;
 
 final class Template
 {
@@ -35,12 +38,27 @@ final class Template
         return $this->content;
     }
 
-    public function render_events (array $events, string $url) : string {
-        $list = "<li>" . implode("</li><li>", array_map(fn(int $id) => Event::get($id)->get_name(), $events)) . "</li>";
+    /**
+     * @throws APIException
+     * @throws DatabaseException
+     * @throws PluginException
+     */
+    public function render_events (Subscriber $subscriber, string $url) : string {
+        $list = "<li>" . implode("</li><li>", array_map(fn(int $id) => Event::get($id)->get_name(), $subscriber->events)) . "</li>";
         $message = str_replace('${event_list}', "<ul>$list</ul>", $this->content);
         $message = str_replace('${confirm_link}', "<a href='$url'>" . __('Confirm your subscription', 'wp-reminder') . "</a>", $message);
+        $settings = Settings::get();
+        $edit_url = $settings->settings_page . '?wp-reminder-subscriber-token=' . $subscriber->get_token();
+        return str_replace('${unsubscribe_link}', "<a href='$edit_url'>" . __('Unsubscribe or edit subscription', 'wp-reminder') . "</a>", $message);
+    }
 
-        return str_replace('${unsubscribe_link}', "<a href=''>" . __('Unsubscribe', 'wp-reminder') . "</a>", $message);
+    /**
+     * @throws PluginException
+     */
+    public function render_success (Subscriber $subscriber) : string {
+        $settings = Settings::get();
+        $edit_url = $settings->settings_page . '?wp-reminder-subscriber-token=' . $subscriber->get_token();
+        return str_replace('${unsubscribe_link}', "<a href='$edit_url'>" . __('Unsubscribe or edit subscription', 'wp-reminder') . "</a>", $this->content);
     }
 
 }

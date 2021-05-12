@@ -2,9 +2,11 @@
 
 namespace WPReminder\mail;
 
+use WPReminder\api\APIException;
 use WPReminder\api\objects\Event;
 use WPReminder\api\objects\Settings;
 use WPReminder\api\objects\Subscriber;
+use WPReminder\api\objects\Token;
 use WPReminder\api\Template;
 use WPReminder\PluginException;
 use WPReminder\db\DatabaseException;
@@ -38,7 +40,12 @@ final class MailHandler {
 
     }
 
-    public static function send_confirm(string $email, array $events, string $url) : bool {
+    /**
+     * @throws DatabaseException
+     * @throws APIException | PluginException
+     * @retrun bool
+     */
+    public static function send_confirm(Subscriber $subscriber) : bool {
 
         $template = new Template('check');
         $headers = [
@@ -46,13 +53,42 @@ final class MailHandler {
             'From: ' . get_bloginfo('name') . '<' . get_bloginfo('admin_email') . '>'
         ];
 
+        $settings = Settings::get();
+        $token = Token::create($subscriber->id, "activate");
+        $url = get_site_url() . "?wp-reminder-token=" . $token->get_token();
+
         return wp_mail(
-            $email,
-            sprintf(__('Confirm your subscription | %s', 'wp-reminder'), get_bloginfo('name')),
-            $template->render_events($events, $url),
+            $subscriber->email,
+            sprintf('%s | %s', $settings->subject_check, get_bloginfo('name')),
+            $template->render_events($subscriber, $url),
             $headers
         );
-        // TODO: email send not working
+    }
+
+    /**
+     * @param Subscriber $subscriber
+     * @return bool
+     * @throws PluginException
+     */
+    public static function send_success(Subscriber $subscriber) : bool {
+        $template = new Template('accept');
+        $headers = [
+            'Content-Type: text/html; charset=UTF-8',
+            'From: ' . get_bloginfo('name') . '<' . get_bloginfo('admin_email') . '>'
+        ];
+
+        $settings = Settings::get();
+
+        return wp_mail(
+            $subscriber->email,
+            sprintf('%s | %s', $settings->subject_accept, get_bloginfo('name')),
+            $template->render_success($subscriber),
+            $headers
+        );
+    }
+
+    public static function send_unsubscribe(Subscriber $subscriber) : bool {
+        return false;
     }
 
 }

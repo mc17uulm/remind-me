@@ -2,9 +2,16 @@
 
 namespace WPReminder;
 
+/**
+ * Class Site
+ * @package WPReminder
+ */
 final class Site {
 
-    private static $_PAGE_SLUG = "wp-reminder-user-settings";
+    /**
+     * @var string
+     */
+    private static string $_PAGE_SLUG = "wp-reminder-user-settings";
 
     public static function add() : void {
 
@@ -30,8 +37,9 @@ final class Site {
 
     /**
      * @param string $key
-     * @retrun mixed
+     * @return mixed
      * @throws PluginException
+     * @retrun mixed
      */
     public static function load(string $key) {
         global $wpdb;
@@ -42,10 +50,12 @@ final class Site {
     }
 
     /**
-     * @throws PluginException
+     *
      */
     public static function remove () : void {
-        wp_delete_post(self::load("ID"));
+        try {
+            wp_delete_post(self::load("ID"));
+        } catch(PluginException $e) {}
     }
 
 }

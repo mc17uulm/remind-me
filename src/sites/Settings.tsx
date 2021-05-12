@@ -3,6 +3,8 @@ import {Settings, SettingsHandler} from "../api/handler/SettingsHandler";
 import {Loader} from "../components/Loader";
 import {SettingsForm} from "../components/SettingsForm";
 import {InitializeStates, useInitializer} from "../hooks/useInitializer";
+import {Error} from "../components/Error";
+import {__} from "@wordpress/i18n";
 
 export const SettingsView = () => {
 
@@ -16,7 +18,11 @@ export const SettingsView = () => {
 
     switch (initObject.state) {
         case InitializeStates.Loading: return <Loader />;
-        case InitializeStates.Error: return <div>Error</div>;
+        case InitializeStates.Error: return (
+            <Error>
+                {__('There was an internal error', 'wp-reminder')}
+            </Error>
+        );
         case InitializeStates.Success: return <SettingsForm settings={initObject.value} />
     }
 
