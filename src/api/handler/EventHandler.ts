@@ -2,6 +2,8 @@ import {JSONSchemaType} from "ajv";
 import {Either} from "../Either";
 import {DeleteResponseSchema, PostResponseSchema, PutResponseSchema, Request} from "../Request";
 import {__, sprintf} from "@wordpress/i18n";
+import {DropdownItemProps} from "semantic-ui-react";
+import {number} from "yup";
 
 export interface Event {
     id?: number,
@@ -16,6 +18,24 @@ export interface APIEvent extends Event {
     id: number,
     last_execution : number,
     active: boolean
+}
+
+export const ClockingList : DropdownItemProps[] = [
+    {key: '1', value: 1, text: __('monthly', 'wp-reminder')},
+    {key: '2', value: 2, text: __('2-monthly', 'wp-reminder')},
+    {key: '3', value: 3, text: __('quarterly', 'wp-reminder')},
+    {key: '4', value: 4, text: __('4-monthly', 'wp-reminder')},
+    {key: '6', value: 6, text: __('half-yearly', 'wp-reminder')},
+    {key: '12', value: 12, text: __('yearly', 'wp-reminder')},
+];
+
+export const get_clocking_str = (clocking : number) : string => {
+    const _val : DropdownItemProps[] = ClockingList.filter((val : DropdownItemProps) => val.value === clocking);
+    if(_val.length === 1) {
+        // @ts-ignore
+        return _val[0].text;
+    }
+    return "Invalid clocking";
 }
 
 const get_components = (clocking : number) : {divider : string, of: string, on : string} => {

@@ -25,18 +25,24 @@ final class Token {
      * @var string
      */
     private string $value;
+    /**
+     * @var int
+     */
+    private int $subscriber_id;
 
     /**
      * Token constructor.
      * @param int $id
      * @param string $type
      * @param string $value
+     * @param int $subscriber_id
      */
-    protected function __construct(int $id, string $type, string $value)
+    protected function __construct(int $id, string $type, string $value, int $subscriber_id)
     {
         $this->id = $id;
         $this->type = $type;
         $this->value = $value;
+        $this->subscriber_id = $subscriber_id;
     }
 
     /**
@@ -46,8 +52,15 @@ final class Token {
         return $this->value;
     }
 
+    /**
+     * @return int
+     */
+    public function get_subscriber_id() : int {
+        return $this->subscriber_id;
+    }
+
     public function is_type(string $type) : bool {
-        return $this->type = $type;
+        return $this->type === $type;
     }
 
     /**
@@ -63,7 +76,7 @@ final class Token {
             $token
         );
         if(count($res) !== 1) throw new PluginException('Could not find token in database');
-        return new Token($res[0]["id"], $res[0]["token"], $res[0]["token_type"]);
+        return new Token($res[0]["id"], $res[0]["token_type"], $res[0]["token"], $res[0]["subscriber_id"]);
     }
 
     /**
@@ -84,7 +97,7 @@ final class Token {
             $token_type,
             $hours_valid
         );
-        return new Token($id, $token, $token_type);
+        return new Token($id, $token_type, $token, $subscriber_id);
     }
 
     /**
@@ -110,14 +123,19 @@ final class Token {
     /**
      * @param string $token
      * @param string $type
+     * @param bool $clear_after
      * @return bool
      * @throws DatabaseException
      */
-    public static function check(string $token, string $type) : bool {
+    public static function check(string $token, string $type, bool $clear_after = false) : bool {
         self::clear();
         try {
             $token = self::get($token);
-            return $token->is_type($type);
+            $val = $token->is_type($type);
+            if($val && $clear_after) {
+                self::delete($token->get_token());
+            }
+            return $val;
         } catch(PluginException $e) {
             return false;
         }

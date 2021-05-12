@@ -48,7 +48,7 @@ final class Template
         $message = str_replace('${event_list}', "<ul>$list</ul>", $this->content);
         $message = str_replace('${confirm_link}', "<a href='$url'>" . __('Confirm your subscription', 'wp-reminder') . "</a>", $message);
         $settings = Settings::get();
-        $edit_url = $settings->settings_page . '?wp-reminder-subscriber-token=' . $subscriber->get_token();
+        $edit_url = $settings->settings_page . '?wp-reminder-action=edit&wp-reminder-token=' . $subscriber->get_token();
         return str_replace('${unsubscribe_link}', "<a href='$edit_url'>" . __('Unsubscribe or edit subscription', 'wp-reminder') . "</a>", $message);
     }
 

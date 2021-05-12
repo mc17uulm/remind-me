@@ -2,6 +2,7 @@
 
 namespace WPReminder\mail;
 
+use PHPMailer\PHPMailer\PHPMailer;
 use WPReminder\api\APIException;
 use WPReminder\api\objects\Event;
 use WPReminder\api\objects\Settings;
@@ -10,6 +11,7 @@ use WPReminder\api\objects\Token;
 use WPReminder\api\Template;
 use WPReminder\PluginException;
 use WPReminder\db\DatabaseException;
+use Exception;
 
 final class MailHandler {
 
@@ -43,52 +45,83 @@ final class MailHandler {
     /**
      * @throws DatabaseException
      * @throws APIException | PluginException
-     * @retrun bool
      */
-    public static function send_confirm(Subscriber $subscriber) : bool {
+    public static function send_confirm(Subscriber $subscriber) : void {
 
         $template = new Template('check');
-        $headers = [
-            'Content-Type: text/html; charset=UTF-8',
-            'From: ' . get_bloginfo('name') . '<' . get_bloginfo('admin_email') . '>'
-        ];
 
         $settings = Settings::get();
         $token = Token::create($subscriber->id, "activate");
-        $url = get_site_url() . "?wp-reminder-token=" . $token->get_token();
+        $url = $settings->settings_page . "?wp-reminder-action=activate&wp-reminder-token=" . $token->get_token();
 
-        return wp_mail(
-            $subscriber->email,
+        self::send_mail(
+            ['email' => $subscriber->email],
+            ['email' => get_bloginfo('admin_email'), 'name' => get_bloginfo('name')],
             sprintf('%s | %s', $settings->subject_check, get_bloginfo('name')),
-            $template->render_events($subscriber, $url),
-            $headers
+            $template->render_events($subscriber, $url)
         );
     }
 
     /**
      * @param Subscriber $subscriber
-     * @return bool
      * @throws PluginException
      */
-    public static function send_success(Subscriber $subscriber) : bool {
+    public static function send_success(Subscriber $subscriber) : void {
         $template = new Template('accept');
-        $headers = [
-            'Content-Type: text/html; charset=UTF-8',
-            'From: ' . get_bloginfo('name') . '<' . get_bloginfo('admin_email') . '>'
-        ];
-
         $settings = Settings::get();
 
-        return wp_mail(
-            $subscriber->email,
+        self::send_mail(
+            ['email' => $subscriber->email],
+            ['email' => get_bloginfo('admin_email'), 'name' => get_bloginfo('name')],
             sprintf('%s | %s', $settings->subject_accept, get_bloginfo('name')),
-            $template->render_success($subscriber),
-            $headers
+            $template->render_success($subscriber)
         );
     }
 
     public static function send_unsubscribe(Subscriber $subscriber) : bool {
         return false;
+    }
+
+    /**
+     * @param array $to
+     * @param array $from
+     * @param string $subject
+     * @param string $content
+     * @throws PluginException
+     */
+    private static function send_mail(array $to, array $from, string $subject, string $content) : void {
+        $mailer = new PHPMailer(true);
+        try {
+            $mailer->isHTML(true);
+            $mailer->CharSet = 'utf-8';
+            $mailer->From = $from['email'];
+            $mailer->FromName = $from['name'];
+            $mailer->AddAddress($to['email']);
+            $mailer->Subject = $subject;
+            $mailer->Body = $content;
+            $mailer->AltBody = strip_tags($content);
+
+            if(WP_REMINDER_DEBUG) {
+                self::dev_send_mail($mailer);
+            }
+
+            if(!$mailer->send()) throw new PluginException($mailer->ErrorInfo);
+
+        } catch (Exception $e) {
+            throw new PluginException($e->getMessage());
+        }
+    }
+
+    private static function dev_send_mail(PHPMailer &$mailer) : void {
+        $mailer->SMTPDebug = 0;
+        $mailer->isSMTP();
+        $mailer->SMTPAuth = true;
+        $mailer->Username = "test@code-leaf.de";
+        $mailer->Password = "deploy123";
+        $mailer->Port = 25;
+        $mailer->Host = 'code-leaf.de';
+        $mailer->FromName = 'Deploy code-leaf.de';
+        $mailer->From = 'test@code-leaf.de';
     }
 
 }

@@ -11,27 +11,6 @@
     font-size: 14px;
   }
 
-  .wp-reminder-email-input input,label {
-    display: block;
-  }
-
-  .wp-reminder-email-input {
-    input {
-      width: 100%
-    }
-  }
-
-  .wp-reminder-gdpr-check {
-    padding-top: 1em;
-  }
-
-  .wp-reminder-form-submit {
-    button {
-      float: right;
-      padding: 0.5em;
-    }
-  }
-
   .error {
     input {
       border-color: red;
@@ -43,6 +22,33 @@
     color: indianred;
     font-size: 14px;
     font-weight: bold;
+  }
+}
+
+.wp-reminder-gdpr-check {
+  padding-top: 1em;
+}
+
+.wp-reminder-form-submit {
+  button {
+    float: right;
+    padding: 0.5em;
+  }
+}
+
+.wp-reminder-email-input {
+  label {
+    display: block;
+  }
+  input {
+    width: 100%;
+  }
+}
+
+.wp-reminder-checkbox {
+  label {
+    display: inline !important;
+    padding-left: 1em;
   }
 }
 

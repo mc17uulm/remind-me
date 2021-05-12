@@ -8,6 +8,7 @@ import {useLoader} from "../hooks/useLoader";
 import {SubscriberHandler} from "../api/handler/SubscriberHandler";
 import * as yup from "yup";
 import {IMessage, Message} from "./Message";
+import {Icon} from "../components/Icon";
 
 interface RegisterFormProps {
     events: APIEvent[],
@@ -65,14 +66,12 @@ export const RegisterForm = (props : RegisterFormProps) => {
     const onSubmit = async (e : MouseEvent) => {
         e.preventDefault();
         await doSubmitting(async () => {
-            console.log(form.values);
             const validate = await form.validate(RegisterFormSchema);
             if(validate.has_error()) {console.log("has error"); return;}
             const resp = await SubscriberHandler.set({
                 email: form.values.email,
                 events: checkbox.filtered().map((_, index) => props.events[index].id)
             });
-            console.log(resp);
             if(resp.has_error()) {
                 console.error(resp.get_error());
                 setMessage({type: "error", msg: resp.get_error()})
@@ -131,7 +130,9 @@ export const RegisterForm = (props : RegisterFormProps) => {
             <span>* {__('All these fields are required', 'wp-reminder')}</span>
             <Message msg={message} />
             <div className='wp-reminder-form-submit'>
-                <button disabled={submitting} onClick={onSubmit}>{__('Submit', 'wp-reminder')}</button>
+                <button disabled={submitting} onClick={onSubmit}>
+                    {submitting ? <Icon spin class='circle-o-notch' /> : __('Submit', 'wp-reminder')}
+                </button>
             </div>
         </div>
     );

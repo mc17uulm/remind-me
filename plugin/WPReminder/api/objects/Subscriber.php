@@ -80,6 +80,26 @@ final class Subscriber
     }
 
     /**
+     * @return bool
+     */
+    public function is_active() : bool {
+        return $this->active ?? false;
+    }
+
+    /**
+     * @return bool
+     * @throws DatabaseException
+     */
+    public function activate() : bool {
+        $db = Database::get_database();
+        return $db->update(
+            "UPDATE {$db->get_table_name("subscribers")} SET active = 1 WHERE token = %s AND id = %d",
+            $this->token,
+            $this->id
+        );
+    }
+
+    /**
      * @return array
      */
     public function to_json() : array {
@@ -136,6 +156,8 @@ final class Subscriber
      */
     public static function set(array $resource) : int {
         $db = Database::get_database();
+        $db_res = $db->select("SELECT * FROM {$db->get_table_name('subscribers')} WHERE email = %s", $resource["email"]);
+        if(count($db_res) > 0) throw new APIException('User with given email address is already registered');
         $token = bin2hex(random_bytes(16));
         $id = $db->insert(
             "INSERT INTO {$db->get_table_name("subscribers")} (token, email, events, registered, active) VALUES (%s, %s, %s, UNIX_TIMESTAMP(), false)",

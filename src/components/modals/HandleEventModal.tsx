@@ -1,4 +1,12 @@
-import {APIEvent, Event, empty_event, EventHandler, get_next_executions, get_repetition} from "../../api/handler/EventHandler";
+import {
+    APIEvent,
+    Event,
+    empty_event,
+    EventHandler,
+    get_next_executions,
+    get_repetition,
+    ClockingList
+} from "../../api/handler/EventHandler";
 import React, {Fragment, useEffect} from "react";
 import {Button, DropdownItemProps, Form, List, Modal, ModalActions} from "semantic-ui-react";
 import {__, _n, sprintf} from "@wordpress/i18n";
@@ -10,15 +18,6 @@ import {useLoader} from "../../hooks/useLoader";
 import {useForm} from "../../hooks/useForm";
 import * as yup from 'yup';
 import {ModalProps, ModalState} from "../../hooks/useModal";
-
-const ClockingList : DropdownItemProps[] = [
-    {key: '1', value: 1, text: __('monthly', 'wp-reminder')},
-    {key: '2', value: 2, text: __('2-monthly', 'wp-reminder')},
-    {key: '3', value: 3, text: __('quarterly', 'wp-reminder')},
-    {key: '4', value: 4, text: __('4-monthly', 'wp-reminder')},
-    {key: '6', value: 6, text: __('half-yearly', 'wp-reminder')},
-    {key: '12', value: 12, text: __('yearly', 'wp-reminder')},
-];
 
 const MonthList : DropdownItemProps[] = [
     {key: '1', value: 0, text: __('January', 'wp-reminder')},
