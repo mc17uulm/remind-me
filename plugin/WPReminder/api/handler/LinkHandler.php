@@ -38,12 +38,13 @@ final class LinkHandler {
         if(!Token::check($token, 'activate')) self::redirect();
         // activate subscriber
         $valid_token = Token::get($token);
-        $subscriber = Subscriber::get($valid_token->get_subscriber_id());
+        $subscriber = Subscriber::get_by_id($valid_token->get_subscriber_id());
         $param = "";
         if(!$subscriber->is_active()) {
             $subscriber->activate();
             // send success mail to subscriber
             MailHandler::send_success($subscriber);
+            $valid_token->remove();
             $param = '&wp-reminder-success=true';
         }
         // redirect to edit page

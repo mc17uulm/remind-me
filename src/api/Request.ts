@@ -7,7 +7,7 @@ interface Response <S> {
     status: "error" | "success",
     message: "string",
     data: S,
-    debug_message: string
+    debug: string
 }
 
 const ResponseSchema = <T>(schema : JSONSchemaType<T>) : JSONSchemaType<Response<T>> => {
@@ -23,7 +23,7 @@ const ResponseSchema = <T>(schema : JSONSchemaType<T>) : JSONSchemaType<Response
             message: {
                 type: "string"
             },
-            debug_message: {
+            debug: {
                 type: "string"
             }
         },
@@ -105,7 +105,7 @@ export class Request {
                 return Either.error("Invalid Response");
             }
             if(response.status === "error") {
-                console.info(response.debug_message);
+                console.error(response.debug);
                 return Either.error(response.message);
             } else {
                 return Either.success(response.data);

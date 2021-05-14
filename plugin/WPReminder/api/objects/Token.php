@@ -64,6 +64,14 @@ final class Token {
     }
 
     /**
+     * @return bool
+     * @throws DatabaseException
+     */
+    public function remove() : bool {
+        return self::delete($this->value);
+    }
+
+    /**
      * @param string $token
      * @return Token
      * @throws DatabaseException

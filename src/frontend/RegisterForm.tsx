@@ -27,7 +27,7 @@ const empty_form : FormObject = {
     accept: false
 }
 
-const ClockingMap : {id: number, text: string}[] = [
+export const ClockingMap : {id: number, text: string}[] = [
     {id : 1, text : __('monthly', 'wp-reminder')},
     {id: 2, text: __('2-monthly', 'wp-reminder')},
     {id: 3, text: __('quarterly', 'wp-reminder')},
@@ -44,7 +44,7 @@ const RegisterFormSchema : yup.SchemaOf<any> = yup.object({
     accept: yup.boolean().oneOf([true], __('To subscribe to our service you have to accept the privacy settings', 'wp-reminder'))
 })
 
-const clockingToStr = (clocking : number) : string => {
+export const clockingToStr = (clocking : number) : string => {
     const elem = ClockingMap.filter((elem : {id : number, text: string}) => {
         return elem.id === clocking;
     });

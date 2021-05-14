@@ -7,6 +7,7 @@ use WPReminder\db\Database;
 use WPReminder\db\DatabaseException;
 use Exception;
 use WPReminder\mail\MailHandler;
+use WPReminder\PluginException;
 
 /**
  * Class Subscriber
@@ -121,17 +122,31 @@ final class Subscriber
     }
 
     /**
-     * @param int $id
+     * @param string $token
      * @return Subscriber
      * @throws DatabaseException
      * @throws Exception
      */
-    public static function get(int $id) : Subscriber
+    public static function get_by_token(string $token) : Subscriber
     {
         $db = Database::get_database();
-        $db_res = $db->select("SELECT * FROM {$db->get_table_name("subscribers")} WHERE id = %d", $id);
-        if(count($db_res) !== 1) throw new APIException("no dataset with given id in db");
+        $db_res = $db->select("SELECT * FROM {$db->get_table_name("subscribers")} WHERE token = %s", $token);
+        if(count($db_res) !== 1) throw new APIException("no dataset with given token in db");
         return new Subscriber($db_res[0]["token"], $db_res[0]["email"], json_decode($db_res[0]["events"]), $db_res[0]["id"], $db_res[0]["registered"], $db_res[0]["active"]);
+    }
+
+    /**
+     * @param int $id
+     * @return Subscriber
+     * @throws APIException
+     * @throws DatabaseException
+     */
+    public static function get_by_id(int $id) : Subscriber {
+        $db = Database::get_database();
+        $db_res = $db->select("SELECT * FROM {$db->get_table_name("subscribers")} WHERE id = %d", $id);
+        if(count($db_res) !== 1) throw new APIException("no dataset with given token in db");
+        return new Subscriber($db_res[0]["token"], $db_res[0]["email"], json_decode($db_res[0]["events"]), $db_res[0]["id"], $db_res[0]["registered"], $db_res[0]["active"]);
+
     }
 
     /**
@@ -157,7 +172,7 @@ final class Subscriber
     public static function set(array $resource) : int {
         $db = Database::get_database();
         $db_res = $db->select("SELECT * FROM {$db->get_table_name('subscribers')} WHERE email = %s", $resource["email"]);
-        if(count($db_res) > 0) throw new APIException('User with given email address is already registered');
+        if(count($db_res) > 0) throw new APIException('User with given email address is already registered', 'User with given email address is already registered');
         $token = bin2hex(random_bytes(16));
         $id = $db->insert(
             "INSERT INTO {$db->get_table_name("subscribers")} (token, email, events, registered, active) VALUES (%s, %s, %s, UNIX_TIMESTAMP(), false)",

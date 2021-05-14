@@ -16,16 +16,11 @@ final class SubscriberHandler implements RestHandler
     /**
      * @param Request $req
      * @param Response $res
-     * @throws APIException
      * @throws DatabaseException
      */
     public static function get(Request $req, Response $res): void
     {
-        $id = $req->get_param("id");
-
-        if(!is_numeric($id)) throw new APIException("'id' is not set or not numeric");
-
-        $res->success(Subscriber::get($id)->to_json());
+        $res->success(Subscriber::get_by_token($req->get_param("token"))->to_json());
     }
 
     /**

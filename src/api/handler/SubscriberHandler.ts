@@ -59,6 +59,13 @@ const SubscribersSchema : JSONSchemaType<APISubscriber[]> = {
 export class SubscriberHandler
 {
 
+    public static async get(token : string): Promise<Either<APISubscriber>> {
+        return await Request.get<APISubscriber>(
+            `subscriber/${token}`,
+            SubscriberSchema
+        )
+    }
+
     public static async get_all() : Promise<Either<APISubscriber[]>> {
         return await Request.get<APISubscriber[]>(
             'subscribers', SubscribersSchema

@@ -2,7 +2,7 @@ import {useCallback, useState} from "react";
 
 interface Checkbox<S> {
     list: () => boolean[],
-    set: (list : S[]) => void,
+    set: (list : S[], _checked? : boolean[]) => void,
     update: (index: number) => void,
     update_all: (_checked: boolean) => void,
     get: (index: number) => boolean,
@@ -15,8 +15,13 @@ export const useCheckbox = <T extends unknown>(list : T[] = []) : [Checkbox<T>] 
 
     const [checked, setChecked] = useState<boolean[]>(list.map(_ => false));
 
-    const set = useCallback((_list : T[]) : void => {
-        setChecked(_list.map(_ => false));
+    const set = useCallback((_list : T[], _checked : boolean[] = []) : void => {
+        setChecked(_list.map((elem : T, index : number) => {
+            if(index in _checked) {
+                return _checked[index];
+            }
+            return false;
+        }));
     }, []);
 
     const update = useCallback((index : number) : void => {

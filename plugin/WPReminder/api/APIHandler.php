@@ -59,7 +59,7 @@ final class APIHandler
             TemplateHandler::delete($request, $response);
         });
 
-        $api->get("/subscriber/(?P<id>\d+)", function (Request $request, Response $response) {
+        $api->get("/subscriber/(?P<token>[a-zA-Z0-9-]+)", function (Request $request, Response $response) {
             SubscriberHandler::get($request, $response);
         });
 
