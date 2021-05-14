@@ -64,7 +64,7 @@ final class Loader {
      * @return string
      */
     private function handle_shortcode(array $attributes) : string {
-        $attributes = shortcode_atts(['events' => '', 'name' => ''], $attributes);
+        $attributes = shortcode_atts(['events' => '', 'name' => __('Subscription', 'wp-reminder')], $attributes);
 
         $events = explode(',', $attributes['events']);
         $shortcode = new Shortcode($attributes['name'], $events);

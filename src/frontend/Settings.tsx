@@ -3,8 +3,10 @@ import ReactDOM from "react-dom";
 import {Request} from "../api/Request";
 import {__} from "@wordpress/i18n";
 import {EditSettingsForm} from "./EditSettingsForm";
+import "../styles/frontend.scss";
 import {APISubscriber, SubscriberHandler} from "../api/handler/SubscriberHandler";
 import {APIEvent, EventHandler} from "../api/handler/EventHandler";
+import {Message} from "./Message";
 
 export interface Definitions {
     root : string,
@@ -63,15 +65,10 @@ const Settings = (props : SettingsProps) => {
     }
 
     return (
-        <Fragment>
-            {props.success ? (
-                <div>
-                    <h3>{__('Success', 'wp-reminder')}</h3>
-                    {__('You subscribed successfully')}
-                </div>
-            ) : ""}
+        <div className='wp-reminder-registration-container'>
+            {props.success ? <Message msg={{type: 'success', msg: __('You subscribed successfully')}} /> : ""}
             {renderForm()}
-        </Fragment>
+        </div>
     );
 
 

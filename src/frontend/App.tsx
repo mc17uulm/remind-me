@@ -7,8 +7,9 @@ import {Settings, SettingsHandler} from "../api/handler/SettingsHandler";
 import 'react-toastify/dist/ReactToastify.css';
 import {InitializeStates, useInitializer} from "../hooks/useInitializer";
 import {Either} from "../api/Either";
-import {Loader} from "../components/Loader";
+import {Loader} from "./Loader";
 import { RegisterForm } from "./RegisterForm";
+import {Message} from "./Message";
 
 interface AppProps {
     list: number[]
@@ -42,40 +43,17 @@ const App = (props : AppProps) => {
         })
     }, [props.list]);
 
-    switch(initObject.state) {
-        case InitializeStates.Loading: return <Loader />;
-        case InitializeStates.Error: return <div>Error</div>;
-        case InitializeStates.Success: return <RegisterForm events={initObject.value.events} settings={initObject.value.settings} />;
-    }
-
-    /**
-    const handleSubmit = async (e : MouseEvent) => {
-        e.preventDefault();
-        resetErrors();
-        let error = false;
-        if(email === "") {
-            setEmailError(true);
-            error = true;
-        }
-        // TODO: check if email is valid email
-        if(!acceptGDPR) {
-            setGDPRError(true);
-            error = true;
-        }
-        if(error) return;
-        const resp = await SubscriberHandler.set({
-            email: email,
-            events: checked.filter((val) => val).map((_, index) => events[index].id)
-        });
-        if(resp.has_error()) {
-            console.error(resp.get_error());
-            toast.error(resp.get_error());
-        } else {
-            // TODO: get success message from settings
-            toast.success(__('You subscribed successfully to our service', 'wp-reminder'));
-        }
-    }
-    */
+    return (
+        <div className='wp-reminder-registration-container'>
+            {() => {
+                switch(initObject.state) {
+                    case InitializeStates.Loading: return <Loader />;
+                    case InitializeStates.Error: return <Message msg={{type: "error", msg: ''}} />;
+                    case InitializeStates.Success: return <RegisterForm events={initObject.value.events} settings={initObject.value.settings} />;
+                }
+            }}
+        </div>
+    )
 }
 
 export const run = () => {

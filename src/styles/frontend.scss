@@ -1,7 +1,14 @@
 @import "defaults";
+@import "bootstrap";
+@import "~bootstrap-scss/alert";
+@import "~bootstrap-scss/buttons";
+@import "~bootstrap-scss/forms";
 
 .wp-reminder-registration-container {
-  padding-top: 1em;
+  padding: 1.5em;
+  border: 2px solid black;
+  border-radius: 5px;
+  margin-top: 1em;
 
   .hidden {
     display: none;
@@ -16,6 +23,10 @@
       border-color: red;
     }
     color: red;
+  }
+
+  .form-check-label {
+    display: inline;
   }
 
   .error-text {

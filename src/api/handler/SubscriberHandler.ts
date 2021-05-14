@@ -72,10 +72,18 @@ export class SubscriberHandler
         );
     }
 
-    public static async update(index : number, subscriber : Subscriber) : Promise<Either<boolean>> {
+    public static async update_by_id(id: number, subscriber: Subscriber) : Promise<Either<boolean>> {
         return await Request.put<boolean>(
-            `subscriber/${index}`,
+            `subscriber/${id}`,
             subscriber,
+            PutResponseSchema
+        );
+    }
+
+    public static async update_by_token(token: string, events : number[]) : Promise<Either<boolean>> {
+        return await Request.put<boolean>(
+            `subscriber/${token}`,
+            events,
             PutResponseSchema
         );
     }

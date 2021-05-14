@@ -1,35 +1,45 @@
 import {SemanticICONS} from "semantic-ui-react";
 import {Loader} from "./Loader";
-import React, { Fragment } from "react";
+import React, {Fragment} from "react";
 import {Placeholder} from "./Placeholder";
+import {InitializeStates, InitializerResponse} from "../hooks/useInitializer";
+import {Error} from "./Error";
 
-interface LoadingContentProps {
-    initialized: boolean,
-    hasContent: boolean,
+interface LoadingContentProps<S> {
+    state: InitializerResponse<S>,
     icon?: SemanticICONS,
     button?: React.ReactNode,
     header: string,
-    children?: React.ReactNode
+    children: (val : S) => React.ReactNode
 }
 
-export const LoadingContent = (props : LoadingContentProps) => {
+export const LoadingContent = <T extends unknown>(props : LoadingContentProps<T>) => {
 
-    if(!props.initialized) return (<Loader />);
-    if(props.hasContent) {
-        return (
-            <Fragment>
-                {props.children}
-            </Fragment>
-        );
-    } else {
-        return (
-            <Placeholder
-                icon={props.icon}
-                button={props.button}
-            >
-                {props.header}
-            </Placeholder>
-        )
+    const hasContent = (value : T) : boolean => {
+        if(typeof value === "undefined") return false;
+        // @ts-ignore
+        if(Array.isArray(value) && value.length === 0) return false;
+        return true;
+    }
+
+    switch(props.state.state) {
+        case InitializeStates.Loading:
+            return <Loader/>;
+        case InitializeStates.Error:
+            return <Error>{props.state.error}</Error>;
+        case InitializeStates.Success:
+            return !hasContent(props.state.value) ? (
+                <Placeholder
+                    icon={props.icon}
+                    button={props.button}
+                >
+                    {props.header}
+                </Placeholder>
+            ) : (
+                <Fragment>
+                    {props.children(props.state.value)}
+                </Fragment>
+            )
     }
 
 }

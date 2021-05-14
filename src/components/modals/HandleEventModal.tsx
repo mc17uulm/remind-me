@@ -1,11 +1,11 @@
 import {
     APIEvent,
-    Event,
+    ClockingList,
     empty_event,
+    Event,
     EventHandler,
     get_next_executions,
-    get_repetition,
-    ClockingList
+    get_repetition
 } from "../../api/handler/EventHandler";
 import React, {Fragment, useEffect} from "react";
 import {Button, DropdownItemProps, Form, List, Modal, ModalActions} from "semantic-ui-react";
@@ -91,7 +91,7 @@ export const HandleEventModal = (props : ModalProps<APIEvent>) => {
             if(resp.has_error()) {
                 toast.error(resp.get_error());
             } else {
-                toast.success(__('Saved Event', 'wp-reminder'));
+                toast.success(props.type === ModalState.DELETE ? __('Deleted Event', 'wp-reminder') : __('Saved Event', 'wp-reminder'));
                 props.onSuccess();
             }
         })

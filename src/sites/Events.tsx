@@ -1,11 +1,5 @@
-import React, {Fragment, useEffect, useState} from "react";
-import {
-    Button,
-    Checkbox,
-    Form,
-    Label,
-    Table
-} from "semantic-ui-react";
+import React, {Fragment, useEffect} from "react";
+import {Button, Checkbox, Form, Label, Table} from "semantic-ui-react";
 import {APIEvent, Event, EventHandler, get_next_executions, get_repetition} from "../api/handler/EventHandler";
 import {__} from "@wordpress/i18n";
 import {toast} from "react-toastify";
@@ -17,33 +11,29 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import {useCheckbox} from "../hooks/useCheckbox";
 import {useModal} from "../hooks/useModal";
 import {LoadingContent} from "../components/LoadingContent";
+import {InitializeStates, useInitializer} from "../hooks/useInitializer";
 
 export const Events = () => {
 
     const [modal] = useModal<APIEvent>();
     const [checkbox] = useCheckbox<APIEvent>();
-    const [events, setEvents] = useState<APIEvent[]>([]);
-    const [initialized, setInitialized] = useState<boolean>(false);
+    const [events, loadEvents] = useInitializer<APIEvent[]>();
 
-    const loadEvents = async () : Promise<void> => {
-        const resp = await EventHandler.get_all();
-        if(resp.has_error()) {
-            toast.error(resp.get_error());
-        } else {
-            setEvents(resp.get_value());
-            checkbox.set(resp.get_value());
+    const load = async () : Promise<void> => {
+        const _events = await loadEvents(EventHandler.get_all);
+        if(!_events.has_error()) {
+            checkbox.set(_events.get_value());
         }
-        setInitialized(true);
     }
 
     useEffect(() => {
-        loadEvents();
+        load();
     }, []);
 
     const onSuccess = async () => {
         modal.hide();
         checkbox.update_all(false);
-        await loadEvents();
+        await load();
     }
 
     const renderRepetition = (event : Event) => {
@@ -58,8 +48,9 @@ export const Events = () => {
     }
 
     const generateShortcode = () : string => {
+        const _events = events.state === InitializeStates.Success ? events.value : [];
         return "[wp-reminder events='" +
-            checkbox.filtered().map((_, index : number) => events[index].id).join(',') +
+            checkbox.filtered().map((_, index : number) => _events[index].id).join(',') +
             "']";
     }
 
@@ -86,50 +77,68 @@ export const Events = () => {
 
     const renderTable = () => {
         return (
-            <Table striped>
-                <Table.Header>
-                    <Table.Row>
-                        <Table.HeaderCell>
-                            <Checkbox
-                                indeterminate={checkbox.indeterminate()}
-                                checked={checkbox.all()}
-                                onChange={(e, d) => checkbox.update_all(d.checked ?? false)}
-                            />
-                        </Table.HeaderCell>
-                        <Table.HeaderCell>{__("Event", "wp-reminder")}</Table.HeaderCell>
-                        <Table.HeaderCell>{__("Status", "wp-reminder")}</Table.HeaderCell>
-                        <Table.HeaderCell>{__('Next Execution', 'wp-reminder')}</Table.HeaderCell>
-                    </Table.Row>
-                </Table.Header>
-                <Table.Body>
-                    {events.map((event: APIEvent, index : number) => (
-                        <Table.Row key={`event_${index}`}>
-                            <Table.Cell><Checkbox checked={checkbox.get(index)} onChange={() => checkbox.update(index)} /></Table.Cell>
-                            <Table.Cell>
-                                <strong>{event.name}</strong><br />
-                                <a
-                                    className="wp-reminder-edit-link wp-reminder-small"
-                                    onClick={(e) => modal.edit(e, event)}
-                                >
-                                    <Icon class="cogs" /> Edit
-                                </a> <a
-                                    className="wp-reminder-delete-link wp-reminder-small"
-                                    onClick={(e) =>  modal.delete(e, [event])} color="red"
-                                >
-                                    <Icon class="trash" /> Delete
-                                </a>
-                            </Table.Cell>
-                            <Table.Cell>
-                                {renderRepetition(event)}
-                            </Table.Cell>
-                            <Table.Cell>
-                                <code>{moment(get_next_executions(event.last_execution, event.start, event.clocking)[0]).format('LLLL')}</code>
-                            </Table.Cell>
-                        </Table.Row>
-                    ))}
-                </Table.Body>
-            </Table>
-        )
+            <LoadingContent
+                state={events}
+                header={__('No events found', 'wp-reminder')}
+                icon='calendar times'
+                button={
+                    <Button color='green' onClick={modal.add}>{__('Add Event', 'wp-reminder')}</Button>
+                }
+            >
+                {(val : APIEvent[]) => (
+                    <Fragment>
+                        <Table striped>
+                            <Table.Header>
+                                <Table.Row>
+                                    <Table.HeaderCell>
+                                        <Checkbox
+                                            indeterminate={checkbox.indeterminate()}
+                                            checked={checkbox.all()}
+                                            onChange={(e, d) => checkbox.update_all(d.checked ?? false)}
+                                        />
+                                    </Table.HeaderCell>
+                                    <Table.HeaderCell>{__("Event", "wp-reminder")}</Table.HeaderCell>
+                                    <Table.HeaderCell>{__("Status", "wp-reminder")}</Table.HeaderCell>
+                                    <Table.HeaderCell>{__('Next Execution', 'wp-reminder')}</Table.HeaderCell>
+                                </Table.Row>
+                            </Table.Header>
+                            <Table.Body>
+                                {val.map((event: APIEvent, index : number) => (
+                                    <Table.Row key={`event_${index}`}>
+                                        <Table.Cell><Checkbox checked={checkbox.get(index)} onChange={() => checkbox.update(index)} /></Table.Cell>
+                                        <Table.Cell>
+                                            <strong>{event.name}</strong><br />
+                                            <a
+                                                className="wp-reminder-edit-link wp-reminder-small"
+                                                onClick={(e) => modal.edit(e, event)}
+                                            >
+                                                <Icon class="cogs" /> Edit
+                                            </a> <a
+                                            className="wp-reminder-delete-link wp-reminder-small"
+                                            onClick={(e) =>  modal.delete(e, [event])} color="red"
+                                        >
+                                            <Icon class="trash" /> Delete
+                                        </a>
+                                        </Table.Cell>
+                                        <Table.Cell>
+                                            {renderRepetition(event)}
+                                        </Table.Cell>
+                                        <Table.Cell>
+                                            <code>{moment(get_next_executions(event.last_execution, event.start, event.clocking)[0]).format('LLLL')}</code>
+                                        </Table.Cell>
+                                    </Table.Row>
+                                ))}
+                            </Table.Body>
+                        </Table>
+                        <a
+                            className={"wp-reminder-delete-link" + (checkbox.filtered().length === 0 ? " wp-reminder-disabled" : "")}
+                            onClick={(e) => modal.delete(e, val.filter((event, index) => checkbox.get(index)))}>
+                            {__('Delete selected', 'wp-reminder')}
+                        </a>
+                    </Fragment>
+                )}
+            </LoadingContent>
+        );
     }
 
     return (
@@ -144,22 +153,7 @@ export const Events = () => {
                 </span>
             </div>
             <a className="wp-reminder-add-link" onClick={modal.add}>{__('Add Event', 'wp-reminder')}</a>
-            <LoadingContent
-                initialized={initialized}
-                hasContent={events.length !== 0}
-                header={__('No event found', 'wp-reminder')}
-                icon='calendar times'
-                button={
-                    <Button color='green' onClick={modal.add}>{__('Add Event', 'wp-reminder')}</Button>
-                }
-            >
-                {renderTable()}
-            </LoadingContent>
-            <a
-                className={"wp-reminder-delete-link" + (checkbox.filtered().length === 0 ? " wp-reminder-disabled" : "")}
-                onClick={(e) => modal.delete(e, events.filter((event, index) => checkbox.get(index)))}>
-                {__('Delete selected', 'wp-reminder')}
-            </a>
+            {renderTable()}
             <HandleEventModal
                 open={modal.isOpen()}
                 onClose={modal.hide}

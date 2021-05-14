@@ -13,9 +13,9 @@ interface MessageProps {
 export const Message = (props : MessageProps) => {
 
     return props.msg === null ? null : (
-        <div className={'wp-reminder-message' + (props.msg.type === "success" ? ' success' : ' error')}>
+        <div className={'alert alert-' + (props.msg.type === "success" ? 'success' : 'danger')}>
             <h3>{props.msg.type === "success" ? __('Success', 'wp-reminder') : __('Error', 'wp-reminder')}</h3>
-            <span className='wp-reminder-message-text'>{props.msg.msg}</span>
+            {props.msg.msg}
         </div>
     )
 

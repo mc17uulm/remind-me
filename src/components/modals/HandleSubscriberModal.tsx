@@ -2,8 +2,7 @@ import {APISubscriber, empty_subscriber, Subscriber, SubscriberHandler} from "..
 import {useLoader} from "../../hooks/useLoader";
 import {useForm} from "../../hooks/useForm";
 import {APIEvent, EventHandler} from "../../api/handler/EventHandler";
-import {Fragment, useEffect, useState} from "react";
-import React from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import {Button, DropdownItemProps, Form, Message, Modal} from "semantic-ui-react";
 import {DeleteModal} from "./DeleteModal";
 import {__, _n, sprintf} from "@wordpress/i18n";
@@ -71,7 +70,7 @@ export const HandleSubscriberModal = (props : ModalProps<APISubscriber>) => {
                 case ModalState.EDIT:
                     validate = await form.validate(SubscriberSchema);
                     if(validate.has_error()) return;
-                    resp = await SubscriberHandler.update(props.element.id, {
+                    resp = await SubscriberHandler.update_by_id(props.element.id, {
                         email: form.values.email,
                         events: form.values.events
                     });
@@ -92,7 +91,7 @@ export const HandleSubscriberModal = (props : ModalProps<APISubscriber>) => {
             if(resp.has_error()){
                 toast.error(resp.get_error());
             } else {
-                toast.success(__('Saved Subscriber', 'wp-reminder'));
+                toast.success(props.type === ModalState.DELETE ? __('Deleted Subscriber', 'wp-reminder') : __('Saved Subscriber', 'wp-reminder'));
                 props.onSuccess();
             }
         })

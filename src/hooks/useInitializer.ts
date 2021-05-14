@@ -10,21 +10,24 @@ export enum InitializeStates {
     Success
 }
 
-type useInitializerResponse<S> = [
-    SuccessResponse<S> | ErrorResponse | LoadingResponse,
+export type InitializerResponse<S> = SuccessResponse<S> | ErrorResponse | LoadingResponse;
+
+export type useInitializerResponse<S> = [
+    InitializerResponse<S>,
     (callback : () => Promise<Either<S>>) => Promise<Either<S>>
 ];
 
-interface SuccessResponse<S> {
+export interface SuccessResponse<S> {
     state: InitializeStates.Success,
     value: S
 }
 
-interface ErrorResponse {
+export interface ErrorResponse {
     state: InitializeStates.Error,
+    error: string
 }
 
-interface LoadingResponse {
+export interface LoadingResponse {
     state: InitializeStates.Loading
 }
 
@@ -37,14 +40,16 @@ interface LoadingResponse {
 export const useInitializer = <T extends unknown>() : useInitializerResponse<T> => {
 
     const [elem, setElem] = useState<T>();
+    const [error, setError] = useState<string>("");
     const [state, setState] = useState<InitializeStates>(InitializeStates.Loading);
 
     // function is executed to asynchronously execute callback and handle Either response
-    const load = async (callback : () => Promise<Either<T>>, handle: boolean = false, show : boolean = true, log : boolean = true) : Promise<Either<T>> => {
+    const load = async (callback : () => Promise<Either<T>>) : Promise<Either<T>> => {
         setState(InitializeStates.Loading);
         const res = await callback();
         if(res.has_error()) {
-            setState(InitializeStates.Error)
+            setState(InitializeStates.Error);
+            setError(res.get_error());
         } else {
             setState(InitializeStates.Success);
             setElem(res.get_value());
@@ -58,9 +63,9 @@ export const useInitializer = <T extends unknown>() : useInitializerResponse<T> 
      */
     switch(state) {
         case InitializeStates.Loading: return [{state: state}, load];
-        case InitializeStates.Error: return [{state: state}, load];
+        case InitializeStates.Error: return [{state: state, error: error}, load];
         case InitializeStates.Success:
-            if(typeof elem === "undefined") return [{state: InitializeStates.Error}, load];
+            if(typeof elem === "undefined") return [{state: InitializeStates.Error, error: 'Invalid state'}, load];
             return [{state: state, value: elem}, load];
     }
 

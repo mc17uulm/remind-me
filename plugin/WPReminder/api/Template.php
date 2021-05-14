@@ -57,7 +57,7 @@ final class Template
      */
     public function render_success (Subscriber $subscriber) : string {
         $settings = Settings::get();
-        $edit_url = $settings->settings_page . '?wp-reminder-subscriber-token=' . $subscriber->get_token();
+        $edit_url = $settings->settings_page . '?wp-reminder-action=edit&wp-reminder-token=' . $subscriber->get_token();
         return str_replace('${unsubscribe_link}', "<a href='$edit_url'>" . __('Unsubscribe or edit subscription', 'wp-reminder') . "</a>", $this->content);
     }
 
