@@ -190,7 +190,7 @@ final class Subscriber
      * @return bool
      * @throws DatabaseException
      */
-    public static function update(int $id, array $resource) : bool {
+    public static function update_by_id(int $id, array $resource) : bool {
         $db = Database::get_database();
         return $db->update(
             "UPDATE {$db->get_table_name("subscribers")} SET email = %s, events = %s WHERE token = %s AND id = %d",
@@ -198,6 +198,21 @@ final class Subscriber
             json_encode($resource["events"]),
             $resource["token"],
             $id
+        );
+    }
+
+    /**
+     * @param string $token
+     * @param array $resource
+     * @return bool
+     * @throws DatabaseException
+     */
+    public static function update_by_token(string $token, array $resource) : bool {
+        $db = Database::get_database();
+        return $db->update(
+            "UPDATE {$db->get_table_name('subscribers')} SET events = %s WHERE token = %s",
+            json_encode($resource["events"]),
+            $token
         );
     }
 
@@ -211,6 +226,19 @@ final class Subscriber
         return $db->delete(
             "DELETE FROM {$db->get_table_name("subscribers")} WHERE id = %d",
             $id
+        );
+    }
+
+    /**
+     * @param string $token
+     * @return bool
+     * @throws DatabaseException
+     */
+    public static function unsubscribe(string $token) : bool {
+        $db = Database::get_database();
+        return $db->delete(
+            "DELETE FROM {$db->get_table_name('subscribers')} WHERE token = %s",
+            $token
         );
     }
 

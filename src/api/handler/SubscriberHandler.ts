@@ -80,10 +80,10 @@ export class SubscriberHandler
         );
     }
 
-    public static async update_by_token(token: string, events : number[]) : Promise<Either<boolean>> {
+    public static async update_by_token(token: string, subscriber : Subscriber) : Promise<Either<boolean>> {
         return await Request.put<boolean>(
             `subscriber/${token}`,
-            events,
+            subscriber,
             PutResponseSchema
         );
     }
@@ -101,6 +101,13 @@ export class SubscriberHandler
             return await Request.delete<boolean>(`subscriber/${elem}`, DeleteResponseSchema);
         }));
         return Either.collapse(list, true, (t1 : boolean, t2 : boolean) => t1 && t2);
+    }
+
+    public static async unsubscribe(token : string) : Promise<Either<boolean>> {
+        return await Request.delete<boolean>(
+            `subscriber/${token}`,
+            DeleteResponseSchema
+        );
     }
 
 }

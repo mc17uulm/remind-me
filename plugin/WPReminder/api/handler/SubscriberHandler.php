@@ -60,7 +60,14 @@ final class SubscriberHandler implements RestHandler
 
         if(!is_numeric($id)) throw new APIException("'id' is not set or not numeric");
 
-        $res->success(Subscriber::update($id, $subscriber));
+        $res->success(Subscriber::update_by_id($id, $subscriber));
+    }
+
+    public static function edit(Request $req, Response $res) : void {
+        $subscriber = (new SubscriberSchema())->validate($req)->get_result();
+        $token = $req->get_param('token');
+
+        $res->success(Subscriber::update_by_token($token, $subscriber));
     }
 
     /**
@@ -76,6 +83,16 @@ final class SubscriberHandler implements RestHandler
         if(!is_numeric($id)) throw new APIException("'id' is not set or not numeric");
 
         $res->success(Subscriber::delete($id));
+    }
+
+    /**
+     * @param Request $req
+     * @param Response $res
+     * @throws DatabaseException
+     */
+    public static function unsubscribe(Request $req, Response $res) : void {
+        $token = $req->get_param('token');
+        $res->success(Subscriber::unsubscribe($token));
     }
 
 }

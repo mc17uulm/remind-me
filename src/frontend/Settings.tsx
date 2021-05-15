@@ -52,6 +52,10 @@ const Settings = (props : SettingsProps) => {
         setLoading(false);
     }
 
+    const doError = (error : string) : void => {
+        setError(error);
+    }
+
     useEffect(() => {
         load();
     }, []);
@@ -59,7 +63,7 @@ const Settings = (props : SettingsProps) => {
     const renderForm = () => {
         if(loading) return <div>Loading</div>;
         if((typeof subscriber !== "undefined") && (typeof events !== "undefined")) {
-            return <EditSettingsForm subscriber={subscriber} events={events} />;
+            return <EditSettingsForm subscriber={subscriber} events={events} setError={doError} />;
         }
         return "";
     }
