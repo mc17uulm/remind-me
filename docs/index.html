@@ -1,0 +1,1052 @@
+<!doctype html>
+<html>
+  <head>
+    <title>WP Reminder API</title>
+    <style type="text/css">
+      body {
+	font-family: Trebuchet MS, sans-serif;
+	font-size: 15px;
+	color: #444;
+	margin-right: 24px;
+}
+
+h1	{
+	font-size: 25px;
+}
+h2	{
+	font-size: 20px;
+}
+h3	{
+	font-size: 16px;
+	font-weight: bold;
+}
+hr	{
+	height: 1px;
+	border: 0;
+	color: #ddd;
+	background-color: #ddd;
+}
+
+.app-desc {
+  clear: both;
+  margin-left: 20px;
+}
+.param-name {
+  width: 100%;
+}
+.license-info {
+  margin-left: 20px;
+}
+
+.license-url {
+  margin-left: 20px;
+}
+
+.model {
+  margin: 0 0 0px 20px;
+}
+
+.method {
+  margin-left: 20px;
+}
+
+.method-notes	{
+	margin: 10px 0 20px 0;
+	font-size: 90%;
+	color: #555;
+}
+
+pre {
+  padding: 10px;
+  margin-bottom: 2px;
+}
+
+.http-method {
+ text-transform: uppercase;
+}
+
+pre.get {
+  background-color: #0f6ab4;
+}
+
+pre.post {
+  background-color: #10a54a;
+}
+
+pre.put {
+  background-color: #c5862b;
+}
+
+pre.delete {
+  background-color: #a41e22;
+}
+
+.huge	{
+	color: #fff;
+}
+
+pre.example {
+  background-color: #f3f3f3;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+code {
+  white-space: pre;
+}
+
+.nickname {
+  font-weight: bold;
+}
+
+.method-path {
+  font-size: 1.5em;
+  background-color: #0f6ab4;
+}
+
+.up {
+  float:right;
+}
+
+.parameter {
+  width: 500px;
+}
+
+.param {
+  width: 500px;
+  padding: 10px 0 0 20px;
+  font-weight: bold;
+}
+
+.param-desc {
+  width: 700px;
+  padding: 0 0 0 20px;
+  color: #777;
+}
+
+.param-type {
+  font-style: italic;
+}
+
+.param-enum-header {
+width: 700px;
+padding: 0 0 0 60px;
+color: #777;
+font-weight: bold;
+}
+
+.param-enum {
+width: 700px;
+padding: 0 0 0 80px;
+color: #777;
+font-style: italic;
+}
+
+.field-label {
+  padding: 0;
+  margin: 0;
+  clear: both;
+}
+
+.field-items	{
+	padding: 0 0 15px 0;
+	margin-bottom: 15px;
+}
+
+.return-type {
+  clear: both;
+  padding-bottom: 10px;
+}
+
+.param-header {
+  font-weight: bold;
+}
+
+.method-tags {
+  text-align: right;
+}
+
+.method-tag {
+  background: none repeat scroll 0% 0% #24A600;
+  border-radius: 3px;
+  padding: 2px 10px;
+  margin: 2px;
+  color: #FFF;
+  display: inline-block;
+  text-decoration: none;
+}
+
+    </style>
+  </head>
+  <body>
+  <h1>WP Reminder API</h1>
+    <div class="app-desc">API specification for the WPReminder WordPress plugin</div>
+    <div class="app-desc">More information: <a href="https://openapi-generator.tech">https://openapi-generator.tech</a></div>
+    <div class="app-desc">Contact Info: <a href="contact@code-leaf.de">contact@code-leaf.de</a></div>
+    <div class="app-desc">Version: 1.0.0</div>
+    <div class="app-desc">BasePath:</div>
+    <div class="license-info">All rights reserved</div>
+    <div class="license-url">http://apache.org/licenses/LICENSE-2.0.html</div>
+  <h2>Access</h2>
+    <ol>
+      <li>APIKey KeyParamName:wordpress_logged_in_{token} KeyInQuery:false KeyInHeader:false</li>
+      <li>APIKey KeyParamName:X-WP-Nonce KeyInQuery:false KeyInHeader:true</li>
+    </ol>
+
+  <h2><a name="__Methods">Methods</a></h2>
+  [ Jump to <a href="#__Models">Models</a> ]
+
+  <h3>Table of Contents </h3>
+  <div class="method-summary"></div>
+  <h4><a href="#Event">Event</a></h4>
+  <ul>
+  <li><a href="#deleteEvent"><code><span class="http-method">delete</span> /event/{eventId}</code></a></li>
+  <li><a href="#findEventById"><code><span class="http-method">get</span> /event/{eventId}</code></a></li>
+  <li><a href="#getAllEvents"><code><span class="http-method">get</span> /events</code></a></li>
+  <li><a href="#setNewEvent"><code><span class="http-method">post</span> /event</code></a></li>
+  <li><a href="#updateEvent"><code><span class="http-method">put</span> /event/{eventId}</code></a></li>
+  </ul>
+  <h4><a href="#Settings">Settings</a></h4>
+  <ul>
+  <li><a href="#getSettings"><code><span class="http-method">get</span> /settings</code></a></li>
+  <li><a href="#updateSettings"><code><span class="http-method">put</span> /settings</code></a></li>
+  </ul>
+  <h4><a href="#Subscriber">Subscriber</a></h4>
+  <ul>
+  <li><a href="#deleteSubscriberById"><code><span class="http-method">delete</span> /subscriber/{id}</code></a></li>
+  <li><a href="#deleteSubscriberByToken"><code><span class="http-method">delete</span> /subscriber/{token}</code></a></li>
+  <li><a href="#findSubscriberByToken"><code><span class="http-method">get</span> /subscriber/{token}</code></a></li>
+  <li><a href="#getAllSubscriber"><code><span class="http-method">get</span> /subscribers</code></a></li>
+  <li><a href="#setNewSubscriberAdmin"><code><span class="http-method">post</span> /subscriber</code></a></li>
+  <li><a href="#setNewSubscriberOpen"><code><span class="http-method">post</span> /subscribe</code></a></li>
+  <li><a href="#updateSubscriberById"><code><span class="http-method">put</span> /subscriber/{id}</code></a></li>
+  <li><a href="#updateSubscriberByToken"><code><span class="http-method">put</span> /subscriber/{token}</code></a></li>
+  </ul>
+
+  <h1><a name="Event">Event</a></h1>
+  <div class="method"><a name="deleteEvent"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="delete"><code class="huge"><span class="http-method">delete</span> /event/{eventId}</code></pre></div>
+    <div class="method-summary">Deletes an event (<span class="nickname">deleteEvent</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">eventId (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  default: null format: int64</div>
+    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      
+      Boolean
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    successful deleted resource
+        <a href="#Boolean">Boolean</a>
+    <h4 class="field-label">400</h4>
+    internal server error
+        <a href="#error">error</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="findEventById"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /event/{eventId}</code></pre></div>
+    <div class="method-summary">Finds a event by id (<span class="nickname">findEventById</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">eventId (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  default: null format: int64</div>
+    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#event">event</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "clocking" : 6,
+  "last_execution" : 5,
+  "name" : "name",
+  "start" : 1,
+  "active" : true,
+  "id" : 0
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    successful request
+        <a href="#event">event</a>
+    <h4 class="field-label">400</h4>
+    internal server error
+        <a href="#error">error</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getAllEvents"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /events</code></pre></div>
+    <div class="method-summary">Get all events (<span class="nickname">getAllEvents</span>)</div>
+    <div class="method-notes"></div>
+
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#event">event</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "clocking" : 6,
+  "last_execution" : 5,
+  "name" : "name",
+  "start" : 1,
+  "active" : true,
+  "id" : 0
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    successful operation
+        
+    <h4 class="field-label">400</h4>
+    internal server error
+        <a href="#error">error</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="setNewEvent"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /event</code></pre></div>
+    <div class="method-summary">Add new event (<span class="nickname">setNewEvent</span>)</div>
+    <div class="method-notes"></div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">event <a href="#event">event</a> (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+
+    </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      
+      BigDecimal
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    successful add resource
+        <a href="#BigDecimal">BigDecimal</a>
+    <h4 class="field-label">400</h4>
+    internal server error
+        <a href="#error">error</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="updateEvent"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="put"><code class="huge"><span class="http-method">put</span> /event/{eventId}</code></pre></div>
+    <div class="method-summary">Updates an existing event (<span class="nickname">updateEvent</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">eventId (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  default: null format: int64</div>
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">event <a href="#event">event</a> (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+
+    </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      
+      Boolean
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    successful updated resource
+        <a href="#Boolean">Boolean</a>
+    <h4 class="field-label">400</h4>
+    internal server error
+        <a href="#error">error</a>
+  </div> <!-- method -->
+  <hr/>
+  <h1><a name="Settings">Settings</a></h1>
+  <div class="method"><a name="getSettings"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /settings</code></pre></div>
+    <div class="method-summary">Get settings (<span class="nickname">getSettings</span>)</div>
+    <div class="method-notes"></div>
+
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#settings">settings</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "template_accept" : "template_accept",
+  "template_check" : "template_check",
+  "double_opt_in_msg" : "double_opt_in_msg",
+  "subject_signout" : "subject_signout",
+  "subject_email" : "subject_email",
+  "text_privacy" : "text_privacy",
+  "settings_page" : "settings_page",
+  "signin_msg" : "signin_msg",
+  "subject_check" : "subject_check",
+  "subject_accept" : "subject_accept",
+  "signout_msg" : "signout_msg",
+  "template_signout" : "template_signout",
+  "template_email" : "template_email"
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    successful operation
+        <a href="#settings">settings</a>
+    <h4 class="field-label">400</h4>
+    internal server error
+        <a href="#error">error</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="updateSettings"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="put"><code class="huge"><span class="http-method">put</span> /settings</code></pre></div>
+    <div class="method-summary">Update settings (<span class="nickname">updateSettings</span>)</div>
+    <div class="method-notes"></div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">settings <a href="#settings">settings</a> (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+
+    </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      
+      Boolean
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    successful updated resource
+        <a href="#Boolean">Boolean</a>
+    <h4 class="field-label">400</h4>
+    internal server error
+        <a href="#error">error</a>
+  </div> <!-- method -->
+  <hr/>
+  <h1><a name="Subscriber">Subscriber</a></h1>
+  <div class="method"><a name="deleteSubscriberById"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="delete"><code class="huge"><span class="http-method">delete</span> /subscriber/{id}</code></pre></div>
+    <div class="method-summary">Deletes an subscriber by id (<span class="nickname">deleteSubscriberById</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  default: null format: int64</div>
+    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      
+      Boolean
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    successful deleted resource
+        <a href="#Boolean">Boolean</a>
+    <h4 class="field-label">400</h4>
+    internal server error
+        <a href="#error">error</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="deleteSubscriberByToken"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="delete"><code class="huge"><span class="http-method">delete</span> /subscriber/{token}</code></pre></div>
+    <div class="method-summary">Deletes an subscriber by token (<span class="nickname">deleteSubscriberByToken</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">token (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  default: null </div>
+    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      
+      Boolean
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    successful deleted resource
+        <a href="#Boolean">Boolean</a>
+    <h4 class="field-label">400</h4>
+    internal server error
+        <a href="#error">error</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="findSubscriberByToken"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /subscriber/{token}</code></pre></div>
+    <div class="method-summary">Find a subscriber by token (<span class="nickname">findSubscriberByToken</span>)</div>
+    <div class="method-notes"></div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">token (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  default: null </div>
+    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#subscriber">subscriber</a>
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "registered" : 6,
+  "active" : true,
+  "id" : 0,
+  "email" : "email",
+  "events" : [ 1, 1 ]
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    successful request
+        <a href="#subscriber">subscriber</a>
+    <h4 class="field-label">400</h4>
+    internal server error
+        <a href="#error">error</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getAllSubscriber"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /subscribers</code></pre></div>
+    <div class="method-summary">Get all subscriber (<span class="nickname">getAllSubscriber</span>)</div>
+    <div class="method-notes"></div>
+
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#subscriber">subscriber</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "registered" : 6,
+  "active" : true,
+  "id" : 0,
+  "email" : "email",
+  "events" : [ 1, 1 ]
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    successful operation
+        
+    <h4 class="field-label">400</h4>
+    internal server error
+        <a href="#error">error</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="setNewSubscriberAdmin"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /subscriber</code></pre></div>
+    <div class="method-summary">Add new subscriber (<span class="nickname">setNewSubscriberAdmin</span>)</div>
+    <div class="method-notes">For admin only: add a new subscriber</div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">subscriber <a href="#subscriber">subscriber</a> (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+
+    </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      
+      BigDecimal
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    successful add resource
+        <a href="#BigDecimal">BigDecimal</a>
+    <h4 class="field-label">400</h4>
+    internal server error
+        <a href="#error">error</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="setNewSubscriberOpen"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /subscribe</code></pre></div>
+    <div class="method-summary">Add new subscriber (<span class="nickname">setNewSubscriberOpen</span>)</div>
+    <div class="method-notes">A user can add a subscription</div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">subscriber <a href="#subscriber">subscriber</a> (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+
+    </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      
+      BigDecimal
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    successful add resource
+        <a href="#BigDecimal">BigDecimal</a>
+    <h4 class="field-label">400</h4>
+    internal server error
+        <a href="#error">error</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="updateSubscriberById"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="put"><code class="huge"><span class="http-method">put</span> /subscriber/{id}</code></pre></div>
+    <div class="method-summary">Updates an existing subscriber (<span class="nickname">updateSubscriberById</span>)</div>
+    <div class="method-notes">Admin can update his subscription settings</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">id (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  default: null format: int64</div>
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">subscriber <a href="#subscriber">subscriber</a> (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+
+    </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      
+      Boolean
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    successful updated resource
+        <a href="#Boolean">Boolean</a>
+    <h4 class="field-label">400</h4>
+    internal server error
+        <a href="#error">error</a>
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="updateSubscriberByToken"/>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="put"><code class="huge"><span class="http-method">put</span> /subscriber/{token}</code></pre></div>
+    <div class="method-summary">Updates an existing subscriber (<span class="nickname">updateSubscriberByToken</span>)</div>
+    <div class="method-notes">A user can update his subscription settings</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">token (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  default: null </div>
+    </div>  <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Request body</h3>
+    <div class="field-items">
+      <div class="param">subscriber <a href="#subscriber">subscriber</a> (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Body Parameter</span> &mdash;  </div>
+
+    </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      
+      Boolean
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    successful updated resource
+        <a href="#Boolean">Boolean</a>
+    <h4 class="field-label">400</h4>
+    internal server error
+        <a href="#error">error</a>
+  </div> <!-- method -->
+  <hr/>
+
+  <h2><a name="__Models">Models</a></h2>
+  [ Jump to <a href="#__Methods">Methods</a> ]
+
+  <h3>Table of Contents</h3>
+  <ol>
+    <li><a href="#error"><code>error</code> - </a></li>
+    <li><a href="#event"><code>event</code> - </a></li>
+    <li><a href="#settings"><code>settings</code> - </a></li>
+    <li><a href="#subscriber"><code>subscriber</code> - </a></li>
+  </ol>
+
+  <div class="model">
+    <h3><a name="error"><code>error</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">status </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+        <div class="param-enum-header">Enum:</div>
+        <div class="param-enum">error</div>
+<div class="param">message </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">debug (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="event"><code>event</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">id (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">name </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">clocking </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">start </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">active (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span>  </div>
+<div class="param">last_execution (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="settings"><code>settings</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">text_privacy </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">template_check </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">subject_check </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">template_accept </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">subject_accept </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">template_signout </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">subject_signout </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">template_email </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">subject_email </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">signin_msg </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">double_opt_in_msg </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">signout_msg </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">settings_page </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="subscriber"><code>subscriber</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">id (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">email </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">registered (optional)</div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span>  </div>
+<div class="param">active (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span>  </div>
+<div class="param">events </div><div class="param-desc"><span class="param-type"><a href="#integer">array[Integer]</a></span>  </div>
+    </div>  <!-- field-items -->
+  </div>
+  </body>
+</html>

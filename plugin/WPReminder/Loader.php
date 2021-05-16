@@ -3,9 +3,11 @@
 namespace WPReminder;
 
 use WPReminder\api\APIHandler;
+use WPReminder\api\handler\LinkHandler;
 use WPReminder\api\objects\Settings;
 use WPReminder\cron\CronJob;
 use WPReminder\db\Database;
+use WPReminder\db\DatabaseException;
 
 /**
  * Class Loader
@@ -15,7 +17,7 @@ final class Loader {
 
     /**
      * @param string $file
-     * @throws db\DatabaseException
+     * @throws DatabaseException|PluginException
      */
     public function run(string $file) : void {
 
@@ -29,20 +31,32 @@ final class Loader {
         add_action('admin_enqueue_scripts', fn() => $this->register_backend_scripts($file));
         add_action('wp_enqueue_scripts', fn() => $this->register_frontend_scripts($file));
         add_action('wp_reminder_cron_job', fn() => CronJob::run());
+        add_action('template_redirect', fn() => LinkHandler::check());
 
         add_shortcode('wp-reminder', fn(array $attr) => $this->handle_shortcode($attr));
+        add_shortcode('wp-reminder-settings', fn() => $this->handle_settings_shortcode());
 
     }
 
+    /**
+     * @throws PluginException
+     */
     private function activate() : void {
+        if(!current_user_can('activate_plugins')) return;
         Database::initialize();
+        Site::add();
         Settings::create_default();
         CronJob::activate();
     }
 
+    /**
+     * @throws PluginException
+     */
     private function deactivate() : void {
+        if(!current_user_can('activate_plugins')) return;
         Database::remove();
         Settings::delete();
+        Site::remove();
     }
 
     /**
@@ -50,11 +64,26 @@ final class Loader {
      * @return string
      */
     private function handle_shortcode(array $attributes) : string {
-        $attributes = shortcode_atts(['events' => '', 'name' => ''], $attributes);
+        $attributes = shortcode_atts(['events' => '', 'name' => __('Subscription', 'wp-reminder')], $attributes);
 
         $events = explode(',', $attributes['events']);
         $shortcode = new Shortcode($attributes['name'], $events);
         return $shortcode->render();
+    }
+
+    /**
+     * @return string
+     */
+    private function handle_settings_shortcode() : string {
+        wp_enqueue_script('wp-reminder-frontend-settings.js');
+        wp_enqueue_style('wp-reminder-frontend-settings.css');
+
+        return "
+            <div>
+                <h4>" . __('Subscription settings', 'wp-reminder') . "</h4>
+                <div id='wp-reminder-frontend-settings-form'></div>
+            </div>
+        ";
     }
 
     private function register_menu() : void {
@@ -163,9 +192,24 @@ final class Loader {
             true
         );
 
+        wp_register_script(
+            'wp-reminder-frontend-settings.js',
+            "$base/dist/js/wp-reminder-frontend_settings-handler.js",
+            ['wp-i18n'],
+            WP_REMINDER_VERSION,
+            true
+        );
+
         wp_register_style(
             'wp-reminder-frontend.css',
             "$base/dist/css/wp-reminder-frontend-style.css",
+            [],
+            WP_REMINDER_VERSION
+        );
+
+        wp_register_style(
+            'wp-reminder-frontend-settings.css',
+            "$base/dist/css/wp-reminder-frontend_settings-style.css",
             [],
             WP_REMINDER_VERSION
         );
@@ -179,6 +223,24 @@ final class Loader {
                 'slug' => 'wp-reminder',
                 'version' => 'v1'
             ]
+        );
+
+        wp_localize_script(
+            'wp-reminder-frontend-settings.js',
+            'wp_reminder_definitions',
+            [
+                'root' => esc_url_raw(rest_url()),
+                'nonce' => wp_create_nonce('wp_rest'),
+                'slug' => 'wp-reminder',
+                'version' => 'v1',
+                'base' => get_site_url()
+            ]
+        );
+
+        wp_set_script_translations(
+            'wp_reminder-frontend-settings.js',
+            'wp-reminder',
+            plugin_dir_path($file) . "/languages/"
         );
 
         wp_set_script_translations(

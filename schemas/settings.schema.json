@@ -8,10 +8,25 @@
     "template_check": {
       "type": "string"
     },
+    "subject_check": {
+      "type": "string"
+    },
     "template_accept": {
       "type": "string"
     },
+    "subject_accept": {
+      "type": "string"
+    },
     "template_signout": {
+      "type": "string"
+    },
+    "subject_signout": {
+      "type": "string"
+    },
+    "template_email": {
+      "type": "string"
+    },
+    "subject_email": {
       "type": "string"
     },
     "signin_msg": {
@@ -22,8 +37,25 @@
     },
     "signout_msg": {
       "type": "string"
+    },
+    "settings_page": {
+      "type": "string"
     }
   },
-  "required": ["text_privacy", "template_check", "template_accept", "template_signout", "signin_msg", "double_opt_in_msg", "signout_msg"],
+  "required": [
+    "text_privacy",
+    "template_check",
+    "subject_check",
+    "template_accept",
+    "subject_accept",
+    "template_signout",
+    "subject_signout",
+    "template_email",
+    "subject_email",
+    "signin_msg",
+    "double_opt_in_msg",
+    "signout_msg",
+    "settings_page"
+  ],
   "additionalProperties": false
 }

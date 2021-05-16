@@ -2,4 +2,10 @@
 
 .quill {
     width: 95%;
+
+    &.error {
+        margin: 0 !important;
+        border: 1px solid #e0b4b4 !important;
+        background: #fff6f6 !important;
+    }
 }

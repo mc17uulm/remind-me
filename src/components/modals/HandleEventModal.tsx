@@ -1,6 +1,13 @@
-import {APIEvent, Event, empty_event, EventHandler, get_next_executions, get_repetition} from "../../api/handler/EventHandler";
-import {HandableModalProps, HandableModalType } from "./HandableModal";
-import React, {Fragment, useEffect, useState,} from "react";
+import {
+    APIEvent,
+    ClockingList,
+    empty_event,
+    Event,
+    EventHandler,
+    get_next_executions,
+    get_repetition
+} from "../../api/handler/EventHandler";
+import React, {Fragment, useEffect} from "react";
 import {Button, DropdownItemProps, Form, List, Modal, ModalActions} from "semantic-ui-react";
 import {__, _n, sprintf} from "@wordpress/i18n";
 import {DeleteModal} from "./DeleteModal";
@@ -10,15 +17,7 @@ import {Either} from "../../api/Either";
 import {useLoader} from "../../hooks/useLoader";
 import {useForm} from "../../hooks/useForm";
 import * as yup from 'yup';
-
-const ClockingList : DropdownItemProps[] = [
-    {key: '1', value: 1, text: __('monthly', 'wp-reminder')},
-    {key: '2', value: 2, text: __('2-monthly', 'wp-reminder')},
-    {key: '3', value: 3, text: __('quarterly', 'wp-reminder')},
-    {key: '4', value: 4, text: __('4-monthly', 'wp-reminder')},
-    {key: '6', value: 6, text: __('half-yearly', 'wp-reminder')},
-    {key: '12', value: 12, text: __('yearly', 'wp-reminder')},
-];
+import {ModalProps, ModalState} from "../../hooks/useModal";
 
 const MonthList : DropdownItemProps[] = [
     {key: '1', value: 0, text: __('January', 'wp-reminder')},
@@ -35,27 +34,25 @@ const MonthList : DropdownItemProps[] = [
     {key: '12', value: 11, text: __('December', 'wp-reminder')},
 ];
 
-const schema = yup.object().shape({
-   name: yup.string().required(),
-   clocking: yup.number().required()
+const EventSchema : yup.SchemaOf<any> = yup.object({
+    name: yup.string().required(__('Please insert a event name'))
 });
 
-export const HandleEventModal = (props : HandableModalProps<APIEvent>) => {
+export const HandleEventModal = (props : ModalProps<APIEvent>) => {
 
     const [loading, doLoading] = useLoader();
     const [form, setForm] = useForm<Event>(empty_event());
-    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        if(props.type === HandableModalType.EDIT) {
+        if(props.type === ModalState.EDIT) {
             setForm({
-                start: props.element.start * 1000,
+                start: props.element.start,
                 clocking: props.element.clocking,
                 name: props.element.name
             });
         } else {
             setForm({
-                start: 0,
+                start: new Date().getTime(),
                 clocking: 1,
                 name: ""
             });
@@ -64,49 +61,44 @@ export const HandleEventModal = (props : HandableModalProps<APIEvent>) => {
 
     const onSubmit = async () => {
         await doLoading(async () => {
-            const resp = await sendRequest();
+            let validate, resp;
+            switch(props.type) {
+                case ModalState.EDIT:
+                    validate = await form.validate(EventSchema);
+                    if(validate.has_error()) return;
+                    resp =await EventHandler.update(props.element.id, {
+                        name: form.values.name,
+                        clocking: form.values.clocking,
+                        start: Math.floor(form.values.start)
+                    });
+                    break;
+                case ModalState.DELETE:
+                    resp = await EventHandler.delete(props.elements.map(val => val.id));
+                    break;
+                case ModalState.ADD:
+                    validate = await form.validate(EventSchema);
+                    if(validate.has_error()) return;
+                    resp = await EventHandler.set({
+                        name: form.values.name,
+                        clocking: form.values.clocking,
+                        start: Math.floor(form.values.start)
+                    });
+                    break;
+                default:
+                    resp = Either.error("");
+                    break;
+            }
             if(resp.has_error()) {
                 toast.error(resp.get_error());
             } else {
-                toast.success(__('Saved Event', 'wp-reminder'));
+                toast.success(props.type === ModalState.DELETE ? __('Deleted Event', 'wp-reminder') : __('Saved Event', 'wp-reminder'));
                 props.onSuccess();
             }
         })
     }
 
-    const checkForm = () : boolean => {
-        if(form.values.name === "") {
-            setError(__('Please insert a event name', 'wp-reminder'));
-            return false;
-        }
-        return true;
-    }
-
-    const sendRequest = async () : Promise<Either<any>> => {
-        switch(props.type) {
-            case HandableModalType.EDIT:
-                if(!checkForm()) return Either.error("");
-                return await EventHandler.update(props.element.id, {
-                    name: form.values.name,
-                    clocking: form.values.clocking,
-                    start: Math.floor(form.values.start / 1000)
-                });
-            case HandableModalType.DELETE:
-                return await EventHandler.delete(props.elements.map(val => val.id));
-            case HandableModalType.ADD:
-                if(!checkForm()) return Either.error("");
-                return await EventHandler.set({
-                    name: form.values.name,
-                    clocking: form.values.clocking,
-                    start: Math.floor(form.values.start / 1000)
-                });
-            default: return Either.error("");
-        }
-    }
-
     const nextExecutions = () : Date[] => {
-        const last_execution = (props.type === HandableModalType.EDIT) ? props.element.last_execution : 0;
-
+        const last_execution = (props.type === ModalState.EDIT) ? props.element.last_execution : 0;
         return get_next_executions(last_execution, form.values.start, form.values.clocking, 4);
     }
 
@@ -126,7 +118,7 @@ export const HandleEventModal = (props : HandableModalProps<APIEvent>) => {
         return (
             <Fragment>
                 <Modal.Header>
-                    {props.type === HandableModalType.ADD ?
+                    {props.type === ModalState.ADD ?
                         __('Add Event', 'wp-reminder') :
                         __('Edit Event', 'wp-reminder')
                     }
@@ -141,7 +133,7 @@ export const HandleEventModal = (props : HandableModalProps<APIEvent>) => {
                                 label={__('Event name', 'wp-reminder')}
                                 placeholder={__('Event name', 'wp-reminder')}
                                 onChange={form.onChange}
-                                error={form.getError('name')}
+                                error={form.errors.name}
                             />
                             <Form.Input
                                 width={2}
@@ -199,7 +191,7 @@ export const HandleEventModal = (props : HandableModalProps<APIEvent>) => {
     }
 
     const renderConfirmation = () => {
-        if(props.type === HandableModalType.DELETE) {
+        if(props.type === ModalState.DELETE) {
             return (
                 <DeleteModal
                     title={__('Delete Event', 'wp-reminder')}
@@ -226,10 +218,10 @@ export const HandleEventModal = (props : HandableModalProps<APIEvent>) => {
 
     const getContent = () => {
         switch(props.type) {
-            case HandableModalType.ADD:
-            case HandableModalType.EDIT:
+            case ModalState.ADD:
+            case ModalState.EDIT:
                 return renderContent();
-            case HandableModalType.DELETE:
+            case ModalState.DELETE:
                 return renderConfirmation();
         }
     }

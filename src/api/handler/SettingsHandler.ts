@@ -5,11 +5,17 @@ import {PutResponseSchema, Request} from "../Request";
 export interface Settings {
     text_privacy: string,
     template_check: string,
+    subject_check: string,
     template_accept: string,
+    subject_accept: string,
     template_signout: string,
+    subject_signout: string,
+    template_email: string,
+    subject_email: string,
     signin_msg: string,
     double_opt_in_msg: string,
-    signout_msg: string
+    signout_msg: string,
+    settings_page: string
 }
 
 export const SettingsSchema : JSONSchemaType<Settings> = {
@@ -21,10 +27,25 @@ export const SettingsSchema : JSONSchemaType<Settings> = {
         template_check: {
             type: "string"
         },
+        subject_check: {
+            type: "string"
+        },
         template_accept: {
             type: "string"
         },
+        subject_accept: {
+            type: "string"
+        },
         template_signout: {
+            type: "string"
+        },
+        subject_signout: {
+            type: "string"
+        },
+        template_email: {
+            type: "string"
+        },
+        subject_email: {
             type: "string"
         },
         signin_msg: {
@@ -35,9 +56,26 @@ export const SettingsSchema : JSONSchemaType<Settings> = {
         },
         signout_msg: {
             type: "string"
+        },
+        settings_page: {
+            type: "string"
         }
     },
-    required: ["text_privacy", "template_check", "template_accept", "template_signout", "signin_msg", "double_opt_in_msg", "signout_msg"],
+    required: [
+        "text_privacy",
+        "template_check",
+        "subject_check",
+        "template_accept",
+        "subject_accept",
+        "template_signout",
+        "subject_signout",
+        "template_email",
+        "subject_email",
+        "signin_msg",
+        "double_opt_in_msg",
+        "signout_msg",
+        "settings_page"
+    ],
     additionalProperties: false
 }
 

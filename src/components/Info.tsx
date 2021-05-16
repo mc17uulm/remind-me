@@ -4,21 +4,24 @@ import {Popup} from "semantic-ui-react";
 interface InfoProps {
     children?: React.ReactNode,
     position?: "bottom center" | "top left" | "top right" | "bottom right" | "bottom left" | "right center" | "left center" | "top center" | undefined
-    header?: string
+    header?: string,
+    popup?: boolean
 }
 
-export const Info = (props : InfoProps) => {
+export const Info = ({children, position, header, popup = true} : InfoProps) => {
 
-    return (
+    return popup ? (
         <Popup
             on={['hover', 'click']}
-            content={props.children}
-            header={props.header}
-            position={props.position}
+            content={children}
+            header={header}
+            position={position}
             trigger={
                 <i className="fa fa-info-circle" />
             }
         />
+    ) : (
+        <span><i className="fa fa-info-circle" /> {children}</span>
     )
 
 }

@@ -32,17 +32,15 @@ final class Response
      * @param mixed $data
      */
     public function success($data = "") : void {
-        $this->send([
-            "status" => "success",
-            "data" => $data
-        ]);
+        $this->send($data);
     }
 
     /**
      * @param string $error
      * @param string $debug
+     * @param int $code
      */
-    public function error(string $error, string $debug = "") : void {
+    public function error(string $error, string $debug = "", int $code = 400) : void {
         $object = [
             "status" => "error",
             "message" => $error
@@ -50,7 +48,7 @@ final class Response
         if(defined("WP_REMINDER_DEBUG") && WP_REMINDER_DEBUG) {
             $object["debug"] = $debug;
         }
-        $this->send($object);
+        $this->send($object, $code);
     }
 
     /**
@@ -65,10 +63,11 @@ final class Response
     }
 
     /**
-     * @param array $object
+     * @param mixed $object
+     * @param int $status
      */
-    private function send(array $object) : void {
-        $this->res = new WP_REST_Response($object);
+    private function send($object, int $status = 200) : void {
+        $this->res = new WP_REST_Response($object, $status);
     }
 
 }

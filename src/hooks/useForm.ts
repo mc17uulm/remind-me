@@ -3,12 +3,7 @@ import {ChangeEvent, FormEvent, useState} from "react";
 import {Either} from "../api/Either";
 import {ValidationError} from "yup";
 
-interface FormError {
-    hasError: boolean,
-    error?: string
-}
-
-type Errors<S> = {
+export type Errors<S> = {
     [key in keyof S]: string | null
 }
 
@@ -17,8 +12,10 @@ interface Form<S> {
     onChange: (e : ChangeEvent<HTMLInputElement>) => void,
     setValue: (key: keyof S, value: any) => void,
     handleSubmit: (e : FormEvent) => void,
-    getError: (key : keyof S) => string | null,
-    validate: (schema : yup.SchemaOf<S>) => Promise<Either<S>>,
+    hasError: (key : keyof S) => boolean,
+    hasErrors: () => boolean,
+    getErrors: () => string[]
+    validate: (schema : yup.SchemaOf<any>, customCallback?: (_state : S, errors : Errors<S>) => Errors<S>) => Promise<Either<S>>,
     errors: Errors<S>
 }
 
@@ -44,7 +41,7 @@ export const useForm = <T extends unknown>(defaultValue: T) : [Form<T>, (elem : 
     }
 
     const setValue = (key : keyof T, value : any) : void => {
-        setErrors(clone(defaultValue));
+        setError(key, null);
         let _state : T = Object.assign({}, state);
         _state[key] = value;
         setStateValue(_state);
@@ -58,28 +55,57 @@ export const useForm = <T extends unknown>(defaultValue: T) : [Form<T>, (elem : 
         e.preventDefault();
     }
 
-    const getError = (key : keyof T) : string | null => {
-        return errors[key];
+    const setError = (key : keyof T, error : string | null) : void => {
+        let _errors : Errors<T> = Object.assign({}, errors);
+        _errors[key] = error;
+        setErrors(_errors);
     }
 
-    const validate = async (schema : yup.SchemaOf<T>) : Promise<Either<T>> => {
-        setErrors(clone(defaultValue));
+    const hasError = (key : keyof T) : boolean => {
+        return errors[key] !== null;
+    }
+
+    const hasErrors = (_errors : Errors<T> = errors) : boolean => {
+        for(let key in _errors) {
+            if(_errors.hasOwnProperty(key) && (_errors[key] !== null)) return true;
+        }
+        return false;
+    }
+
+    const getErrors = () : string[] => {
+        let _errors : string[] = [];
+        for(let key in errors) {
+            if(errors.hasOwnProperty(key)) {
+                const elem = errors[key];
+                if(elem !== null) {
+                    // @ts-ignore
+                    _errors.push(elem);
+                }
+            }
+        }
+        return _errors;
+    }
+
+    const validate = async (schema : yup.SchemaOf<any>, customCallback: (_state : T, errors : Errors<T>) => Errors<T> = () => clone(defaultValue)) : Promise<Either<T>> => {
+        let _errors = customCallback(state, errors);
         try {
-            const res = await schema.validate(state, {
+            await schema.validate(state, {
                 abortEarly: false
             });
-            return Either.success(state);
         }
-        // @ts-ignore
+            // @ts-ignore
         catch (e : ValidationError) {
-            let _errors = Object.assign({}, errors);
             e.inner.map((el : ValidationError) => {
                 // @ts-ignore
                 _errors[el.path] = el.message;
             });
+        }
+        if(hasErrors(_errors)) {
             setErrors(_errors);
+            console.log(_errors);
             return Either.error("");
         }
+        return Either.success(state);
     }
 
     return [
@@ -88,7 +114,9 @@ export const useForm = <T extends unknown>(defaultValue: T) : [Form<T>, (elem : 
             onChange: onChange,
             setValue: setValue,
             handleSubmit: handleSubmit,
-            getError: getError,
+            hasError: hasError,
+            hasErrors: hasErrors,
+            getErrors: getErrors,
             validate: validate,
             errors: errors
         },

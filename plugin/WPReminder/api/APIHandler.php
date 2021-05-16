@@ -15,17 +15,13 @@ final class APIHandler
 
         $api = new API();
 
-        $api->get("/health", function (Request $request, Response $response) {
-            $response->success();
-        });
-
         $api->get("/event/(?P<id>\d+)", function (Request $request, Response $response) {
             EventHandler::get($request, $response);
         }, [], false);
 
         $api->get("/events", function (Request $request, Response $response) {
             EventHandler::get_all($request, $response);
-        });
+        }, [], false);
 
         $api->post("/event", function (Request $request, Response $response) {
             EventHandler::set($request, $response);
@@ -39,29 +35,13 @@ final class APIHandler
             EventHandler::delete($request, $response);
         });
 
-        $api->get("/template/(?P<id>\d+)", function (Request $request, Response $response) {
-            TemplateHandler::get($request, $response);
-        });
-
-        $api->get("/templates/", function (Request $request, Response $response) {
-            TemplateHandler::get_all($request, $response);
-        });
-
-        $api->post("/template", function (Request $request, Response $response) {
-            TemplateHandler::set($request, $response);
-        });
-
-        $api->put("/template/(?P<id>\d+)", function (Request $request, Response $response) {
-            TemplateHandler::update($request, $response);
-        });
-
-        $api->delete("/template/(?P<id>\d+)", function (Request $request, Response $response) {
-            TemplateHandler::delete($request, $response);
-        });
-
-        $api->get("/subscriber/(?P<id>\d+)", function (Request $request, Response $response) {
+        $api->get("/subscriber/(?P<token>[a-zA-Z0-9-]+)", function (Request $request, Response $response) {
             SubscriberHandler::get($request, $response);
-        });
+        }, [], false);
+
+        $api->post('/subscribe', function(Request $request, Response $response) {
+            SubscriberHandler::set($request, $response);
+        }, [], false);
 
         $api->get("/subscribers/", function (Request $request, Response $response) {
             SubscriberHandler::get_all($request, $response);
@@ -75,29 +55,25 @@ final class APIHandler
             SubscriberHandler::update($request, $response);
         });
 
+        $api->put("/subscriber/(?P<token>[a-zA-Z0-9-]+)", function(Request $request, Response $response) {
+            SubscriberHandler::edit($request, $response);
+        }, [], false);
+
         $api->delete("/subscriber/(?P<id>\d+)", function (Request $request, Response $response) {
             SubscriberHandler::delete($request, $response);
         });
+
+        $api->delete("/subscriber/(?P<token>[a-zA-Z0-9-]+)", function (Request $request, Response $response) {
+            SubscriberHandler::unsubscribe($request, $response);
+        }, [], false);
 
         $api->get("/settings/", function (Request $request, Response $response) {
             SettingsHandler::get($request, $response);
         }, [], false);
 
-        $api->post("/settings/", function (Request $request, Response $response) {
-            SettingsHandler::set($request, $response);
-        });
-
         $api->put("/settings/", function (Request $request, Response $response) {
             SettingsHandler::update($request, $response);
         });
-
-        $api->delete("/settings/", function (Request $request, Response $response) {
-            SettingsHandler::delete($request, $response);
-        });
-
-        $api->post('/subscribe', function(Request $request, Response $response) {
-            SubscriberHandler::set($request, $response);
-        }, [], false);
 
     }
 

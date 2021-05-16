@@ -11,8 +11,8 @@ final class Database
 
     private const TABLES = [
         "events" => "wp_reminder_events",
-        "templates" => "wp_reminder_templates",
-        "subscribers" => "wp_reminder_subscribers"
+        "subscribers" => "wp_reminder_subscribers",
+        "tokens" => "wp_reminder_tokens"
     ];
 
     /**
@@ -117,20 +117,22 @@ final class Database
             PRIMARY KEY (id)
         ) ENGINE=InnoDB $charset;";
 
-        $sql .= "CREATE TABLE `{$db->get_table_name("templates")}` (
-            id int NOT NULL AUTO_INCREMENT,
-            name varchar(155) NOT NULL,
-            html TEXT NOT NULL,
-            active BIT(1) NOT NULL,
-            PRIMARY KEY (id)
-        ) ENGINE=InnoDB $charset;";
-
         $sql .= "CREATE TABLE `{$db->get_table_name("subscribers")}` (
             id int NOT NULL AUTO_INCREMENT,
+            token varchar (255) NOT NULL,
             email varchar(255) NOT NULL,
             registered int NOT NULL,
             active BIT(1) NOT NULL,
-            events JSON NOT NULL,
+            events TEXT NOT NULL,
+            PRIMARY KEY (id)
+        ) ENGINE=InnoDB $charset;";
+
+        $sql .= "CREATE TABLE `{$db->get_table_name("tokens")}` (
+            id int NOT NULL AUTO_INCREMENT,
+            token varchar(255) NOT NULL,
+            token_type varchar(155) NOT NULL,
+            subscriber_id int NOT NULL,
+            valid_til TIMESTAMP NOT NULL,
             PRIMARY KEY (id)
         ) ENGINE=InnoDB $charset;";
 

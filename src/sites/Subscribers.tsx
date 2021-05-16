@@ -1,29 +1,28 @@
-import React, {Fragment, useEffect, useState} from "react";
-import {Accordion, Checkbox, Label, List, Table} from "semantic-ui-react";
+import React, {Fragment, MouseEvent, useEffect, useState} from "react";
+import {Button, Checkbox, Label, List, Table} from "semantic-ui-react";
 import {__} from "@wordpress/i18n";
-import {APISubscriber, Subscriber, SubscriberHandler} from "../api/handler/SubscriberHandler";
+import {APISubscriber, SubscriberHandler} from "../api/handler/SubscriberHandler";
 import {APIEvent, Event, EventHandler} from "../api/handler/EventHandler";
 import {toast} from "react-toastify";
 import {Icon} from "../components/Icon";
 import moment from "moment";
 import {useCheckbox} from "../hooks/useCheckbox";
 import {LoadingContent} from "../components/LoadingContent";
+import {useModal} from "../hooks/useModal";
+import {HandleSubscriberModal} from "../components/modals/HandleSubscriberModal";
+import {InitializeStates, useInitializer} from "../hooks/useInitializer";
 
 export const Subscribers = () => {
 
-    const [checked, handleCheck] = useCheckbox();
-    const [subscribers, setSubscribers] = useState<APISubscriber[]>([]);
+    const [modal] = useModal<APISubscriber>();
+    const [checkbox] = useCheckbox();
+    const [subscribers, loadSubscribers] = useInitializer<APISubscriber[]>();
     const [events, setEvents] = useState<APIEvent[]>([]);
-    const [openAccordion, setAccordionOpen] = useState<number>(-1);
-    const [initialized, setInitialized] = useState<boolean>(false);
 
-    const loadSubscribers = async () => {
-        const resp = await SubscriberHandler.get_all();
-        if(resp.has_error()) {
-            toast.error(resp.get_error());
-        } else {
-            setSubscribers(resp.get_value());
-            handleCheck.set(resp.get_value());
+    const load = async () => {
+        const _subscribers = await loadSubscribers(SubscriberHandler.get_all);
+        if(!_subscribers.has_error()) {
+            checkbox.set(_subscribers.get_value());
             await loadEvents();
         }
     }
@@ -34,12 +33,11 @@ export const Subscribers = () => {
             toast.error(resp.get_error());
         } else {
             setEvents(resp.get_value());
-            setInitialized(true);
         }
     }
 
     useEffect(() => {
-        loadSubscribers();
+        load();
     }, []);
 
     const getEventsByIds = (ids : number[]) : Event[] => {
@@ -48,27 +46,23 @@ export const Subscribers = () => {
         });
     }
 
-    const buildAccordion = (index : number, subscriber : Subscriber) => {
-        return (
-            <Accordion>
-                <Accordion.Title
-                    active={openAccordion === index}
-                    index={index}
-                    onClick={() => setAccordionOpen(index)}
-                >
-                    {subscriber.events.length} {__('Events', 'wp-reminder')}
-                </Accordion.Title>
-                <Accordion.Content active={openAccordion === index}>
-                    <List>
-                        {getEventsByIds(subscriber.events).map((event : Event, _index : number) => (
-                            <List.Item key={`${index}_event_${_index}`}>
-                                <a href=""><Icon class="database" /> {event.name}</a>
-                            </List.Item>
-                        ))}
-                    </List>
-                </Accordion.Content>
-            </Accordion>
-        )
+    const handleExport = (e : MouseEvent) => {
+        e.preventDefault();
+        if(subscribers.state === InitializeStates.Success) {
+            const selected = subscribers.value.filter((subscriber : APISubscriber, index : number) => checkbox.get(index));
+            let csv = "token,email,events,active\n";
+            csv += selected.map((subscriber : APISubscriber) => {
+                const _events = "[" + events.filter((event : APIEvent) => subscriber.events.includes(event.id)).map((event : APIEvent) => event.name).join("|") + "]";
+                return `${subscriber.token},${subscriber.email},${_events},${subscriber.active}`;
+            }).join("\n");
+            const dwnl = document.createElement('a');
+            dwnl.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv));
+            dwnl.setAttribute('download', 'export_subscribers.csv');
+            dwnl.style.display = 'none';
+            document.body.appendChild(dwnl);
+            dwnl.click();
+            document.body.removeChild(dwnl);
+        }
     }
 
     const renderActive = (active : boolean) => {
@@ -78,68 +72,102 @@ export const Subscribers = () => {
     const renderDate = (timestamp : number) => {
         return (
             <Fragment>
-                <Icon class="clock-o" /> {moment(timestamp * 1000).format('LLLL')}
+                <Icon class="clock-o" /> {moment(timestamp).format('LLLL')}
             </Fragment>
         )
     }
 
     const renderTable = () => {
         return (
-            <Table striped>
-                <Table.Header>
-                    <Table.Row>
-                        <Table.HeaderCell>
-                            <Checkbox
-                                indeterminate={handleCheck.indeterminate()}
-                                checked={handleCheck.all()}
-                                onChange={(e, d) => handleCheck.update_all(d.checked ?? false)}
-                            />
-                        </Table.HeaderCell>
-                        <Table.HeaderCell>{__('Email address', 'wp-reminder')}</Table.HeaderCell>
-                        <Table.HeaderCell>{__('Registered events', 'wp-reminder')}</Table.HeaderCell>
-                        <Table.HeaderCell>{__('Registration date', 'wp-reminder')}</Table.HeaderCell>
-                        <Table.HeaderCell>{__('Active', 'wp-reminder')}</Table.HeaderCell>
-                    </Table.Row>
-                </Table.Header>
-                <Table.Body>
-                    {subscribers.map((subscriber : Subscriber, index : number) => (
-                        <Table.Row key={`subscriber_${index}`}>
-                            <Table.Cell><Checkbox checked={handleCheck.get(index)} onChange={() => handleCheck.update(index)} /></Table.Cell>
-                            <Table.Cell>
-                                <a href={`mailto:${subscriber.email}`}>{subscriber.email}</a><br />
-                                <a className="wp-reminder-edit-link">Edit</a> <a className="wp-reminder-delete-link">Delete</a>
-                            </Table.Cell>
-                            <Table.Cell>{buildAccordion(index, subscriber)}</Table.Cell>
-                            <Table.Cell>{renderDate(subscriber.registered ?? 0)}</Table.Cell>
-                            <Table.Cell>{renderActive(subscriber.active ?? false)}</Table.Cell>
-                        </Table.Row>
-                    ))}
-                </Table.Body>
-            </Table>
+            <LoadingContent
+                state={subscribers}
+                header={__('No subscribers found', 'wp-reminder')}
+                icon='users'
+                button={
+                    <Button color='green' onClick={modal.add}>{__('Add Subscriber', 'wp-reminder')}</Button>
+                }
+            >
+                {(val : APISubscriber[]) => (
+                    <Fragment>
+                        <Table striped>
+                            <Table.Header>
+                                <Table.Row>
+                                    <Table.HeaderCell>
+                                        <Checkbox
+                                            indeterminate={checkbox.indeterminate()}
+                                            checked={checkbox.all()}
+                                            onChange={(e, d) => checkbox.update_all(d.checked ?? false)}
+                                        />
+                                    </Table.HeaderCell>
+                                    <Table.HeaderCell>{__('Email address', 'wp-reminder')}</Table.HeaderCell>
+                                    <Table.HeaderCell>{__('Registered events', 'wp-reminder')}</Table.HeaderCell>
+                                    <Table.HeaderCell>{__('Registration date', 'wp-reminder')}</Table.HeaderCell>
+                                    <Table.HeaderCell>{__('Active', 'wp-reminder')}</Table.HeaderCell>
+                                </Table.Row>
+                            </Table.Header>
+                            <Table.Body>
+                                {val.map((subscriber : APISubscriber, index : number) => (
+                                    <Table.Row key={`subscriber_${index}`}>
+                                        <Table.Cell><Checkbox checked={checkbox.get(index)} onChange={() => checkbox.update(index)} /></Table.Cell>
+                                        <Table.Cell>
+                                            <a href={`mailto:${subscriber.email}`}>{subscriber.email}</a><br />
+                                            <a
+                                                className="wp-reminder-edit-link"
+                                                onClick={(e) => modal.edit(e, subscriber)}
+                                            >
+                                                <Icon class='cogs' /> Edit
+                                            </a> <a
+                                            className="wp-reminder-delete-link"
+                                            onClick={(e) => modal.delete(e, [subscriber])}
+                                        >
+                                            <Icon class='trash' /> Delete
+                                        </a>
+                                        </Table.Cell>
+                                        <Table.Cell>
+                                            <List>
+                                                {getEventsByIds(subscriber.events).map((event : Event, _index : number) => (
+                                                    <List.Item key={`${index}_event_${_index}`}>
+                                                        <Icon class="clock-o" /> {event.name}
+                                                    </List.Item>
+                                                ))}
+                                            </List>
+                                        </Table.Cell>
+                                        <Table.Cell>{renderDate(subscriber.registered ?? 0)}</Table.Cell>
+                                        <Table.Cell>{renderActive(subscriber.active ?? false)}</Table.Cell>
+                                    </Table.Row>
+                                ))}
+                            </Table.Body>
+                        </Table>
+                        <a
+                            className={'wp-reminder-float-left wp-reminder-delete-link' + (checkbox.filtered().length === 0 ? ' wp-reminder-disabled' : '')}
+                            onClick={(e) => modal.delete(e, val.filter((subscriber , index) => checkbox.get(index)))}
+                        >
+                            {__('Delete selected', 'wp-reminder')}
+                        </a>
+                    </Fragment>
+                )}
+            </LoadingContent>
         );
     }
 
     return (
         <Fragment>
-            <LoadingContent
-                initialized={initialized}
-                hasContent={subscribers.length !== 0}
-                header={__('No subscribers found', 'wp-reminder')}
-                icon='users'
-            >
-                {renderTable()}
-            </LoadingContent>
+            <a className='wp-reminder-add-link' onClick={modal.add}>{__('Add Subscriber', 'wp-reminder')}</a>
+            {renderTable()}
             <a
-                className={'wp-reminder-float-left wp-reminder-delete-link' + (handleCheck.filtered().length === 0 ? ' wp-reminder-disabled' : '')}
-                onClick={(e) => {}}
-            >
-                {__('Delete selected', 'wp-reminder')}
-            </a>
-            <a
-                className={'wp-reminder-float-right' + (handleCheck.filtered().length === 0 ? ' wp-reminder-disabled' : '')}
+                onClick={handleExport}
+                className={'wp-reminder-float-right wp-reminder-link' + (checkbox.filtered().length === 0 ? ' wp-reminder-disabled' : '')}
             >
                 {__('Export selected', 'wp-reminder')}
             </a>
+            <HandleSubscriberModal
+                type={modal.state}
+                open={modal.isOpen()}
+                onClose={modal.hide}
+                onSuccess={async () => {modal.hide();await load();}}
+                elements={modal.selected}
+                element={modal.selected[0]}
+            />
         </Fragment>
     );
 

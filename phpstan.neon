@@ -3,6 +3,12 @@ parameters:
     paths:
         - plugin
     checkMissingIterableValueType: false
+    dynamicConstantNames:
+        - WP_REMINDER_VERSION
+        - WP_REMINDER_BASE_URL
+        - WP_REMINDER_BASE_DIR
+        - WP_REMINDER_DEBUG
+        - WP_REMINDER_SCHEMA_DIR
 
 includes:
     - vendor/szepeviktor/phpstan-wordpress/extension.neon

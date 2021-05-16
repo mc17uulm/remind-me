@@ -6,7 +6,6 @@ div.error {
   border: 0 !important;
   border-left-width: medium !important;
   box-shadow: none !important;
-  padding: 0 !important;
 }
 
 @media only screen and (min-width: 1200px) {
@@ -18,6 +17,10 @@ div.error {
 
 .ui.container {
   margin-top: 1em;
+}
+
+.wp-reminder-link {
+  cursor: pointer;
 }
 
 .wp-reminder-add-link {
