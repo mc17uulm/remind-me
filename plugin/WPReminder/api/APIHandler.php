@@ -15,10 +15,6 @@ final class APIHandler
 
         $api = new API();
 
-        $api->get("/health", function (Request $request, Response $response) {
-            $response->success();
-        });
-
         $api->get("/event/(?P<id>\d+)", function (Request $request, Response $response) {
             EventHandler::get($request, $response);
         }, [], false);
@@ -41,6 +37,10 @@ final class APIHandler
 
         $api->get("/subscriber/(?P<token>[a-zA-Z0-9-]+)", function (Request $request, Response $response) {
             SubscriberHandler::get($request, $response);
+        }, [], false);
+
+        $api->post('/subscribe', function(Request $request, Response $response) {
+            SubscriberHandler::set($request, $response);
         }, [], false);
 
         $api->get("/subscribers/", function (Request $request, Response $response) {
@@ -71,21 +71,9 @@ final class APIHandler
             SettingsHandler::get($request, $response);
         }, [], false);
 
-        $api->post("/settings/", function (Request $request, Response $response) {
-            SettingsHandler::set($request, $response);
-        });
-
         $api->put("/settings/", function (Request $request, Response $response) {
             SettingsHandler::update($request, $response);
         });
-
-        $api->delete("/settings/", function (Request $request, Response $response) {
-            SettingsHandler::delete($request, $response);
-        });
-
-        $api->post('/subscribe', function(Request $request, Response $response) {
-            SubscriberHandler::set($request, $response);
-        }, [], false);
 
     }
 

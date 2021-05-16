@@ -1,50 +1,28 @@
 import Ajv, {JSONSchemaType} from "ajv";
 import {Either} from "./Either";
 
-export type ResponseObject<T> = T & {id : number};
-
-interface Response <S> {
-    status: "error" | "success",
-    message: "string",
-    data: S,
-    debug: string
+interface Error {
+    status: "error",
+    message: string,
+    debug: string | null
 }
 
-const ResponseSchema = <T>(schema : JSONSchemaType<T>) : JSONSchemaType<Response<T>> => {
-    return {
-        type: "object",
-        properties: {
-            status: {
-                type: "string",
-                enum: ["success", "error"]
-            },
-            //@ts-ignore
-            data: schema,
-            message: {
-                type: "string"
-            },
-            debug: {
-                type: "string"
-            }
+const ErrorSchema : JSONSchemaType<Error> = {
+    type: "object",
+    properties: {
+        status: {
+            type: "string",
+            enum: ["error"]
         },
-        anyOf: [
-            {
-                properties: {
-                    // @ts-ignore
-                    status: {const: "error"}
-                },
-                required: ["message"]
-            }, {
-                properties: {
-                    // @ts-ignore
-                    status: {const: "success"}
-                },
-                required: ["data"]
-            }
-        ],
-        required: ["status"],
-        additionalProperties: false
-    }
+        message: {
+            type: "string"
+        },
+        debug: {
+            type: "string"
+        }
+    },
+    required: ["status", "message"],
+    additionalProperties: false
 }
 
 export const PostResponseSchema : JSONSchemaType<number> = {
@@ -55,7 +33,14 @@ export const PutResponseSchema : JSONSchemaType<boolean> = {
     type: "boolean"
 }
 
-export const DeleteResponseSchema = PutResponseSchema;
+export const DeleteResponseSchema : JSONSchemaType<boolean> = {
+    type: "boolean"
+}
+
+interface Response {
+    code: number,
+    content: string
+}
 
 export enum RequestType {
     GET = "GET",
@@ -91,32 +76,36 @@ export class Request {
     }
 
     private static async handle<T>(type : RequestType, path : string, data : any, schema : JSONSchemaType<T>) : Promise<Either<T>> {
-        const r = await this.send(type, path, {'X-WP-Nonce': this.nonce, 'Content-Type': 'application/json; charset=UTF-8'}, JSON.stringify(data));
-        return Request.validate<T>(r, schema);
+        const response : Response = await this.send(type, path, {'X-WP-Nonce': this.nonce, 'Content-Type': 'application/json; charset=UTF-8'}, JSON.stringify(data));
+        return Request.validate<T>(response, schema);
     }
 
-    private static validate<S>(body : any, schema : JSONSchemaType<S>) : Either<S> {
+    private static validate<S>(response : Response, schema : JSONSchemaType<S>) : Either<S> {
         try {
-            const response = JSON.parse(body);
-            const ajv = new Ajv();
-            const validate = ajv.compile(ResponseSchema<S>(schema));
-            if(!validate(response)) {
-                console.error(validate.errors);
-                return Either.error("Invalid Response");
-            }
-            if(response.status === "error") {
-                console.error(response.debug);
-                return Either.error(response.message);
+            if(response.code === 200) {
+                const content : S = this.compile<S>(schema, JSON.parse(response.content));
+                return Either.success(content);
             } else {
-                return Either.success(response.data);
+                const error : Error = this.compile<Error>(ErrorSchema, JSON.parse(response.content));
+                return Either.error(error.message);
             }
         } catch (err) {
             console.error(err.message);
-            return Either.error("Invalid Response");
+            return Either.error("Invalid response");
         }
     }
 
-    public static async send(type : RequestType, url : string, headers : object = {}, body : any = "") : Promise<any> {
+    private static compile<S>(schema : JSONSchemaType<S>, content : any) : S {
+        const ajv = new Ajv();
+        const validator = ajv.compile(schema);
+        const valid = validator(content);
+        if(!valid) {
+            throw new Error(validator.errors?.toString() ?? "");
+        }
+        return content;
+    }
+
+    public static async send(type : RequestType, url : string, headers : object = {}, body : any = "") : Promise<Response> {
         return new Promise(((resolve, reject) => {
             const xhr = new XMLHttpRequest();
 
@@ -127,11 +116,7 @@ export class Request {
             });
 
             xhr.onload = () => {
-                if(xhr.status === 200) {
-                    resolve(xhr.response);
-                } else {
-                    reject(xhr.statusText);
-                }
+                resolve({code: xhr.status, content: xhr.response});
             };
 
             xhr.onerror = () => {

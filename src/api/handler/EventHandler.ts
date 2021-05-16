@@ -3,7 +3,6 @@ import {Either} from "../Either";
 import {DeleteResponseSchema, PostResponseSchema, PutResponseSchema, Request} from "../Request";
 import {__, sprintf} from "@wordpress/i18n";
 import {DropdownItemProps} from "semantic-ui-react";
-import {number} from "yup";
 
 export interface Event {
     id?: number,
