@@ -17,11 +17,10 @@ final class MailHandler {
 
     /**
      * @param Subscriber $subscriber
-     * @return bool
      * @throws DatabaseException
      * @throws PluginException
      */
-    public static function send_to_subscriber(Subscriber $subscriber) : bool {
+    public static function send_to_subscriber(Subscriber $subscriber) : void {
 
         // Check if events in events list are typeof Event
         $events = array_filter($subscriber->get_events(), function($event) {
@@ -29,17 +28,17 @@ final class MailHandler {
         });
 
         // if no events are found, there is nothing to send
-        if(count($events) === 0) return true;
+        if(count($events) === 0) return;
 
+        $template = new Template('email');
         $settings = Settings::get();
 
-
-        // TODO: how to handle templates
-        // TODO: build html by templates
-        // TODO: send mail to subscriber with created html
-
-        return false;
-
+        self::send_mail(
+            ['email' => $subscriber->email],
+            ['email' => get_bloginfo('admin_email'), 'name' => get_bloginfo('name')],
+            sprintf('%s | %s', $settings->subject_email, get_bloginfo('name')),
+            $template->render_reminder($subscriber)
+        );
     }
 
     /**
@@ -78,8 +77,20 @@ final class MailHandler {
         );
     }
 
-    public static function send_unsubscribe(Subscriber $subscriber) : bool {
-        return false;
+    /**
+     * @param Subscriber $subscriber
+     * @throws PluginException
+     */
+    public static function send_unsubscribe(Subscriber $subscriber) : void {
+        $template = new Template('signout');
+        $settings = Settings::get();
+
+        self::send_mail(
+            ['email' => $subscriber->email],
+            ['email', get_bloginfo('admin_email'), 'name' => get_bloginfo('name')],
+            sprintf('%s | %s', $settings->subject_signout, get_bloginfo('name')),
+            $template->render_unsubscription()
+        );
     }
 
     /**
@@ -112,6 +123,9 @@ final class MailHandler {
         }
     }
 
+    /**
+     * @param PHPMailer $mailer
+     */
     private static function dev_send_mail(PHPMailer &$mailer) : void {
         $mailer->SMTPDebug = 0;
         $mailer->isSMTP();

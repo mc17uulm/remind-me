@@ -2,6 +2,7 @@
 
 namespace WPReminder\api\handler;
 
+use WPReminder\api\APIException;
 use WPReminder\api\objects\Settings;
 use WPReminder\api\objects\Subscriber;
 use WPReminder\api\objects\Token;
@@ -32,8 +33,17 @@ final class LinkHandler {
         if(!$type = filter_input(INPUT_GET, 'wp-reminder-action')) self::redirect();
         // check if type has correct identifier
         if(!in_array($type, ['activate', 'edit'])) self::redirect();
-        // if edit => let frontend handle but stay on site
-        if($type === 'edit') return;
+        // if edit
+        if($type === 'edit') {
+            try {
+                // if token is for valid subscriber => let frontend handle
+                Subscriber::get_by_token($token);
+                return;
+            } catch(APIException $e) {
+                // token is no valid subscriber => redirect
+                self::redirect();
+            }
+        }
         // Check if token is valid => if not: redirect
         if(!Token::check($token, 'activate')) self::redirect();
         // activate subscriber
@@ -53,7 +63,7 @@ final class LinkHandler {
     }
 
     private static function redirect() : void {
-        wp_redirect(remove_query_arg(['wp-reminder-token', 'wp-reminder-action']));
+        wp_redirect(remove_query_arg(['wp-reminder-token', 'wp-reminder-action', 'wp-reminder-success']));
         exit;
     }
 

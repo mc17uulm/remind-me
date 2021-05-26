@@ -125,6 +125,7 @@ final class Subscriber
      * @param string $token
      * @return Subscriber
      * @throws DatabaseException
+     * @throws APIException
      * @throws Exception
      */
     public static function get_by_token(string $token) : Subscriber
@@ -220,26 +221,38 @@ final class Subscriber
      * @param int $id
      * @return bool
      * @throws DatabaseException
+     * @throws PluginException
      */
     public static function delete(int $id) : bool {
+        $subscriber = self::get_by_id($id);
         $db = Database::get_database();
-        return $db->delete(
+        $result = $db->delete(
             "DELETE FROM {$db->get_table_name("subscribers")} WHERE id = %d",
             $id
         );
+        if($result) {
+            MailHandler::send_unsubscribe($subscriber);
+        }
+        return $result;
     }
 
     /**
      * @param string $token
      * @return bool
      * @throws DatabaseException
+     * @throws PluginException
      */
     public static function unsubscribe(string $token) : bool {
+        $subscriber = self::get_by_token($token);
         $db = Database::get_database();
-        return $db->delete(
+        $result = $db->delete(
             "DELETE FROM {$db->get_table_name('subscribers')} WHERE token = %s",
             $token
         );
+        if($result) {
+            MailHandler::send_unsubscribe($subscriber);
+        }
+        return $result;
     }
 
 }

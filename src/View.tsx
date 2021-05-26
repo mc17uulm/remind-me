@@ -8,12 +8,15 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'font-awesome/css/font-awesome.css';
 import {Request} from "./api/Request";
 
-export interface Definitions {
+export interface FrontendDefinitions {
     root : string,
-    nonce : string,
     slug : string,
+    nonce : string,
     version : string,
-    base : string,
+    base: string
+}
+
+export interface Definitions extends FrontendDefinitions {
     site : string
 }
 

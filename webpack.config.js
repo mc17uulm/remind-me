@@ -69,8 +69,8 @@ module.exports = {
         events: "./src/events",
         subscribers: "./src/subscribers",
         settings: "./src/settings",
-        frontend: "./src/frontend",
-        frontend_settings: './src/frontend-settings'
+        'new-form': "./src/new-form",
+        'edit-form': './src/edit-form'
     },
     optimization: {
         minimizer: [

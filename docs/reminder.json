@@ -319,7 +319,7 @@
         }
       }
     },
-    "/subscriber/{token}": {
+    "/subscriber/token/{token}": {
       "get": {
         "tags": ["subscriber"],
         "summary": "Find a subscriber by token",

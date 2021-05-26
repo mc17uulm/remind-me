@@ -28,18 +28,14 @@ final class Shortcode
         $this->name = $name;
         $this->events = $events;
 
-        wp_enqueue_script('wp-reminder-frontend.js');
+        wp_enqueue_script('wp-reminder-new-form.js');
         wp_enqueue_style('wp-reminder-frontend.css');
     }
 
     public function render() : string {
         $list = implode(',', $this->events);
-        return "
-            <div>
-                <h4>{$this->name}</h4>
-                <div id='wp-reminder-frontend-form' datalist-events='$list'></div>
-            </div>
-        ";
+        $title = $this->name;
+        return "<div id='wp-reminder-frontend-form' data-title='$title' datalist-events='$list'></div>";
     }
 
 

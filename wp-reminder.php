@@ -1,14 +1,22 @@
 <?php
 /**
+ * WP Reminder
+ *
+ * @package     WPReminder
+ * @author      Marco Combosch
+ * @copyright   2021 CodeLeaf
+ * @license     GPL-2.0-or-later
+ *
+ * @wordpress-plugin
  * Plugin Name: WP Reminder
  * Description: Plugin for reminder handling
  * Author: CodeLeaf
- * Author URI: https://code-leaf.de
+ * Author URI: https://plugins.code-leaf.de
  * Version: 0.1.0
  * Text Domain: wp-reminder
- * Domain Path: /lang/
- * License:
- * License URI:
+ * Domain Path: /languages/
+ * License: GNU General Public License v2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Tags:
  * Requires PHP: 7.4
  *
@@ -33,32 +41,34 @@ if(!defined('PHP_VERSION_ID')) {
 }
 
 if(PHP_VERSION_ID < 70400) {
+    error_log('WPReminder | ERROR | plugin requires php version >= 7.4. Given (' . PHP_VERSION . ')');
     die("Plugin requires php version >= 7.4");
 }
 
-if(!defined("WP_REMINDER_VERSION")) {
-    define("WP_REMINDER_VERSION", "0.1.0");
-}
-
-if(!defined("WP_REMINDER_BASE_URL")) {
-    define("WP_REMINDER_BASE_URL", plugin_dir_url(__FILE__));
-}
-
-if(!defined("WP_REMINDER_BASE_DIR")) {
-    define("WP_REMINDER_BASE_DIR", __DIR__);
-}
-
-if(!defined("WP_REMINDER_DEBUG")) {
-    define("WP_REMINDER_DEBUG", true);
-}
-
-if(!defined("WP_REMINDER_SCHEMA_DIR")) {
-    define("WP_REMINDER_SCHEMA_DIR", __DIR__ . "/schemas/");
-}
+define("WP_REMINDER_VERSION", "0.1.0");
+define("WP_REMINDER_SLUG", 'wp-reminder');
+define('WP_REMINDER_TEXTDOMAIN', 'wp-reminder');
+define('WP_REMINDER_FILE', __FILE__);
+define("WP_REMINDER_URL", plugin_dir_url(__FILE__));
+define('WP_REMINDER_PATH', plugin_dir_path(__FILE__));
+define("WP_REMINDER_DIR", __DIR__);
+define("WP_REMINDER_DEBUG", true);
+define("WP_REMINDER_SCHEMAS", __DIR__ . "/schemas/");
 
 require_once __DIR__ . "/vendor/autoload.php";
 
 use WPReminder\Loader;
+use WPReminder\PluginException;
 
 $loader = new Loader();
-$loader->run(__FILE__);
+
+try {
+    $loader->run(__FILE__);
+} catch(PluginException $e) {
+    error_log('WPReminder | ERROR | ' . $e->getMessage());
+    if(WP_REMINDER_DEBUG) {
+        error_log('WPReminder | DEBUG | ' . $e->get_debug_msg());
+    }
+} catch(Exception $e) {
+    error_log('WPReminder | ERROR | ' . $e->getMessage());
+}

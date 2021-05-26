@@ -6,7 +6,12 @@ use WPReminder\api\objects\Event;
 use WPReminder\api\objects\Subscriber;
 use WPReminder\mail\MailHandler;
 use WPReminder\db\DatabaseException;
+use WPReminder\PluginException;
 
+/**
+ * Class CronJob
+ * @package WPReminder\cron
+ */
 final class CronJob {
 
     public static function activate() : void {
@@ -17,6 +22,7 @@ final class CronJob {
 
     /**
      * @throws DatabaseException
+     * @throws PluginException
      */
     public static function run() : void {
         $subscribers = Subscriber::get_all();
@@ -42,6 +48,7 @@ final class CronJob {
             }
         );
 
+        // loop through subscribers and send mail for given events
         foreach($subscribers as $subscriber) {
             MailHandler::send_to_subscriber($subscriber);
         }

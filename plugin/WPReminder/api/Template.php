@@ -22,7 +22,7 @@ final class Template
      * @throws PluginException
      */
     public function __construct(string $key) {
-        $file = WP_REMINDER_BASE_DIR . "/templates/$key.html";
+        $file = WP_REMINDER_DIR . "/templates/$key.html";
         if(!file_exists($file)) throw new PluginException("Cannot find template file for key '$key'");
         if(!is_readable($file)) throw new PluginException("Cannot read template file for key '$key'");
 
@@ -39,6 +39,9 @@ final class Template
     }
 
     /**
+     * @param Subscriber $subscriber
+     * @param string $url
+     * @return string
      * @throws APIException
      * @throws DatabaseException
      * @throws PluginException
@@ -53,6 +56,8 @@ final class Template
     }
 
     /**
+     * @param Subscriber $subscriber
+     * @return string
      * @throws PluginException
      */
     public function render_success (Subscriber $subscriber) : string {
@@ -60,5 +65,27 @@ final class Template
         $edit_url = $settings->settings_page . '?wp-reminder-action=edit&wp-reminder-token=' . $subscriber->get_token();
         return str_replace('${unsubscribe_link}', "<a href='$edit_url'>" . __('Unsubscribe or edit subscription', 'wp-reminder') . "</a>", $this->content);
     }
+
+    /**
+     * @return string
+     */
+    public function render_unsubscription () : string {
+        return $this->content;
+    }
+
+    /**
+     * @param Subscriber $subscriber
+     * @return string
+     * @throws PluginException
+     */
+    public function render_reminder (Subscriber $subscriber) : string {
+        $settings = Settings::get();
+        $edit_url = $settings->settings_page . '?wp-reminder-action=edit&wp-reminder-token=' . $subscriber->get_token();
+        $list = "<li>" . implode("</li><li>", array_map(fn(int $id) => Event::get($id)->get_name(), $subscriber->events)) . "</li>";
+        $message = str_replace('${events_list}', "<ul>$list</ul>", $this->content);
+        return str_replace('${unsubscribe_link}', "<a href='$edit_url'>" . __('Unsubscribe or edit subscription', 'wp-reminder') . "</a>", $message);
+    }
+
+
 
 }

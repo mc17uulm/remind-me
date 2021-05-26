@@ -35,7 +35,7 @@ final class APIHandler
             EventHandler::delete($request, $response);
         });
 
-        $api->get("/subscriber/(?P<token>[a-zA-Z0-9-]+)", function (Request $request, Response $response) {
+        $api->get("/subscriber/token/(?P<token>[a-zA-Z0-9-]+)", function (Request $request, Response $response) {
             SubscriberHandler::get($request, $response);
         }, [], false);
 
@@ -55,7 +55,7 @@ final class APIHandler
             SubscriberHandler::update($request, $response);
         });
 
-        $api->put("/subscriber/(?P<token>[a-zA-Z0-9-]+)", function(Request $request, Response $response) {
+        $api->put("/subscriber/token/(?P<token>[a-zA-Z0-9-]+)", function(Request $request, Response $response) {
             SubscriberHandler::edit($request, $response);
         }, [], false);
 
@@ -63,7 +63,7 @@ final class APIHandler
             SubscriberHandler::delete($request, $response);
         });
 
-        $api->delete("/subscriber/(?P<token>[a-zA-Z0-9-]+)", function (Request $request, Response $response) {
+        $api->delete("/subscriber/token/(?P<token>[a-zA-Z0-9-]+)", function (Request $request, Response $response) {
             SubscriberHandler::unsubscribe($request, $response);
         }, [], false);
 

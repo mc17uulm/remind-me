@@ -49,7 +49,7 @@ export const Events = () => {
 
     const generateShortcode = () : string => {
         const _events = events.state === InitializeStates.Success ? events.value : [];
-        return "[wp-reminder events='" +
+        return "[wp-reminder name='" + __('Subscription Box title', 'wp-reminder') + "' events='" +
             checkbox.filtered().map((_, index : number) => _events[index].id).join(',') +
             "']";
     }
