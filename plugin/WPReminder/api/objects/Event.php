@@ -68,20 +68,27 @@ final class Event
         return $this->name;
     }
 
+    public function get_next_execution() : int {
+        if($this->last_execution === 0) {
+            $time = $this->start;
+        } else {
+            $time = $this->last_execution;
+        }
+
+        $comp = intval(date('n', $time)) + $this->clocking;
+        $year = intval(date('Y', $time)) + floor($comp / 12);
+        $month = $comp % 12;
+        $day = intval(date('d', $time));
+        return strtotime("$day-$month-$year");
+    }
+
     /**
      * Check if event is today and should be executed
      *
      * @return bool
      */
-    public function execute_now() : bool {
-        $now = time();
-        // event hasn't started or ended already
-        // DEPRECATED: if(($this->start > $now) || ($this->end < $now)) return false;
-        // is now in a repeating month of the event
-        if(!$this->is_correct_month($now)) return false;
-        $day_now = intval(date('j', $now));
-        // is now the same day, as the event day
-        return false;
+    public function should_execute_now() : bool {
+        return $this->get_next_execution() < time();
     }
 
     /**
@@ -126,6 +133,18 @@ final class Event
             $object["id"] = $this->id;
         }
         return $object;
+    }
+
+    /**
+     * @return bool
+     * @throws DatabaseException
+     */
+    public function update_execution() : bool {
+        $db = Database::get_database();
+        return $db->update(
+            "UPDATE {$db->get_table_name("events")} SET last_execution = NOW() WHERE id = %d",
+            $this->id
+        );
     }
 
     /**

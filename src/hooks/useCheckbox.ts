@@ -36,6 +36,7 @@ export const useCheckbox = <T extends unknown>(list : T[] = []) : [Checkbox<T>] 
 
     const get = useCallback((index : number) : boolean => {
         if(index > checked.length || index < 0) return false;
+        if(typeof checked[index] === "undefined") return false;
         return checked[index];
     }, [checked]);
 

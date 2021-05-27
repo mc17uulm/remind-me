@@ -79,21 +79,26 @@ export const SubscriptionForm = (props : RegisterFormProps) => {
         e.preventDefault();
         await doSubmitting(async () => {
             const validate = await form.validate(SubscriptionFormSchema);
-            if(validate.has_error()) {console.log("has error"); return;}
+            if(validate.has_error()) return;
             let resp;
+            const selected = props.events
+                .filter((event : APIEvent, index : number) => {
+                    return checkbox.list()[index];
+                })
+                .map((event: APIEvent) => {
+                   return event.id;
+                });
             if(typeof props.subscriber === "undefined") {
-                console.log("set");
                 resp = await SubscriberHandler.set({
                     email: form.values.email,
-                    events: checkbox.filtered().map((_, index) => props.events[index].id)
+                    events: selected
                 });
             } else {
-                console.log("update");
                 resp = await SubscriberHandler.update_by_token(
                     props.subscriber.token,
                     {
                         email: props.subscriber.email,
-                        events: checkbox.filtered().map((_, index) => props.events[index].id)
+                        events: selected
                     }
                 )
             }
@@ -153,6 +158,7 @@ export const SubscriptionForm = (props : RegisterFormProps) => {
                             <input
                                 className={form.errors.events === null ? '' : 'error'}
                                 readOnly
+                                disabled={submitting}
                                 tabIndex={0}
                                 type='checkbox'
                                 onChange={() => selectEvent(index)}
@@ -204,7 +210,7 @@ export const SubscriptionForm = (props : RegisterFormProps) => {
                         type='email'
                         value={form.values.email}
                         name='email'
-                        disabled={typeof props.subscriber !== "undefined"}
+                        disabled={(typeof props.subscriber !== "undefined") || submitting}
                         onChange={form.onChange}
                     />
                     <small className={form.errors.email === null ? 'hidden' : 'error-text'}>{form.errors.email}</small>
@@ -218,6 +224,7 @@ export const SubscriptionForm = (props : RegisterFormProps) => {
                                 type='checkbox'
                                 readOnly
                                 tabIndex={0}
+                                disabled={submitting}
                                 checked={form.values.accept}
                                 onChange={() => form.setValue('accept', !form.values.accept)}
                             />

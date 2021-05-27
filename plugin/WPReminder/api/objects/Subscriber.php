@@ -37,15 +37,19 @@ final class Subscriber
      */
     private ?bool $active;
     /**
-     * @var array<int | Event>
+     * @var array<int>
      */
     public array $events;
+    /**
+     * @var array<Event>
+     */
+    private array $executable_events;
 
     /**
      * Subscriber constructor.
      * @param string $token
      * @param string $email
-     * @param array $events
+     * @param array<int> $events
      * @param int|null $id
      * @param int|null $registered
      * @param bool|null $active
@@ -57,20 +61,7 @@ final class Subscriber
         $this->id = $id;
         $this->registered = $registered;
         $this->active = $active;
-    }
-
-    /**
-     * @param array<Event> $events
-     */
-    public function set_events(array $events) : void {
-        $this->events = $events;
-    }
-
-    /**
-     * @return array<Event | int>
-     */
-    public function get_events() : array {
-        return $this->events;
+        $this->executable_events = [];
     }
 
     /**
@@ -98,6 +89,34 @@ final class Subscriber
             $this->token,
             $this->id
         );
+    }
+
+    /**
+     * @param array<Event> $events => all events that should be executed now
+     */
+    public function set_executable_events(array $events) : void {
+        $given_events = $this->events;
+        // filter all events, that are subscribed by the given user;
+        $this->executable_events = array_filter(
+            $events,
+            function(Event $event) use ($given_events) {
+                return in_array($event->get_id(), $given_events);
+            }
+        );
+    }
+
+    /**
+     * @return Event[]
+     */
+    public function get_executable_events() : array {
+        return $this->executable_events;
+    }
+
+    /**
+     * @return bool
+     */
+    public function has_executable_events() : bool {
+        return count($this->executable_events) > 0;
     }
 
     /**

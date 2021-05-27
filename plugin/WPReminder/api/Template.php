@@ -51,7 +51,10 @@ final class Template
         $message = str_replace('${event_list}', "<ul>$list</ul>", $this->content);
         $message = str_replace('${confirm_link}', "<a href='$url'>" . __('Confirm your subscription', 'wp-reminder') . "</a>", $message);
         $settings = Settings::get();
-        $edit_url = $settings->settings_page . '?wp-reminder-action=edit&wp-reminder-token=' . $subscriber->get_token();
+        $edit_url = self::parse_url($settings->settings_page, [
+            'wp-reminder-action=edit',
+            'wp-reminder-token=' . $subscriber->get_token()
+        ]);
         return str_replace('${unsubscribe_link}', "<a href='$edit_url'>" . __('Unsubscribe or edit subscription', 'wp-reminder') . "</a>", $message);
     }
 
@@ -62,7 +65,10 @@ final class Template
      */
     public function render_success (Subscriber $subscriber) : string {
         $settings = Settings::get();
-        $edit_url = $settings->settings_page . '?wp-reminder-action=edit&wp-reminder-token=' . $subscriber->get_token();
+        $edit_url = self::parse_url($settings->settings_page, [
+            'wp-reminder-action=edit',
+            'wp-reminder-token=' . $subscriber->get_token()
+        ]);
         return str_replace('${unsubscribe_link}', "<a href='$edit_url'>" . __('Unsubscribe or edit subscription', 'wp-reminder') . "</a>", $this->content);
     }
 
@@ -80,10 +86,29 @@ final class Template
      */
     public function render_reminder (Subscriber $subscriber) : string {
         $settings = Settings::get();
-        $edit_url = $settings->settings_page . '?wp-reminder-action=edit&wp-reminder-token=' . $subscriber->get_token();
+        $edit_url = self::parse_url($settings->settings_page, [
+            'wp-reminder-action=edit',
+            'wp-reminder-token=' . $subscriber->get_token()
+        ]);
         $list = "<li>" . implode("</li><li>", array_map(fn(int $id) => Event::get($id)->get_name(), $subscriber->events)) . "</li>";
         $message = str_replace('${events_list}', "<ul>$list</ul>", $this->content);
         return str_replace('${unsubscribe_link}', "<a href='$edit_url'>" . __('Unsubscribe or edit subscription', 'wp-reminder') . "</a>", $message);
+    }
+
+    /**
+     * @param string $url
+     * @param array $params
+     * @return string
+     */
+    public static function parse_url(string $url, array $params) : string {
+        $parsed = parse_url($url);
+        if(!isset($parsed['path'])) {
+            $url .= '/';
+        }
+        $separator = isset($parsed['query']) ? '&' : '?';
+        $query = join('&', $params);
+        $url .= $separator . $query;
+        return $url;
     }
 
 
