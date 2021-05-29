@@ -78,7 +78,7 @@ class JsonSchema
     }
 
     /**
-     * @return null
+     * @return mixed
      */
     public function cast() { return null; }
 

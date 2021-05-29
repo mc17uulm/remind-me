@@ -2,7 +2,9 @@
 
 namespace WPReminder\api\objects;
 
-use WPReminder\api\Template;
+use WPReminder\api\objects\settings\License;
+use WPReminder\api\objects\settings\Messages;
+use WPReminder\api\objects\settings\Templates;
 use WPReminder\PluginException;
 use WPReminder\Site;
 
@@ -18,105 +20,38 @@ final class Settings {
     public const KEY = "wp_reminder_settings";
 
     /**
-     * @var string
+     * @var Templates
      */
-    public string $text_privacy;
+    public Templates $templates;
     /**
-     * @var string
+     * @var Messages
      */
-    public string $template_check;
-    /**
-     * @var string
-     */
-    public string $subject_check;
-    /**
-     * Template for accept email after successful double-opt-in
-     * @var string
-     */
-    public string $template_accept;
-    /**
-     * @var string
-     */
-    public string $subject_accept;
-    /**
-     * Template for info email after list signout
-     * @var string
-     */
-    public string $template_signout;
-    /**
-     * @var string
-     */
-    public string $subject_signout;
-    /**
-     * @var string
-     */
-    public string $template_email;
-    /**
-     * @var string
-     */
-    public string $subject_email;
-    /**
-     * @var string
-     */
-    public string $signin_msg;
-    /**
-     * @var string
-     */
-    public string $double_opt_in_msg;
-    /**
-     * @var string
-     */
-    public string $signout_msg;
-    /**
-     * @var string
-     */
+    public Messages $messages;
+    public License $license;
     public string $settings_page;
+    public string $privacy_text;
 
     /**
      * Settings constructor.
-     * @param string $text_privacy
-     * @param string $template_check
-     * @param string $subject_check
-     * @param string $template_accept
-     * @param string $subject_accept
-     * @param string $template_signout
-     * @param string $subject_signout
-     * @param string $template_email
-     * @param string $subject_email
-     * @param string $signin_msg
-     * @param string $double_opt_in_msg
-     * @param string $signout_msg
+     * @param Templates $templates
+     * @param Messages $messages
+     * @param License $license
      * @param string $settings_page
+     * @param string $privacy_text
      */
     public function __construct(
-        string $text_privacy,
-        string $template_check,
-        string $subject_check,
-        string $template_accept,
-        string $subject_accept,
-        string $template_signout,
-        string $subject_signout,
-        string $template_email,
-        string $subject_email,
-        string $signin_msg,
-        string $double_opt_in_msg,
-        string $signout_msg,
-        string $settings_page
+        Templates $templates,
+        Messages $messages,
+        License $license,
+        string $settings_page,
+        string $privacy_text
     )
     {
-        $this->text_privacy = $text_privacy;
-        $this->template_check = $template_check;
-        $this->subject_check = $subject_check;
-        $this->template_accept = $template_accept;
-        $this->subject_accept = $subject_accept;
-        $this->template_signout = $template_signout;
-        $this->subject_signout = $subject_signout;
-        $this->template_email = $template_email;
-        $this->subject_email = $subject_email;
-        $this->signin_msg = $signin_msg;
-        $this->double_opt_in_msg = $double_opt_in_msg;
-        $this->signout_msg = $signout_msg;
+        $this->templates = $templates;
+        $this->messages = $messages;
+        $this->license = $license;
         $this->settings_page = $settings_page;
+        $this->privacy_text = $privacy_text;
     }
 
     /**
@@ -124,19 +59,11 @@ final class Settings {
      */
     public function to_json() : array {
         return [
-            'text_privacy' => $this->text_privacy,
-            'template_check' => $this->template_check,
-            'subject_check' => $this->subject_check,
-            'template_accept' => $this->template_accept,
-            'subject_accept' => $this->subject_accept,
-            'template_signout' => $this->template_signout,
-            'subject_signout' => $this->subject_signout,
-            'template_email' => $this->template_email,
-            'subject_email' => $this->subject_email,
-            'signin_msg' => $this->signin_msg,
-            'double_opt_in_msg' => $this->double_opt_in_msg,
-            'signout_msg' => $this->signout_msg,
-            'settings_page' => $this->settings_page
+            'templates' => $this->templates->to_json(),
+            'messages' => $this->messages->to_json(),
+            'license' => $this->license->to_json(),
+            'settings_page' => $this->settings_page,
+            'privacy_text' => $this->privacy_text
         ];
     }
 
@@ -148,19 +75,11 @@ final class Settings {
         $options = get_option(self::KEY);
         if($options) {
             return new Settings(
-                $options['text_privacy'],
-                $options['template_check'],
-                $options['subject_check'],
-                $options['template_accept'],
-                $options['subject_accept'],
-                $options['template_signout'],
-                $options['subject_signout'],
-                $options['template_email'],
-                $options['subject_email'],
-                $options['signin_msg'],
-                $options['double_opt_in_msg'],
-                $options['signout_msg'],
-                $options['settings_page']
+                new Templates($options['templates']),
+                new Messages($options['messages']),
+                new License($options['license']),
+                $options['settings_page'],
+                $options['privacy_text']
             );
         }
         throw new PluginException("No options found");
@@ -173,19 +92,11 @@ final class Settings {
     public static function create_default() : bool {
 
         return self::set(new Settings(
-            __('I accept the privacy settings. By checking this field you accept the transport and processing of your data by the provider of this webpage.', 'wp-reminder'),
-            self::load_template('check'),
-            sprintf(__('Confirm your subscription | %s', 'wp-reminder'), get_bloginfo('name')),
-            self::load_template('accept'),
-            sprintf(__('Successfully subscribed | %s', 'wp-reminder'), get_bloginfo('name')),
-            self::load_template('signout'),
-            sprintf(__('Successfully unsubscribed | %s', 'wp-reminder'), get_bloginfo('name')),
-            self::load_template('email'),
-            sprintf(__('Reminder | %s', 'wp-reminder'), get_bloginfo('name')),
-            __('You signed in successful. We send you an email to confirm your subscription', 'wp-reminder'),
-            __('You confirmed your subscription successful.', 'wp-reminder'),
-            __('You signed out from the subscriptions', 'wp-reminder'),
-            Site::load('guid')
+            Templates::create_default(),
+            Messages::create_default(),
+            License::create_default(),
+            Site::load('guid'),
+            __('I accept the privacy settings. By checking this field you accept the transport and processing of your data by the provider of this webpage.', 'wp-reminder')
         ));
     }
 
@@ -213,15 +124,5 @@ final class Settings {
     public static function delete() : bool {
         return delete_option(self::KEY);
     }
-
-    /**
-     * @param string $key
-     * @return string
-     * @throws PluginException
-     */
-    public static function load_template(string $key) : string {
-        return (new Template($key))->get_content();
-    }
-
 
 }

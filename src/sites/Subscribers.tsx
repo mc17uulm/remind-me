@@ -1,5 +1,5 @@
 import React, {Fragment, MouseEvent, useEffect, useState} from "react";
-import {Button, Checkbox, Label, List, Table} from "semantic-ui-react";
+import {Button, Checkbox, Label, Table} from "semantic-ui-react";
 import {__} from "@wordpress/i18n";
 import {APISubscriber, SubscriberHandler} from "../api/handler/SubscriberHandler";
 import {APIEvent, Event, EventHandler} from "../api/handler/EventHandler";
@@ -11,6 +11,7 @@ import {LoadingContent} from "../components/LoadingContent";
 import {useModal} from "../hooks/useModal";
 import {HandleSubscriberModal} from "../components/modals/HandleSubscriberModal";
 import {InitializeStates, useInitializer} from "../hooks/useInitializer";
+import {EventsList} from "../components/EventsList";
 
 export const Subscribers = () => {
 
@@ -110,7 +111,7 @@ export const Subscribers = () => {
                                     <Table.Row key={`subscriber_${index}`}>
                                         <Table.Cell><Checkbox checked={checkbox.get(index)} onChange={() => checkbox.update(index)} /></Table.Cell>
                                         <Table.Cell>
-                                            <a href={`mailto:${subscriber.email}`}>{subscriber.email}</a><br />
+                                            <strong>{subscriber.email}</strong><br />
                                             <a
                                                 className="wp-reminder-edit-link"
                                                 onClick={(e) => modal.edit(e, subscriber)}
@@ -124,13 +125,7 @@ export const Subscribers = () => {
                                         </a>
                                         </Table.Cell>
                                         <Table.Cell>
-                                            <List>
-                                                {getEventsByIds(subscriber.events).map((event : Event, _index : number) => (
-                                                    <List.Item key={`${index}_event_${_index}`}>
-                                                        <Icon class="clock-o" /> {event.name}
-                                                    </List.Item>
-                                                ))}
-                                            </List>
+                                            <EventsList events={getEventsByIds(subscriber.events)} index={index} />
                                         </Table.Cell>
                                         <Table.Cell>{renderDate(subscriber.registered ?? 0)}</Table.Cell>
                                         <Table.Cell>{renderActive(subscriber.active ?? false)}</Table.Cell>

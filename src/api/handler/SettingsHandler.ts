@@ -2,79 +2,131 @@ import {JSONSchemaType} from "ajv";
 import {Either} from "../Either";
 import {PutResponseSchema, Request} from "../Request";
 
-export interface Settings {
-    text_privacy: string,
-    template_check: string,
-    subject_check: string,
-    template_accept: string,
-    subject_accept: string,
-    template_signout: string,
-    subject_signout: string,
-    template_email: string,
-    subject_email: string,
-    signin_msg: string,
-    double_opt_in_msg: string,
-    signout_msg: string,
-    settings_page: string
+export interface Template {
+    html: string,
+    subject: string
 }
 
-export const SettingsSchema : JSONSchemaType<Settings> = {
+export interface Templates {
+    confirm: Template,
+    success: Template,
+    signout: Template,
+    reminder: Template
+}
+
+export interface Messages {
+    signin: string,
+    signout: string,
+    double_opt_in: string
+}
+
+export interface License {
+    code: string
+}
+
+export interface APILicense extends License {
+    active: boolean,
+    til: number,
+    status: string
+}
+
+export interface Settings {
+    templates: Templates,
+    messages: Messages,
+    license: License,
+    settings_page: string,
+    privacy_text: string
+}
+
+export interface APISettings extends Settings {
+    license: APILicense
+}
+
+export const SettingsSchema : JSONSchemaType<APISettings> = {
+    definitions: {
+        template: {
+            type: "object",
+            properties: {
+                html: {
+                    type: "string"
+                },
+                subject: {
+                    type: "string"
+                }
+            },
+            required: ["html", "subject"],
+            additionalProperties: false
+        }
+    },
     type: "object",
     properties: {
-        text_privacy: {
-            type: "string"
+        templates: {
+            type: "object",
+            properties: {
+                confirm: {
+                    "$ref": "#/definitions/template"
+                },
+                success: {
+                    "$ref": "#/definitions/template"
+                },
+                signout: {
+                    "$ref": "#/definitions/template"
+                },
+                reminder: {
+                    "$ref": "#/definitions/template"
+                }
+            },
+            required: ["confirm", "success", "signout", "reminder"],
+            additionalProperties: false
         },
-        template_check: {
-            type: "string"
+        messages: {
+            type: "object",
+            properties: {
+                signin: {
+                    type: "string"
+                },
+                signout: {
+                    type: "string"
+                },
+                double_opt_in: {
+                    type: "string"
+                }
+            },
+            required: ["signin", "signout", "double_opt_in"],
+            additionalProperties: false
         },
-        subject_check: {
-            type: "string"
-        },
-        template_accept: {
-            type: "string"
-        },
-        subject_accept: {
-            type: "string"
-        },
-        template_signout: {
-            type: "string"
-        },
-        subject_signout: {
-            type: "string"
-        },
-        template_email: {
-            type: "string"
-        },
-        subject_email: {
-            type: "string"
-        },
-        signin_msg: {
-            type: "string"
-        },
-        double_opt_in_msg: {
-            type: "string"
-        },
-        signout_msg: {
-            type: "string"
+        license: {
+            type: "object",
+            properties: {
+                code: {
+                    type: "string"
+                },
+                active: {
+                    type: "boolean"
+                },
+                til: {
+                    type: "integer"
+                },
+                status: {
+                    type: "string"
+                }
+            },
+            required: ["code", "active", "til", "status"],
+            additionalProperties: false
         },
         settings_page: {
+            type: "string"
+        },
+        privacy_text: {
             type: "string"
         }
     },
     required: [
-        "text_privacy",
-        "template_check",
-        "subject_check",
-        "template_accept",
-        "subject_accept",
-        "template_signout",
-        "subject_signout",
-        "template_email",
-        "subject_email",
-        "signin_msg",
-        "double_opt_in_msg",
-        "signout_msg",
-        "settings_page"
+        "templates",
+        "messages",
+        "license",
+        "settings_page",
+        "privacy_text"
     ],
     additionalProperties: false
 }
@@ -82,8 +134,8 @@ export const SettingsSchema : JSONSchemaType<Settings> = {
 export class SettingsHandler
 {
 
-    public static async get() : Promise<Either<Settings>> {
-        return await Request.get<Settings>('settings', SettingsSchema);
+    public static async get() : Promise<Either<APISettings>> {
+        return await Request.get<APISettings>('settings', SettingsSchema);
     }
 
     public static async update(settings : Settings) : Promise<Either<boolean>> {

@@ -7,8 +7,6 @@ use WPReminder\api\APIException;
 use WPReminder\api\objects\Event;
 use WPReminder\api\objects\Settings;
 use WPReminder\api\objects\Subscriber;
-use WPReminder\api\objects\Token;
-use WPReminder\api\Template;
 use WPReminder\PluginException;
 use WPReminder\db\DatabaseException;
 use Exception;
@@ -23,21 +21,20 @@ final class MailHandler {
     public static function send_to_subscriber(Subscriber $subscriber) : void {
 
         // Check if events in events list are typeof Event
-        $events = array_filter($subscriber->get_events(), function($event) {
+        $events = array_filter($subscriber->get_executable_events(), function($event) {
             return is_a($event, Event::class);
         });
 
         // if no events are found, there is nothing to send
         if(count($events) === 0) return;
 
-        $template = new Template('email');
         $settings = Settings::get();
 
         self::send_mail(
             ['email' => $subscriber->email],
             ['email' => get_bloginfo('admin_email'), 'name' => get_bloginfo('name')],
-            sprintf('%s | %s', $settings->subject_email, get_bloginfo('name')),
-            $template->render_reminder($subscriber)
+            sprintf('%s | %s', $settings->templates->reminder->subject, get_bloginfo('name')),
+            $settings->templates->reminder->render($subscriber)
         );
     }
 
@@ -47,17 +44,13 @@ final class MailHandler {
      */
     public static function send_confirm(Subscriber $subscriber) : void {
 
-        $template = new Template('check');
-
         $settings = Settings::get();
-        $token = Token::create($subscriber->id, "activate");
-        $url = $settings->settings_page . "?wp-reminder-action=activate&wp-reminder-token=" . $token->get_token();
 
         self::send_mail(
             ['email' => $subscriber->email],
             ['email' => get_bloginfo('admin_email'), 'name' => get_bloginfo('name')],
-            sprintf('%s | %s', $settings->subject_check, get_bloginfo('name')),
-            $template->render_events($subscriber, $url)
+            sprintf('%s | %s', $settings->templates->confirm->subject, get_bloginfo('name')),
+            $settings->templates->confirm->render($subscriber)
         );
     }
 
@@ -66,14 +59,13 @@ final class MailHandler {
      * @throws PluginException
      */
     public static function send_success(Subscriber $subscriber) : void {
-        $template = new Template('accept');
         $settings = Settings::get();
 
         self::send_mail(
             ['email' => $subscriber->email],
             ['email' => get_bloginfo('admin_email'), 'name' => get_bloginfo('name')],
-            sprintf('%s | %s', $settings->subject_accept, get_bloginfo('name')),
-            $template->render_success($subscriber)
+            sprintf('%s | %s', $settings->templates->success->subject, get_bloginfo('name')),
+            $settings->templates->success->render($subscriber)
         );
     }
 
@@ -82,14 +74,13 @@ final class MailHandler {
      * @throws PluginException
      */
     public static function send_unsubscribe(Subscriber $subscriber) : void {
-        $template = new Template('signout');
         $settings = Settings::get();
 
         self::send_mail(
             ['email' => $subscriber->email],
             ['email', get_bloginfo('admin_email'), 'name' => get_bloginfo('name')],
-            sprintf('%s | %s', $settings->subject_signout, get_bloginfo('name')),
-            $template->render_unsubscription()
+            sprintf('%s | %s', $settings->templates->signout->subject, get_bloginfo('name')),
+            $settings->templates->signout->render($subscriber)
         );
     }
 
@@ -101,6 +92,7 @@ final class MailHandler {
      * @throws PluginException
      */
     private static function send_mail(array $to, array $from, string $subject, string $content) : void {
+        if(!defined('WP_REMINDER_DEBUG')) die('invalid request');
         $mailer = new PHPMailer(true);
         try {
             $mailer->isHTML(true);

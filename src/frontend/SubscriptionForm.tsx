@@ -8,6 +8,7 @@ import {useLoader} from "../hooks/useLoader";
 import {APISubscriber, Subscriber, SubscriberHandler} from "../api/handler/SubscriberHandler";
 import * as yup from "yup";
 import {IMessage, Message} from "./Message";
+import {ButtonMessage} from "./ButtonMessage";
 
 interface RegisterFormProps {
     events: APIEvent[],
@@ -110,7 +111,7 @@ export const SubscriptionForm = (props : RegisterFormProps) => {
             if(typeof props.subscriber === "undefined") {
                 setMessage({
                     type: "success",
-                    msg: props.settings.signin_msg
+                    msg: props.settings.messages.signin
                 });
                 setStep(2);
                 return;
@@ -131,7 +132,7 @@ export const SubscriptionForm = (props : RegisterFormProps) => {
                     console.error(resp.get_error());
                     setMessage({type: "error", msg: resp.get_error()})
                 } else {
-                    setMessage({type: "success", msg: props.settings.signout_msg});
+                    setMessage({type: "success", msg: props.settings.messages.signout});
                 }
                 setStep(2);
             }
@@ -229,7 +230,7 @@ export const SubscriptionForm = (props : RegisterFormProps) => {
                                 onChange={() => form.setValue('accept', !form.values.accept)}
                             />
                             <div className='checkbox-label'>
-                                <label>{props.settings.text_privacy}*</label>
+                                <label>{props.settings.privacy_text}*</label>
                             </div>
                         </div>
                         <small className={form.errors.accept === null ? 'hidden' : 'error-text'}>{form.errors.accept}</small>
@@ -238,13 +239,15 @@ export const SubscriptionForm = (props : RegisterFormProps) => {
                 <div className='row'>
                     <span className='small'>* {__('All these fields are required', 'wp-reminder')}</span>
                 </div>
-                {(typeof props.subscriber !== "undefined") ? (
-                    <a onClick={() => setStep(1)}>{__('Unsubscribe')}</a>
-                ) : ""}
-                <Message msg={message} />
-                <button type='button' disabled={submitting} onClick={onSubmit}>
-                    {submitting ? __('Submitting...', 'wp-reminder') : __('Submit', 'wp-reminder')}
-                </button>
+                <div className='row btn-row'>
+                    {(typeof props.subscriber !== "undefined") ? (
+                        <a onClick={() => setStep(1)}>{__('Unsubscribe')}</a>
+                    ) : ""}
+                    <ButtonMessage msg={message} />
+                    <button type='button' disabled={submitting} onClick={onSubmit}>
+                        {submitting ? __('Submitting...', 'wp-reminder') : __('Submit', 'wp-reminder')}
+                    </button>
+                </div>
             </form>
         );
     }

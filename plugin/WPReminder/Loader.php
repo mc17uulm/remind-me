@@ -57,11 +57,13 @@ final class Loader {
      * @throws PluginException
      */
     private function activate() : void {
+        if(!defined('WP_REMINDER_DIR')) die('invalid request');
         if(!current_user_can('activate_plugins')) return;
         Database::initialize();
         Site::add();
         Settings::create_default();
         CronJob::activate();
+        Log::create(WP_REMINDER_DIR, 'log.txt');
     }
 
     private function deactivate() : void {
@@ -101,7 +103,7 @@ final class Loader {
     private function register_menu() : void {
         add_menu_page(
             'Dashboard',
-            'WP Reminder',
+            'Reminder',
             'manage_options',
             'wp-reminder',
             function() { echo '<div id="wp_reminder_container"></div>'; },
@@ -156,6 +158,7 @@ final class Loader {
     }
 
     private function register_backend_scripts(string $file) : void {
+        if(!defined('WP_REMINDER_URL') || !defined('WP_REMINDER_VERSION')) die('invalid request');
         $token = $this->get_token($_GET["page"]);
         if($token !== "") {
 
@@ -194,6 +197,7 @@ final class Loader {
     }
 
     private function register_frontend_scripts(string $file) : void {
+        if(!defined('WP_REMINDER_URL') || !defined('WP_REMINDER_VERSION')) die('invalid request');
         $base = defined("WP_REMINDER_URL") ? WP_REMINDER_URL : "";
 
         wp_register_script(
