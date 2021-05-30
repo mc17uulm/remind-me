@@ -84,9 +84,6 @@ module.exports = {
     optimization: {
         minimizer: [
             new ESBuildMinifyPlugin({
-                terserOptions: {
-                    keep_fnames: false
-                },
                 target: 'es2015'
             })
         ]
