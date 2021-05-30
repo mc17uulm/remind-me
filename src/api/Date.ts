@@ -1,6 +1,8 @@
 import dayjs from "dayjs";
 import localized from "dayjs/plugin/localizedFormat";
 
+dayjs.extend(localized);
+
 export class Date {
 
     public year : number;
@@ -34,7 +36,6 @@ export class Date {
     }
 
     public format(format : string = 'LLLL') : string {
-        dayjs.extend(localized);
         return dayjs(this.to_string(), 'YYYY-MM-DD').format(format);
     }
 

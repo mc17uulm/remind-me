@@ -157,12 +157,16 @@ final class Loader {
         }
     }
 
+    /**
+     * @throws PluginException
+     */
     private function register_backend_scripts(string $file) : void {
         if(!defined('WP_REMINDER_URL') || !defined('WP_REMINDER_VERSION')) die('invalid request');
         $token = $this->get_token($_GET["page"]);
         if($token !== "") {
 
             $base = defined("WP_REMINDER_URL") ? WP_REMINDER_URL : "";
+            $settings = Settings::get();
 
             wp_enqueue_script(
                 'wp_reminder.js',
@@ -188,7 +192,8 @@ final class Loader {
                     'slug' => 'wp-reminder',
                     'version' => 'v1',
                     'site' => $_GET["page"],
-                    'base' => admin_url('admin.php')
+                    'base' => admin_url('admin.php'),
+                    'active' =>  $settings->license->active ? 'true' : 'false'
                 ]
             );
 

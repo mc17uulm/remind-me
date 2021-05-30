@@ -1,8 +1,5 @@
 import {useState} from "react";
 import {Either} from "../api/Either";
-import {toast} from "react-toastify";
-import React from "react";
-import {Loader} from "../components/Loader";
 
 export enum InitializeStates {
     Loading,

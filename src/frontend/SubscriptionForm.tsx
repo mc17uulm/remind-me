@@ -156,15 +156,17 @@ export const SubscriptionForm = (props : RegisterFormProps) => {
                 <Fragment>
                     {props.events.map((event : APIEvent, index : number) => (
                         <div className='checkbox-container' key={`event_${index}`}>
-                            <input
-                                className={form.errors.events === null ? '' : 'error'}
-                                readOnly
-                                disabled={submitting}
-                                tabIndex={0}
-                                type='checkbox'
-                                onChange={() => selectEvent(index)}
-                                checked={checkbox.get(index)}
-                            />
+                            <div className='checkbox'>
+                                <input
+                                    className={form.errors.events === null ? '' : 'error'}
+                                    readOnly
+                                    disabled={submitting}
+                                    tabIndex={0}
+                                    type='checkbox'
+                                    onChange={() => selectEvent(index)}
+                                    checked={checkbox.get(index)}
+                                />
+                            </div>
                             <div className='checkbox-label'>
                                 <label>{event.name}</label>
                                 <p>{clockingToStr(event.clocking)}</p>
@@ -220,15 +222,17 @@ export const SubscriptionForm = (props : RegisterFormProps) => {
                     <div className='row'>
                         <label>{__('Privacy settings', 'wp-reminder')}</label>
                         <div className='checkbox-container'>
-                            <input
-                                className={form.errors.accept === null ? '' : 'error'}
-                                type='checkbox'
-                                readOnly
-                                tabIndex={0}
-                                disabled={submitting}
-                                checked={form.values.accept}
-                                onChange={() => form.setValue('accept', !form.values.accept)}
-                            />
+                            <div className='checkbox'>
+                                <input
+                                    className={form.errors.accept === null ? '' : 'error'}
+                                    type='checkbox'
+                                    readOnly
+                                    tabIndex={0}
+                                    disabled={submitting}
+                                    checked={form.values.accept}
+                                    onChange={() => form.setValue('accept', !form.values.accept)}
+                                />
+                            </div>
                             <div className='checkbox-label'>
                                 <label>{props.settings.privacy_text}*</label>
                             </div>

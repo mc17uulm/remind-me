@@ -1,4 +1,4 @@
-import React, {Fragment, MouseEvent, useEffect, useState} from "react";
+import React, {Fragment, MouseEvent, useContext, useEffect, useState} from "react";
 import {Button, Checkbox, Label, Table} from "semantic-ui-react";
 import {__} from "@wordpress/i18n";
 import {APISubscriber, SubscriberHandler} from "../api/handler/SubscriberHandler";
@@ -12,6 +12,7 @@ import {HandleSubscriberModal} from "../components/modals/HandleSubscriberModal"
 import {InitializeStates, useInitializer} from "../hooks/useInitializer";
 import {EventsList} from "../components/EventsList";
 import dayjs from "dayjs";
+import {PluginContext, PluginSettings} from "../View";
 
 export const Subscribers = () => {
 
@@ -19,6 +20,7 @@ export const Subscribers = () => {
     const [checkbox] = useCheckbox();
     const [subscribers, loadSubscribers] = useInitializer<APISubscriber[]>();
     const [events, setEvents] = useState<APIEvent[]>([]);
+    const settings : PluginSettings = useContext(PluginContext);
 
     const load = async () => {
         const _subscribers = await loadSubscribers(SubscriberHandler.get_all);
@@ -113,12 +115,12 @@ export const Subscribers = () => {
                                         <Table.Cell>
                                             <strong>{subscriber.email}</strong><br />
                                             <a
-                                                className="wp-reminder-edit-link"
+                                                className={'wp-reminder-edit-link' + (settings.active ? '' : ' wp-reminder-disabled')}
                                                 onClick={(e) => modal.edit(e, subscriber)}
                                             >
                                                 <Icon class='cogs' /> Edit
                                             </a> <a
-                                            className="wp-reminder-delete-link"
+                                            className={'wp-reminder-delete-link' + (settings.active ? '' : ' wp-reminder-disabled')}
                                             onClick={(e) => modal.delete(e, [subscriber])}
                                         >
                                             <Icon class='trash' /> Delete
@@ -134,8 +136,8 @@ export const Subscribers = () => {
                             </Table.Body>
                         </Table>
                         <a
-                            className={'wp-reminder-float-left wp-reminder-delete-link' + (checkbox.filtered().length === 0 ? ' wp-reminder-disabled' : '')}
-                            onClick={(e) => modal.delete(e, val.filter((subscriber , index) => checkbox.get(index)))}
+                            className={'wp-reminder-float-left wp-reminder-delete-link' + (checkbox.filtered().length === 0 || !settings.active ? ' wp-reminder-disabled' : '')}
+                            onClick={(e) => {settings.active ? modal.delete(e, val.filter((subscriber , index) => checkbox.get(index))) : null}}
                         >
                             {__('Delete selected', 'wp-reminder')}
                         </a>
@@ -147,11 +149,15 @@ export const Subscribers = () => {
 
     return (
         <Fragment>
-            <a className='wp-reminder-add-link' onClick={modal.add}>{__('Add Subscriber', 'wp-reminder')}</a>
+            <a
+                className={'wp-reminder-add-link' + (settings.active ? '' : ' wp-reminder-disabled')}
+                onClick={(e) => {settings.active ? modal.add(e) : null}}>
+                {__('Add Subscriber', 'wp-reminder')}
+            </a>
             {renderTable()}
             <a
-                onClick={handleExport}
-                className={'wp-reminder-float-right wp-reminder-link' + (checkbox.filtered().length === 0 ? ' wp-reminder-disabled' : '')}
+                onClick={(e) => {settings.active ? handleExport(e) : null;}}
+                className={'wp-reminder-float-right wp-reminder-link' + (checkbox.filtered().length === 0 || !settings.active ? ' wp-reminder-disabled' : '')}
             >
                 {__('Export selected', 'wp-reminder')}
             </a>

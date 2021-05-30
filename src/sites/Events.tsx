@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect} from "react";
+import React, {Fragment, useContext, useEffect} from "react";
 import {Button, Checkbox, Form, Label, Table} from "semantic-ui-react";
 import {APIEvent, Event, EventHandler, get_repetition} from "../api/handler/EventHandler";
 import {__} from "@wordpress/i18n";
@@ -11,12 +11,14 @@ import {useCheckbox} from "../hooks/useCheckbox";
 import {useModal} from "../hooks/useModal";
 import {LoadingContent} from "../components/LoadingContent";
 import {InitializeStates, useInitializer} from "../hooks/useInitializer";
+import {PluginContext, PluginSettings} from "../View";
 
 export const Events = () => {
 
     const [modal] = useModal<APIEvent>();
     const [checkbox] = useCheckbox<APIEvent>();
     const [events, loadEvents] = useInitializer<APIEvent[]>();
+    const settings : PluginSettings = useContext(PluginContext);
 
     const load = async () : Promise<void> => {
         const _events = await loadEvents(EventHandler.get_all);
@@ -74,6 +76,13 @@ export const Events = () => {
         )
     }
 
+    const isDisabled = () : boolean => {
+        if(events.state === InitializeStates.Success) {
+            return !settings.active && events.value.length > 0;
+        }
+        return false;
+    }
+
     const renderTable = () => {
         return (
             <LoadingContent
@@ -81,7 +90,10 @@ export const Events = () => {
                 header={__('No events found', 'wp-reminder')}
                 icon='calendar times'
                 button={
-                    <Button color='green' onClick={modal.add}>{__('Add Event', 'wp-reminder')}</Button>
+                    <Button
+                        color='green'
+                        onClick={modal.add}
+                    >{__('Add Event', 'wp-reminder')}</Button>
                 }
             >
                 {(val : APIEvent[]) => (
@@ -151,7 +163,10 @@ export const Events = () => {
                     {renderShortcode()}
                 </span>
             </div>
-            <a className="wp-reminder-add-link" onClick={modal.add}>{__('Add Event', 'wp-reminder')}</a>
+            <a
+                className={"wp-reminder-add-link" + (isDisabled() ? ' wp-reminder-disabled' : '')}
+                onClick={modal.add}
+            >{__('Add Event', 'wp-reminder')}</a>
             {renderTable()}
             <HandleEventModal
                 open={modal.isOpen()}

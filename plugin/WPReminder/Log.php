@@ -11,7 +11,7 @@ final class Log
     /**
      * @var Log|null
      */
-    private static ?Log $instance;
+    private static ?Log $instance = null;
     /**
      * @var string
      */

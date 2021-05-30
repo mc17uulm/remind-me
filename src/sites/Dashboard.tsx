@@ -7,6 +7,9 @@ import {useInitializer} from "../hooks/useInitializer";
 import {Button, Card, Grid, Label, Table} from "semantic-ui-react";
 import {LoadingContent} from "../components/LoadingContent";
 import dayjs from "dayjs";
+import localized from "dayjs/plugin/localizedFormat";
+
+dayjs.extend(localized);
 
 export const Dashboard = () => {
 
