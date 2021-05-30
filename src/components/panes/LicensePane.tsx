@@ -1,6 +1,6 @@
 import {FormikProps} from "formik";
 import {APISettings} from "../../api/handler/SettingsHandler";
-import {Form, Tab} from "semantic-ui-react";
+import {Button, Form, Tab} from "semantic-ui-react";
 import {__} from "@wordpress/i18n";
 import React from "react";
 

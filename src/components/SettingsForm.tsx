@@ -1,13 +1,15 @@
 import {APISettings, Settings, SettingsHandler, Templates} from "../api/handler/SettingsHandler";
 import {Button, Form, Tab} from "semantic-ui-react";
 import {__, sprintf} from "@wordpress/i18n";
-import React, {Fragment} from "react";
+import React, {Fragment, useState} from "react";
 import {toast} from "react-toastify";
 import * as yup from "yup";
 import {Formik, FormikHelpers, FormikProps} from "formik";
 import {TemplatesPane} from "./panes/TemplatesPane";
 import {MessagePane} from "./panes/MessagePane";
 import {LicensePane} from "./panes/LicensePane";
+import {SubmitBtnContainer} from "./SubmitBtnContainer";
+import {IMessage} from "../frontend/Message";
 
 const getMissingKeywords = (content : string, keywords : string[]) : string[] => {
     return keywords.filter((keyword : string) => {
@@ -64,7 +66,10 @@ interface SettingsFormProps {
 
 export const SettingsForm = (props : SettingsFormProps) => {
 
+    const [message, setMessage] = useState<IMessage | null>(null);
+
     const onSubmit = async (settings : APISettings, actions : FormikHelpers<APISettings>) => {
+        console.log("on submit");
         const resp = await SettingsHandler.update({
             templates: settings.templates,
             messages: settings.messages,
@@ -78,7 +83,8 @@ export const SettingsForm = (props : SettingsFormProps) => {
             console.error(resp.get_error());
             toast.error(resp.get_error());
         } else {
-            toast.success('Saved settings');
+            setMessage({type: "success", msg: __('Saved settings', 'wp-reminder')})
+            toast.success(__('Saved settings', 'wp-reminder'));
         }
         actions.setSubmitting(false);
     }
@@ -103,7 +109,9 @@ export const SettingsForm = (props : SettingsFormProps) => {
                                 {menuItem: __('License', 'wp-reminder'), render: () => <LicensePane {...props} />}
                             ]}
                         />
-                        <Button color='green' disabled={props.isSubmitting} loading={props.isSubmitting} type='submit' floated={"right"}>{__('Submit', 'wp-reminder')}</Button>
+                        <SubmitBtnContainer message={message}>
+                            <Button color='green' disabled={props.isSubmitting} loading={props.isSubmitting} type='submit' floated={"right"}>{__('Submit', 'wp-reminder')}</Button>
+                        </SubmitBtnContainer>
                     </Form>
                 )}
             </Formik>
