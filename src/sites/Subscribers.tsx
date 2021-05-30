@@ -2,16 +2,16 @@ import React, {Fragment, MouseEvent, useEffect, useState} from "react";
 import {Button, Checkbox, Label, Table} from "semantic-ui-react";
 import {__} from "@wordpress/i18n";
 import {APISubscriber, SubscriberHandler} from "../api/handler/SubscriberHandler";
-import {APIEvent, Event, EventHandler} from "../api/handler/EventHandler";
+import {APIEvent, EventHandler} from "../api/handler/EventHandler";
 import {toast} from "react-toastify";
 import {Icon} from "../components/Icon";
-import moment from "moment";
 import {useCheckbox} from "../hooks/useCheckbox";
 import {LoadingContent} from "../components/LoadingContent";
 import {useModal} from "../hooks/useModal";
 import {HandleSubscriberModal} from "../components/modals/HandleSubscriberModal";
 import {InitializeStates, useInitializer} from "../hooks/useInitializer";
 import {EventsList} from "../components/EventsList";
+import dayjs from "dayjs";
 
 export const Subscribers = () => {
 
@@ -41,9 +41,9 @@ export const Subscribers = () => {
         load();
     }, []);
 
-    const getEventsByIds = (ids : number[]) : Event[] => {
-        return events.filter((event : Event) => {
-            return ids.includes(event.id ?? -1);
+    const getEventsByIds = (ids : number[]) : APIEvent[] => {
+        return events.filter((event : APIEvent) => {
+            return ids.includes(event.id);
         });
     }
 
@@ -73,7 +73,7 @@ export const Subscribers = () => {
     const renderDate = (timestamp : number) => {
         return (
             <Fragment>
-                <Icon class="clock-o" /> {moment(timestamp).format('LLLL')}
+                <Icon class="clock-o" /> {dayjs(timestamp).format('LLLL')}
             </Fragment>
         )
     }

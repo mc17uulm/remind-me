@@ -2,37 +2,38 @@ import {
     APIEvent,
     ClockingList,
     empty_event,
-    Event,
     EventHandler,
-    get_next_executions,
     get_repetition
 } from "../../api/handler/EventHandler";
 import React, {Fragment, useEffect} from "react";
 import {Button, DropdownItemProps, Form, List, Modal, ModalActions} from "semantic-ui-react";
 import {__, _n, sprintf} from "@wordpress/i18n";
 import {DeleteModal} from "./DeleteModal";
-import moment from "moment";
 import {toast} from "react-toastify";
 import {Either} from "../../api/Either";
 import {useLoader} from "../../hooks/useLoader";
 import {useForm} from "../../hooks/useForm";
 import * as yup from 'yup';
 import {ModalProps, ModalState} from "../../hooks/useModal";
+import {Date as DateForm} from "../../api/Date";
+import dayjs from "dayjs";
 
 const MonthList : DropdownItemProps[] = [
-    {key: '1', value: 0, text: __('January', 'wp-reminder')},
-    {key: '2', value: 1, text: __('February', 'wp-reminder')},
-    {key: '3', value: 2, text: __('March', 'wp-reminder')},
-    {key: '4', value: 3, text: __('April', 'wp-reminder')},
-    {key: '5', value: 4, text: __('May', 'wp-reminder')},
-    {key: '6', value: 5, text: __('June', 'wp-reminder')},
-    {key: '7', value: 6, text: __('July', 'wp-reminder')},
-    {key: '8', value: 7, text: __('August', 'wp-reminder')},
-    {key: '9', value: 8, text: __('September', 'wp-reminder')},
-    {key: '10', value: 9, text: __('October', 'wp-reminder')},
-    {key: '11', value: 10, text: __('November', 'wp-reminder')},
-    {key: '12', value: 11, text: __('December', 'wp-reminder')},
+    {key: '1', value: 1, text: __('January', 'wp-reminder')},
+    {key: '2', value: 2, text: __('February', 'wp-reminder')},
+    {key: '3', value: 3, text: __('March', 'wp-reminder')},
+    {key: '4', value: 4, text: __('April', 'wp-reminder')},
+    {key: '5', value: 5, text: __('May', 'wp-reminder')},
+    {key: '6', value: 6, text: __('June', 'wp-reminder')},
+    {key: '7', value: 7, text: __('July', 'wp-reminder')},
+    {key: '8', value: 8, text: __('August', 'wp-reminder')},
+    {key: '9', value: 9, text: __('September', 'wp-reminder')},
+    {key: '10', value: 10, text: __('October', 'wp-reminder')},
+    {key: '11', value: 11, text: __('November', 'wp-reminder')},
+    {key: '12', value: 12, text: __('December', 'wp-reminder')},
 ];
+
+const Today : DateForm = DateForm.create_by_string(dayjs().format('YYYY-MM-DD'));
 
 const EventSchema : yup.SchemaOf<any> = yup.object({
     name: yup.string().required(__('Please insert a event name'))
@@ -41,21 +42,13 @@ const EventSchema : yup.SchemaOf<any> = yup.object({
 export const HandleEventModal = (props : ModalProps<APIEvent>) => {
 
     const [loading, doLoading] = useLoader();
-    const [form, setForm] = useForm<Event>(empty_event());
+    const [form, setForm] = useForm<APIEvent>(empty_event());
 
     useEffect(() => {
         if(props.type === ModalState.EDIT) {
-            setForm({
-                start: props.element.start,
-                clocking: props.element.clocking,
-                name: props.element.name
-            });
+            setForm(props.element);
         } else {
-            setForm({
-                start: new Date().getTime(),
-                clocking: 1,
-                name: ""
-            });
+            setForm(empty_event());
         }
     }, [props.type]);
 
@@ -66,10 +59,10 @@ export const HandleEventModal = (props : ModalProps<APIEvent>) => {
                 case ModalState.EDIT:
                     validate = await form.validate(EventSchema);
                     if(validate.has_error()) return;
-                    resp =await EventHandler.update(props.element.id, {
+                    resp = await EventHandler.update(props.element.id, {
                         name: form.values.name,
                         clocking: form.values.clocking,
-                        start: Math.floor(form.values.start)
+                        start: form.values.start.to_string()
                     });
                     break;
                 case ModalState.DELETE:
@@ -81,7 +74,7 @@ export const HandleEventModal = (props : ModalProps<APIEvent>) => {
                     resp = await EventHandler.set({
                         name: form.values.name,
                         clocking: form.values.clocking,
-                        start: Math.floor(form.values.start)
+                        start: form.values.start.to_string()
                     });
                     break;
                 default:
@@ -97,21 +90,54 @@ export const HandleEventModal = (props : ModalProps<APIEvent>) => {
         })
     }
 
-    const nextExecutions = () : Date[] => {
-        const last_execution = (props.type === ModalState.EDIT) ? props.element.last_execution : 0;
-        return get_next_executions(last_execution, form.values.start, form.values.clocking, 4);
+    const get_min = () : number => {
+        if((Today.year === form.values.start.year) && (Today.month === form.values.start.month)) {
+            return Today.day;
+        }
+        return 1;
     }
 
-    const toDate = (timestamp : number) : Date => {
-        return new Date(timestamp);
+    const get_max = () : number => {
+        return new Date(form.values.start.year, form.values.start.month, 0).getDate();
+    }
+
+    const get_month_list = () : DropdownItemProps[] => {
+        let months = MonthList;
+        if(Today.year === form.values.start.year) {
+            months = months.map((item : DropdownItemProps) => {
+                // @ts-ignore
+                if(item.value + 1 < Today.month) {
+                    return {key: item.key, value: item.value, text: item.text, disabled: true};
+                }
+                return item;
+            });
+        }
+        return months;
+    }
+
+    const get_years_list = () : DropdownItemProps[] => {
+        const year = Today.year;
+        return Array.from(Array(5).keys()).map((val: number) => {
+            return {key: val + 1, value: year + val, text: year  + val};
+        });
+    }
+
+    const updateYear = (value : any) : void => {
+        const start = form.values.start;
+        start.year = parseInt(value);
+        form.setValue('start', start);
     }
 
     const updateMonth = (value : any) : void => {
-        form.setValue('start', toDate(form.values.start).setMonth(parseInt(value)));
+        const start = form.values.start;
+        start.month = parseInt(value);
+        form.setValue('start', start);
     }
 
     const updateDay = (value : string) : void => {
-        form.setValue('start', toDate(form.values.start).setDate(parseInt(value)))
+        const start = form.values.start;
+        start.day = parseInt(value);
+        form.setValue('start', start);
     }
 
     const renderContent = () => {
@@ -127,7 +153,7 @@ export const HandleEventModal = (props : ModalProps<APIEvent>) => {
                     <Form onSubmit={onSubmit}>
                         <Form.Group>
                             <Form.Input
-                                width={6}
+                                width={16}
                                 value={form.values.name}
                                 name="name"
                                 label={__('Event name', 'wp-reminder')}
@@ -135,25 +161,34 @@ export const HandleEventModal = (props : ModalProps<APIEvent>) => {
                                 onChange={form.onChange}
                                 error={form.errors.name}
                             />
+                        </Form.Group>
+                        <Form.Group>
                             <Form.Input
                                 width={2}
                                 label={__('Day', 'wp-reminder')}
-                                value={toDate(form.values.start).getDate()}
+                                value={form.values.start.day}
                                 onChange={(e, d) => updateDay(d.value)}
                                 type="number"
                                 placeholder={1}
-                                min={1}
-                                max={31}
+                                min={get_min()}
+                                max={get_max()}
                             />
                             <Form.Select
                                 width={4}
                                 label={__('Month', 'wp-reminder')}
-                                value={toDate(form.values.start).getMonth()}
+                                value={form.values.start.month}
                                 onChange={(e, d) => updateMonth(d.value)}
-                                options={MonthList}
+                                options={get_month_list()}
                             />
                             <Form.Select
-                                width={3}
+                                width={4}
+                                label={__('Year', 'wp-reminder')}
+                                value={form.values.start.year}
+                                onChange={(e, d) => updateYear(d.value)}
+                                options={get_years_list()}
+                            />
+                            <Form.Select
+                                width={6}
                                 label={__('Repeat', 'wp-reminder')}
                                 value={form.values.clocking}
                                 onChange={(event, data) => form.setValue('clocking', data.value)}
@@ -164,9 +199,9 @@ export const HandleEventModal = (props : ModalProps<APIEvent>) => {
                             <Form.Field>
                                 <label>{__('Next Executions', 'wp-reminder')}</label>
                                 <List>
-                                    {nextExecutions().map((date : Date, index : number) => (
+                                    {form.values.start.get_next_array(form.values.clocking, 5).map((date : DateForm, index : number) => (
                                         <List.Item key={`executions_${index}`}>
-                                            {moment(date).format('L')}
+                                            {date.format('L')}
                                         </List.Item>
                                     ))}
                                 </List>
@@ -174,7 +209,7 @@ export const HandleEventModal = (props : ModalProps<APIEvent>) => {
                             <Form.Field>
                                 <label>{__('Summary', 'wp-reminder')}</label>
                                 <code>
-                                    {get_repetition(form.values.clocking, toDate(form.values.start).getDate())}
+                                    {get_repetition(form.values.start, form.values.clocking)}
                                 </code>
                             </Form.Field>
                         </Form.Group>

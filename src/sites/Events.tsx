@@ -1,9 +1,8 @@
 import React, {Fragment, useEffect} from "react";
 import {Button, Checkbox, Form, Label, Table} from "semantic-ui-react";
-import {APIEvent, Event, EventHandler, get_next_executions, get_repetition} from "../api/handler/EventHandler";
+import {APIEvent, Event, EventHandler, get_repetition} from "../api/handler/EventHandler";
 import {__} from "@wordpress/i18n";
 import {toast} from "react-toastify";
-import moment from "moment";
 import {HandleEventModal} from "../components/modals/HandleEventModal";
 import "../styles/events.scss";
 import {Icon} from "../components/Icon";
@@ -36,13 +35,13 @@ export const Events = () => {
         await load();
     }
 
-    const renderRepetition = (event : Event) => {
+    const renderRepetition = (event : APIEvent) => {
         return (
             <Fragment>
                 <Label color={event.active ? 'green' : 'red'} horizontal>
                     {event.active ? __('active', 'wp-reminder') : __('not-active', 'wp-reminder')}
                 </Label>
-                {get_repetition(event.clocking, new Date(event.start).getDate())}<br />
+                {get_repetition(event.start, event.clocking)}<br />
             </Fragment>
         );
     }
@@ -124,7 +123,7 @@ export const Events = () => {
                                             {renderRepetition(event)}
                                         </Table.Cell>
                                         <Table.Cell>
-                                            <code>{moment(get_next_executions(event.last_execution, event.start, event.clocking)[0]).format('LLLL')}</code>
+                                            <code>{event.start.get_next(event.clocking).format()}</code>
                                         </Table.Cell>
                                     </Table.Row>
                                 ))}

@@ -22,6 +22,8 @@ export const LoadingContent = <T extends unknown>(props : LoadingContentProps<T>
         return true;
     }
 
+    console.log(props);
+
     switch(props.state.state) {
         case InitializeStates.Loading:
             return <Loader/>;

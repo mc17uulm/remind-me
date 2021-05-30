@@ -3,19 +3,27 @@ import {Either} from "../Either";
 import {DeleteResponseSchema, PostResponseSchema, PutResponseSchema, Request} from "../Request";
 import {__, sprintf} from "@wordpress/i18n";
 import {DropdownItemProps} from "semantic-ui-react";
+import {Date} from "../Date";
 
 export interface Event {
-    id?: number,
     name: string,
     clocking: number,
-    start: number,
-    last_execution? : number,
-    active?: boolean
+    start: Date | string
+}
+
+interface EventResponse extends Event{
+    id: number,
+    start: string,
+    next: string,
+    last: number,
+    active: boolean
 }
 
 export interface APIEvent extends Event {
     id: number,
-    last_execution : number,
+    start: Date,
+    next: Date,
+    last : number,
     active: boolean
 }
 
@@ -49,52 +57,31 @@ const get_components = (clocking : number) : {divider : string, of: string, on :
     }
 }
 
-const get_next_execution = (last_execution : Date, step : number, clocking : number) : Date => {
-    const comp = (last_execution.getMonth() + (step * clocking));
-    const year = last_execution.getFullYear() + Math.floor(comp / 12);
-    return new Date(year, comp % 12, last_execution.getDate());
-}
 
-export const get_next_executions = (last_execution : number, start: number, clocking : number, steps : number = 1) : Date[] => {
-    let date : Date
-    if(last_execution === 0) {
-        date = new Date(start);
-        const now = new Date().getTime();
-        let tmp;
-        while((tmp = get_next_execution(date, 1, clocking)).getTime() < now) {
-            date = tmp;
-        }
-    } else {
-        date = new Date(last_execution);
-    }
-    let iterator = Array.from(Array(steps + 1).keys());
-    iterator.shift();
-    return iterator.map((step : number) : Date => {
-        return get_next_execution(date, step, clocking);
-    });
-}
-
-export const get_repetition = (clocking : number, day : number) : string => {
+export const get_repetition = (date: Date, clocking : number) : string => {
     const components = get_components(clocking);
     return sprintf(
         __('Is executed every %s%s on the %d. of the %s', 'wp-reminder'),
         components.divider,
         components.of,
-        day,
+        date.day,
         components.on
     );
 }
 
-export const empty_event = () : Event => {
-    const start = new Date();
+export const empty_event = () : APIEvent => {
     return {
+        id: -1,
         name: "",
         clocking: 1,
-        start: start.getTime()
+        start: Date.create(),
+        next: Date.create(),
+        last: 0,
+        active: false
     }
 }
 
-export const EventSchema : JSONSchemaType<APIEvent> = {
+export const EventSchema : JSONSchemaType<EventResponse> = {
     type: "object",
     properties: {
         id: {
@@ -107,20 +94,23 @@ export const EventSchema : JSONSchemaType<APIEvent> = {
             type: "integer"
         },
         start: {
-            type: "integer"
+            type: "string"
         },
-        last_execution: {
+        next: {
+            type: "string"
+        },
+        last: {
             type: "integer"
         },
         active: {
             type: "boolean"
         }
     },
-    required: ["id", "name", "clocking", "start", "active", "last_execution"],
+    required: ["id", "name", "clocking", "start", "next", "active", "last"],
     additionalProperties: false
 }
 
-const EventsSchema : JSONSchemaType<APIEvent[]> = {
+const EventsSchema : JSONSchemaType<EventResponse[]> = {
     type: "array",
     items: EventSchema
 }
@@ -128,23 +118,49 @@ const EventsSchema : JSONSchemaType<APIEvent[]> = {
 export class EventHandler {
 
     public static async get_all() : Promise<Either<APIEvent[]>> {
-        return await Request.get<APIEvent[]>(
+        const resp = await Request.get<EventResponse[]>(
             'events', EventsSchema
         );
+        return EventHandler.map(resp);
     }
 
     public static async get(index : number) : Promise<Either<APIEvent>> {
-        return await Request.get<APIEvent>(
+        const res = await Request.get<EventResponse>(
             `event/${index}`,
             EventSchema
         );
+        if(res.has_error()) return Either.error<APIEvent>(res.get_error());
+        return Either.success<APIEvent>({
+            id: res.get_value().id,
+            name: res.get_value().name,
+            clocking: res.get_value().clocking,
+            start: Date.create_by_string(res.get_value().start),
+            next: Date.create_by_string(res.get_value().next),
+            last : res.get_value().last,
+            active: res.get_value().active
+        });
     }
 
     public static async get_list(indices : number[]) : Promise<Either<APIEvent[]>> {
         const list = await Promise.all(indices.map(async (elem : number) => {
-            return await Request.get<APIEvent>(`event/${elem}`, EventSchema);
+            return await Request.get<EventResponse>(`event/${elem}`, EventSchema);
         }));
-        return Either.map<APIEvent>(list);
+        return EventHandler.map(Either.map<EventResponse>(list));
+    }
+
+    private static map(list : Either<EventResponse[]>) : Either<APIEvent[]> {
+        if(list.has_error()) return Either.error<APIEvent[]>(list.get_error());
+        return Either.success<APIEvent[]>(list.get_value().map((event : EventResponse) => {
+            return {
+                id: event.id,
+                name: event.name,
+                clocking: event.clocking,
+                start: Date.create_by_string(event.start),
+                next: Date.create_by_string(event.next),
+                last : event.last,
+                active: event.active
+            }
+        }));
     }
 
     public static async set(event : Event) : Promise<Either<number>> {

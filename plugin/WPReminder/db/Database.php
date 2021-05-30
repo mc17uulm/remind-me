@@ -110,9 +110,11 @@ final class Database
         $sql = "CREATE TABLE `{$db->get_table_name("events")}` (
             id int NOT NULL AUTO_INCREMENT,
             name varchar(155) NOT NULL,
+            description TEXT NOT NULL,
             clocking BIT(4) NOT NULL,
-            start int NOT NULL,
-            last_execution int NOT NULL,
+            start DATE NOT NULL,
+            next DATE NOT NULL,
+            last TIMESTAMP NOT NULL,
             active BIT(1) NOT NULL,
             PRIMARY KEY (id)
         ) ENGINE=InnoDB $charset;";
