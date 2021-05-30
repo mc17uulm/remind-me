@@ -4,11 +4,13 @@ namespace WPReminder\api\handler;
 
 use WP_REST_Request as Request;
 use WPReminder\api\APIException;
+use WPReminder\api\objects\Date;
 use WPReminder\api\objects\Event;
 use WPReminder\api\Response;
 use WPReminder\api\schemas\EventSchema;
 use WPReminder\db\DatabaseException;
 use WPReminder\api\ValidationException;
+use WPReminder\PluginException;
 
 final class EventHandler implements RestHandler
 {
@@ -44,10 +46,15 @@ final class EventHandler implements RestHandler
      * @param Response $res
      * @throws DatabaseException
      * @throws ValidationException
+     * @throws APIException
+     * @throws PluginException
      */
     public static function set(Request $req, Response $res): void
     {
-        $res->success(Event::set((new EventSchema())->validate($req)->get_result()));
+        $result = (new EventSchema())->validate($req)->get_result();
+        if($result['start'] < date('Y-m-d')) throw new APIException('Given date is in the past');
+        $result['next'] = Date::create_next($result['start'], $result['clocking']);
+        $res->success(Event::set($result));
     }
 
     /**
@@ -56,15 +63,18 @@ final class EventHandler implements RestHandler
      * @throws APIException
      * @throws DatabaseException
      * @throws ValidationException
+     * @throws PluginException
      */
     public static function update(Request $req, Response $res): void
     {
-        $event = (new EventSchema())->validate($req)->get_result();
+        $result = (new EventSchema())->validate($req)->get_result();
         $id = $req->get_param("id");
 
         if(!is_numeric($id)) throw new APIException("'id' is not set or not numeric");
 
-        $res->success(Event::update($id, $event));
+        if($result['start'] < date('Y-m-d')) throw new APIException('Given date is in the past');
+
+        $res->success(Event::update($id, $result));
     }
 
     /**

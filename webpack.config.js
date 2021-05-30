@@ -1,6 +1,7 @@
 const { resolve } = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const TerserPlugin = require("terser-webpack-plugin");
+//const TerserPlugin = require("terser-webpack-plugin");
+const { ESBuildMinifyPlugin } = require('esbuild-loader');
 const mode = process.env.NODE_ENV !== 'production';
 
 const base = '/wp-content/plugins/wp-reminder/';
@@ -16,13 +17,21 @@ const rules = [
         test: /\.(js|jsx)$/,
         exclude: exclude,
         use: {
-            loader: "babel-loader"
+            loader: "esbuild-loader",
+            options: {
+                loader: 'jsx',
+                target: 'es2015'
+            }
         }
     }, {
         test: /\.(ts|tsx)$/,
         exclude: exclude,
         use: {
-            loader: "ts-loader"
+            loader: "esbuild-loader",
+            options: {
+                loader: 'tsx',
+                target: 'es2015'
+            }
         }
     }, {
         test: /\.s?[ac]ss$/,
@@ -69,15 +78,13 @@ module.exports = {
         events: "./src/events",
         subscribers: "./src/subscribers",
         settings: "./src/settings",
-        frontend: "./src/frontend",
-        frontend_settings: './src/frontend-settings'
+        'new-form': "./src/new-form",
+        'edit-form': './src/edit-form'
     },
     optimization: {
         minimizer: [
-            new TerserPlugin({
-                terserOptions: {
-                    keep_fnames: false
-                }
+            new ESBuildMinifyPlugin({
+                target: 'es2015'
             })
         ]
     },

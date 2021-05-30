@@ -61,7 +61,7 @@ export class SubscriberHandler
 
     public static async get(token : string): Promise<Either<APISubscriber>> {
         return await Request.get<APISubscriber>(
-            `subscriber/${token}`,
+            `subscriber/token/${token}`,
             SubscriberSchema
         )
     }
@@ -82,7 +82,7 @@ export class SubscriberHandler
 
     public static async update_by_token(token: string, subscriber : Subscriber) : Promise<Either<boolean>> {
         return await Request.put<boolean>(
-            `subscriber/${token}`,
+            `subscriber/token/${token}`,
             subscriber,
             PutResponseSchema
         );
@@ -105,7 +105,7 @@ export class SubscriberHandler
 
     public static async unsubscribe(token : string) : Promise<Either<boolean>> {
         return await Request.delete<boolean>(
-            `subscriber/${token}`,
+            `subscriber/token/${token}`,
             DeleteResponseSchema
         );
     }

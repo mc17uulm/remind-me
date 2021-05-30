@@ -18,8 +18,7 @@ export const LoadingContent = <T extends unknown>(props : LoadingContentProps<T>
     const hasContent = (value : T) : boolean => {
         if(typeof value === "undefined") return false;
         // @ts-ignore
-        if(Array.isArray(value) && value.length === 0) return false;
-        return true;
+        return !(Array.isArray(value) && value.length === 0);
     }
 
     switch(props.state.state) {

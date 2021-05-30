@@ -37,15 +37,19 @@ final class Subscriber
      */
     private ?bool $active;
     /**
-     * @var array<int | Event>
+     * @var array<int>
      */
     public array $events;
+    /**
+     * @var array<Event>
+     */
+    private array $executable_events;
 
     /**
      * Subscriber constructor.
      * @param string $token
      * @param string $email
-     * @param array $events
+     * @param array<int> $events
      * @param int|null $id
      * @param int|null $registered
      * @param bool|null $active
@@ -57,20 +61,7 @@ final class Subscriber
         $this->id = $id;
         $this->registered = $registered;
         $this->active = $active;
-    }
-
-    /**
-     * @param array<Event> $events
-     */
-    public function set_events(array $events) : void {
-        $this->events = $events;
-    }
-
-    /**
-     * @return array<Event | int>
-     */
-    public function get_events() : array {
-        return $this->events;
+        $this->executable_events = [];
     }
 
     /**
@@ -101,6 +92,34 @@ final class Subscriber
     }
 
     /**
+     * @param array<Event> $events => all events that should be executed now
+     */
+    public function set_executable_events(array $events) : void {
+        $given_events = $this->events;
+        // filter all events, that are subscribed by the given user;
+        $this->executable_events = array_filter(
+            $events,
+            function(Event $event) use ($given_events) {
+                return in_array($event->get_id(), $given_events);
+            }
+        );
+    }
+
+    /**
+     * @return Event[]
+     */
+    public function get_executable_events() : array {
+        return $this->executable_events;
+    }
+
+    /**
+     * @return bool
+     */
+    public function has_executable_events() : bool {
+        return count($this->executable_events) > 0;
+    }
+
+    /**
      * @return array
      */
     public function to_json() : array {
@@ -125,6 +144,7 @@ final class Subscriber
      * @param string $token
      * @return Subscriber
      * @throws DatabaseException
+     * @throws APIException
      * @throws Exception
      */
     public static function get_by_token(string $token) : Subscriber
@@ -220,26 +240,38 @@ final class Subscriber
      * @param int $id
      * @return bool
      * @throws DatabaseException
+     * @throws PluginException
      */
     public static function delete(int $id) : bool {
+        $subscriber = self::get_by_id($id);
         $db = Database::get_database();
-        return $db->delete(
+        $result = $db->delete(
             "DELETE FROM {$db->get_table_name("subscribers")} WHERE id = %d",
             $id
         );
+        if($result) {
+            MailHandler::send_unsubscribe($subscriber);
+        }
+        return $result;
     }
 
     /**
      * @param string $token
      * @return bool
      * @throws DatabaseException
+     * @throws PluginException
      */
     public static function unsubscribe(string $token) : bool {
+        $subscriber = self::get_by_token($token);
         $db = Database::get_database();
-        return $db->delete(
+        $result = $db->delete(
             "DELETE FROM {$db->get_table_name('subscribers')} WHERE token = %s",
             $token
         );
+        if($result) {
+            MailHandler::send_unsubscribe($subscriber);
+        }
+        return $result;
     }
 
 }

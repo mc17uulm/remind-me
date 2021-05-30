@@ -4,6 +4,7 @@ namespace WPReminder;
 
 use WPReminder\api\APIHandler;
 use WPReminder\api\handler\LinkHandler;
+use WPReminder\api\objects\Event;
 use WPReminder\api\objects\Settings;
 use WPReminder\cron\CronJob;
 use WPReminder\db\Database;
@@ -36,22 +37,35 @@ final class Loader {
         add_shortcode('wp-reminder', fn(array $attr) => $this->handle_shortcode($attr));
         add_shortcode('wp-reminder-settings', fn() => $this->handle_settings_shortcode());
 
+        add_shortcode('wp-reminder-test', function() {
+            $events = Event::get_all();
+
+            $str = "";
+            foreach($events as $event) {
+                assert($event instanceof Event);
+                $next_execution = $event->get_next_execution();
+                $execute_now = $event->should_execute_now() ? 'true' : 'false';
+                $date = date('d. F Y', $next_execution);
+                $id = $event->get_id();
+                $str .= "$id | Date: $date | Execute?: $execute_now<br>";
+            }
+            return $str;
+        });
     }
 
     /**
      * @throws PluginException
      */
     private function activate() : void {
+        if(!defined('WP_REMINDER_DIR')) die('invalid request');
         if(!current_user_can('activate_plugins')) return;
         Database::initialize();
         Site::add();
         Settings::create_default();
         CronJob::activate();
+        Log::create(WP_REMINDER_DIR, 'log.txt');
     }
 
-    /**
-     * @throws PluginException
-     */
     private function deactivate() : void {
         if(!current_user_can('activate_plugins')) return;
         Database::remove();
@@ -75,13 +89,13 @@ final class Loader {
      * @return string
      */
     private function handle_settings_shortcode() : string {
-        wp_enqueue_script('wp-reminder-frontend-settings.js');
-        wp_enqueue_style('wp-reminder-frontend-settings.css');
+        wp_enqueue_script('wp-reminder-edit-form.js');
+        wp_enqueue_style('wp-reminder-frontend.css');
 
         return "
             <div>
                 <h4>" . __('Subscription settings', 'wp-reminder') . "</h4>
-                <div id='wp-reminder-frontend-settings-form'></div>
+                <div id='wp-reminder-frontend-form'></div>
             </div>
         ";
     }
@@ -89,7 +103,7 @@ final class Loader {
     private function register_menu() : void {
         add_menu_page(
             'Dashboard',
-            'WP Reminder',
+            'Reminder',
             'manage_options',
             'wp-reminder',
             function() { echo '<div id="wp_reminder_container"></div>'; },
@@ -143,11 +157,16 @@ final class Loader {
         }
     }
 
+    /**
+     * @throws PluginException
+     */
     private function register_backend_scripts(string $file) : void {
+        if(!defined('WP_REMINDER_URL') || !defined('WP_REMINDER_VERSION')) die('invalid request');
         $token = $this->get_token($_GET["page"]);
         if($token !== "") {
 
-            $base = defined("WP_REMINDER_BASE_URL") ? WP_REMINDER_BASE_URL : "";
+            $base = defined("WP_REMINDER_URL") ? WP_REMINDER_URL : "";
+            $settings = Settings::get();
 
             wp_enqueue_script(
                 'wp_reminder.js',
@@ -173,7 +192,8 @@ final class Loader {
                     'slug' => 'wp-reminder',
                     'version' => 'v1',
                     'site' => $_GET["page"],
-                    'base' => admin_url('admin.php')
+                    'base' => admin_url('admin.php'),
+                    'active' =>  $settings->license->active ? 'true' : 'false'
                 ]
             );
 
@@ -182,19 +202,20 @@ final class Loader {
     }
 
     private function register_frontend_scripts(string $file) : void {
-        $base = defined("WP_REMINDER_BASE_URL") ? WP_REMINDER_BASE_URL : "";
+        if(!defined('WP_REMINDER_URL') || !defined('WP_REMINDER_VERSION')) die('invalid request');
+        $base = defined("WP_REMINDER_URL") ? WP_REMINDER_URL : "";
 
         wp_register_script(
-            'wp-reminder-frontend.js',
-            "$base/dist/js/wp-reminder-frontend-handler.js",
+            'wp-reminder-new-form.js',
+            "$base/dist/js/wp-reminder-new-form-handler.js",
             ['wp-i18n'],
             WP_REMINDER_VERSION,
             true
         );
 
         wp_register_script(
-            'wp-reminder-frontend-settings.js',
-            "$base/dist/js/wp-reminder-frontend_settings-handler.js",
+            'wp-reminder-edit-form.js',
+            "$base/dist/js/wp-reminder-edit-form-handler.js",
             ['wp-i18n'],
             WP_REMINDER_VERSION,
             true
@@ -202,31 +223,25 @@ final class Loader {
 
         wp_register_style(
             'wp-reminder-frontend.css',
-            "$base/dist/css/wp-reminder-frontend-style.css",
-            [],
-            WP_REMINDER_VERSION
-        );
-
-        wp_register_style(
-            'wp-reminder-frontend-settings.css',
-            "$base/dist/css/wp-reminder-frontend_settings-style.css",
+            "$base/dist/css/wp-reminder-new-form-style.css",
             [],
             WP_REMINDER_VERSION
         );
 
         wp_localize_script(
-            'wp-reminder-frontend.js',
+            'wp-reminder-new-form.js',
             'wp_reminder_definitions',
             [
                 'root' => esc_url_raw(rest_url()),
                 'nonce' => wp_create_nonce('wp_rest'),
                 'slug' => 'wp-reminder',
-                'version' => 'v1'
+                'version' => 'v1',
+                'base' => get_site_url()
             ]
         );
 
         wp_localize_script(
-            'wp-reminder-frontend-settings.js',
+            'wp-reminder-edit-form.js',
             'wp_reminder_definitions',
             [
                 'root' => esc_url_raw(rest_url()),
@@ -238,13 +253,13 @@ final class Loader {
         );
 
         wp_set_script_translations(
-            'wp_reminder-frontend-settings.js',
+            'wp_reminder-new-form.js',
             'wp-reminder',
             plugin_dir_path($file) . "/languages/"
         );
 
         wp_set_script_translations(
-            'wp_reminder-frontend.js',
+            'wp_reminder-edit-form.js',
             'wp-reminder',
             plugin_dir_path($file) . "/languages/"
         );

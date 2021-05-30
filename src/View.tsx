@@ -8,16 +8,30 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'font-awesome/css/font-awesome.css';
 import {Request} from "./api/Request";
 
-export interface Definitions {
+export interface FrontendDefinitions {
     root : string,
-    nonce : string,
     slug : string,
+    nonce : string,
     version : string,
-    base : string,
+    base: string,
+    active: string
+}
+
+export interface Definitions extends FrontendDefinitions {
     site : string
 }
 
 declare var wp_reminder_definitions : Definitions;
+
+export interface PluginSettings {
+    active: boolean;
+}
+
+const Settings : PluginSettings = {
+    active: wp_reminder_definitions.active === 'true'
+}
+
+export const PluginContext = React.createContext<PluginSettings>(Settings);
 
 export class View {
 
@@ -32,11 +46,13 @@ export class View {
 
         const elem = document.getElementById("wp_reminder_container");
         elem ? ReactDOM.render(
-            <Container>
-                <h1>WP Reminder</h1>
-                {element}
-                <ToastContainer position="bottom-center" autoClose={2000} />
-            </Container>,
+            <PluginContext.Provider value={Settings}>
+                <Container>
+                    <h1>WP Reminder</h1>
+                    {element}
+                    <ToastContainer position="bottom-center" autoClose={2000} />
+                </Container>
+            </PluginContext.Provider>,
             elem
         ) : false;
 

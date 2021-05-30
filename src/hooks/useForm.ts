@@ -29,15 +29,15 @@ function clone<S>(values : S) : Errors<S> {
  * The useForm hook handles the state of a form.
  * @param defaultValue
  */
-export const useForm = <T extends unknown>(defaultValue: T) : [Form<T>, (elem : T) => void] => {
+export const useForm = <T extends object>(defaultValue: T) : [Form<T>, (elem : T) => void] => {
 
     const [state, setStateValue] = useState<T>(defaultValue);
     const [errors, setErrors] = useState<Errors<T>>(clone(defaultValue));
 
     const onChange = (e : ChangeEvent<HTMLInputElement>) : void => {
         e.preventDefault();
-        // @ts-ignore
-        setValue(e.target.name, e.target.value);
+        const name : keyof T = e.target.name as keyof T;
+        setValue(name, e.target.value);
     }
 
     const setValue = (key : keyof T, value : any) : void => {

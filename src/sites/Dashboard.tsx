@@ -5,8 +5,11 @@ import {APISubscriber, SubscriberHandler} from "../api/handler/SubscriberHandler
 import {__, _n, sprintf} from "@wordpress/i18n";
 import {useInitializer} from "../hooks/useInitializer";
 import {Button, Card, Grid, Label, Table} from "semantic-ui-react";
-import moment from "moment";
 import {LoadingContent} from "../components/LoadingContent";
+import dayjs from "dayjs";
+import localized from "dayjs/plugin/localizedFormat";
+
+dayjs.extend(localized);
 
 export const Dashboard = () => {
 
@@ -56,7 +59,7 @@ export const Dashboard = () => {
                                             <Table.Cell>{subscriber.email}</Table.Cell>
                                             <Table.Cell>{sprintf(_n('%d Event', '%d Events', subscriber.events.length, 'wp-reminder'), subscriber.events.length)}</Table.Cell>
                                             <Table.Cell>{subscriber.active ? (<Label color="green">Active</Label>) : (<Label color="red">Inactive</Label>)}</Table.Cell>
-                                            <Table.Cell>{moment(subscriber.registered).format('LLLL')}</Table.Cell>
+                                            <Table.Cell>{dayjs(subscriber.registered).format('LLLL')}</Table.Cell>
                                         </Table.Row>
                                     ))}
                                 </Table.Body>
@@ -103,7 +106,7 @@ export const Dashboard = () => {
                                         <Table.Row key={`event_${index}`}>
                                             <Table.Cell>{event.name}</Table.Cell>
                                             <Table.Cell>{get_clocking_str(event.clocking)}</Table.Cell>
-                                            <Table.Cell>{event.last_execution === 0 ? __('not executed yet', 'wp-reminder') : moment(event.last_execution).format('LLLL')}</Table.Cell>
+                                            <Table.Cell>{event.last === 0 ? __('not executed yet', 'wp-reminder') : dayjs(event.last).format('LLLL')}</Table.Cell>
                                         </Table.Row>
                                     ))}
                                 </Table.Body>

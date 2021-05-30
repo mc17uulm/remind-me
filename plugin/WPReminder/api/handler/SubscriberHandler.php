@@ -9,6 +9,7 @@ use WPReminder\api\Response;
 use WPReminder\api\schemas\SubscriberSchema;
 use WPReminder\db\DatabaseException;
 use WPReminder\api\ValidationException;
+use WPReminder\PluginException;
 
 final class SubscriberHandler implements RestHandler
 {
@@ -17,6 +18,7 @@ final class SubscriberHandler implements RestHandler
      * @param Request $req
      * @param Response $res
      * @throws DatabaseException
+     * @throws APIException
      */
     public static function get(Request $req, Response $res): void
     {
@@ -63,6 +65,12 @@ final class SubscriberHandler implements RestHandler
         $res->success(Subscriber::update_by_id($id, $subscriber));
     }
 
+    /**
+     * @param Request $req
+     * @param Response $res
+     * @throws DatabaseException
+     * @throws ValidationException
+     */
     public static function edit(Request $req, Response $res) : void {
         $subscriber = (new SubscriberSchema())->validate($req)->get_result();
         $token = $req->get_param('token');
@@ -75,6 +83,7 @@ final class SubscriberHandler implements RestHandler
      * @param Response $res
      * @throws APIException
      * @throws DatabaseException
+     * @throws PluginException
      */
     public static function delete(Request $req, Response $res): void
     {
@@ -89,6 +98,7 @@ final class SubscriberHandler implements RestHandler
      * @param Request $req
      * @param Response $res
      * @throws DatabaseException
+     * @throws PluginException
      */
     public static function unsubscribe(Request $req, Response $res) : void {
         $token = $req->get_param('token');

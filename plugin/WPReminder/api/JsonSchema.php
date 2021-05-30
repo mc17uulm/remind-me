@@ -34,8 +34,8 @@ class JsonSchema
      * @throws ValidationException
      */
     public function __construct(string $filename = "", string $base = "") {
-        if($base === "" && defined("WP_REMINDER_SCHEMA_DIR")) {
-            $base = WP_REMINDER_SCHEMA_DIR;
+        if($base === "" && defined("WP_REMINDER_SCHEMAS")) {
+            $base = WP_REMINDER_SCHEMAS;
         }
 
         $file = "$base$filename";
@@ -78,7 +78,7 @@ class JsonSchema
     }
 
     /**
-     * @return null
+     * @return mixed
      */
     public function cast() { return null; }
 

@@ -1,61 +1,80 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema",
+  "definitions": {
+    "template": {
+      "type": "object",
+      "properties": {
+        "html": {
+          "type": "string"
+        },
+        "subject": {
+          "type": "string"
+        }
+      },
+      "required": ["html", "subject"],
+      "additionalProperties": false
+    }
+  },
   "type": "object",
   "properties": {
-    "text_privacy": {
-      "type": "string"
+    "templates": {
+      "type": "object",
+      "properties": {
+        "confirm": {
+          "$ref": "#/definitions/template"
+        },
+        "success": {
+          "$ref": "#/definitions/template"
+        },
+        "signout": {
+          "$ref": "#/definitions/template"
+        },
+        "reminder": {
+          "$ref": "#/definitions/template"
+        }
+      },
+      "required": ["confirm", "success", "signout", "reminder"],
+      "additionalProperties": false
     },
-    "template_check": {
-      "type": "string"
+    "messages": {
+      "type": "object",
+      "properties": {
+        "signin": {
+          "type": "string"
+        },
+        "signout": {
+          "type": "string"
+        },
+        "double_opt_in": {
+          "type": "string"
+        }
+      },
+      "required": ["signin", "signout", "double_opt_in"],
+      "additionalProperties": false
     },
-    "subject_check": {
-      "type": "string"
-    },
-    "template_accept": {
-      "type": "string"
-    },
-    "subject_accept": {
-      "type": "string"
-    },
-    "template_signout": {
-      "type": "string"
-    },
-    "subject_signout": {
-      "type": "string"
-    },
-    "template_email": {
-      "type": "string"
-    },
-    "subject_email": {
-      "type": "string"
-    },
-    "signin_msg": {
-      "type": "string"
-    },
-    "double_opt_in_msg": {
-      "type": "string"
-    },
-    "signout_msg": {
-      "type": "string"
+    "license": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        }
+      },
+      "required": ["code"],
+      "additionalProperties": false
     },
     "settings_page": {
+      "type": "string"
+    },
+    "privacy_text": {
       "type": "string"
     }
   },
   "required": [
-    "text_privacy",
-    "template_check",
-    "subject_check",
-    "template_accept",
-    "subject_accept",
-    "template_signout",
-    "subject_signout",
-    "template_email",
-    "subject_email",
-    "signin_msg",
-    "double_opt_in_msg",
-    "signout_msg",
-    "settings_page"
+    "templates",
+    "messages",
+    "license",
+    "settings_page",
+    "privacy_text"
   ],
   "additionalProperties": false
 }

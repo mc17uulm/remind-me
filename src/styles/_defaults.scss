@@ -8,10 +8,13 @@ div.error {
   box-shadow: none !important;
 }
 
-@media only screen and (min-width: 1200px) {
+$red: #db2828;
+$green: #21ba45;
+$indigo: rgba(99,102,241,1);
+
+@media only screen and (max-width: 1400px) {
   .ui.container {
-    margin-left: 1em !important;
-    width: 95%;
+    width: 95% !important;
   }
 }
 
@@ -19,21 +22,64 @@ div.error {
   margin-top: 1em;
 }
 
+@keyframes fadeOut {
+  0% {opacity: 1;}
+  100% {opacity: 0;}
+}
+
+.wp-reminder-text {
+  &.green {
+    color: $green;
+  }
+  &.red {
+    color: $red;
+  }
+  &.primary {
+    color: $indigo;
+  }
+}
+
+.wp-reminder-submit-container {
+  margin-top: 15px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  position: relative;
+
+  .wp-reminder-btn-text {
+
+    width: 35%;
+    margin-right: 10px;
+    text-align: end;
+    float: right;
+    animation: fadeOut 4s linear 1 forwards;
+
+    &.error {
+      color: $red;
+    }
+    &.success {
+      color: $green;
+    }
+  }
+}
+
+
 .wp-reminder-link {
   cursor: pointer;
 }
 
 .wp-reminder-add-link {
-  color: green !important;
+  color: $green !important;
   cursor: pointer;
 }
 
 .wp-reminder-delete-link {
-  color: red !important;
+  color: $red !important;
   cursor: pointer;
 }
 
 .wp-reminder-edit-link {
+  color: $indigo !important;
   cursor: pointer;
 }
 

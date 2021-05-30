@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import {Settings, SettingsHandler} from "../api/handler/SettingsHandler";
+import {APISettings, SettingsHandler} from "../api/handler/SettingsHandler";
 import {Loader} from "../components/Loader";
 import {SettingsForm} from "../components/SettingsForm";
 import {InitializeStates, useInitializer} from "../hooks/useInitializer";
@@ -8,7 +8,7 @@ import {__} from "@wordpress/i18n";
 
 export const SettingsView = () => {
 
-    const [initObject, load] = useInitializer<Settings>();
+    const [initObject, load] = useInitializer<APISettings>();
 
     useEffect(() => {
         load(async () => {
