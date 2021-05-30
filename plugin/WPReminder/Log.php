@@ -28,8 +28,8 @@ final class Log
         if($file === "") {
             $file = WP_REMINDER_DIR . '/log.txt';
         }
-        if(!is_file($file)) throw new PluginException("given log file '$file' is not a file");
-        if(!is_writable($file)) throw new PluginException("given log file '$file' is not writable");
+        if(!is_file($file)) return;
+        if(!is_writable($file)) return;
 
         $this->file = $file;
     }
@@ -52,8 +52,8 @@ final class Log
      * @throws PluginException
      */
     public static function create(string $dir, string $filename) : void {
-        if(!is_dir($dir)) throw new PluginException("given dir '$dir' is not a dir");
-        if(!is_writable($dir)) throw new PluginException("given dir '$dir' is not writable");
+        if(!is_dir($dir)) return;
+        if(!is_writable($dir)) return;
 
         $file = "$dir/$filename";
         file_put_contents($file, "DATE\t| FILE\t| LINE\t| TYPE\t| MESSAGE");
