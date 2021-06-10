@@ -9,6 +9,9 @@ use WPReminder\api\objects\Settings;
 use WPReminder\cron\CronJob;
 use WPReminder\db\Database;
 use WPReminder\db\DatabaseException;
+use WPReminder\update\Updater;
+use WP_Upgrader;
+use stdClass;
 
 /**
  * Class Loader
@@ -26,6 +29,12 @@ final class Loader {
 
         register_activation_hook($file, fn() => $this->activate());
         register_deactivation_hook($file, fn() => $this->deactivate());
+
+        add_filter('plugins_api', fn($res, $action, $args) => Updater::request($res, $action, $args), 20, 3);
+        add_filter('site_transient_update_plugins', fn(stdClass $transient) => Updater::update($transient));
+        add_action('upgrader_process_complete', fn(WP_Upgrader $upgrader, array $options) => Updater::clear($upgrader, $options), 10, 2);
+        add_filter('plugin_row_meta', fn(array $meta, string $file) => Updater::add_info($meta, $file), 10, 4);
+
 
         add_action('rest_api_init', fn() => APIHandler::run());
         add_action('admin_menu', fn() => $this->register_menu());
