@@ -69,10 +69,14 @@ final class APIHandler
 
         $api->get("/settings/", function (Request $request, Response $response) {
             SettingsHandler::get($request, $response);
-        }, [], false);
+        });
 
         $api->put("/settings/", function (Request $request, Response $response) {
             SettingsHandler::update($request, $response);
+        });
+
+        $api->delete('/license', function(Request $request, Response $response) {
+            SettingsHandler::delete($request, $response);
         });
 
     }

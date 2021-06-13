@@ -90,7 +90,6 @@ export class Request {
                 return Either.error(error.message);
             }
         } catch (err) {
-            console.error(err.message);
             return Either.error("Invalid response");
         }
     }
@@ -100,6 +99,7 @@ export class Request {
         const validator = ajv.compile(schema);
         const valid = validator(content);
         if(!valid) {
+            console.error(validator.errors);
             throw new Error(validator.errors?.toString() ?? "");
         }
         return content;

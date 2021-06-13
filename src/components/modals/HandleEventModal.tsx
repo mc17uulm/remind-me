@@ -106,7 +106,7 @@ export const HandleEventModal = (props : ModalProps<APIEvent>) => {
         if(Today.year === form.values.start.year) {
             months = months.map((item : DropdownItemProps) => {
                 // @ts-ignore
-                if(item.value + 1 < Today.month) {
+                if(item.value < Today.month) {
                     return {key: item.key, value: item.value, text: item.text, disabled: true};
                 }
                 return item;
@@ -135,8 +135,24 @@ export const HandleEventModal = (props : ModalProps<APIEvent>) => {
     }
 
     const updateDay = (value : string) : void => {
+        const day = parseInt(value);
+        if(isNaN(day)) return;
         const start = form.values.start;
-        start.day = parseInt(value);
+        start.day = day;
+        form.setValue('start', start);
+    }
+
+    const checkDay = () : void => {
+        const start = form.values.start;
+        const day = start.day;
+        const max = get_max();
+        if(day > max) {
+            start.day = max;
+        }
+        const min = get_min();
+        if(day < min) {
+            start.day = min;
+        }
         form.setValue('start', start);
     }
 
@@ -169,9 +185,8 @@ export const HandleEventModal = (props : ModalProps<APIEvent>) => {
                                 value={form.values.start.day}
                                 onChange={(e, d) => updateDay(d.value)}
                                 type="number"
+                                onBlur={checkDay}
                                 placeholder={1}
-                                min={get_min()}
-                                max={get_max()}
                             />
                             <Form.Select
                                 width={4}

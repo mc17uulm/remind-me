@@ -62,8 +62,21 @@ final class Settings {
             'templates' => $this->templates->to_json(),
             'messages' => $this->messages->to_json(),
             'license' => $this->license->to_json(),
-            'settings_page' => $this->settings_page,
-            'privacy_text' => $this->privacy_text
+            'settings_page' => esc_url($this->settings_page),
+            'privacy_text' => esc_html($this->privacy_text)
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    private function to_db() : array {
+        return [
+            'templates' => $this->templates->to_db(),
+            'messages' => $this->messages->to_db(),
+            'license' => $this->license->to_db(),
+            'settings_page' => esc_url_raw($this->settings_page),
+            'privacy_text' => sanitize_text_field($this->privacy_text)
         ];
     }
 
@@ -103,6 +116,7 @@ final class Settings {
     /**
      * @param Settings $settings
      * @return bool
+     * @throws PluginException
      */
     public static function set(Settings $settings) : bool {
         return self::update($settings);
@@ -111,10 +125,14 @@ final class Settings {
     /**
      * @param Settings $settings
      * @return bool
+     * @throws PluginException
      */
     public static function update(Settings $settings) : bool {
+        if($settings->license->code !== '') {
+            $settings->license->check();
+        }
         return update_option(
-            self::KEY, $settings->to_json()
+            self::KEY, $settings->to_db()
         );
     }
 

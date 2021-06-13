@@ -124,8 +124,8 @@ final class Subscriber
      */
     public function to_json() : array {
         $object = [
-            "token" => $this->token,
-            "email" => $this->email,
+            "token" => esc_html($this->token),
+            "email" => esc_html($this->email),
             "events" => $this->events
         ];
         if(!is_null($this->id)) {
@@ -197,10 +197,10 @@ final class Subscriber
         $id = $db->insert(
             "INSERT INTO {$db->get_table_name("subscribers")} (token, email, events, registered, active) VALUES (%s, %s, %s, UNIX_TIMESTAMP(), false)",
             $token,
-            $resource["email"],
+            sanitize_email($resource["email"]),
             json_encode($resource["events"])
         );
-        MailHandler::send_confirm(new Subscriber($token, $resource["email"], $resource["events"], $id));
+        MailHandler::send_confirm(new Subscriber($token, sanitize_email($resource["email"]), $resource["events"], $id));
         return $id;
     }
 
@@ -214,9 +214,9 @@ final class Subscriber
         $db = Database::get_database();
         return $db->update(
             "UPDATE {$db->get_table_name("subscribers")} SET email = %s, events = %s WHERE token = %s AND id = %d",
-            $resource["email"],
+            sanitize_email($resource["email"]),
             json_encode($resource["events"]),
-            $resource["token"],
+            sanitize_text_field($resource["token"]),
             $id
         );
     }
@@ -232,7 +232,7 @@ final class Subscriber
         return $db->update(
             "UPDATE {$db->get_table_name('subscribers')} SET events = %s WHERE token = %s",
             json_encode($resource["events"]),
-            $token
+            sanitize_text_field($token)
         );
     }
 

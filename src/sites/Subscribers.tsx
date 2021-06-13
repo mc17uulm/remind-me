@@ -149,6 +149,7 @@ export const Subscribers = () => {
 
     return (
         <Fragment>
+            <h3>{__('Subscribers', 'wp-reminder')}</h3>
             <a
                 className={'wp-reminder-add-link' + (settings.active ? '' : ' wp-reminder-disabled')}
                 onClick={(e) => {settings.active ? modal.add(e) : null}}>

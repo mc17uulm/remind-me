@@ -49,6 +49,7 @@ export const useForm = <T extends object>(defaultValue: T) : [Form<T>, (elem : T
 
     const setForm = (element : T) : void => {
         setStateValue(element);
+        setErrors(clone(element));
     }
 
     const handleSubmit = (e : FormEvent) => {

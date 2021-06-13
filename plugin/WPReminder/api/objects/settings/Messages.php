@@ -38,9 +38,17 @@ final class Messages
      */
     public function to_json() : array {
         return [
-            'signin' => $this->signin,
-            'signout' => $this->signout,
-            'double_opt_in' => $this->double_opt_in
+            'signin' => esc_html($this->signin),
+            'signout' => esc_html($this->signout),
+            'double_opt_in' => esc_html($this->double_opt_in)
+        ];
+    }
+
+    public function to_db() : array {
+        return [
+            'signin' => sanitize_text_field($this->signin),
+            'signout' => sanitize_text_field($this->signout),
+            'double_opt_in' => sanitize_text_field($this->double_opt_in)
         ];
     }
 

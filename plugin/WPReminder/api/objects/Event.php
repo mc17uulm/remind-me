@@ -92,10 +92,10 @@ final class Event
      */
     public function to_json() : array {
         $object = [
-            "name" => $this->name,
+            "name" => esc_html($this->name),
             "clocking" => $this->clocking,
-            "start" => $this->start->to_string(),
-            "next" => $this->next->to_string(),
+            "start" => esc_html($this->start->to_string()),
+            "next" => esc_html($this->next->to_string()),
             "last" => $this->last * 1000,
             "active" => $this->active
         ];
@@ -152,7 +152,7 @@ final class Event
         $db = Database::get_database();
         return $db->insert(
             "INSERT INTO {$db->get_table_name("events")} (name, clocking, start, next, last, active) VALUES (%s, %d, %s, %s, 0, 1)",
-            $resource["name"],
+            sanitize_text_field($resource["name"]),
             $resource["clocking"],
             $resource["start"],
             $resource["next"]
@@ -176,7 +176,7 @@ final class Event
         }
         return $db->update(
             "UPDATE {$db->get_table_name("events")} SET name = %s, clocking = %d, start = %s, next = %s WHERE id = %d",
-            $resource["name"],
+            sanitize_text_field($resource["name"]),
             $resource["clocking"],
             $resource["start"],
             $next,

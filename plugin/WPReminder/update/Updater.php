@@ -70,10 +70,10 @@ final class Updater {
     }
 
     /**
-     * @param stdClass $transient
-     * @return stdClass
+     * @param $transient
+     * @return mixed
      */
-    public static function update(stdClass $transient) : stdClass {
+    public static function update($transient) {
         if(empty($transient->checked)) return $transient;
         if(
             self::load_info($json) &&
