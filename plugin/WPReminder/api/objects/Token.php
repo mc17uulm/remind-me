@@ -14,10 +14,6 @@ use WPReminder\PluginException;
 final class Token {
 
     /**
-     * @var int
-     */
-    private int $id;
-    /**
      * @var string
      */
     private string $type;
@@ -32,14 +28,12 @@ final class Token {
 
     /**
      * Token constructor.
-     * @param int $id
      * @param string $type
      * @param string $value
      * @param int $subscriber_id
      */
-    protected function __construct(int $id, string $type, string $value, int $subscriber_id)
+    protected function __construct(string $type, string $value, int $subscriber_id)
     {
-        $this->id = $id;
         $this->type = $type;
         $this->value = $value;
         $this->subscriber_id = $subscriber_id;
@@ -59,6 +53,10 @@ final class Token {
         return $this->subscriber_id;
     }
 
+    /**
+     * @param string $type
+     * @return bool
+     */
     public function is_type(string $type) : bool {
         return $this->type === $type;
     }
@@ -84,7 +82,7 @@ final class Token {
             $token
         );
         if(count($res) !== 1) throw new PluginException('Could not find token in database');
-        return new Token($res[0]["id"], $res[0]["token_type"], $res[0]["token"], $res[0]["subscriber_id"]);
+        return new Token($res[0]["token_type"], $res[0]["token"], $res[0]["subscriber_id"]);
     }
 
     /**
@@ -98,14 +96,14 @@ final class Token {
     public static function create(int $subscriber_id, string $token_type, int $hours_valid = 48) : Token {
         $db = Database::get_database();
         $token = bin2hex(random_bytes(16));
-        $id = $db->insert(
+        $db->insert(
             "INSERT INTO {$db->get_table_name("tokens")} (token, subscriber_id, token_type, valid_til) VALUES (%s, %d, %s, DATE_ADD(NOW(), INTERVAL %d HOUR))",
             $token,
             $subscriber_id,
             $token_type,
             $hours_valid
         );
-        return new Token($id, $token_type, $token, $subscriber_id);
+        return new Token($token_type, $token, $subscriber_id);
     }
 
     /**

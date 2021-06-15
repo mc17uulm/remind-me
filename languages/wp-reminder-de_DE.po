@@ -1,16 +1,16 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Reminder 0.1\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/_wp_reminder\n"
+"Project-Id-Version: WP Reminder 0.1.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-reminder\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-04-14T10:49:12+00:00\n"
-"PO-Revision-Date: 2021-04-14 12:54+0200\n"
-"Language: de\n"
-"X-Generator: Poedit 2.4.2\n"
+"POT-Creation-Date: 2021-06-15T21:18:14+00:00\n"
+"PO-Revision-Date: 2021-06-15 23:47+0200\n"
+"Language: de_DE\n"
+"X-Generator: Poedit 3.0\n"
 "X-Domain: wp-reminder\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -19,35 +19,148 @@ msgid "WP Reminder"
 msgstr "WP Reminder"
 
 #. Description of the plugin
-msgid "WP Plugin for reminder handling"
-msgstr "WordPress Plugin"
+msgid "Plugin for reminder handling"
+msgstr "WordPress Plugin für die Bereitstellung von Erinnerungen"
 
 #. Author of the plugin
-msgid "mc17"
-msgstr "mc17"
+msgid "CodeLeaf"
+msgstr "CodeLeaf"
 
 #. Author URI of the plugin
-msgid "https://github.com/mc17uulm"
-msgstr "https://github.com/mc17uulm"
+msgid "https://plugins.code-leaf.de"
+msgstr "https://plugins.code-leaf.de"
 
-#: plugin/WPReminder/Loader.php:58
-#: plugin/WPReminder/Loader.php:59
+#: plugin/WPReminder/api/objects/Settings.php:121
+msgid "I accept the privacy settings. By checking this field you accept the transport and processing of your data by the provider of this webpage."
+msgstr "Ich akzeptiere die Datenschutzbestimmungen. Mit der Bestätigung dieses Feldes, erlaube ich die Übermittlung und die Verarbeitung meiner Daten durch den Bereitsteller dieser Website."
+
+#: plugin/WPReminder/api/objects/settings/License.php:94
+msgid "Invalid license code"
+msgstr "Ungültiger Lizenzcode"
+
+#: plugin/WPReminder/api/objects/settings/Messages.php:63
+msgid "You signed in successful. We send you an email to confirm your subscription"
+msgstr "Sie haben sich erfolgreich angemeldet. Wir haben Ihnen zudem eine Bestätigung per E-Mail zugesendet"
+
+#: plugin/WPReminder/api/objects/settings/Messages.php:64
+msgid "You signed out from the subscriptions"
+msgstr "Sie haben sich von den Erinnerungen abgemeldet"
+
+#: plugin/WPReminder/api/objects/settings/Messages.php:65
+msgid "You confirmed your subscription successful."
+msgstr "Sie haben sich erfolgreich angemeldet."
+
+#: plugin/WPReminder/api/objects/settings/Templates.php:77
+msgid "Confirm your subscription | %s"
+msgstr "Bestätigen Sie Ihre Anmeldung | %s"
+
+#: plugin/WPReminder/api/objects/settings/Templates.php:81
+msgid "Successfully subscribed | %s"
+msgstr "Erfolgreich angemeldet | %s"
+
+#: plugin/WPReminder/api/objects/settings/Templates.php:85
+msgid "Successfully unsubscribed | %s"
+msgstr "Erfolgreich abgemeldet | %s"
+
+#: plugin/WPReminder/api/objects/settings/Templates.php:89
+msgid "Reminder | %s"
+msgstr "Erinnerung | %s"
+
+#: plugin/WPReminder/api/templates/ConfirmTemplate.php:44
+msgid "Confirm your subscription"
+msgstr "Bestätigen Sie Ihre Anmeldung"
+
+#: plugin/WPReminder/api/templates/ConfirmTemplate.php:50
+#: plugin/WPReminder/api/templates/ReminderTemplate.php:45
+#: plugin/WPReminder/api/templates/SuccessTemplate.php:38
+msgid "Unsubscribe or edit subscription"
+msgstr "Erinnerungen beenden oder bearbeiten"
+
+#: plugin/WPReminder/api/templates/ConfirmTemplate.php:61
+#: plugin/WPReminder/api/templates/ReminderTemplate.php:56
+#: plugin/WPReminder/api/templates/SignoutTemplate.php:41
+#: plugin/WPReminder/api/templates/SuccessTemplate.php:49
+msgid "Company name"
+msgstr "Firmenname"
+
+#: plugin/WPReminder/api/templates/ConfirmTemplate.php:63
+msgid "Thank you for subscribing our reminders:"
+msgstr "Danke, dass Sie sich bei unserem Erinnerungsservice angemeldet haben:"
+
+#: plugin/WPReminder/api/templates/ConfirmTemplate.php:66
+msgid "To finish you subscription, please click this link: ${confirm_link}."
+msgstr "Um Ihre Anmeldung zu bestätigen, klicken Sie bitte auf diesen Link: ${confirm_link}."
+
+#: plugin/WPReminder/api/templates/ConfirmTemplate.php:69
+msgid "If you haven't subscribed to our service, you can delete this email. Your subscription is only activated after clicking the above link."
+msgstr "Wenn Sie sich nicht für diesen Service angemeldet haben, können Sie diese E-Mail einfach löschen. Die Anmeldung wird nur nach einem Klick auf den obigen Link aktiviert."
+
+#: plugin/WPReminder/api/templates/ConfirmTemplate.php:73
+#: plugin/WPReminder/api/templates/ReminderTemplate.php:62
+#: plugin/WPReminder/api/templates/SignoutTemplate.php:46
+#: plugin/WPReminder/api/templates/SuccessTemplate.php:58
+msgid "Company name | Street 1 | 12345 City"
+msgstr "Firmenname | Musterstraße 1 | 12345 Musterstadt"
+
+#: plugin/WPReminder/api/templates/ReminderTemplate.php:58
+msgid "We remind you for the following events:"
+msgstr "Heute erinnern wir Sie an folgende Ereignisse:"
+
+#: plugin/WPReminder/api/templates/SignoutTemplate.php:43
+msgid "You successfull unsubscribed from our services"
+msgstr "Sie haben sich erfolgreich von all unseren Services abgemeldet"
+
+#: plugin/WPReminder/api/templates/SuccessTemplate.php:51
+msgid "Your subscription was activated."
+msgstr "Ihr Erinnerungsservice wurde aktiviert."
+
+#: plugin/WPReminder/api/templates/SuccessTemplate.php:53
+msgid "You can now enjoy our service."
+msgstr "Sie können nun unseren Service genießen."
+
+#: plugin/WPReminder/api/templates/SuccessTemplate.php:55
+msgid "If you want to change your subscription or unsubscribe, just click here: ${unsubscribe_link}"
+msgstr "Wenn Sie Ihre Erinnerungen bearbeiten oder beenden möchten, klicken Sie einfach hier: ${unsubscribe_link}"
+
+#: plugin/WPReminder/Loader.php:90
+#: dist/js/wp-reminder-edit-form-handler.js:6529
+#: dist/js/wp-reminder-edit-form-handler.js:6535
+#: dist/js/wp-reminder-new-form-handler.js:6529
+#: dist/js/wp-reminder-new-form-handler.js:6535
+msgid "Subscription"
+msgstr "Anmeldung"
+
+#: plugin/WPReminder/Loader.php:106
+#: plugin/WPReminder/Site.php:25
+msgid "Subscription settings"
+msgstr "Anmeldung Einstellungen"
+
+#: plugin/WPReminder/Loader.php:124
+#: plugin/WPReminder/Loader.php:125
+#: dist/js/wp-reminder-dashboard-handler.js:16743
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: plugin/WPReminder/Loader.php:66
-#: plugin/WPReminder/Loader.php:67
-#: dist/js/wp-reminder-events-handler.js:91590
-#: dist/js/wp-reminder-events-handler.js:91634
+#: plugin/WPReminder/Loader.php:132
+#: plugin/WPReminder/Loader.php:133
+#: dist/js/wp-reminder-dashboard-handler.js:16710
+#: dist/js/wp-reminder-dashboard-handler.js:16733
+#: dist/js/wp-reminder-edit-form-handler.js:6753
+#: dist/js/wp-reminder-events-handler.js:17437
+#: dist/js/wp-reminder-new-form-handler.js:6753
+#: dist/js/wp-reminder-subscribers-handler.js:16828
 msgid "Events"
-msgstr "Termine"
+msgstr "Ereignisse"
 
-#: plugin/WPReminder/Loader.php:75
-#: plugin/WPReminder/Loader.php:76
+#: plugin/WPReminder/Loader.php:141
+#: plugin/WPReminder/Loader.php:142
+#: dist/js/wp-reminder-dashboard-handler.js:16709
+#: dist/js/wp-reminder-subscribers-handler.js:17419
 msgid "Subscribers"
-msgstr "Nutzer"
+msgstr "Abonennten"
 
-#: plugin/WPReminder/Loader.php:84
-#: plugin/WPReminder/Loader.php:85
+#: plugin/WPReminder/Loader.php:150
+#: plugin/WPReminder/Loader.php:151
+#: dist/js/wp-reminder-settings-handler.js:21200
 msgid "Settings"
 msgstr "Einstellungen"

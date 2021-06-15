@@ -17,7 +17,7 @@ import {PluginContext, PluginSettings} from "../View";
 export const Subscribers = () => {
 
     const [modal] = useModal<APISubscriber>();
-    const [checkbox] = useCheckbox();
+    const checkbox = useCheckbox();
     const [subscribers, loadSubscribers] = useInitializer<APISubscriber[]>();
     const [events, setEvents] = useState<APIEvent[]>([]);
     const settings : PluginSettings = useContext(PluginContext);

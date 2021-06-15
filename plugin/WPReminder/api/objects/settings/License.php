@@ -95,6 +95,9 @@ final class License
         return $body;
     }
 
+    /**
+     *
+     */
     public function reset() : void {
         $this->code = '';
         $this->active = false;
@@ -120,8 +123,8 @@ final class License
     public function to_db() : array {
         return [
             'code' => sanitize_text_field($this->code),
-            'active' => sanitize_text_field($this->active),
-            'til' => sanitize_text_field($this->til),
+            'active' => $this->active,
+            'til' => $this->til,
             'status' => sanitize_text_field($this->status)
         ];
     }

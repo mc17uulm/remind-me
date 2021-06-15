@@ -20,7 +20,6 @@ final class Log
     /**
      * Log constructor.
      * @param string $file
-     * @throws PluginException
      */
     protected function __construct(string $file = "")
     {
@@ -37,7 +36,6 @@ final class Log
     /**
      * @param string $file
      * @return Log
-     * @throws PluginException
      */
     public static function get(string $file = "") : Log {
         if(self::$instance === null) {
@@ -49,7 +47,6 @@ final class Log
     /**
      * @param string $dir
      * @param string $filename
-     * @throws PluginException
      */
     public static function create(string $dir, string $filename) : void {
         if(!is_dir($dir)) return;

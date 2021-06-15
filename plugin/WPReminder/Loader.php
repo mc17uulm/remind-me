@@ -178,7 +178,7 @@ final class Loader {
             $settings = Settings::get();
 
             wp_enqueue_script(
-                'wp_reminder.js',
+                "wp_reminder-$token.js",
                 "$base/dist/js/wp-reminder-$token-handler.js",
                 ['wp-i18n'],
                 WP_REMINDER_VERSION,
@@ -193,7 +193,7 @@ final class Loader {
             );
 
             wp_localize_script(
-                'wp_reminder.js',
+                "wp_reminder-$token.js",
                 'wp_reminder_definitions',
                 [
                     'root' => esc_url_raw(rest_url()),
@@ -206,7 +206,7 @@ final class Loader {
                 ]
             );
 
-            wp_set_script_translations('wp_reminder.js', 'wp-reminder', plugin_dir_path($file) . "/languages/");
+            wp_set_script_translations("wp_reminder-$token.js", 'wp-reminder', plugin_dir_path($file) . "/languages/");
         }
     }
 

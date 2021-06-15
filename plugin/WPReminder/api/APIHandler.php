@@ -6,11 +6,17 @@ use WP_REST_Request as Request;
 use WPReminder\api\handler\EventHandler;
 use WPReminder\api\handler\SettingsHandler;
 use WPReminder\api\handler\SubscriberHandler;
-use WPReminder\api\handler\TemplateHandler;
 
+/**
+ * Class APIHandler
+ * @package WPReminder\api
+ */
 final class APIHandler
 {
 
+    /**
+     *
+     */
     public static function run() : void {
 
         $api = new API();

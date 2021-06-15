@@ -11,6 +11,10 @@ use WPReminder\PluginException;
 use WPReminder\db\DatabaseException;
 use Exception;
 
+/**
+ * Class MailHandler
+ * @package WPReminder\mail
+ */
 final class MailHandler {
 
     /**

@@ -10,6 +10,9 @@ use WPReminder\api\objects\Subscriber;
  */
 class Template {
 
+    /**
+     *
+     */
     private const TAGS = [
         'a' => [
             'href' => true,
@@ -47,6 +50,9 @@ class Template {
      * @var string
      */
     public string $html;
+    /**
+     * @var string
+     */
     public string $subject;
 
     /**

@@ -100,6 +100,9 @@ final class Database
         return $this->update($query, ...$fields);
     }
 
+    /**
+     * @throws DatabaseException
+     */
     public static function initialize() : void {
 
         global $wpdb;
@@ -143,12 +146,15 @@ final class Database
 
     }
 
+    /**
+     * @throws DatabaseException
+     */
     public static function remove() : void {
         global $wpdb;
 
         $db = self::get_database();
 
-        array_map(function (string $table) use ($wpdb, $db) {
+        array_map( function (string $table) use ($wpdb, $db) {
             $wpdb->query("DROP TABLE IF EXISTS {$db->get_table_name($table)}");
         }, array_keys(self::TABLES));
     }

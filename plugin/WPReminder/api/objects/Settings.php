@@ -27,8 +27,17 @@ final class Settings {
      * @var Messages
      */
     public Messages $messages;
+    /**
+     * @var License
+     */
     public License $license;
+    /**
+     * @var string
+     */
     public string $settings_page;
+    /**
+     * @var string
+     */
     public string $privacy_text;
 
     /**

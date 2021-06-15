@@ -1,6 +1,5 @@
 const { resolve } = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-//const TerserPlugin = require("terser-webpack-plugin");
 const { ESBuildMinifyPlugin } = require('esbuild-loader');
 const mode = process.env.NODE_ENV !== 'production';
 

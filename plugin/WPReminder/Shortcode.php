@@ -32,6 +32,9 @@ final class Shortcode
         wp_enqueue_style('wp-reminder-frontend.css');
     }
 
+    /**
+     * @return string
+     */
     public function render() : string {
         $list = implode(',', $this->events);
         $title = $this->name;

@@ -11,11 +11,11 @@ interface Checkbox<S> {
     indeterminate: () => boolean
 }
 
-export const useCheckbox = <T extends unknown>(list : T[] = []) : [Checkbox<T>] => {
+export const useCheckbox = <T extends unknown>(list : T[] = []) : Checkbox<T> => {
 
     const [checked, setChecked] = useState<boolean[]>(list.map(_ => false));
 
-    const set = useCallback((_list : T[], _checked : boolean[] = []) : void => {
+    const set_list = useCallback((_list : T[], _checked : boolean[] = []) : void => {
         setChecked(_list.map((elem : T, index : number) => {
             if(index in _checked) {
                 return _checked[index];
@@ -34,7 +34,7 @@ export const useCheckbox = <T extends unknown>(list : T[] = []) : [Checkbox<T>] 
         setChecked(checked.map(() =>  _checked));
     }, [checked]);
 
-    const get = useCallback((index : number) : boolean => {
+    const get_item = useCallback((index : number) : boolean => {
         if(index > checked.length || index < 0) return false;
         if(typeof checked[index] === "undefined") return false;
         return checked[index];
@@ -60,15 +60,8 @@ export const useCheckbox = <T extends unknown>(list : T[] = []) : [Checkbox<T>] 
         return checked.slice();
     }
 
-    return [{
-        list: get_list,
-        set: set,
-        update: update,
-        update_all: update_all,
-        get: get,
-        all: all,
-        indeterminate: indeterminate,
-        filtered: filtered
-    }];
+    return {
+        list: get_list, set: set_list, update: update, update_all: update_all, get: get_item, all: all, indeterminate: indeterminate, filtered: filtered
+    };
 
 }

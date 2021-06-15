@@ -44,6 +44,9 @@ final class Messages
         ];
     }
 
+    /**
+     * @return array
+     */
     public function to_db() : array {
         return [
             'signin' => sanitize_text_field($this->signin),

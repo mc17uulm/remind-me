@@ -10,6 +10,10 @@ use WPReminder\api\schemas\SettingsSchema;
 use WPReminder\api\ValidationException;
 use WPReminder\PluginException;
 
+/**
+ * Class SettingsHandler
+ * @package WPReminder\api\handler
+ */
 final class SettingsHandler implements RestHandler
 {
 
@@ -21,6 +25,10 @@ final class SettingsHandler implements RestHandler
         $res->success(Settings::get()->to_json());
     }
 
+    /**
+     * @param Request $req
+     * @param Response $res
+     */
     public static function set(Request $req, Response $res): void
     {
         $res->error("Not implemented");

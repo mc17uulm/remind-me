@@ -16,7 +16,7 @@ import {PluginContext, PluginSettings} from "../View";
 export const Events = () => {
 
     const [modal] = useModal<APIEvent>();
-    const [checkbox] = useCheckbox<APIEvent>();
+    const checkbox = useCheckbox<APIEvent>();
     const [events, loadEvents] = useInitializer<APIEvent[]>();
     const settings : PluginSettings = useContext(PluginContext);
 
@@ -108,8 +108,8 @@ export const Events = () => {
                                             onChange={(e, d) => checkbox.update_all(d.checked ?? false)}
                                         />
                                     </Table.HeaderCell>
-                                    <Table.HeaderCell>{__("Event", "wp-reminder")}</Table.HeaderCell>
-                                    <Table.HeaderCell>{__("Status", "wp-reminder")}</Table.HeaderCell>
+                                    <Table.HeaderCell>{__('Event', 'wp-reminder')}</Table.HeaderCell>
+                                    <Table.HeaderCell>{__('Status', 'wp-reminder')}</Table.HeaderCell>
                                     <Table.HeaderCell>{__('Next Execution', 'wp-reminder')}</Table.HeaderCell>
                                 </Table.Row>
                             </Table.Header>
@@ -123,12 +123,12 @@ export const Events = () => {
                                                 className="wp-reminder-edit-link wp-reminder-small"
                                                 onClick={(e) => modal.edit(e, event)}
                                             >
-                                                <Icon class="cogs" /> Edit
+                                                <Icon class="cogs" /> {__('Edit', 'wp-reminder')}
                                             </a> <a
                                             className="wp-reminder-delete-link wp-reminder-small"
                                             onClick={(e) =>  modal.delete(e, [event])} color="red"
                                         >
-                                            <Icon class="trash" /> Delete
+                                            <Icon class="trash" /> {__('Delete', 'wp-reminder')}
                                         </a>
                                         </Table.Cell>
                                         <Table.Cell>
