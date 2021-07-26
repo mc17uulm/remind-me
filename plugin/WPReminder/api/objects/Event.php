@@ -78,6 +78,10 @@ final class Event
         return $this->name;
     }
 
+    public function get_next() : Date {
+        return $this->next;
+    }
+
     /**
      * Check if event is today and should be executed
      *
@@ -112,7 +116,8 @@ final class Event
     public function update_execution() : bool {
         $db = Database::get_database();
         return $db->update(
-            "UPDATE {$db->get_table_name("events")} SET last_execution = NOW() WHERE id = %d",
+            "UPDATE {$db->get_table_name("events")} SET last = UNIX_TIMESTAMP(), next = %s WHERE id = %d",
+            $this->next->get_next($this->clocking)->to_string(),
             $this->id
         );
     }
@@ -191,6 +196,9 @@ final class Event
      */
     public static function delete(int $id) : bool {
         $db = Database::get_database();
+        array_map(fn(Subscriber $subscriber) => $subscriber->remove_event($id),
+            array_filter(Subscriber::get_all(), fn(Subscriber $subscriber) => $subscriber->has_event($id))
+        );
         return $db->delete(
             "DELETE FROM {$db->get_table_name("events")} WHERE id = %d",
             $id

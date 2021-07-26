@@ -106,6 +106,14 @@ final class Subscriber
     }
 
     /**
+     * @param int $event_id
+     * @return bool
+     */
+    public function has_event(int $event_id) : bool {
+        return in_array($event_id, $this->events);
+    }
+
+    /**
      * @return Event[]
      */
     public function get_executable_events() : array {
@@ -117,6 +125,23 @@ final class Subscriber
      */
     public function has_executable_events() : bool {
         return count($this->executable_events) > 0;
+    }
+
+    /**
+     * @param int $event_id
+     * @throws DatabaseException
+     */
+    public function remove_event(int $event_id) : void {
+        if($this->has_event($event_id)) {
+            $db = Database::get_database();
+            $events = array_filter($this->events, fn(int $id) => $id !== $event_id);
+            $db->update(
+                "UPDATE {$db->get_table_name("subscribers")} SET events = %s WHERE token = %s AND id = %d",
+                json_encode($events),
+                $this->token,
+                $this->id
+            );
+        }
     }
 
     /**
@@ -213,10 +238,9 @@ final class Subscriber
     public static function update_by_id(int $id, array $resource) : bool {
         $db = Database::get_database();
         return $db->update(
-            "UPDATE {$db->get_table_name("subscribers")} SET email = %s, events = %s WHERE token = %s AND id = %d",
+            "UPDATE {$db->get_table_name("subscribers")} SET email = %s, events = %s WHERE id = %d",
             sanitize_email($resource["email"]),
             json_encode($resource["events"]),
-            sanitize_text_field($resource["token"]),
             $id
         );
     }

@@ -58,7 +58,9 @@ final class Date
      * @return string
      */
     public function to_string() : string {
-        return "{$this->year}-{$this->month}-{$this->day}";
+        $month = $this->month < 10 ? "0{$this->month}" : $this->month;
+        $day = $this->day < 10 ? "0{$this->day}" : $this->day;
+        return "{$this->year}-{$month}-{$day}";
     }
 
     /**

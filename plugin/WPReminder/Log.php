@@ -19,14 +19,11 @@ final class Log
 
     /**
      * Log constructor.
-     * @param string $file
      */
-    protected function __construct(string $file = "")
+    protected function __construct()
     {
         if(!defined('WP_REMINDER_DIR')) die('Invalid request');
-        if($file === "") {
-            $file = WP_REMINDER_DIR . '/log.txt';
-        }
+        $file = WP_REMINDER_DIR . '/log.txt';
         if(!is_file($file)) return;
         if(!is_writable($file)) return;
 
@@ -34,12 +31,11 @@ final class Log
     }
 
     /**
-     * @param string $file
      * @return Log
      */
-    public static function get(string $file = "") : Log {
+    public static function get() : Log {
         if(self::$instance === null) {
-            self::$instance = new Log($file);
+            self::$instance = new Log();
         }
         return self::$instance;
     }

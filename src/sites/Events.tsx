@@ -135,7 +135,7 @@ export const Events = () => {
                                             {renderRepetition(event)}
                                         </Table.Cell>
                                         <Table.Cell>
-                                            <code>{event.start.get_next(event.clocking).format()}</code>
+                                            <code>{event.next.format()}</code>
                                         </Table.Cell>
                                     </Table.Row>
                                 ))}

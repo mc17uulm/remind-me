@@ -40,7 +40,7 @@ final class Loader {
         add_action('admin_menu', fn() => $this->register_menu());
         add_action('admin_enqueue_scripts', fn() => $this->register_backend_scripts($file));
         add_action('wp_enqueue_scripts', fn() => $this->register_frontend_scripts($file));
-        add_action('wp_reminder_cron_job', fn() => CronJob::run());
+        add_action('wp_reminder_cron_job', fn() => CronJob::run(dirname($file)));
         add_action('template_redirect', fn() => LinkHandler::check());
 
         add_shortcode('wp-reminder', fn(array $attr) => $this->handle_shortcode($attr));

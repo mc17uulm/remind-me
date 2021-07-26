@@ -43,7 +43,7 @@ final class Updater {
      * @param stdClass $args
      * @return false|stdClass
      */
-    public static function request($res, string $action, stdClass $args) : stdClass {
+    public static function request($res, string $action, stdClass $args) {
         if($action !== 'plugin_information') return false;
         if($args->slug !== 'wp-reminder') return false;
         if(!self::load_info($json)) return false;
