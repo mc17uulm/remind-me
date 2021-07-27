@@ -2,7 +2,7 @@
 Contributors: CodeLeaf
 Tags: reminder
 Requires at least: 5.5
-Tested up to: 5.7.2
+Tested up to: 5.8
 Stable tag: trunk
 Requires PHP: 7.4
 License: GNUv2

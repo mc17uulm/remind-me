@@ -1,9 +1,8 @@
-name: Deploy to production server
+name: Publish plugin to plugins server
 
 on:
-  push:
-    branches:
-      - main
+  release:
+    types: [published]
 
 jobs:
   build:
@@ -47,6 +46,10 @@ jobs:
         run: ./pack.sh
 
       - name: Push to production server
-        uses: octokit/request-action@v2.x
+        uses: fjogeleit/http-request-action@master
         with:
-          route: PUT https://code-leaf.de/plugin
+          url: 'https://plugins.code-leaf.de/plugin/wp-reminder/0.0.1'
+          method: 'PUT'
+          contentType: 'application/zip'
+          files: './wp-reminder.zip'
+          customHeaders: '{"X-Auth-Token":"${{ secrets.AUTH_TOKEN }}"}'
