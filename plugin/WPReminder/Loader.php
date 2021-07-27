@@ -11,7 +11,6 @@ use WPReminder\db\Database;
 use WPReminder\db\DatabaseException;
 use WPReminder\update\Updater;
 use WP_Upgrader;
-use stdClass;
 
 /**
  * Class Loader
@@ -40,6 +39,7 @@ final class Loader {
         add_action('admin_menu', fn() => $this->register_menu());
         add_action('admin_enqueue_scripts', fn() => $this->register_backend_scripts($file));
         add_action('wp_enqueue_scripts', fn() => $this->register_frontend_scripts($file));
+        add_action('enqueue_block_editor_assets', fn() => $this->register_block());
         add_action('wp_reminder_cron_job', fn() => CronJob::run(dirname($file)));
         add_action('template_redirect', fn() => LinkHandler::check());
 
@@ -166,6 +166,17 @@ final class Loader {
         }
     }
 
+    private function register_react() : void {
+        wp_register_script(
+            'react-js',
+            "https://unpkg.com/react@17/umd/react.production.min.js"
+        );
+        wp_register_script(
+            'react-js-dom',
+            "https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"
+        );
+    }
+
     /**
      * @throws PluginException
      */
@@ -176,6 +187,11 @@ final class Loader {
 
             $base = defined("WP_REMINDER_URL") ? WP_REMINDER_URL : "";
             $settings = Settings::get();
+
+            $this->register_react();
+
+            wp_enqueue_script('react-js');
+            wp_enqueue_script('react-js-dom');
 
             wp_enqueue_script(
                 "wp_reminder-$token.js",
@@ -213,6 +229,8 @@ final class Loader {
     private function register_frontend_scripts(string $file) : void {
         if(!defined('WP_REMINDER_URL') || !defined('WP_REMINDER_VERSION')) die('invalid request');
         $base = defined("WP_REMINDER_URL") ? WP_REMINDER_URL : "";
+
+        $this->register_react();
 
         wp_register_script(
             'wp-reminder-new-form.js',
@@ -273,6 +291,45 @@ final class Loader {
             plugin_dir_path($file) . "/languages/"
         );
 
+    }
+
+    /**
+     * @throws PluginException
+     */
+    private function register_block() : void {
+        if(!defined('WP_REMINDER_URL') || !defined('WP_REMINDER_VERSION')) die('invalid request');
+        $base = defined("WP_REMINDER_URL") ? WP_REMINDER_URL : "";
+        $settings = Settings::get();
+
+        wp_enqueue_style(
+            'wp-reminder-block.css',
+            "$base/dist/css/wp-reminder-blocks-style.css",
+            [],
+            WP_REMINDER_VERSION
+        );
+
+        wp_enqueue_script(
+            'wp-reminder-block.js',
+            "$base/dist/js/wp-reminder-blocks-handler.js",
+            ['wp-blocks', 'wp-editor', 'wp-i18n', 'wp-element'],
+            WP_REMINDER_VERSION,
+            true
+        );
+
+
+        wp_localize_script(
+            "wp-reminder-block.js",
+            'wp_reminder_definitions',
+            [
+                'root' => esc_url_raw(rest_url()),
+                'nonce' => wp_create_nonce('wp_rest'),
+                'slug' => 'wp-reminder',
+                'version' => 'v1',
+                'site' => $_GET["page"],
+                'base' => admin_url('admin.php'),
+                'active' =>  $settings->license->active ? 'true' : 'false'
+            ]
+        );
     }
 
 }

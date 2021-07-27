@@ -1,0 +1,20 @@
+#!/usr/bin/env sh
+
+rm wp-reminder.zip
+
+yarn build
+
+mkdir .build
+cp -r dist .build/
+cp -r languages .build/
+cp -r plugin .build/
+cp -r schemas .build/
+cp composer.json .build/
+cp composer.lock .build/
+cp wp-reminder.php .build/
+touch .build/log.txt
+cd .build
+composer install --no-ansi --no-dev --no-interaction --no-plugins --no-scripts --optimize-autoloader --prefer-dist --no-suggest
+zip -qqr ../wp-reminder.zip *
+cd ..
+rm -rf .build

@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2021-06-15T21:18:14+00:00\n"
-"PO-Revision-Date: 2021-06-15 23:47+0200\n"
+"PO-Revision-Date: 2021-07-27 18:35+0200\n"
 "Language: de_DE\n"
 "X-Generator: Poedit 3.0\n"
 "X-Domain: wp-reminder\n"
@@ -130,19 +130,16 @@ msgstr "Wenn Sie Ihre Erinnerungen bearbeiten oder beenden möchten, klicken Sie
 msgid "Subscription"
 msgstr "Anmeldung"
 
-#: plugin/WPReminder/Loader.php:106
-#: plugin/WPReminder/Site.php:25
+#: plugin/WPReminder/Loader.php:106 plugin/WPReminder/Site.php:25
 msgid "Subscription settings"
 msgstr "Anmeldung Einstellungen"
 
-#: plugin/WPReminder/Loader.php:124
-#: plugin/WPReminder/Loader.php:125
+#: plugin/WPReminder/Loader.php:124 plugin/WPReminder/Loader.php:125
 #: dist/js/wp-reminder-dashboard-handler.js:16743
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: plugin/WPReminder/Loader.php:132
-#: plugin/WPReminder/Loader.php:133
+#: plugin/WPReminder/Loader.php:132 plugin/WPReminder/Loader.php:133
 #: dist/js/wp-reminder-dashboard-handler.js:16710
 #: dist/js/wp-reminder-dashboard-handler.js:16733
 #: dist/js/wp-reminder-edit-form-handler.js:6753
@@ -152,15 +149,13 @@ msgstr "Dashboard"
 msgid "Events"
 msgstr "Ereignisse"
 
-#: plugin/WPReminder/Loader.php:141
-#: plugin/WPReminder/Loader.php:142
+#: plugin/WPReminder/Loader.php:141 plugin/WPReminder/Loader.php:142
 #: dist/js/wp-reminder-dashboard-handler.js:16709
 #: dist/js/wp-reminder-subscribers-handler.js:17419
 msgid "Subscribers"
-msgstr "Abonennten"
+msgstr "Abonnenten"
 
-#: plugin/WPReminder/Loader.php:150
-#: plugin/WPReminder/Loader.php:151
+#: plugin/WPReminder/Loader.php:150 plugin/WPReminder/Loader.php:151
 #: dist/js/wp-reminder-settings-handler.js:21200
 msgid "Settings"
 msgstr "Einstellungen"

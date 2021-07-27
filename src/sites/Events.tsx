@@ -84,6 +84,7 @@ export const Events = () => {
     }
 
     const renderTable = () => {
+        console.log("render table");
         return (
             <LoadingContent
                 state={events}

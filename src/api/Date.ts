@@ -1,7 +1,13 @@
 import dayjs from "dayjs";
 import localized from "dayjs/plugin/localizedFormat";
+import de from 'dayjs/locale/de';
 
 dayjs.extend(localized);
+
+const locale_id = document.getElementsByTagName('html')[0].getAttribute('lang')?.substr(0, 2) ?? 'en';
+if(locale_id === 'de') {
+    dayjs.locale(de);
+}
 
 export class Date {
 

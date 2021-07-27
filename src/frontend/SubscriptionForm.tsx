@@ -2,7 +2,7 @@ import React, {Fragment, MouseEvent, useEffect, useState} from "react";
 import {APIEvent} from "../api/handler/EventHandler";
 import {Settings} from "../api/handler/SettingsHandler";
 import {useForm} from "../hooks/useForm";
-import {__, subscribe} from "@wordpress/i18n";
+import {__} from "@wordpress/i18n";
 import {useCheckbox} from "../hooks/useCheckbox";
 import {useLoader} from "../hooks/useLoader";
 import {APISubscriber, Subscriber, SubscriberHandler} from "../api/handler/SubscriberHandler";
