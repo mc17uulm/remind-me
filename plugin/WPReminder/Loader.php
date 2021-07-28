@@ -4,7 +4,6 @@ namespace WPReminder;
 
 use WPReminder\api\APIHandler;
 use WPReminder\api\handler\LinkHandler;
-use WPReminder\api\objects\Event;
 use WPReminder\api\objects\Settings;
 use WPReminder\cron\CronJob;
 use WPReminder\db\Database;
@@ -40,26 +39,13 @@ final class Loader {
         add_action('admin_enqueue_scripts', fn() => $this->register_backend_scripts($file));
         add_action('wp_enqueue_scripts', fn() => $this->register_frontend_scripts($file));
         add_action('enqueue_block_editor_assets', fn() => $this->register_block());
+        add_action('enqueue_block_assets', fn() => $this->load_frontend_block_scripts($file));
         add_action('wp_reminder_cron_job', fn() => CronJob::run(dirname($file)));
         add_action('template_redirect', fn() => LinkHandler::check());
 
         add_shortcode('wp-reminder', fn(array $attr) => $this->handle_shortcode($attr));
         add_shortcode('wp-reminder-settings', fn() => $this->handle_settings_shortcode());
 
-        add_shortcode('wp-reminder-test', function() {
-            $events = Event::get_all();
-
-            $str = "";
-            foreach($events as $event) {
-                assert($event instanceof Event);
-                $next_execution = $event->get_next_execution();
-                $execute_now = $event->should_execute_now() ? 'true' : 'false';
-                $date = date('d. F Y', $next_execution);
-                $id = $event->get_id();
-                $str .= "$id | Date: $date | Execute?: $execute_now<br>";
-            }
-            return $str;
-        });
     }
 
     /**
@@ -75,6 +61,9 @@ final class Loader {
         Log::create(WP_REMINDER_DIR, 'log.txt');
     }
 
+    /**
+     * @throws DatabaseException
+     */
     private function deactivate() : void {
         if(!current_user_can('activate_plugins')) return;
         Database::remove();
@@ -98,6 +87,8 @@ final class Loader {
      * @return string
      */
     private function handle_settings_shortcode() : string {
+        wp_enqueue_script('react-js');
+        wp_enqueue_script('react-js-dom');
         wp_enqueue_script('wp-reminder-edit-form.js');
         wp_enqueue_style('wp-reminder-frontend.css');
 
@@ -330,6 +321,19 @@ final class Loader {
                 'active' =>  $settings->license->active ? 'true' : 'false'
             ]
         );
+    }
+
+    /**
+     * @param string $file
+     */
+    private function load_frontend_block_scripts(string $file) : void {
+        if(has_block('wp-reminder/block')) {
+            $this->register_frontend_scripts($file);
+            wp_enqueue_script('react-js');
+            wp_enqueue_script('react-js-dom');
+            wp_enqueue_script('wp-reminder-new-form.js');
+            wp_enqueue_style('wp-reminder-frontend.css');
+        }
     }
 
 }

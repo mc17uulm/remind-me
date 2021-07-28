@@ -39,7 +39,7 @@ export const BlockHandler = (props : PropsWithChildren<BlockEditProps<BlockAttri
         }
     }
 
-    const renderEvents = (events : APIEvent[]) => {
+    const renderEvents = (events : APIEvent[]) : JSX.Element => {
         return (
             <Fragment>
                 {events.map((event: APIEvent, index: number) => (
@@ -64,7 +64,7 @@ export const BlockHandler = (props : PropsWithChildren<BlockEditProps<BlockAttri
         )
     }
 
-    const render = () => {
+    const render = () : JSX.Element => {
         switch(initObject.state) {
             case InitializeStates.Loading: return <Loader />;
             case InitializeStates.Error: return <Message msg={{type: 'error', msg: initObject.error}} />

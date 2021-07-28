@@ -15,15 +15,17 @@ declare var wp_reminder_definitions : FrontendDefinitions;
         const datalist = elem.getAttribute('datalist-events');
         let list : number[] = [];
         if(datalist !== null) {
-            const parts = datalist.split(',');
-            list = parts.map((val : string) => parseInt(val)).filter((val : number) => !isNaN(val));
+            const result = JSON.parse(datalist);
+            if(Array.isArray(result)) {
+                list = result.filter((elem: any) => !isNaN(elem));
+            }
         }
         Request.initialize(
             wp_reminder_definitions.root,
             wp_reminder_definitions.nonce,
             wp_reminder_definitions.slug,
             wp_reminder_definitions.version
-        )
+        );
         ReactDOM.render(<Subscription fresh={true} list={list} title={title} />, elem);
     }
 
