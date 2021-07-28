@@ -108,7 +108,8 @@ final class MailHandler {
             $mailer->Body = $content;
             $mailer->AltBody = strip_tags($content);
 
-            if(WP_REMINDER_DEBUG) {
+            #if(WP_REMINDER_DEBUG) {
+	    if($_SERVER['REMOTE_ADDR'] === '127.0.0.1'){
                 self::dev_send_mail($mailer);
             }
 
