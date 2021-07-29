@@ -9,6 +9,7 @@
     "tsc": "tsc",
     "start": "webpack --mode development --watch --progress",
     "build": "webpack --mode production",
+    "doc:show": "docsify serve ./docs/site",
     "php:analyse": "./vendor/bin/phpstan analyse --memory-limit=-1 -c phpstan.neon",
     "php:test": "phpunit",
     "wp:lang:build": "wp i18n make-pot . ./languages/wp-reminder.pot --domain='wp-reminder' --debug",

@@ -27,10 +27,10 @@ Class | Method | HTTP request | Description
 <a name="documentation-for-models"></a>
 ## Documentation for Models
 
- - [Error](./Models/Error.md)
- - [Event](./Models/Event.md)
- - [Settings](./Models/Settings.md)
- - [Subscriber](./Models/Subscriber.md)
+ - [Error](Modelsrror.md)
+ - [Event](Modelsvent.md)
+ - [Settings](Modelsettings.md)
+ - [Subscriber](Modelsubscriber.md)
 
 
 <a name="documentation-for-authorization"></a>
