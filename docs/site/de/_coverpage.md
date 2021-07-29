@@ -1,12 +1,12 @@
-![logo](_media/logo.svg ':size=250')
+![logo](../_media/logo.svg ':size=250')
 
 # WPReminder <small>0.0.1</small>
 
-> Easily remind your clients with this simple WordPress plugin
+> Schicken Sie mit diesem einfachen WordPress Plugin ganz einfach Erinnerungen an Ihre Kunden
 
-- Fast and lightweight
-- Easy to use
-- Tons of functions and features
+- Schnell und klein
+- Einfach zu benutzen
+- Viele verschiedene Funktionen und Features
 
 [CodeLeaf](https://code-leaf.de/)
-[Getting Started](#docsify)
+[Loslegen](#wp-reminder)

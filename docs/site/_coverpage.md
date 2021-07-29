@@ -9,4 +9,4 @@
 - Tons of functions and features
 
 [CodeLeaf](https://code-leaf.de/)
-[Getting Started](#docsify)
+[Getting Started](#wp-reminder)
