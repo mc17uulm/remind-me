@@ -18,6 +18,7 @@ export const BlockHandler = (props : PropsWithChildren<BlockEditProps<BlockAttri
     useEffect(() => {
         load(async () => {
             const events = await EventHandler.get_all();
+            console.log(events);
             if(events.has_error()) return Either.error(events.get_error());
             let list : number[] = [];
             try {

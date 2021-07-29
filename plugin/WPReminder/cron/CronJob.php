@@ -20,6 +20,10 @@ final class CronJob {
         }
     }
 
+    public static function remove() : void {
+        wp_clear_scheduled_hook('wp_reminder_cron_job');
+    }
+
     /**
      * @throws DatabaseException
      * @throws PluginException

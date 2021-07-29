@@ -5,7 +5,7 @@
 WPReminder können Sie einfach in Ihrem WordPress-Backend unter `Plugins` hinzufügen. Suchen Sie dazu
 einfach nach `WPReminder`. Danach müssen Sie das Plugin nur noch aktivieren.
 
-Weitere Informationen, auch zur manuellen Installation, finden Sie unter [Installation](de-de/installation.md).
+Weitere Informationen, auch zur manuellen Installation, finden Sie unter [Installation](installation.md).
 
 ### Nutzung
 
@@ -16,16 +16,16 @@ In der Seitenleiste finden Sie eine ausführliche Anleitung. Hier finden Sie ein
 Ein Ereignis können Sie unter `Reminder` => `Ereignisse` => `Ereignis erstellen` erstellen. Es öffnet
 sich ein kleines Fenster. Dort können Sie alle benötigten Informationen (Name, Startdatum und Taktung) angeben.
 
-![Modal: Ereignis hinzufügen](../_images/screenshot-02.PNG)
+![Modal: Ereignis hinzufügen](_images/screenshot-02.PNG)
 
-Eine ausführliche Anleitung finden Sie unter [Neues Eregnis erstellen](de-de/events.md).
+Eine ausführliche Anleitung finden Sie unter [Neues Eregnis erstellen](events.md).
 
 #### Anmeldeformular erstellen
 
-![Anmeldeformular](../_images/screenshot-05.PNG)
+![Anmeldeformular](_images/screenshot-05.PNG)
 
-Ein Anmeldeformular können Sie als [Shortcode](de-de/shortcode.md) `[wp-reminder name='Anmeldung' events='[1,5,6]']` erstellen.
-Es steht Ihnen aber auch ein Gutenberg Block zur Verfügung (siehe [Gutenberg Block](de-de/block.md)).
+Ein Anmeldeformular können Sie als [Shortcode](shortcode.md) `[wp-reminder name='Anmeldung' events='[1,5,6]']` erstellen.
+Es steht Ihnen aber auch ein Gutenberg Block zur Verfügung (siehe [Gutenberg Block](block.md)).
 
 #### E-Mail-Templates bearbeiten
 
@@ -33,7 +33,7 @@ Ihre E-Mail-Templates finden Sie unter `Reminder` => `Einstellungen`. Es gibt vi
 Für jede einzelne Vorlage brauchen Sie ein Template. Sie können die E-Mail-Templates einfach per RichText-Editor bearbeiten. 
 Dabei müssen Sie allerdings immer auf die benötigten Platzhalter achten.
 
-Mehr Informationen unter: [E-Mail-Vorlagen](de-de/emails.md).
+Mehr Informationen unter: [E-Mail-Vorlagen](emails.md).
 
 ### Fragen
 

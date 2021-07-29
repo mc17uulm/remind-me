@@ -16,7 +16,7 @@ services:
   wordpress:
     depends_on:
       - db
-    build: ./.docker/
+    build: ./docker/
     volumes:
       - "./:/var/www/html/wp-content/plugins/wp-reminder"
       - "testsuite:/tmp"

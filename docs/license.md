@@ -1,6 +1,6 @@
 # Lizenz
 
-Alle Produkte von Code-Leaf konnen Sie kostenfrei nutzen. Einige Funktionen,
+Alle Produkte von Code-Leaf können Sie kostenfrei nutzen. Einige Funktionen,
 Erweiterungen und ein besserer Support, sind aber nur mit einer Lizenz möglich.
 
 Folgende Funktionen von WPReminder erhalten Sie mit dem Kauf einer Lizenz:

@@ -33,20 +33,20 @@ Ereignis erinnert:
 
 ### Wie lege ich ein Ereignis an?
 
-Wenn Sie WPReminder installiert und aktiviert haben ([Installation](de-de/installation.md)), finden Sie
+Wenn Sie WPReminder installiert und aktiviert haben ([Installation](installation.md)), finden Sie
 in ihrem Backend auf der Seitenleiste einen neuen Menüpunkt: `Reminder`. Im Untermenü von `Reminder` finden 
 Sie den Punkt `Ereignisse`. Klicken Sie darauf.
 
 Hier finden Sie aufgelistet Ihre bisher erstellen Ereignisse. Diese können Sie bearbeiten oder löschen.
-Zudem können Sie aus ausgewählten Ereignissen auch einen [Shortcode](de-de/shortcode.md) erstellen, um diesen
+Zudem können Sie aus ausgewählten Ereignissen auch einen [Shortcode](shortcode.md) erstellen, um diesen
 als Anmeldeform zu nutzen.
 
-![Ereignis hinzufügen](../_images/screenshot-01.PNG)
+![Ereignis hinzufügen](_images/screenshot-01.PNG)
 
 Um ein Ereignis hinzuzufügen, klicken Sie auf `Ereignis hinzufügen`. Es öffnet sich ein neues
 Fenster. Dort können Sie zuerst den Namen des Ereignisses angeben.
 
-![Modal: Ereignis hinzufügen](../_images/screenshot-02.PNG)
+![Modal: Ereignis hinzufügen](_images/screenshot-02.PNG)
 
 Geben Sie zusätzlich das Startdatum und die Taktung an. Die Taktung kann monatlich/jährlich eingestellt werden.
 Ihnen werden sofort auch die Termine der nächsten Ausführungen und eine Zusammenfassung angezeigt.
@@ -55,7 +55,7 @@ Wenn Sie alle Informationen eingegeben haben, klicken sie auf `Speichern` und da
 
 ### Wie bearbeite oder lösche ich ein Ereignis?
 
-![Ereignisliste](../_images/screenshot-03.PNG)
+![Ereignisliste](_images/screenshot-03.PNG)
 
 Die erstellten Termine können Sie nun in der Übersicht betrachten. Hier haben Sie auch die Möglichkeit einzelne (oder mehrere)
 Ereignise zu bearbeiten und zu löschen.

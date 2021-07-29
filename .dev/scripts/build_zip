@@ -5,7 +5,13 @@ rm wp-reminder.zip
 yarn build
 
 mkdir .build
-cp -r dist .build/
+mkdir .build/dist
+cp -r dist/fonts .build/dist/
+cp -r dist/css .build/dist/
+mkdir .build/dist/js
+cp dist/js/*.js .build/dist/js/
+cp dist/js/*.php .build/dist/js/
+#cp -r dist .build/
 cp -r languages .build/
 cp -r plugin .build/
 cp -r schemas .build/

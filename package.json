@@ -9,7 +9,7 @@
     "tsc": "tsc",
     "start": "webpack --mode development --watch --progress",
     "build": "webpack --mode production",
-    "doc:show": "docsify serve ./docs/site",
+    "doc:show": "docsify serve ./docs",
     "zip": "./.scripts/build_zip",
     "php:analyse": "./vendor/bin/phpstan analyse --memory-limit=-1 -c phpstan.neon",
     "php:test": "phpunit",

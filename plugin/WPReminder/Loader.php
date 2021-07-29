@@ -69,6 +69,7 @@ final class Loader {
         Database::remove();
         Settings::delete();
         Site::remove();
+        CronJob::remove();
     }
 
     /**

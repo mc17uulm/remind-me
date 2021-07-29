@@ -104,7 +104,9 @@ module.exports = {
         path: resolve(__dirname, 'dist/'),
         publicPath: base
     },
-    externals: {'@wordpress/i18n': "wp.i18n"},
+    externals: {
+        '@wordpress/i18n': "wp.i18n"
+    },
     resolve: {
         extensions: [".js", ".jsx", ".ts", ".tsx", ".scss"]
     },
