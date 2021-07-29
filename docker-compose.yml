@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+
+  db:
+    image: "mysql:5.7"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: "wordpress"
+      MYSQL_USER: "wordpress"
+      MYSQL_PASSWORD: "123"
+      MYSQL_ROOT_PASSWORD: ""
+    networks:
+      - intranet
+
+  wordpress:
+    depends_on:
+      - db
+    build: ./docker/
+    volumes:
+      - "./:/var/www/html/wp-content/plugins/wp-reminder"
+      - "testsuite:/tmp"
+    networks:
+      - intranet
+
+
+volumes:
+  testsuite: {}
+networks:
+  intranet:

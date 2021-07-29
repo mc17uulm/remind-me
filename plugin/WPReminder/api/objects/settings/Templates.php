@@ -56,6 +56,18 @@ final class Templates
     }
 
     /**
+     * @return array
+     */
+    public function to_db() : array {
+        return [
+            'confirm' => $this->confirm->to_db(),
+            'success' => $this->success->to_db(),
+            'signout' => $this->signout->to_db(),
+            'reminder' => $this->reminder->to_db()
+        ];
+    }
+
+    /**
      * @return Templates
      */
     public static function create_default() : Templates {

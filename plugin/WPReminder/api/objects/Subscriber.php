@@ -106,6 +106,14 @@ final class Subscriber
     }
 
     /**
+     * @param int $event_id
+     * @return bool
+     */
+    public function has_event(int $event_id) : bool {
+        return in_array($event_id, $this->events);
+    }
+
+    /**
      * @return Event[]
      */
     public function get_executable_events() : array {
@@ -120,12 +128,29 @@ final class Subscriber
     }
 
     /**
+     * @param int $event_id
+     * @throws DatabaseException
+     */
+    public function remove_event(int $event_id) : void {
+        if($this->has_event($event_id)) {
+            $db = Database::get_database();
+            $events = array_filter($this->events, fn(int $id) => $id !== $event_id);
+            $db->update(
+                "UPDATE {$db->get_table_name("subscribers")} SET events = %s WHERE token = %s AND id = %d",
+                json_encode($events),
+                $this->token,
+                $this->id
+            );
+        }
+    }
+
+    /**
      * @return array
      */
     public function to_json() : array {
         $object = [
-            "token" => $this->token,
-            "email" => $this->email,
+            "token" => esc_html($this->token),
+            "email" => esc_html($this->email),
             "events" => $this->events
         ];
         if(!is_null($this->id)) {
@@ -197,10 +222,10 @@ final class Subscriber
         $id = $db->insert(
             "INSERT INTO {$db->get_table_name("subscribers")} (token, email, events, registered, active) VALUES (%s, %s, %s, UNIX_TIMESTAMP(), false)",
             $token,
-            $resource["email"],
+            sanitize_email($resource["email"]),
             json_encode($resource["events"])
         );
-        MailHandler::send_confirm(new Subscriber($token, $resource["email"], $resource["events"], $id));
+        MailHandler::send_confirm(new Subscriber($token, sanitize_email($resource["email"]), $resource["events"], $id));
         return $id;
     }
 
@@ -213,10 +238,9 @@ final class Subscriber
     public static function update_by_id(int $id, array $resource) : bool {
         $db = Database::get_database();
         return $db->update(
-            "UPDATE {$db->get_table_name("subscribers")} SET email = %s, events = %s WHERE token = %s AND id = %d",
-            $resource["email"],
+            "UPDATE {$db->get_table_name("subscribers")} SET email = %s, events = %s WHERE id = %d",
+            sanitize_email($resource["email"]),
             json_encode($resource["events"]),
-            $resource["token"],
             $id
         );
     }
@@ -232,7 +256,7 @@ final class Subscriber
         return $db->update(
             "UPDATE {$db->get_table_name('subscribers')} SET events = %s WHERE token = %s",
             json_encode($resource["events"]),
-            $token
+            sanitize_text_field($token)
         );
     }
 

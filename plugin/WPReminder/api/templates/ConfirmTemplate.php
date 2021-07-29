@@ -38,7 +38,11 @@ final class ConfirmTemplate extends Template
     {
         $settings = Settings::get();
         $token = Token::create($subscriber->id, "activate");
-        $url = $settings->settings_page . "?wp-reminder-action=activate&wp-reminder-token=" . $token->get_token();
+        $url = add_query_arg([
+            'wp-reminder-action' => 'activate',
+            'wp-reminder-token' => $token->get_token()
+        ], $settings->settings_page);
+        #$url = $settings->settings_page . "?wp-reminder-action=activate&wp-reminder-token=" . $token->get_token();
         $list = "<li>" . implode("</li><li>", array_map(fn(int $id) => Event::get($id)->get_name(), $subscriber->events)) . "</li>";
         $message = str_replace('${event_list}', "<ul>$list</ul>", $this->html);
         $message = str_replace('${confirm_link}', "<a href='$url'>" . __('Confirm your subscription', 'wp-reminder') . "</a>", $message);

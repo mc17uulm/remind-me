@@ -11,9 +11,48 @@ use WPReminder\api\objects\Subscriber;
 class Template {
 
     /**
+     *
+     */
+    private const TAGS = [
+        'a' => [
+            'href' => true,
+            'title' => true
+        ],
+        'br' => [],
+        'em' => [],
+        'strong' => [],
+        'b' => [],
+        'h1' => [
+            'class' => true
+        ],
+        'h2' => [
+            'class' => true
+        ],
+        'h3' => [
+            'class' => true
+        ],
+        'h4' => [
+            'class' => true
+        ],
+        'h5' => [
+            'class' => true
+        ],
+        'h6' => [
+            'class' => true
+        ],
+        'hr' => [],
+        'p' => [
+            'class' => true
+        ]
+    ];
+
+    /**
      * @var string
      */
     public string $html;
+    /**
+     * @var string
+     */
     public string $subject;
 
     /**
@@ -39,8 +78,18 @@ class Template {
      */
     public function to_json() : array {
         return [
-            'html' => $this->html,
-            'subject' => $this->subject
+            'html' => wp_kses($this->html, self::TAGS),
+            'subject' => esc_html($this->subject)
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function to_db() : array {
+        return [
+            'html' => wp_kses($this->html, self::TAGS),
+            'subject' => sanitize_text_field($this->subject)
         ];
     }
 

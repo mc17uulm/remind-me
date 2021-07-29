@@ -36,12 +36,16 @@ final class ReminderTemplate extends Template
     public function render(Subscriber $subscriber): string
     {
         $settings = Settings::get();
-        $edit_url = self::parse_url($settings->settings_page, [
+        /**$edit_url = self::parse_url($settings->settings_page, [
             'wp-reminder-action=edit',
             'wp-reminder-token=' . $subscriber->get_token()
-        ]);
+        ]);*/
+        $edit_url = add_query_arg([
+            'wp-reminder-action' => 'edit',
+            'wp-reminder-token' => $subscriber->get_token()
+        ], $settings->settings_page);
         $list = "<li>" . implode("</li><li>", array_map(fn(int $id) => Event::get($id)->get_name(), $subscriber->events)) . "</li>";
-        $message = str_replace('${events_list}', "<ul>$list</ul>", $this->html);
+        $message = str_replace('${event_list}', "<ul>$list</ul>", $this->html);
         return str_replace('${unsubscribe_link}', "<a href='$edit_url'>" . __('Unsubscribe or edit subscription', 'wp-reminder') . "</a>", $message);
     }
 

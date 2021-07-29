@@ -1,52 +1,34 @@
-# Documentation for WP Reminder API
+## WP Reminder
 
-<a name="documentation-for-api-endpoints"></a>
-## Documentation for API Endpoints
+> Schicken Sie mit diesem einfachen WordPress Plugin ganz einfach Erinnerungen an Ihre Kunden
 
-All URIs are relative to *http://}*
+## Was ist WP Reminder
 
-Class | Method | HTTP request | Description
------------- | ------------- | ------------- | -------------
-*EventApi* | [**deleteEvent**](Apis/EventApi.md#deleteevent) | **DELETE** /event/{eventId} | Deletes an event
-*EventApi* | [**findEventById**](Apis/EventApi.md#findeventbyid) | **GET** /event/{eventId} | Finds a event by id
-*EventApi* | [**getAllEvents**](Apis/EventApi.md#getallevents) | **GET** /events | Get all events
-*EventApi* | [**setNewEvent**](Apis/EventApi.md#setnewevent) | **POST** /event | Add new event
-*EventApi* | [**updateEvent**](Apis/EventApi.md#updateevent) | **PUT** /event/{eventId} | Updates an existing event
-*SettingsApi* | [**getSettings**](Apis/SettingsApi.md#getsettings) | **GET** /settings | Get settings
-*SettingsApi* | [**updateSettings**](Apis/SettingsApi.md#updatesettings) | **PUT** /settings | Update settings
-*SubscriberApi* | [**deleteSubscriberById**](Apis/SubscriberApi.md#deletesubscriberbyid) | **DELETE** /subscriber/{id} | Deletes an subscriber by id
-*SubscriberApi* | [**deleteSubscriberByToken**](Apis/SubscriberApi.md#deletesubscriberbytoken) | **DELETE** /subscriber/{token} | Deletes an subscriber by token
-*SubscriberApi* | [**findSubscriberByToken**](Apis/SubscriberApi.md#findsubscriberbytoken) | **GET** /subscriber/{token} | Find a subscriber by token
-*SubscriberApi* | [**getAllSubscriber**](Apis/SubscriberApi.md#getallsubscriber) | **GET** /subscribers | Get all subscriber
-*SubscriberApi* | [**setNewSubscriberAdmin**](Apis/SubscriberApi.md#setnewsubscriberadmin) | **POST** /subscriber | Add new subscriber
-*SubscriberApi* | [**setNewSubscriberOpen**](Apis/SubscriberApi.md#setnewsubscriberopen) | **POST** /subscribe | Add new subscriber
-*SubscriberApi* | [**updateSubscriberById**](Apis/SubscriberApi.md#updatesubscriberbyid) | **PUT** /subscriber/{id} | Updates an existing subscriber
-*SubscriberApi* | [**updateSubscriberByToken**](Apis/SubscriberApi.md#updatesubscriberbytoken) | **PUT** /subscriber/{token} | Updates an existing subscriber
+WPReminder hilt Ihnen Erinnerungen für Ihre Kunden zu erstellen. Erzeugen Sie einfach wiederkehrende Ereignisse, für
+welche sich Ihre Kunden registieren können. WPReminder schickt Ihren Kunden dann automatisch am Tag des Ereignisses eine 
+Erinnerung per E-Mail. Um das WPReminder-Plugin nutzen zu können, installieren Sie einfach die `wp-reminder.zip` Datei in
+Ihrem WordPress Backend.
 
+Mehr Informationen zur Installation finden Sie hier: [Installation](installation.md).
 
-<a name="documentation-for-models"></a>
-## Documentation for Models
+## Features
 
- - [Error](./Models/Error.md)
- - [Event](./Models/Event.md)
- - [Settings](./Models/Settings.md)
- - [Subscriber](./Models/Subscriber.md)
+- Erstellen Sie Ereignisse, welche sich in monatlichen oder jährlichen Intervallen wiederholen
+- Senden Sie automatische Erinnerungen an Ihre Kunden
+- Erstellen Sie eigene E-Mail-Templates
+- Erstellen Sie Ihre eigenen Anmeldeformulare (als Blocks oder Shortcodes)
+- Fügen Sie bereits bestehende Kunden hinzu
+- Exportieren Sie alle registrierten Kunden in Excel
+- Überwachen Sie Ereignisse und Anmeldungen
+- Umfangreiche Dokumentation
+- Das Plugin wurde mit einem besonderen Augenmerk auf Sicherheit, Zuverlässigkeit und Effizienz programmiert
 
+## Beispiele
 
-<a name="documentation-for-authorization"></a>
-## Documentation for Authorization
+Unter dem Menüpunkt **Nutzung** sehen Sie Beispiele und Anleitungen wie WPReminder benutzt werden kann.
 
-<a name="cookie"></a>
-### cookie
+## Lizenz erwerben
 
-- **Type**: API key
-- **API key parameter name**: wordpress_logged_in_{token}
-- **Location**: 
-
-<a name="nonce"></a>
-### nonce
-
-- **Type**: API key
-- **API key parameter name**: X-WP-Nonce
-- **Location**: HTTP header
-
+WPReminder kann kostenlos genutzt werden. Um einige extra Funktionen nutzen zu können (Kunden exportieren, bestehende Kunden hinzufügen,
+kein Limit bei der Anzahl von Ereignissen, zuverlässige Ausführung durch unsere Server), brauchen Sie eine CodeLeaf-Lizenz. Die
+Lizenz erhalten Sie hier: [code-leaf.de](https://code-leaf.de).

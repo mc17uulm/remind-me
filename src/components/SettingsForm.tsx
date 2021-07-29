@@ -54,7 +54,7 @@ const SettingsSchema : yup.SchemaOf<Settings> = yup.object({
         double_opt_in: yup.string().required()
     }),
     license: yup.object({
-        code: yup.string().required()
+        code: yup.string()
     }),
     privacy_text: yup.string().required(__('Please insert a text for the privacy notice', 'wp-reminder')),
     settings_page: yup.string().required()
@@ -67,9 +67,21 @@ interface SettingsFormProps {
 export const SettingsForm = (props : SettingsFormProps) => {
 
     const [message, setMessage] = useState<IMessage | null>(null);
+    const [settings, setSettings] = useState<APISettings>(props.settings);
+
+    const update = async () => {
+        const resp = await SettingsHandler.get();
+        if(resp.has_error()) {
+            console.error(resp.get_error());
+            toast.error(resp.get_error());
+        } else {
+            console.log("set settings");
+            setSettings(resp.get_value());
+            console.log("after set");
+        }
+    }
 
     const onSubmit = async (settings : APISettings, actions : FormikHelpers<APISettings>) => {
-        console.log("on submit");
         const resp = await SettingsHandler.update({
             templates: settings.templates,
             messages: settings.messages,
@@ -83,34 +95,36 @@ export const SettingsForm = (props : SettingsFormProps) => {
             console.error(resp.get_error());
             toast.error(resp.get_error());
         } else {
+            await update();
             setMessage({type: "success", msg: __('Saved settings', 'wp-reminder')})
             toast.success(__('Saved settings', 'wp-reminder'));
         }
         actions.setSubmitting(false);
     }
 
-    return (
+    return (typeof settings === "undefined") ? null : (
         <Fragment>
             <Formik
-                initialValues={props.settings}
+                initialValues={settings}
                 validationSchema={SettingsSchema}
+                enableReinitialize
                 onSubmit={onSubmit}
             >
-                {(props: FormikProps<APISettings>) => (
-                    <Form onSubmit={props.handleSubmit}>
+                {(_props: FormikProps<APISettings>) => (
+                    <Form onSubmit={_props.handleSubmit}>
                         <Tab
                             menu={{
                                 secondary: true,
                                 pointing: true
                             }}
                             panes={[
-                                {menuItem: __('Templates', 'wp-reminder'), render: () => <TemplatesPane {...props} />},
-                                {menuItem: __('Messages', 'wp-reminder'), render: () => <MessagePane {...props} />},
-                                {menuItem: __('License', 'wp-reminder'), render: () => <LicensePane {...props} />}
+                                {menuItem: __('Templates', 'wp-reminder'), render: () => <TemplatesPane {..._props} />},
+                                {menuItem: __('Messages', 'wp-reminder'), render: () => <MessagePane {..._props} />},
+                                {menuItem: __('License', 'wp-reminder'), render: () => <LicensePane {..._props} update={update} />}
                             ]}
                         />
                         <SubmitBtnContainer message={message}>
-                            <Button color='green' disabled={props.isSubmitting} loading={props.isSubmitting} type='submit' floated={"right"}>{__('Submit', 'wp-reminder')}</Button>
+                            <Button color='green' disabled={_props.isSubmitting} loading={_props.isSubmitting} type='submit' floated={"right"}>{__('Submit', 'wp-reminder')}</Button>
                         </SubmitBtnContainer>
                     </Form>
                 )}

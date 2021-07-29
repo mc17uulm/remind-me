@@ -6,11 +6,17 @@ use WP_REST_Request as Request;
 use WPReminder\api\handler\EventHandler;
 use WPReminder\api\handler\SettingsHandler;
 use WPReminder\api\handler\SubscriberHandler;
-use WPReminder\api\handler\TemplateHandler;
 
+/**
+ * Class APIHandler
+ * @package WPReminder\api
+ */
 final class APIHandler
 {
 
+    /**
+     *
+     */
     public static function run() : void {
 
         $api = new API();
@@ -69,10 +75,14 @@ final class APIHandler
 
         $api->get("/settings/", function (Request $request, Response $response) {
             SettingsHandler::get($request, $response);
-        }, [], false);
+        });
 
         $api->put("/settings/", function (Request $request, Response $response) {
             SettingsHandler::update($request, $response);
+        });
+
+        $api->delete('/license', function(Request $request, Response $response) {
+            SettingsHandler::delete($request, $response);
         });
 
     }

@@ -51,6 +51,7 @@ define('WP_REMINDER_TEXTDOMAIN', 'wp-reminder');
 define('WP_REMINDER_FILE', __FILE__);
 define("WP_REMINDER_URL", plugin_dir_url(__FILE__));
 define('WP_REMINDER_PATH', plugin_dir_path(__FILE__));
+define('WP_REMINDER_BASENAME', plugin_basename(__FILE__));
 define("WP_REMINDER_DIR", __DIR__);
 define("WP_REMINDER_DEBUG", true);
 define("WP_REMINDER_LOG_FILE", __DIR__ . "/log.txt");

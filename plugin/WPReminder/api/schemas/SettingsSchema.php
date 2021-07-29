@@ -25,6 +25,9 @@ final class SettingsSchema extends JsonSchema
         parent::__construct("settings.schema.json");
     }
 
+    /**
+     * @return Settings
+     */
     public function cast() : Settings
     {
         return new Settings(

@@ -2,7 +2,7 @@ import React, {Fragment, MouseEvent, useEffect, useState} from "react";
 import {APIEvent} from "../api/handler/EventHandler";
 import {Settings} from "../api/handler/SettingsHandler";
 import {useForm} from "../hooks/useForm";
-import {__, subscribe} from "@wordpress/i18n";
+import {__} from "@wordpress/i18n";
 import {useCheckbox} from "../hooks/useCheckbox";
 import {useLoader} from "../hooks/useLoader";
 import {APISubscriber, Subscriber, SubscriberHandler} from "../api/handler/SubscriberHandler";
@@ -56,7 +56,7 @@ export const clockingToStr = (clocking : number) : string => {
 export const SubscriptionForm = (props : RegisterFormProps) => {
 
     const [form, setForm] = useForm<FormObject>(empty_form);
-    const [checkbox] = useCheckbox<APIEvent>();
+    const checkbox = useCheckbox<APIEvent>();
     const [submitting, doSubmitting] = useLoader();
     const [message, setMessage] = useState<IMessage | null>(null);
     const [step, setStep] = useState<number>(0);

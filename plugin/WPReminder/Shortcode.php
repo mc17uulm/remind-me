@@ -28,10 +28,16 @@ final class Shortcode
         $this->name = $name;
         $this->events = $events;
 
+        wp_enqueue_script('react-js');
+        wp_enqueue_script('react-js-dom');
         wp_enqueue_script('wp-reminder-new-form.js');
         wp_enqueue_style('wp-reminder-frontend.css');
+
     }
 
+    /**
+     * @return string
+     */
     public function render() : string {
         $list = implode(',', $this->events);
         $title = $this->name;

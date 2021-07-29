@@ -11,6 +11,10 @@ use WPReminder\db\DatabaseException;
 use WPReminder\api\ValidationException;
 use WPReminder\PluginException;
 
+/**
+ * Class SubscriberHandler
+ * @package WPReminder\api\handler
+ */
 final class SubscriberHandler implements RestHandler
 {
 

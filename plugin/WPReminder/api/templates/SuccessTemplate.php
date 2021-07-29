@@ -31,10 +31,14 @@ final class SuccessTemplate extends Template
     public function render(Subscriber $subscriber): string
     {
         $settings = Settings::get();
-        $edit_url = self::parse_url($settings->settings_page, [
-            'wp-reminder-action=edit',
-            'wp-reminder-token=' . $subscriber->get_token()
-        ]);
+        /**$edit_url = self::parse_url($settings->settings_page, [
+        'wp-reminder-action=edit',
+        'wp-reminder-token=' . $subscriber->get_token()
+        ]);*/
+        $edit_url = add_query_arg([
+            'wp-reminder-action' => 'edit',
+            'wp-reminder-token' => $subscriber->get_token()
+        ], $settings->settings_page);
         return str_replace('${unsubscribe_link}', "<a href='$edit_url'>" . __('Unsubscribe or edit subscription', 'wp-reminder') . "</a>", $this->html);
     }
 

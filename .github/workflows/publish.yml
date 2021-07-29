@@ -1,0 +1,55 @@
+name: Publish plugin to plugins server
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Cache composer package
+        id: composer-cache
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          resore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        id: yarn-cache
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          resore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install composer dependencies
+        if: steps.composer-cache.outputs.cache-hit != 'true'
+        run: composer install --no-ansi --no-dev --no-interaction --no-plugins --no-progress --no-scripts --optimize-autloader --prefer-dist --no-suggest
+
+      - name: Install yarn dependencies
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        run: yarn install --frozen-lockfile
+
+      - name: Build plugin
+        run: yarn build
+
+      - name: Pack to zip
+        run: ./pack.sh
+
+      - name: Push to production server
+        uses: fjogeleit/http-request-action@master
+        with:
+          url: 'https://plugins.code-leaf.de/plugin/wp-reminder/0.0.1'
+          method: 'PUT'
+          contentType: 'application/zip'
+          files: './wp-reminder.zip'
+          customHeaders: '{"X-Auth-Token":"${{ secrets.AUTH_TOKEN }}"}'

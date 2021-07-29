@@ -14,10 +14,11 @@ import {EventsList} from "../components/EventsList";
 import dayjs from "dayjs";
 import {PluginContext, PluginSettings} from "../View";
 
+
 export const Subscribers = () => {
 
     const [modal] = useModal<APISubscriber>();
-    const [checkbox] = useCheckbox();
+    const checkbox = useCheckbox();
     const [subscribers, loadSubscribers] = useInitializer<APISubscriber[]>();
     const [events, setEvents] = useState<APIEvent[]>([]);
     const settings : PluginSettings = useContext(PluginContext);
@@ -69,7 +70,7 @@ export const Subscribers = () => {
     }
 
     const renderActive = (active : boolean) => {
-        return active ? (<Label color="green">Active</Label>) : (<Label color="red">Inactive</Label>)
+        return active ? (<Label color="green">{__('Active', 'wp-reminder')}</Label>) : (<Label color="red">{__('Inactive', 'wp-reminder')}</Label>);
     }
 
     const renderDate = (timestamp : number) => {
@@ -118,12 +119,12 @@ export const Subscribers = () => {
                                                 className={'wp-reminder-edit-link' + (settings.active ? '' : ' wp-reminder-disabled')}
                                                 onClick={(e) => modal.edit(e, subscriber)}
                                             >
-                                                <Icon class='cogs' /> Edit
+                                                <Icon class='cogs' /> {__('Edit', 'wp-reminder')}
                                             </a> <a
                                             className={'wp-reminder-delete-link' + (settings.active ? '' : ' wp-reminder-disabled')}
                                             onClick={(e) => modal.delete(e, [subscriber])}
                                         >
-                                            <Icon class='trash' /> Delete
+                                            <Icon class='trash' /> {__('Delete', 'wp-reminder')}
                                         </a>
                                         </Table.Cell>
                                         <Table.Cell>
@@ -149,6 +150,7 @@ export const Subscribers = () => {
 
     return (
         <Fragment>
+            <h3>{__('Subscribers', 'wp-reminder')}</h3>
             <a
                 className={'wp-reminder-add-link' + (settings.active ? '' : ' wp-reminder-disabled')}
                 onClick={(e) => {settings.active ? modal.add(e) : null}}>

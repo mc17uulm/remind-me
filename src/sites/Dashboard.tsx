@@ -58,7 +58,7 @@ export const Dashboard = () => {
                                         <Table.Row key={`subscriber_${index}`}>
                                             <Table.Cell>{subscriber.email}</Table.Cell>
                                             <Table.Cell>{sprintf(_n('%d Event', '%d Events', subscriber.events.length, 'wp-reminder'), subscriber.events.length)}</Table.Cell>
-                                            <Table.Cell>{subscriber.active ? (<Label color="green">Active</Label>) : (<Label color="red">Inactive</Label>)}</Table.Cell>
+                                            <Table.Cell>{subscriber.active ? (<Label color="green">{__('Active', 'wp-reminder')}</Label>) : (<Label color="red">{__('Inactive', 'wp-reminder')}</Label>)}</Table.Cell>
                                             <Table.Cell>{dayjs(subscriber.registered).format('LLLL')}</Table.Cell>
                                         </Table.Row>
                                     ))}

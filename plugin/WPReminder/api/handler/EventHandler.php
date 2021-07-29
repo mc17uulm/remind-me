@@ -12,6 +12,10 @@ use WPReminder\db\DatabaseException;
 use WPReminder\api\ValidationException;
 use WPReminder\PluginException;
 
+/**
+ * Class EventHandler
+ * @package WPReminder\api\handler
+ */
 final class EventHandler implements RestHandler
 {
 
@@ -20,6 +24,7 @@ final class EventHandler implements RestHandler
      * @param Response $res
      * @throws APIException
      * @throws DatabaseException
+     * @throws PluginException
      */
     public static function get(Request $req, Response $res): void
     {
@@ -33,6 +38,7 @@ final class EventHandler implements RestHandler
      * @param Request $req
      * @param Response $res
      * @throws DatabaseException
+     * @throws PluginException
      */
     public static function get_all(Request $req, Response $res) : void {
 

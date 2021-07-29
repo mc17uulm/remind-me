@@ -1,5 +1,5 @@
 import {FormikProps} from "formik";
-import {APISettings, Templates} from "../../api/handler/SettingsHandler";
+import {APISettings} from "../../api/handler/SettingsHandler";
 import {Form, List, Message, Tab} from "semantic-ui-react";
 import {__} from "@wordpress/i18n";
 import {Info} from "../Info";

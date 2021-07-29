@@ -1,6 +1,6 @@
 import {JSONSchemaType} from "ajv";
 import {Either} from "../Either";
-import {PutResponseSchema, Request} from "../Request";
+import {DeleteResponseSchema, PutResponseSchema, Request} from "../Request";
 
 export interface Template {
     html: string,
@@ -21,10 +21,11 @@ export interface Messages {
 }
 
 export interface License {
-    code: string
+    code?: string
 }
 
 export interface APILicense extends License {
+    code: string,
     active: boolean,
     til: number,
     status: string
@@ -140,6 +141,10 @@ export class SettingsHandler
 
     public static async update(settings : Settings) : Promise<Either<boolean>> {
         return await Request.put('settings', settings, PutResponseSchema);
+    }
+
+    public static async remove_license() : Promise<Either<boolean>> {
+        return await Request.delete('license', DeleteResponseSchema);
     }
 
 }

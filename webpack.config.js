@@ -1,6 +1,6 @@
 const { resolve } = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-//const TerserPlugin = require("terser-webpack-plugin");
+const DependencyExtractionWebpackPlugin = require('@wordpress/dependency-extraction-webpack-plugin');
 const { ESBuildMinifyPlugin } = require('esbuild-loader');
 const mode = process.env.NODE_ENV !== 'production';
 
@@ -69,11 +69,12 @@ const rules = [
             }
         }
     }
-]
+];
 
 module.exports = {
     name: "handler",
     entry: {
+        blocks: './src/block',
         dashboard: "./src/index",
         events: "./src/events",
         subscribers: "./src/subscribers",
@@ -95,14 +96,17 @@ module.exports = {
     plugins: [
         new MiniCssExtractPlugin({
             filename: 'css/wp-reminder-[name]-style.css'
-        })
+        }),
+        new DependencyExtractionWebpackPlugin({injectPolyfill: true})
     ],
     output: {
         filename: 'js/wp-reminder-[name]-handler.js',
         path: resolve(__dirname, 'dist/'),
         publicPath: base
     },
-    externals: {'@wordpress/i18n': "wp.i18n"},
+    externals: {
+        '@wordpress/i18n': "wp.i18n"
+    },
     resolve: {
         extensions: [".js", ".jsx", ".ts", ".tsx", ".scss"]
     },

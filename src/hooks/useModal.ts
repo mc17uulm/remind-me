@@ -58,7 +58,6 @@ export const useModal = <T extends unknown>() : [Modal<T>] => {
 
     const onEdit = useCallback((e : MouseEvent, element : T) : void => {
         e.preventDefault();
-        console.log(element);
         setSelected([element]);
         setType(ModalState.EDIT);
     }, []);
