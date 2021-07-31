@@ -2,18 +2,6 @@ import {JSONSchemaType} from "ajv";
 import {Either} from "../Either";
 import {DeleteResponseSchema, PutResponseSchema, Request} from "../Request";
 
-export interface Template {
-    html: string,
-    subject: string
-}
-
-export interface Templates {
-    confirm: Template,
-    success: Template,
-    signout: Template,
-    reminder: Template
-}
-
 export interface Messages {
     signin: string,
     signout: string,
@@ -32,7 +20,6 @@ export interface APILicense extends License {
 }
 
 export interface Settings {
-    templates: Templates,
     messages: Messages,
     license: License,
     settings_page: string,
@@ -61,25 +48,6 @@ export const SettingsSchema : JSONSchemaType<APISettings> = {
     },
     type: "object",
     properties: {
-        templates: {
-            type: "object",
-            properties: {
-                confirm: {
-                    "$ref": "#/definitions/template"
-                },
-                success: {
-                    "$ref": "#/definitions/template"
-                },
-                signout: {
-                    "$ref": "#/definitions/template"
-                },
-                reminder: {
-                    "$ref": "#/definitions/template"
-                }
-            },
-            required: ["confirm", "success", "signout", "reminder"],
-            additionalProperties: false
-        },
         messages: {
             type: "object",
             properties: {
@@ -123,7 +91,6 @@ export const SettingsSchema : JSONSchemaType<APISettings> = {
         }
     },
     required: [
-        "templates",
         "messages",
         "license",
         "settings_page",

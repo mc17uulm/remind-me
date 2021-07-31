@@ -88,7 +88,7 @@ export const Subscribers = () => {
                 header={__('No subscribers found', 'wp-reminder')}
                 icon='users'
                 button={
-                    <Button color='green' onClick={modal.add}>{__('Add Subscriber', 'wp-reminder')}</Button>
+                    <Button color='green' disabled={!settings.active} onClick={modal.add}>{__('Add Subscriber', 'wp-reminder')}</Button>
                 }
             >
                 {(val : APISubscriber[]) => (

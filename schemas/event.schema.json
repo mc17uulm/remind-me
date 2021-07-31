@@ -3,7 +3,8 @@
   "type": "object",
   "properties": {
     "name": {
-      "type": "string"
+      "type": "string",
+      "maxLength": 40
     },
     "clocking": {
       "type": "integer"

@@ -12,7 +12,6 @@ interface DeleteModalProps<S> {
 }
 
 export const DeleteModal = <T extends unknown>(props : DeleteModalProps<T>) => {
-    console.log("loading", props.loading);
     return (
         <Fragment>
             <Modal.Header>{props.title}</Modal.Header>

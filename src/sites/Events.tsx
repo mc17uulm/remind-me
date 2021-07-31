@@ -135,7 +135,7 @@ export const Events = () => {
                                             {renderRepetition(event)}
                                         </Table.Cell>
                                         <Table.Cell>
-                                            <code>{event.next.format()}</code>
+                                            <code>{event.next.format('LL')}</code>
                                         </Table.Cell>
                                     </Table.Row>
                                 ))}

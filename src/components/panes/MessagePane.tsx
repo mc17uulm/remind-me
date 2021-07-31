@@ -42,7 +42,7 @@ export const MessagePane = (props : FormikProps<APISettings>) => {
                 error={props.errors.privacy_text && props.touched.privacy_text ? props.errors.privacy_text : null}
                 label={__('Privacy text for shortcode', 'wp-reminder')}
             />
-            <h2>{__('Edit subscription page')}</h2>
+            <h2>{__('Edit subscription page', 'wp-reminder')}</h2>
             <Message info>
                 {__('This site requires an [wp-reminder-settings] shortcode as content', 'wp-reminder')}
             </Message>

@@ -31,7 +31,6 @@ final class SettingsSchema extends JsonSchema
     public function cast() : Settings
     {
         return new Settings(
-            new Templates($this->result['templates']),
             new Messages($this->result['messages']),
             new License($this->result['license']),
             $this->result['settings_page'],

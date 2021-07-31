@@ -1,12 +1,13 @@
 import "@babel/polyfill";
 import React from "react";
 import ReactDOM from "react-dom";
-import {Container} from "semantic-ui-react";
+import {Container, Message} from "semantic-ui-react";
 import {ToastContainer} from "react-toastify";
 import 'semantic-ui-css/semantic.min.css';
 import 'react-toastify/dist/ReactToastify.css';
 import 'font-awesome/css/font-awesome.css';
 import {Request} from "./api/Request";
+import {__} from "@wordpress/i18n";
 
 export interface FrontendDefinitions {
     root : string,
@@ -49,6 +50,12 @@ export class View {
             <PluginContext.Provider value={Settings}>
                 <Container>
                     <h1>WP Reminder</h1>
+                    {Settings.active ? "" : (
+                        <Message warning>
+                            <Message.Header>{__('Plugin not licensed', 'wp-reminder')}</Message.Header>
+                            <p>{__('You have no license added. Some functions are therefore not available', 'wp-reminder')}</p>
+                        </Message>
+                    )}
                     {element}
                     <ToastContainer position="bottom-center" autoClose={2000} />
                 </Container>

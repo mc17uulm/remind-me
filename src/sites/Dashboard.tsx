@@ -128,12 +128,12 @@ export const Dashboard = () => {
                 <Grid.Row>
                     <Grid.Column width={8}>
                         <Card fluid>
-                            {renderSubscribers()}
+                            {renderEvents()}
                         </Card>
                     </Grid.Column>
                     <Grid.Column width={8}>
                         <Card fluid>
-                            {renderEvents()}
+                            {renderSubscribers()}
                         </Card>
                     </Grid.Column>
                 </Grid.Row>

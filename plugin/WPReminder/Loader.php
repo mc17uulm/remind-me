@@ -5,6 +5,7 @@ namespace WPReminder;
 use WPReminder\api\APIHandler;
 use WPReminder\api\handler\LinkHandler;
 use WPReminder\api\objects\Settings;
+use WPReminder\api\objects\settings\Templates;
 use WPReminder\cron\CronJob;
 use WPReminder\db\Database;
 use WPReminder\db\DatabaseException;
@@ -57,6 +58,7 @@ final class Loader {
         Database::initialize();
         Site::add();
         Settings::create_default();
+        Templates::create_default();
         CronJob::activate();
         Log::create(WP_REMINDER_DIR, 'log.txt');
     }
@@ -68,6 +70,7 @@ final class Loader {
         if(!current_user_can('activate_plugins')) return;
         Database::remove();
         Settings::delete();
+        Templates::delete();
         Site::remove();
         CronJob::remove();
     }
@@ -139,6 +142,15 @@ final class Loader {
 
         add_submenu_page(
             'wp-reminder',
+            __('Email templates', 'wp-reminder'),
+            __('Email templates', 'wp-reminder'),
+            'manage_options',
+            'wp-reminder-templates',
+            function() { echo '<div id="wp_reminder_container"></div>'; }
+        );
+
+        add_submenu_page(
+            'wp-reminder',
             __('Settings', 'wp-reminder'),
             __('Settings', 'wp-reminder'),
             'manage_options',
@@ -154,6 +166,7 @@ final class Loader {
             case 'wp-reminder-events': return 'events';
             case 'wp-reminder-subscribers': return 'subscribers';
             case 'wp-reminder-settings': return 'settings';
+            case 'wp-reminder-templates': return 'templates';
             default: return '';
         }
     }

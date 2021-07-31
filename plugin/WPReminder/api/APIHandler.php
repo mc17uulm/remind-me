@@ -6,6 +6,7 @@ use WP_REST_Request as Request;
 use WPReminder\api\handler\EventHandler;
 use WPReminder\api\handler\SettingsHandler;
 use WPReminder\api\handler\SubscriberHandler;
+use WPReminder\api\handler\TemplatesHandler;
 
 /**
  * Class APIHandler
@@ -72,6 +73,14 @@ final class APIHandler
         $api->delete("/subscriber/token/(?P<token>[a-zA-Z0-9-]+)", function (Request $request, Response $response) {
             SubscriberHandler::unsubscribe($request, $response);
         }, [], false);
+
+        $api->get('/templates/', function(Request $request, Response $response) {
+            TemplatesHandler::get($request, $response);
+        });
+
+        $api->put('/templates/', function(Request $request, Response $response) {
+            TemplatesHandler::update($request, $response);
+        });
 
         $api->get("/settings/", function (Request $request, Response $response) {
             SettingsHandler::get($request, $response);

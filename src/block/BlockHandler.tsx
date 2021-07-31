@@ -41,7 +41,9 @@ export const BlockHandler = (props : PropsWithChildren<BlockEditProps<BlockAttri
     }
 
     const renderEvents = (events : APIEvent[]) : JSX.Element => {
-        return (
+        return (events.length === 0)  ? (
+            <Message msg={{type: 'error', msg: __('Please add first a event on the WPReminder page', 'wp-reminder')}} />
+        ) : (
             <Fragment>
                 {events.map((event: APIEvent, index: number) => (
                     <div className='checkbox-container' key={`event_${index}`}>

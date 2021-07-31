@@ -20,10 +20,6 @@ final class Settings {
     public const KEY = "wp_reminder_settings";
 
     /**
-     * @var Templates
-     */
-    public Templates $templates;
-    /**
      * @var Messages
      */
     public Messages $messages;
@@ -42,21 +38,18 @@ final class Settings {
 
     /**
      * Settings constructor.
-     * @param Templates $templates
      * @param Messages $messages
      * @param License $license
      * @param string $settings_page
      * @param string $privacy_text
      */
     public function __construct(
-        Templates $templates,
         Messages $messages,
         License $license,
         string $settings_page,
         string $privacy_text
     )
     {
-        $this->templates = $templates;
         $this->messages = $messages;
         $this->license = $license;
         $this->settings_page = $settings_page;
@@ -68,7 +61,6 @@ final class Settings {
      */
     public function to_json() : array {
         return [
-            'templates' => $this->templates->to_json(),
             'messages' => $this->messages->to_json(),
             'license' => $this->license->to_json(),
             'settings_page' => esc_url($this->settings_page),
@@ -81,7 +73,6 @@ final class Settings {
      */
     private function to_db() : array {
         return [
-            'templates' => $this->templates->to_db(),
             'messages' => $this->messages->to_db(),
             'license' => $this->license->to_db(),
             'settings_page' => esc_url_raw($this->settings_page),
@@ -97,7 +88,6 @@ final class Settings {
         $options = get_option(self::KEY);
         if($options) {
             return new Settings(
-                new Templates($options['templates']),
                 new Messages($options['messages']),
                 new License($options['license']),
                 $options['settings_page'],
@@ -114,7 +104,6 @@ final class Settings {
     public static function create_default() : bool {
 
         return self::set(new Settings(
-            Templates::create_default(),
             Messages::create_default(),
             License::create_default(),
             Site::load('guid'),

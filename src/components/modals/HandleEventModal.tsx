@@ -172,6 +172,7 @@ export const HandleEventModal = (props : ModalProps<APIEvent>) => {
                                 width={16}
                                 value={form.values.name}
                                 name="name"
+                                maxLength={40}
                                 label={__('Event name', 'wp-reminder')}
                                 placeholder={__('Event name', 'wp-reminder')}
                                 onChange={form.onChange}

@@ -6,6 +6,7 @@ use WPReminder\api\templates\ConfirmTemplate;
 use WPReminder\api\templates\ReminderTemplate;
 use WPReminder\api\templates\SignoutTemplate;
 use WPReminder\api\templates\SuccessTemplate;
+use WPReminder\PluginException;
 
 /**
  * Class Templates
@@ -13,6 +14,8 @@ use WPReminder\api\templates\SuccessTemplate;
  */
 final class Templates
 {
+
+    public const KEY = 'wp_reminder_templates';
 
     /**
      * @var ConfirmTemplate
@@ -68,10 +71,10 @@ final class Templates
     }
 
     /**
-     * @return Templates
+     * @return bool
      */
-    public static function create_default() : Templates {
-        return new Templates([
+    public static function create_default() : bool {
+        return self::set(new Templates([
             'confirm' => [
                 'html' => ConfirmTemplate::create(),
                 'subject' => sprintf(__('Confirm your subscription | %s', 'wp-reminder'), get_bloginfo('name'))
@@ -88,7 +91,42 @@ final class Templates
                 'html' => ReminderTemplate::create(),
                 'subject' => sprintf(__('Reminder | %s', 'wp-reminder'), get_bloginfo('name'))
             ],
-        ]);
+        ]));
+    }
+
+    /**
+     * @return Templates
+     * @throws PluginException
+     */
+    public static function get(): Templates {
+        $options = get_option(self::KEY);
+        if($options) {
+            return new Templates($options);
+        }
+        throw new PluginException('No options for templates found');
+    }
+
+    /**
+     * @param Templates $templates
+     * @return bool
+     */
+    public static function set(Templates $templates) : bool {
+        return self::update($templates);
+    }
+
+    /**
+     * @param Templates $templates
+     * @return bool
+     */
+    public static function update(Templates $templates) : bool {
+        return update_option(self::KEY, $templates->to_db());
+    }
+
+    /**
+     * @return bool
+     */
+    public static function delete() : bool {
+        return delete_option(self::KEY);
     }
 
 }
