@@ -6,6 +6,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use WPReminder\api\APIException;
 use WPReminder\api\objects\Event;
 use WPReminder\api\objects\Settings;
+use WPReminder\api\objects\settings\Templates;
 use WPReminder\api\objects\Subscriber;
 use WPReminder\PluginException;
 use WPReminder\db\DatabaseException;
@@ -32,13 +33,13 @@ final class MailHandler {
         // if no events are found, there is nothing to send
         if(count($events) === 0) return;
 
-        $settings = Settings::get();
+        $templates = Templates::get();
 
         self::send_mail(
             ['email' => $subscriber->email],
             ['email' => get_bloginfo('admin_email'), 'name' => get_bloginfo('name')],
-            sprintf('%s | %s', $settings->templates->reminder->subject, get_bloginfo('name')),
-            $settings->templates->reminder->render($subscriber)
+            sprintf('%s | %s', $templates->reminder->subject, get_bloginfo('name')),
+            $templates->reminder->render($subscriber)
         );
     }
 
@@ -48,13 +49,13 @@ final class MailHandler {
      */
     public static function send_confirm(Subscriber $subscriber) : void {
 
-        $settings = Settings::get();
+        $templates = Templates::get();
 
         self::send_mail(
             ['email' => $subscriber->email],
             ['email' => get_bloginfo('admin_email'), 'name' => get_bloginfo('name')],
-            sprintf('%s | %s', $settings->templates->confirm->subject, get_bloginfo('name')),
-            $settings->templates->confirm->render($subscriber)
+            sprintf('%s | %s', $templates->confirm->subject, get_bloginfo('name')),
+            $templates->confirm->render($subscriber)
         );
     }
 
@@ -63,13 +64,13 @@ final class MailHandler {
      * @throws PluginException
      */
     public static function send_success(Subscriber $subscriber) : void {
-        $settings = Settings::get();
+        $templates = Templates::get();
 
         self::send_mail(
             ['email' => $subscriber->email],
             ['email' => get_bloginfo('admin_email'), 'name' => get_bloginfo('name')],
-            sprintf('%s | %s', $settings->templates->success->subject, get_bloginfo('name')),
-            $settings->templates->success->render($subscriber)
+            sprintf('%s | %s', $templates->success->subject, get_bloginfo('name')),
+            $templates->success->render($subscriber)
         );
     }
 
@@ -78,13 +79,13 @@ final class MailHandler {
      * @throws PluginException
      */
     public static function send_unsubscribe(Subscriber $subscriber) : void {
-        $settings = Settings::get();
+        $templates = Templates::get();
 
         self::send_mail(
             ['email' => $subscriber->email],
             ['email', get_bloginfo('admin_email'), 'name' => get_bloginfo('name')],
-            sprintf('%s | %s', $settings->templates->signout->subject, get_bloginfo('name')),
-            $settings->templates->signout->render($subscriber)
+            sprintf('%s | %s', $templates->signout->subject, get_bloginfo('name')),
+            $templates->signout->render($subscriber)
         );
     }
 

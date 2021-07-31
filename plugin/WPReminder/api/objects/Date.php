@@ -42,7 +42,7 @@ final class Date
      */
     public function get_next(int $clocking) : Date {
         $comp = $this->month + $clocking;
-        $year = $this->year + floor($comp / 12);
+        $year = $this->year + intval(floor($comp / 12));
         $month = $comp % 12;
         return Date::create_by_date($year, $month, $this->day);
     }
@@ -71,7 +71,7 @@ final class Date
     public static function create_by_string(string $date) : Date {
         $parts = explode('-', $date);
         if(count($parts) !== 3) throw new PluginException("Invalid date string: '$date'");
-        return new Date($parts[0], $parts[1], $parts[2]);
+        return new Date(intval($parts[0]), intval($parts[1]), intval($parts[2]));
     }
 
     /**
