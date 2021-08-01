@@ -12,6 +12,7 @@ import {useModal} from "../hooks/useModal";
 import {LoadingContent} from "../components/LoadingContent";
 import {InitializeStates, useInitializer} from "../hooks/useInitializer";
 import {PluginContext, PluginSettings} from "../View";
+import {DescriptionView} from "../components/DescriptionView";
 
 export const Events = () => {
 
@@ -78,7 +79,7 @@ export const Events = () => {
 
     const isDisabled = () : boolean => {
         if(events.state === InitializeStates.Success) {
-            return !settings.active && events.value.length > 0;
+            return !settings.active && events.value.length >= 5;
         }
         return false;
     }
@@ -109,6 +110,7 @@ export const Events = () => {
                                         />
                                     </Table.HeaderCell>
                                     <Table.HeaderCell>{__('Event', 'wp-reminder')}</Table.HeaderCell>
+                                    <Table.HeaderCell>{__('Description', 'wp-reminder')}</Table.HeaderCell>
                                     <Table.HeaderCell>{__('Status', 'wp-reminder')}</Table.HeaderCell>
                                     <Table.HeaderCell>{__('Next Execution', 'wp-reminder')}</Table.HeaderCell>
                                 </Table.Row>
@@ -130,6 +132,9 @@ export const Events = () => {
                                         >
                                             <Icon class="trash" /> {__('Delete', 'wp-reminder')}
                                         </a>
+                                        </Table.Cell>
+                                        <Table.Cell className='wp-reminder-description'>
+                                            <DescriptionView description={event.description} count={10} />
                                         </Table.Cell>
                                         <Table.Cell>
                                             {renderRepetition(event)}

@@ -91,12 +91,11 @@ final class MailHandler {
 
     /**
      * @param array $to
-     * @param array $from
      * @param string $subject
      * @param string $content
      */
-    private static function wp_send_mail(array $to, array $from, string $subject, string $content) : void {
-        $headers[] = 'From: ' . $from['name'] . ' <' . $from['email'] . '>';
+    private static function wp_send_mail(array $to, string $subject, string $content) : void {
+        $headers[] = 'From: ' . get_bloginfo('name') . ' <' . $_SERVER['SERVER_NAME'] . '>';
 
         wp_mail($to['email'], $subject, $content, $headers);
     }
@@ -109,7 +108,7 @@ final class MailHandler {
      * @throws PluginException
      */
     private static function send_mail(array $to, array $from, string $subject, string $content) : void {
-        self::wp_send_mail($to, $from, $subject, $content);
+        self::wp_send_mail($to, $subject, $content);
         return;
         if(!defined('WP_REMINDER_DEBUG')) die('invalid request');
         $mailer = new PHPMailer(true);

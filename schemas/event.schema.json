@@ -6,6 +6,10 @@
       "type": "string",
       "maxLength": 40
     },
+    "description": {
+      "type": "string",
+      "maxLength": 500
+    },
     "clocking": {
       "type": "integer"
     },
@@ -14,6 +18,6 @@
       "format": "date"
     }
   },
-  "required": ["name", "clocking", "start"],
+  "required": ["name", "description", "clocking", "start"],
   "additionalProperties": false
 }

@@ -61,6 +61,7 @@ export const HandleEventModal = (props : ModalProps<APIEvent>) => {
                     if(validate.has_error()) return;
                     resp = await EventHandler.update(props.element.id, {
                         name: form.values.name,
+                        description: form.values.description,
                         clocking: form.values.clocking,
                         start: form.values.start.to_string()
                     });
@@ -73,6 +74,7 @@ export const HandleEventModal = (props : ModalProps<APIEvent>) => {
                     if(validate.has_error()) return;
                     resp = await EventHandler.set({
                         name: form.values.name,
+                        description: form.values.description,
                         clocking: form.values.clocking,
                         start: form.values.start.to_string()
                     });
@@ -177,6 +179,18 @@ export const HandleEventModal = (props : ModalProps<APIEvent>) => {
                                 placeholder={__('Event name', 'wp-reminder')}
                                 onChange={form.onChange}
                                 error={form.errors.name}
+                            />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.TextArea
+                                width={16}
+                                value={form.values.description}
+                                name='description'
+                                maxLength={500}
+                                label={__('Description', 'wp-reminder')}
+                                placeholder={__('Short description of your event for your clients', 'wp-reminder')}
+                                onChange={(e) => form.setValue('description', e.target.value)}
+                                error={form.errors.description}
                             />
                         </Form.Group>
                         <Form.Group>

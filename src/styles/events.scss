@@ -8,3 +8,9 @@
   width: 50%;
   float: right;
 }
+
+.wp-reminder-description {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 300px;
+}

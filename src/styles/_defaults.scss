@@ -8,9 +8,11 @@ div.error {
   box-shadow: none !important;
 }
 
-$red: #db2828;
+$red: rgba(219,40,40,1);
+$red_fade: rgba(219,40,40,0.5);
 $green: #21ba45;
 $indigo: rgba(99,102,241,1);
+$indigo_fade: rgba(99,102,241,0.5);
 
 @media only screen and (max-width: 1400px) {
   .ui.container {
@@ -74,13 +76,24 @@ $indigo: rgba(99,102,241,1);
 }
 
 .wp-reminder-delete-link {
-  color: $red !important;
+  white-space: nowrap;
+  color: $red_fade !important;
   cursor: pointer;
+
+  &:hover {
+    color: $red !important;
+  }
 }
 
 .wp-reminder-edit-link {
-  color: $indigo !important;
+  white-space: nowrap;
+  color: $indigo_fade !important;
   cursor: pointer;
+
+  &:hover {
+    color: $indigo !important;
+  }
+
 }
 
 .wp-reminder-small {

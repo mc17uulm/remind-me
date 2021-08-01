@@ -23,6 +23,10 @@ final class Event
      */
     private string $name;
     /**
+     * @var string
+     */
+    private string $description;
+    /**
      * @var int
      */
     private int $clocking;
@@ -46,6 +50,7 @@ final class Event
     /**
      * Event constructor.
      * @param string $name
+     * @param string $description
      * @param int $clocking
      * @param Date $start
      * @param Date $next
@@ -53,10 +58,11 @@ final class Event
      * @param bool $active
      * @param int|null $id
      */
-    public function __construct(string $name, int $clocking, Date $start, Date $next, int $last, bool $active, ?int $id = null)
+    public function __construct(string $name, string $description, int $clocking, Date $start, Date $next, int $last, bool $active, ?int $id = null)
     {
         $this->id = $id;
         $this->name = $name;
+        $this->description = $description;
         $this->clocking = $clocking;
         $this->start = $start;
         $this->next = $next;
@@ -78,6 +84,16 @@ final class Event
         return $this->name;
     }
 
+    /**
+     * @return string
+     */
+    public function get_description() : string {
+        return $this->description;
+    }
+
+    /**
+     * @return Date
+     */
     public function get_next() : Date {
         return $this->next;
     }
@@ -97,6 +113,7 @@ final class Event
     public function to_json() : array {
         $object = [
             "name" => esc_html($this->name),
+            "description" => esc_html($this->description),
             "clocking" => $this->clocking,
             "start" => esc_html($this->start->to_string()),
             "next" => esc_html($this->next->to_string()),
@@ -132,7 +149,7 @@ final class Event
         $db = Database::get_database();
         $db_res = $db->select("SELECT * FROM {$db->get_table_name("events")} WHERE id = %d", $id);
         if(count($db_res) !== 1) throw new APIException("no dataset for given id in db");
-        return new Event($db_res[0]["name"], $db_res[0]["clocking"], Date::create_by_string($db_res[0]["start"]), Date::create_by_string($db_res[0]["next"]), $db_res[0]["last"], $db_res[0]["active"], $db_res[0]["id"]);
+        return new Event($db_res[0]["name"], $db_res[0]["description"], $db_res[0]["clocking"], Date::create_by_string($db_res[0]["start"]), Date::create_by_string($db_res[0]["next"]), $db_res[0]["last"], $db_res[0]["active"], $db_res[0]["id"]);
     }
 
     /**
@@ -143,7 +160,7 @@ final class Event
         $db = Database::get_database();
         $db_res = $db->select("SELECT * FROM {$db->get_table_name("events")}");
         return array_map(function(array $entry) {
-            return new Event($entry["name"], $entry["clocking"], Date::create_by_string($entry["start"]), Date::create_by_string($entry["next"]), $entry["last"], $entry["active"], $entry["id"]);
+            return new Event($entry["name"], $entry["description"], $entry["clocking"], Date::create_by_string($entry["start"]), Date::create_by_string($entry["next"]), $entry["last"], $entry["active"], $entry["id"]);
         }, $db_res);
     }
 
@@ -156,8 +173,9 @@ final class Event
     public static function set(array $resource) : int {
         $db = Database::get_database();
         return $db->insert(
-            "INSERT INTO {$db->get_table_name("events")} (name, clocking, start, next, last, active) VALUES (%s, %d, %s, %s, 0, 1)",
+            "INSERT INTO {$db->get_table_name("events")} (name, description, clocking, start, next, last, active) VALUES (%s, %s, %d, %s, %s, 0, 1)",
             sanitize_text_field($resource["name"]),
+            sanitize_text_field($resource["description"]),
             $resource["clocking"],
             $resource["start"],
             $resource["next"]
@@ -180,8 +198,9 @@ final class Event
             $next = Date::create_next($next, $resource['clocking']);
         }
         return $db->update(
-            "UPDATE {$db->get_table_name("events")} SET name = %s, clocking = %d, start = %s, next = %s WHERE id = %d",
+            "UPDATE {$db->get_table_name("events")} SET name = %s, description = %s, clocking = %d, start = %s, next = %s WHERE id = %d",
             sanitize_text_field($resource["name"]),
+            sanitize_text_field($resource["description"]),
             $resource["clocking"],
             $resource["start"],
             $next,

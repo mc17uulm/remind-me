@@ -7,6 +7,7 @@ import {Date} from "../Date";
 
 export interface Event {
     name: string,
+    description: string,
     clocking: number,
     start: Date | string
 }
@@ -73,6 +74,7 @@ export const empty_event = () : APIEvent => {
     return {
         id: -1,
         name: "",
+        description: "",
         clocking: 1,
         start: Date.create(),
         next: Date.create(),
@@ -88,6 +90,9 @@ export const EventSchema : JSONSchemaType<EventResponse> = {
             type: "integer"
         },
         name: {
+            type: "string"
+        },
+        description: {
             type: "string"
         },
         clocking: {
@@ -106,7 +111,7 @@ export const EventSchema : JSONSchemaType<EventResponse> = {
             type: "boolean"
         }
     },
-    required: ["id", "name", "clocking", "start", "next", "active", "last"],
+    required: ["id", "name", "description", "clocking", "start", "next", "active", "last"],
     additionalProperties: false
 }
 
@@ -133,6 +138,7 @@ export class EventHandler {
         return Either.success<APIEvent>({
             id: res.get_value().id,
             name: res.get_value().name,
+            description: res.get_value().description,
             clocking: res.get_value().clocking,
             start: Date.create_by_string(res.get_value().start),
             next: Date.create_by_string(res.get_value().next),
@@ -154,6 +160,7 @@ export class EventHandler {
             return {
                 id: event.id,
                 name: event.name,
+                description: event.description,
                 clocking: event.clocking,
                 start: Date.create_by_string(event.start),
                 next: Date.create_by_string(event.next),
