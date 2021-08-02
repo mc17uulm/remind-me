@@ -196,6 +196,8 @@ export const HandleEventModal = (props : ModalProps<APIEvent>) => {
                         <Form.Group>
                             <Form.Input
                                 width={2}
+                                max={get_max()}
+                                min={1}
                                 label={__('Day', 'wp-reminder')}
                                 value={form.values.start.day}
                                 onChange={(e, d) => updateDay(d.value)}

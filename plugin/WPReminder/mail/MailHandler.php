@@ -5,7 +5,6 @@ namespace WPReminder\mail;
 use PHPMailer\PHPMailer\PHPMailer;
 use WPReminder\api\APIException;
 use WPReminder\api\objects\Event;
-use WPReminder\api\objects\Settings;
 use WPReminder\api\objects\settings\Templates;
 use WPReminder\api\objects\Subscriber;
 use WPReminder\PluginException;
@@ -37,7 +36,6 @@ final class MailHandler {
 
         self::send_mail(
             ['email' => $subscriber->email],
-            ['email' => get_bloginfo('admin_email'), 'name' => get_bloginfo('name')],
             sprintf('%s | %s', $templates->reminder->subject, get_bloginfo('name')),
             $templates->reminder->render($subscriber)
         );
@@ -53,7 +51,6 @@ final class MailHandler {
 
         self::send_mail(
             ['email' => $subscriber->email],
-            ['email' => get_bloginfo('admin_email'), 'name' => get_bloginfo('name')],
             sprintf('%s | %s', $templates->confirm->subject, get_bloginfo('name')),
             $templates->confirm->render($subscriber)
         );
@@ -68,7 +65,6 @@ final class MailHandler {
 
         self::send_mail(
             ['email' => $subscriber->email],
-            ['email' => get_bloginfo('admin_email'), 'name' => get_bloginfo('name')],
             sprintf('%s | %s', $templates->success->subject, get_bloginfo('name')),
             $templates->success->render($subscriber)
         );
@@ -83,7 +79,6 @@ final class MailHandler {
 
         self::send_mail(
             ['email' => $subscriber->email],
-            ['email', get_bloginfo('admin_email'), 'name' => get_bloginfo('name')],
             sprintf('%s | %s', $templates->signout->subject, get_bloginfo('name')),
             $templates->signout->render($subscriber)
         );
@@ -95,35 +90,31 @@ final class MailHandler {
      * @param string $content
      */
     private static function wp_send_mail(array $to, string $subject, string $content) : void {
-        $headers[] = 'From: ' . get_bloginfo('name') . ' <' . $_SERVER['SERVER_NAME'] . '>';
+        $headers[] = 'From: ' . get_bloginfo('name') . ' <noreply@' . get_site_url() . '>';
 
         wp_mail($to['email'], $subject, $content, $headers);
     }
 
     /**
      * @param array $to
-     * @param array $from
      * @param string $subject
      * @param string $content
      * @throws PluginException
      */
-    private static function send_mail(array $to, array $from, string $subject, string $content) : void {
-        self::wp_send_mail($to, $subject, $content);
-        return;
+    private static function send_mail(array $to, string $subject, string $content) : void {
         if(!defined('WP_REMINDER_DEBUG')) die('invalid request');
         $mailer = new PHPMailer(true);
         try {
             $mailer->isHTML(true);
             $mailer->CharSet = 'utf-8';
-            $mailer->From = $from['email'];
-            $mailer->FromName = $from['name'];
+            $mailer->From = 'noreply@' . $_SERVER['SERVER_NAME'];
+            $mailer->FromName = get_bloginfo('name');
             $mailer->AddAddress($to['email']);
             $mailer->Subject = $subject;
             $mailer->Body = $content;
             $mailer->AltBody = strip_tags($content);
 
-            #if(WP_REMINDER_DEBUG) {
-	    if($_SERVER['REMOTE_ADDR'] === '127.0.0.1'){
+	        if($_SERVER['REMOTE_ADDR'] === '127.0.0.1'){
                 self::dev_send_mail($mailer);
             }
 
@@ -145,7 +136,7 @@ final class MailHandler {
         $mailer->Password = "deploy123";
         $mailer->Port = 25;
         $mailer->Host = 'code-leaf.de';
-        $mailer->FromName = 'Deploy code-leaf.de';
+        $mailer->FromName = get_bloginfo('name');
         $mailer->From = 'test@code-leaf.de';
     }
 

@@ -9,6 +9,8 @@ use WPReminder\api\objects\Token;
 use WPReminder\db\DatabaseException;
 use WPReminder\mail\MailHandler;
 use WPReminder\PluginException;
+use stdClass;
+use Exception;
 
 /**
  * Class LinkHandler
@@ -17,16 +19,24 @@ use WPReminder\PluginException;
 final class LinkHandler {
 
     /**
+     * @var string
+     */
+    private static string $slug = 'wp-reminder';
+
+    /**
+     * @return string
+     */
+    public static function get_site() : string {
+        return get_site_url() . '/' . self::$slug;
+    }
+
+    /**
      * @throws DatabaseException
      * @throws PluginException
      */
-    public static function check() : void {
-        // Check if current page is settings page
-        $settings = Settings::get();
-        $url = ($_SERVER['https'] ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-        // If not => do nothing
-        if(strpos($url, $settings->settings_page) !== 0) return;
-
+    public static function check(array $posts) : array {
+        // check if link is based on 'wp-reminder' path
+        if(!self::is_correct_link($posts)) return $posts;
         // check if token is available
         if(!$token = filter_input(INPUT_GET, 'wp-reminder-token')) self::redirect();
         // check if type is available
@@ -38,8 +48,8 @@ final class LinkHandler {
             try {
                 // if token is for valid subscriber => let frontend handle
                 Subscriber::get_by_token($token);
-                return;
-            } catch(APIException $e) {
+                return self::load_post(__('Subscription settings', 'wp-reminder'));
+            } catch(Exception $e) {
                 // token is no valid subscriber => redirect
                 self::redirect();
             }
@@ -62,13 +72,68 @@ final class LinkHandler {
         }
         // redirect to edit page
         wp_redirect(
-            add_query_arg($params, $settings->settings_page)
+            add_query_arg($params, self::get_site())
         );
         exit;
     }
 
+    /**
+     * @param array $posts
+     * @return bool
+     */
+    private static function is_correct_link(array $posts) : bool {
+        global $wp;
+        return
+            (count($posts) === 0) &&
+            (strtolower($wp->request) === self::$slug || $wp->query_vars['page_id'] === self::$slug);
+    }
+
+    /**
+     * @param string $title
+     * @return stdClass[]
+     */
+    private static function load_post(string $title) : array {
+        global $wp_query;
+
+        $post = self::create_post($title, '[wp-reminder-settings]');
+
+        $wp_query->is_page = true;
+        $wp_query->is_singular = true;
+        $wp_query->is_home = false;
+        $wp_query->is_archive = false;
+        $wp_query->is_category = false;
+        unset($wp_query->query['error']);
+        $wp_query->query_vars['error'] = "";
+        $wp_query->is_404 = false;
+
+        return [$post];
+    }
+
+    /**
+     * @param string $title
+     * @param string $content
+     * @return stdClass
+     */
+    private static function create_post(string $title, string $content) : stdClass {
+        $post = new stdClass();
+        $post->post_author = 1;
+        $post->post_name = self::$slug;
+        $post->guid = get_bloginfo('wpurl/' . self::$slug);
+        $post->post_title  = $title;
+        $post->post_content = $content;
+        $post->ID = -1;
+        $post->post_status = 'static';
+        $post->comment_status = 'closed';
+        $post->ping_status = 'closed';
+        $post->comment_count = 0;
+        $post->post_date = current_time('mysql');
+        $post->post_date_gmt = current_time('mysql', 1);
+        $post->slug = self::$slug;
+        return $post;
+    }
+
     private static function redirect() : void {
-        wp_redirect(remove_query_arg(['wp-reminder-token', 'wp-reminder-action', 'wp-reminder-success']));
+        wp_redirect(get_site_url());
         exit;
     }
 

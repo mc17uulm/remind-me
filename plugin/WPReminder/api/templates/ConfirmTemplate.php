@@ -2,6 +2,7 @@
 
 namespace WPReminder\api\templates;
 
+use WPReminder\api\handler\LinkHandler;
 use WPReminder\api\objects\Event;
 use WPReminder\api\objects\Settings;
 use WPReminder\api\objects\Subscriber;
@@ -36,18 +37,16 @@ final class ConfirmTemplate extends Template
      */
     public function render(Subscriber $subscriber): string
     {
-        $settings = Settings::get();
         $token = Token::create($subscriber->id, "activate");
         $url = add_query_arg([
             'wp-reminder-action' => 'activate',
             'wp-reminder-token' => $token->get_token()
-        ], $settings->settings_page);
-        #$url = $settings->settings_page . "?wp-reminder-action=activate&wp-reminder-token=" . $token->get_token();
+        ], LinkHandler::get_site());
         $list = "<li>" . implode("</li><li>", array_map(fn(int $id) => Event::get($id)->get_name(), $subscriber->events)) . "</li>";
         $message = str_replace('${event_list}', "<ul>$list</ul>", $this->html);
         $message = str_replace('${confirm_link}', "<a href='$url'>" . __('Confirm your subscription', 'wp-reminder') . "</a>", $message);
-        $settings = Settings::get();
-        $edit_url = self::parse_url($settings->settings_page, [
+
+        $edit_url = self::parse_url(LinkHandler::get_site(), [
             'wp-reminder-action=edit',
             'wp-reminder-token=' . $subscriber->get_token()
         ]);

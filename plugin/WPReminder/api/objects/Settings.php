@@ -57,15 +57,21 @@ final class Settings {
     }
 
     /**
+     * @param bool $public
      * @return array
      */
-    public function to_json() : array {
-        return [
+    public function to_json(bool $public = false) : array {
+        $json = [
             'messages' => $this->messages->to_json(),
-            'license' => $this->license->to_json(),
-            'settings_page' => esc_url($this->settings_page),
             'privacy_text' => esc_html($this->privacy_text)
         ];
+        if($public) {
+            $json['license'] = $this->license->active;
+        } else {
+            $json['license'] = $this->license->to_json();
+            $json['settings_page'] = esc_url($this->settings_page);
+        }
+        return $json;
     }
 
     /**

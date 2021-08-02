@@ -24,8 +24,8 @@ final class Log
     {
         if(!defined('WP_REMINDER_DIR')) die('Invalid request');
         $file = WP_REMINDER_DIR . '/log.txt';
-        if(!is_file($file)) return;
-        if(!is_writable($file)) return;
+        if(!is_file($file)) throw new PluginException('Cannot find log file');
+        if(!is_writable($file)) throw new PluginException('Log file is not writable');
 
         $this->file = $file;
     }

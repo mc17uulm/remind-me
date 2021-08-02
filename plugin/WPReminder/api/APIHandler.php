@@ -30,6 +30,10 @@ final class APIHandler
             EventHandler::get_all($request, $response);
         }, [], false);
 
+        $api->get("/events/count", function(Request $request, Response $response){
+            EventHandler::count($request, $response);
+        });
+
         $api->post("/event", function (Request $request, Response $response) {
             EventHandler::set($request, $response);
         });
@@ -81,6 +85,10 @@ final class APIHandler
         $api->put('/templates/', function(Request $request, Response $response) {
             TemplatesHandler::update($request, $response);
         });
+
+        $api->get('/public/settings/', function(Request $request, Response $response) {
+            SettingsHandler::get_public($request, $response);
+        }, [], false);
 
         $api->get("/settings/", function (Request $request, Response $response) {
             SettingsHandler::get($request, $response);

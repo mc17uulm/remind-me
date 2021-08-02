@@ -165,6 +165,17 @@ final class Event
     }
 
     /**
+     * @return int
+     * @throws DatabaseException
+     */
+    public static function count() : int {
+        $db = Database::get_database();
+        $db_res = $db->select("SELECT COUNT(*) FROM {$db->get_table_name("events")}");
+        if(count($db_res) !== 1) return 0;
+        return intval($db_res[0]["COUNT(*)"]);
+    }
+
+    /**
      * @param array $resource
      * @return int
      * @throws DatabaseException

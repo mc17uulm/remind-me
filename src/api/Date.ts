@@ -28,17 +28,35 @@ export class Date {
     }
 
     public get_next_array(clocking : number, steps: number) : Date[] {
-        let iterator = Array.from(Array(steps + 1).keys());
+        let iterator = Array.from(Array(steps).keys());
         iterator.shift();
-        return iterator.map((step : number) : Date => {
+        let next = iterator.map((step : number) : Date => {
             return this.get_next(clocking, step);
         });
+        next.unshift(this);
+        return next;
     }
 
     public to_string() : string {
         const month = this.month < 10 ? `0${this.month}` : this.month;
-        const day = this.day < 10 ? `0${this.day}` : this.day;
-        return `${this.year}-${month}-${day}`;
+        let day = this.day;
+        if(day > 28) {
+            switch(this.month) {
+                case 4:
+                case 6:
+                case 9:
+                case 11:
+                    if(day > 30) day = 30;
+                    break;
+                case 2:
+                    day = 28;
+                    break;
+                default:
+                    break;
+            }
+        }
+        const day_str =  day < 10 ? `0${day}` : day;
+        return `${this.year}-${month}-${day_str}`;
     }
 
     public format(format : string = 'LLLL') : string {

@@ -136,7 +136,7 @@ export const HandleSubscriberModal = (props : ModalProps<APISubscriber>) => {
                     </Form>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Message info>
+                    <Message info style={{textAlign: 'left'}}>
                         {__('The owner of the email address has to verify his subscription. If you save, a welcome email is sent to the new subscriber', 'wp-reminder')}
                     </Message>
                     <Button color='black' onClick={props.onClose}>{__('Back', 'wp-reminder')}</Button>

@@ -6,7 +6,7 @@ import {APIEvent, EventHandler} from "../api/handler/EventHandler";
 import {__} from "@wordpress/i18n";
 import {useCheckbox} from "../hooks/useCheckbox";
 import {Either} from "../api/Either";
-import {clockingToStr} from "../frontend/SubscriptionForm";
+import {EventCheckbox} from "../frontend/EventCheckbox";
 import {Loader} from "../frontend/Loader";
 import {Message} from "../frontend/Message";
 
@@ -18,7 +18,6 @@ export const BlockHandler = (props : PropsWithChildren<BlockEditProps<BlockAttri
     useEffect(() => {
         load(async () => {
             const events = await EventHandler.get_all();
-            console.log(events);
             if(events.has_error()) return Either.error(events.get_error());
             let list : number[] = [];
             try {
@@ -46,22 +45,16 @@ export const BlockHandler = (props : PropsWithChildren<BlockEditProps<BlockAttri
         ) : (
             <Fragment>
                 {events.map((event: APIEvent, index: number) => (
-                    <div className='checkbox-container' key={`event_${index}`}>
-                        <div className='checkbox'>
-                            <input
-                                className={''}
-                                readOnly
-                                tabIndex={0}
-                                type='checkbox'
-                                onChange={() => check(index)}
-                                checked={checkbox.get(index)}
-                            />
-                        </div>
-                        <div className='checkbox-label'>
-                            <label>{event.name}</label>
-                            <p>{clockingToStr(event.clocking)}</p>
-                        </div>
-                    </div>
+                    <EventCheckbox
+                        key={`event_${index}`}
+                        block={true}
+                        event={event}
+                        error={null}
+                        checked={checkbox.get(index)}
+                        index={index}
+                        update={() => check(index)}
+                        submitting={false}
+                    />
                 ))}
             </Fragment>
         )
@@ -91,7 +84,9 @@ export const BlockHandler = (props : PropsWithChildren<BlockEditProps<BlockAttri
                     placeholder={__('Title', 'wp-reminder')}
                 />
             </h4>
-            {render()}
+            <form>
+                {render()}
+            </form>
         </div>
     )
 

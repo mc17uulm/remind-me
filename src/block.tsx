@@ -3,7 +3,8 @@ import { registerBlockType } from "@wordpress/blocks";
 import {BlockHandler} from "./block/BlockHandler";
 import {Request} from "./api/Request";
 import {Definitions} from "./View";
-import "./styles/block";
+import "./styles/frontend";
+import "./styles/block.scss";
 
 export interface BlockAttributes {
     title: string,

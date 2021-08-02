@@ -73,6 +73,7 @@ $red: #dc3545;
     .checkbox-container {
       display: flex !important;
       align-items: flex-start !important;
+      padding-bottom: 10px !important;
 
       .checkbox {
 
@@ -84,6 +85,8 @@ $red: #dc3545;
           border-radius: 4px !important;
           border-width: 1px !important;
           border-color: rgba(209,213,219,1);
+          border-style: hidden;
+          outline: 1px solid #d1d5db;
           appearance: none !important;
           background-color: #fff !important;
           width: 16px !important;
@@ -120,6 +123,7 @@ $red: #dc3545;
         font-size: 14px !important;
         font-weight: normal !important;
         margin-left: 12px !important;
+        min-width: 90px !important;
 
         label {
           font-size: inherit !important;
@@ -131,6 +135,11 @@ $red: #dc3545;
         }
       }
 
+      .checkbox-description {
+        margin-left: 20px !important;
+        color: rgba(107,114,128, 1) !important;
+        font-size: 10px;
+      }
 
     }
 
@@ -172,7 +181,8 @@ $red: #dc3545;
 
     input {
       &.error {
-        border-color: $red !important;
+        outline: 1px solid $red !important;
+        border-style: hidden !important;
         color: $red !important;
       }
     }

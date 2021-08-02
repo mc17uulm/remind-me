@@ -19,6 +19,12 @@ export interface APILicense extends License {
     status: string
 }
 
+export interface PublicSettings {
+    messages: Messages,
+    license: boolean,
+    privacy_text: string
+}
+
 export interface Settings {
     messages: Messages,
     license: License,
@@ -30,22 +36,41 @@ export interface APISettings extends Settings {
     license: APILicense
 }
 
-export const SettingsSchema : JSONSchemaType<APISettings> = {
-    definitions: {
-        template: {
+export const PublicSettingsSchema : JSONSchemaType<PublicSettings> = {
+    type: "object",
+    properties: {
+        messages: {
             type: "object",
             properties: {
-                html: {
+                signin: {
                     type: "string"
                 },
-                subject: {
+                signout: {
+                    type: "string"
+                },
+                double_opt_in: {
                     type: "string"
                 }
             },
-            required: ["html", "subject"],
+            required: ["signin", "signout", "double_opt_in"],
             additionalProperties: false
+        },
+        license: {
+            type: "boolean"
+        },
+        privacy_text: {
+            type: "string"
         }
     },
+    required: [
+        "messages",
+        "license",
+        "privacy_text"
+    ],
+    additionalProperties: false
+}
+
+export const SettingsSchema : JSONSchemaType<APISettings> = {
     type: "object",
     properties: {
         messages: {
@@ -104,6 +129,10 @@ export class SettingsHandler
 
     public static async get() : Promise<Either<APISettings>> {
         return await Request.get<APISettings>('settings', SettingsSchema);
+    }
+
+    public static async get_public() : Promise<Either<PublicSettings>> {
+        return await Request.get<PublicSettings>('public/settings', PublicSettingsSchema);
     }
 
     public static async update(settings : Settings) : Promise<Either<boolean>> {

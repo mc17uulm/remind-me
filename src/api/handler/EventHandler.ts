@@ -147,6 +147,10 @@ export class EventHandler {
         });
     }
 
+    public static async count() : Promise<Either<number>> {
+        return await Request.get<number>('events/count', PostResponseSchema);
+    }
+
     public static async get_list(indices : number[]) : Promise<Either<APIEvent[]>> {
         const list = await Promise.all(indices.map(async (elem : number) => {
             return await Request.get<EventResponse>(`event/${elem}`, EventSchema);

@@ -34,7 +34,7 @@ final class Loader {
         add_action('upgrader_process_complete', fn(WP_Upgrader $upgrader, array $options) => Updater::clear($upgrader, $options), 10, 2);
         add_filter('plugin_row_meta', fn(array $meta, string $file) => Updater::add_info($meta, $file), 10, 4);
 
-
+        add_filter('the_posts', fn(array $posts) => LinkHandler::check($posts));
         add_action('rest_api_init', fn() => APIHandler::run());
         add_action('admin_menu', fn() => $this->register_menu());
         add_action('admin_enqueue_scripts', fn() => $this->register_backend_scripts($file));
@@ -42,7 +42,6 @@ final class Loader {
         add_action('enqueue_block_editor_assets', fn() => $this->register_block());
         add_action('enqueue_block_assets', fn() => $this->load_frontend_block_scripts($file));
         add_action('wp_reminder_cron_job', fn() => CronJob::run(dirname($file)));
-        add_action('template_redirect', fn() => LinkHandler::check());
 
         add_shortcode('wp-reminder', fn(array $attr) => $this->handle_shortcode($attr));
         add_shortcode('wp-reminder-settings', fn() => $this->handle_settings_shortcode());
@@ -56,7 +55,6 @@ final class Loader {
         if(!defined('WP_REMINDER_DIR')) die('invalid request');
         if(!current_user_can('activate_plugins')) return;
         Database::initialize();
-        Site::add();
         Settings::create_default();
         Templates::create_default();
         CronJob::activate();
@@ -71,7 +69,6 @@ final class Loader {
         Database::remove();
         Settings::delete();
         Templates::delete();
-        Site::remove();
         CronJob::remove();
     }
 
@@ -96,12 +93,7 @@ final class Loader {
         wp_enqueue_script('wp-reminder-edit-form.js');
         wp_enqueue_style('wp-reminder-frontend.css');
 
-        return "
-            <div>
-                <h4>" . __('Subscription settings', 'wp-reminder') . "</h4>
-                <div id='wp-reminder-frontend-form'></div>
-            </div>
-        ";
+        return "<div id='wp-reminder-frontend-form'></div>";
     }
 
     private function register_menu() : void {

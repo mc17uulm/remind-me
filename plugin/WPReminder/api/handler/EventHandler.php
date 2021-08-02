@@ -41,10 +41,18 @@ final class EventHandler implements RestHandler
      * @throws PluginException
      */
     public static function get_all(Request $req, Response $res) : void {
-
         $res->success(array_map(function(Event $event) {
             return $event->to_json();
         }, Event::get_all()));
+    }
+
+    /**
+     * @param Request $req
+     * @param Response $res
+     * @throws DatabaseException
+     */
+    public static function count(Request $req, Response $res) : void {
+        $res->success(Event::count());
     }
 
     /**

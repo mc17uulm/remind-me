@@ -28,6 +28,15 @@ final class SettingsHandler implements RestHandler
     /**
      * @param Request $req
      * @param Response $res
+     * @throws PluginException
+     */
+    public static function get_public(Request $req, Response $res) : void {
+        $res->success(Settings::get()->to_json(true));
+    }
+
+    /**
+     * @param Request $req
+     * @param Response $res
      */
     public static function set(Request $req, Response $res): void
     {
