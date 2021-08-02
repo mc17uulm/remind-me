@@ -20,7 +20,6 @@ const SettingsSchema : yup.SchemaOf<Settings> = yup.object({
         code: yup.string()
     }),
     privacy_text: yup.string().required(__('Please insert a text for the privacy notice', 'wp-reminder')),
-    settings_page: yup.string().required()
 });
 
 interface SettingsFormProps {
@@ -38,9 +37,7 @@ export const SettingsForm = (props : SettingsFormProps) => {
             console.error(resp.get_error());
             toast.error(resp.get_error());
         } else {
-            console.log("set settings");
             setSettings(resp.get_value());
-            console.log("after set");
         }
     }
 
@@ -50,8 +47,7 @@ export const SettingsForm = (props : SettingsFormProps) => {
             license: {
                 code: settings.license.code
             },
-            privacy_text: settings.privacy_text,
-            settings_page: settings.settings_page
+            privacy_text: settings.privacy_text
         });
         if(resp.has_error()) {
             console.error(resp.get_error());

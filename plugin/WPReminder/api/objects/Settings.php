@@ -30,29 +30,22 @@ final class Settings {
     /**
      * @var string
      */
-    public string $settings_page;
-    /**
-     * @var string
-     */
     public string $privacy_text;
 
     /**
      * Settings constructor.
      * @param Messages $messages
      * @param License $license
-     * @param string $settings_page
      * @param string $privacy_text
      */
     public function __construct(
         Messages $messages,
         License $license,
-        string $settings_page,
         string $privacy_text
     )
     {
         $this->messages = $messages;
         $this->license = $license;
-        $this->settings_page = $settings_page;
         $this->privacy_text = $privacy_text;
     }
 
@@ -69,7 +62,6 @@ final class Settings {
             $json['license'] = $this->license->active;
         } else {
             $json['license'] = $this->license->to_json();
-            $json['settings_page'] = esc_url($this->settings_page);
         }
         return $json;
     }
@@ -81,7 +73,6 @@ final class Settings {
         return [
             'messages' => $this->messages->to_db(),
             'license' => $this->license->to_db(),
-            'settings_page' => esc_url_raw($this->settings_page),
             'privacy_text' => sanitize_text_field($this->privacy_text)
         ];
     }
@@ -96,7 +87,6 @@ final class Settings {
             return new Settings(
                 new Messages($options['messages']),
                 new License($options['license']),
-                $options['settings_page'],
                 $options['privacy_text']
             );
         }
@@ -112,7 +102,6 @@ final class Settings {
         return self::set(new Settings(
             Messages::create_default(),
             License::create_default(),
-            Site::load('guid'),
             __('I accept the privacy settings. By checking this field you accept the transport and processing of your data by the provider of this webpage.', 'wp-reminder')
         ));
     }

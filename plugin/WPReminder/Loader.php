@@ -41,7 +41,7 @@ final class Loader {
         add_action('wp_enqueue_scripts', fn() => $this->register_frontend_scripts($file));
         add_action('enqueue_block_editor_assets', fn() => $this->register_block());
         add_action('enqueue_block_assets', fn() => $this->load_frontend_block_scripts($file));
-        add_action('wp_reminder_cron_job', fn() => CronJob::run(dirname($file)));
+        add_action('wp_reminder_cron_job', fn() => CronJob::run());
 
         add_shortcode('wp-reminder', fn(array $attr) => $this->handle_shortcode($attr));
         add_shortcode('wp-reminder-settings', fn() => $this->handle_settings_shortcode());

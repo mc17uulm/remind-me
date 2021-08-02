@@ -33,7 +33,6 @@ final class SettingsSchema extends JsonSchema
         return new Settings(
             new Messages($this->result['messages']),
             new License($this->result['license']),
-            $this->result['settings_page'],
             $this->result['privacy_text']
         );
     }

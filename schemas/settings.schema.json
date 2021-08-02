@@ -28,9 +28,6 @@
       "required": ["code"],
       "additionalProperties": false
     },
-    "settings_page": {
-      "type": "string"
-    },
     "privacy_text": {
       "type": "string"
     }
@@ -38,7 +35,6 @@
   "required": [
     "messages",
     "license",
-    "settings_page",
     "privacy_text"
   ],
   "additionalProperties": false

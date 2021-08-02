@@ -42,18 +42,6 @@ export const MessagePane = (props : FormikProps<APISettings>) => {
                 error={props.errors.privacy_text && props.touched.privacy_text ? props.errors.privacy_text : null}
                 label={__('Privacy text for shortcode', 'wp-reminder')}
             />
-            <h2>{__('Edit subscription page', 'wp-reminder')}</h2>
-            <Message info>
-                {__('This site requires an [wp-reminder-settings] shortcode as content', 'wp-reminder')}
-            </Message>
-            <Form.Input
-                value={props.values.settings_page}
-                disabled={props.isSubmitting}
-                name='settings_page'
-                onChange={props.handleChange}
-                error={props.errors.settings_page && props.touched.settings_page ? props.errors.settings_page : null}
-                label={__('WordPress page to display edit subscription page', 'wp-reminder')}
-            />
         </Tab.Pane>
     )
 

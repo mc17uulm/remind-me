@@ -2,8 +2,6 @@
 
 namespace WPReminder\api\handler;
 
-use WPReminder\api\APIException;
-use WPReminder\api\objects\Settings;
 use WPReminder\api\objects\Subscriber;
 use WPReminder\api\objects\Token;
 use WPReminder\db\DatabaseException;

@@ -28,7 +28,7 @@ final class CronJob {
      * @throws DatabaseException
      * @throws PluginException
      */
-    public static function run(string $dir) : void {
+    public static function run() : void {
 
         $events = array_filter(
             Event::get_all(),
@@ -67,6 +67,11 @@ final class CronJob {
         }
     }
 
+    /**
+     * @param string $file
+     * @param mixed $data
+     * @param bool $append
+     */
     private static function print_log(string $file, $data, bool $append = false) : void {
         file_put_contents($file, json_encode($data, JSON_PRETTY_PRINT), $append ? FILE_APPEND : 0);
     }

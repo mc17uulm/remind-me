@@ -54,7 +54,7 @@ define('WP_REMINDER_PATH', plugin_dir_path(__FILE__));
 define('WP_REMINDER_BASENAME', plugin_basename(__FILE__));
 define("WP_REMINDER_DIR", __DIR__);
 define("WP_REMINDER_DEBUG", true);
-define("WP_REMINDER_LOG_FILE", __DIR__ . "/log.txt");
+define("WP_REMINDER_LOG_FILE", __DIR__ . "/wp-reminder.log");
 define("WP_REMINDER_SCHEMAS", __DIR__ . "/schemas/");
 
 require_once __DIR__ . "/vendor/autoload.php";
@@ -64,7 +64,7 @@ use WPReminder\Log;
 use WPReminder\PluginException;
 
 try {
-    $log = Log::get(WP_REMINDER_LOG_FILE);
+    $log = Log::get();
 } catch(PluginException $e) {
     error_log("WPReminder | ERROR | " . $e->getMessage() . " | " . $e->get_debug_msg());
     die();

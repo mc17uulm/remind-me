@@ -28,7 +28,6 @@ export interface PublicSettings {
 export interface Settings {
     messages: Messages,
     license: License,
-    settings_page: string,
     privacy_text: string
 }
 
@@ -108,9 +107,6 @@ export const SettingsSchema : JSONSchemaType<APISettings> = {
             required: ["code", "active", "til", "status"],
             additionalProperties: false
         },
-        settings_page: {
-            type: "string"
-        },
         privacy_text: {
             type: "string"
         }
@@ -118,7 +114,6 @@ export const SettingsSchema : JSONSchemaType<APISettings> = {
     required: [
         "messages",
         "license",
-        "settings_page",
         "privacy_text"
     ],
     additionalProperties: false
