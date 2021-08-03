@@ -34,13 +34,13 @@ final class LinkHandler {
      */
     public static function check(array $posts) : array {
         // check if link is based on 'wp-reminder' path
-        if(!self::is_correct_link($posts)) return $posts;
+        //if(!self::is_correct_link($posts)) return $posts;
         // check if token is available
-        if(!$token = filter_input(INPUT_GET, 'wp-reminder-token')) self::redirect();
+        if(!$token = filter_input(INPUT_GET, 'wp-reminder-token')) return $posts;
         // check if type is available
-        if(!$type = filter_input(INPUT_GET, 'wp-reminder-action')) self::redirect();
+        if(!$type = filter_input(INPUT_GET, 'wp-reminder-action')) return $posts;
         // check if type has correct identifier
-        if(!in_array($type, ['activate', 'edit'])) self::redirect();
+        if(!in_array($type, ['activate', 'edit'])) return $posts;
         // if edit
         if($type === 'edit') {
             try {
@@ -73,17 +73,6 @@ final class LinkHandler {
             add_query_arg($params, self::get_site())
         );
         exit;
-    }
-
-    /**
-     * @param array $posts
-     * @return bool
-     */
-    private static function is_correct_link(array $posts) : bool {
-        global $wp;
-        return
-            (count($posts) === 0) &&
-            (strtolower($wp->request) === self::$slug || $wp->query_vars['page_id'] === self::$slug);
     }
 
     /**

@@ -23,7 +23,7 @@ final class Log
      */
     protected function __construct()
     {
-        if(!defined('WP_REMINDER_DIR')) die('Invalid request');
+        if(!defined('WP_REMINDER_LOG_FILE')) die('Invalid request');
         $file = WP_REMINDER_LOG_FILE;
         if(!is_file($file)) throw new PluginException('Cannot find log file');
         if(!is_writable($file)) throw new PluginException('Log file is not writable');
@@ -72,7 +72,6 @@ final class Log
      */
     public function error(string $message) : void {
         $this->print_log("ERROR", $message);
-        error_log("WPReminder | ERROR | $message");
     }
 
     /**
@@ -80,7 +79,7 @@ final class Log
      * @param string $message
      */
     private function print_log(string $type, string $message) : void {
-        $date = date('');
+        $date = date('c');
         if(!defined('WP_REMINDER_VERSION')) die('Invalid access');
         $version = WP_REMINDER_VERSION;
         $backtrace = debug_backtrace()[0];

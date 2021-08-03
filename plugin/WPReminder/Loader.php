@@ -9,6 +9,7 @@ use WPReminder\api\objects\settings\Templates;
 use WPReminder\cron\CronJob;
 use WPReminder\db\Database;
 use WPReminder\db\DatabaseException;
+use WPReminder\sites\Dashboard;
 use WPReminder\update\Updater;
 use WP_Upgrader;
 
@@ -219,7 +220,11 @@ final class Loader {
                 ]
             );
 
-            wp_set_script_translations("wp_reminder-$token.js", 'wp-reminder', plugin_dir_path($file) . "/languages/");
+            wp_set_script_translations(
+                "wp_reminder-$token.js",
+                'wp-reminder',
+                plugin_dir_path($file) . "/languages/"
+            );
         }
     }
 
@@ -277,13 +282,13 @@ final class Loader {
         );
 
         wp_set_script_translations(
-            'wp_reminder-new-form.js',
+            'wp-reminder-new-form.js',
             'wp-reminder',
             plugin_dir_path($file) . "/languages/"
         );
 
         wp_set_script_translations(
-            'wp_reminder-edit-form.js',
+            'wp-reminder-edit-form.js',
             'wp-reminder',
             plugin_dir_path($file) . "/languages/"
         );
@@ -326,6 +331,12 @@ final class Loader {
                 'base' => admin_url('admin.php'),
                 'active' =>  $settings->license->active ? 'true' : 'false'
             ]
+        );
+
+        wp_set_script_translations(
+            'wp-reminder-block.js',
+            'wp-reminder',
+            WP_REMINDER_PATH . "/languages/"
         );
     }
 

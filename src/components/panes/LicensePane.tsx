@@ -32,7 +32,7 @@ export const LicensePane = (props : FormikProps<APISettings> & {update: () => Pr
         <Tab.Pane attached={false}>
             <h2>{__('License', 'wp-reminder')}</h2>
             <Message info>
-                <Message.Header>{__('License info')}</Message.Header>
+                <Message.Header>{__('License info', 'wp-reminder')}</Message.Header>
                 {__('With a license you can add multiple events, add and export subscribers, and use the reliable backend of our service. More information at: ', 'wp-reminder')}
                 <a href='https://code-leaf.de'>CodeLeaf</a>
             </Message>

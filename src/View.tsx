@@ -8,6 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'font-awesome/css/font-awesome.css';
 import {Request} from "./api/Request";
 import {__} from "@wordpress/i18n";
+import {LicenseWarning} from "./components/LicenseWarning";
 
 export interface FrontendDefinitions {
     root : string,
@@ -45,17 +46,14 @@ export class View {
             wp_reminder_definitions.version
         );
 
+
+
         const elem = document.getElementById("wp_reminder_container");
         elem ? ReactDOM.render(
             <PluginContext.Provider value={Settings}>
                 <Container>
                     <h1>WP Reminder</h1>
-                    {Settings.active ? "" : (
-                        <Message warning>
-                            <Message.Header>{__('Plugin not licensed', 'wp-reminder')}</Message.Header>
-                            <p>{__('You have no license added. Some functions are therefore not available', 'wp-reminder')}</p>
-                        </Message>
-                    )}
+                    <LicenseWarning active={Settings.active} />
                     {element}
                     <ToastContainer position="bottom-center" autoClose={2000} />
                 </Container>

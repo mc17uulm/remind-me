@@ -134,7 +134,7 @@ export const Events = () => {
                                         </a>
                                         </Table.Cell>
                                         <Table.Cell className='wp-reminder-description'>
-                                            <DescriptionView description={event.description} count={10} />
+                                            <DescriptionView description={event.description} count={100} />
                                         </Table.Cell>
                                         <Table.Cell>
                                             {renderRepetition(event)}

@@ -84,6 +84,7 @@ module.exports = {
         'edit-form': './src/edit-form'
     },
     optimization: {
+        minimize: true,
         minimizer: [
             new ESBuildMinifyPlugin({
                 target: 'es2015'
@@ -106,7 +107,18 @@ module.exports = {
         publicPath: base
     },
     externals: {
-        '@wordpress/i18n': "wp.i18n"
+        '@wordpress/i18n': "wp.i18n",
+        'react': {
+            root: 'React',
+            esm: 'react-is',
+            commonjs: 'react',
+            commonjs2: 'react',
+        },
+        'react-dom': {
+            root: 'ReactDOM',
+            commonjs: 'react-dom',
+            commonjs2: 'react-dom',
+        }
     },
     resolve: {
         extensions: [".js", ".jsx", ".ts", ".tsx", ".scss"]
