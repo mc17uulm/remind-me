@@ -36,7 +36,7 @@ final class MailHandler {
 
         self::send_mail(
             ['email' => $subscriber->email],
-            sprintf('%s | %s', $templates->reminder->subject, get_bloginfo('name')),
+            $templates->reminder->subject,
             $templates->reminder->render($subscriber)
         );
     }
@@ -51,7 +51,7 @@ final class MailHandler {
 
         self::send_mail(
             ['email' => $subscriber->email],
-            sprintf('%s | %s', $templates->confirm->subject, get_bloginfo('name')),
+            $templates->confirm->subject,
             $templates->confirm->render($subscriber)
         );
     }
@@ -65,7 +65,7 @@ final class MailHandler {
 
         self::send_mail(
             ['email' => $subscriber->email],
-            sprintf('%s | %s', $templates->success->subject, get_bloginfo('name')),
+            $templates->success->subject,
             $templates->success->render($subscriber)
         );
     }
@@ -79,7 +79,7 @@ final class MailHandler {
 
         self::send_mail(
             ['email' => $subscriber->email],
-            sprintf('%s | %s', $templates->signout->subject, get_bloginfo('name')),
+            $templates->signout->subject,
             $templates->signout->render($subscriber)
         );
     }

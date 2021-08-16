@@ -185,6 +185,7 @@ export const HandleEventModal = (props : ModalProps<APIEvent>) => {
                             <Form.TextArea
                                 width={16}
                                 value={form.values.description}
+                                style={{resize: 'none'}}
                                 name='description'
                                 maxLength={500}
                                 label={__('Description', 'wp-reminder')}
@@ -262,21 +263,23 @@ export const HandleEventModal = (props : ModalProps<APIEvent>) => {
             return (
                 <DeleteModal
                     title={__('Delete Event', 'wp-reminder')}
-                    content={
-                        sprintf(
-                            _n(
-                            'Do you really like to delete the event "%s"?',
-                            'Do you really like to delete the events [%s]?',
-                                props.elements.length,
-                                'wp-reminder'
-                            ),
-                            (props.elements.length === 1) ? props.elements[0].name : props.elements.map(val => val.name).join(", ")
-                        )
-                    }
                     loading={loading}
                     onClose={props.onClose}
                     onDelete={onSubmit}
-                />
+                >
+                    {_n(
+                        'Do you really like to delete the following event',
+                        'Do you really like to delete the following events',
+                        props.elements.length,
+                        'wp-reminder'
+                    )}
+                    <br />
+                    <List bulleted>
+                        {props.elements.map((event : APIEvent, index : number) => (
+                            <List.Item key={`event_${index}`}>{event.name}</List.Item>
+                        ))}
+                    </List>
+                </DeleteModal>
             );
         } else {
             return "";

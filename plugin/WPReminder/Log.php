@@ -12,24 +12,6 @@ final class Log
      * @var Log|null
      */
     private static ?Log $instance = null;
-    /**
-     * @var string
-     */
-    private string $file;
-
-    /**
-     * Log constructor.
-     * @throws PluginException
-     */
-    protected function __construct()
-    {
-        if(!defined('WP_REMINDER_LOG_FILE')) die('Invalid request');
-        $file = WP_REMINDER_LOG_FILE;
-        if(!is_file($file)) throw new PluginException('Cannot find log file');
-        if(!is_writable($file)) throw new PluginException('Log file is not writable');
-
-        $this->file = $file;
-    }
 
     /**
      * @return Log
@@ -39,18 +21,6 @@ final class Log
             self::$instance = new Log();
         }
         return self::$instance;
-    }
-
-    /**
-     * @param string $dir
-     * @param string $filename
-     */
-    public static function create(string $dir, string $filename) : void {
-        if(!is_dir($dir)) return;
-        if(!is_writable($dir)) return;
-
-        $file = "$dir/$filename";
-        file_put_contents($file, "DATE\t| FILE\t| LINE\t| TYPE\t| MESSAGE");
     }
 
     /**
@@ -78,15 +48,16 @@ final class Log
      * @param string $type
      * @param string $message
      */
-    private function print_log(string $type, string $message) : void {
+    private function print_log(string $type, string $message) : void
+    {
         $date = date('c');
-        if(!defined('WP_REMINDER_VERSION')) die('Invalid access');
+        if (!defined('WP_REMINDER_VERSION')) die('Invalid access');
         $version = WP_REMINDER_VERSION;
         $backtrace = debug_backtrace()[0];
         $file = $backtrace['file'];
         $line = $backtrace['line'];
         $line = "$date | $version | $file | $line | $type | $message";
-        file_put_contents($this->file, $line, FILE_APPEND);
+        error_log($line);
     }
 
 }

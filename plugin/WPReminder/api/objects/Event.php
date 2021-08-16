@@ -189,7 +189,7 @@ final class Event
             sanitize_text_field($resource["description"]),
             $resource["clocking"],
             $resource["start"],
-            $resource["next"]
+            $resource["start"]
         );
     }
 
@@ -202,11 +202,9 @@ final class Event
      */
     public static function update(int $id, array $resource) : bool {
         $db = Database::get_database();
-        $res = $db->select("SELECT next FROM {$db->get_table_name('events')} WHERE id = %d", $id);
-        if(count($res) !== 1) throw new APIException('Event not in database');
-        $next = $res[0]['next'];
+        $next = $resource['start'];
         if($next < date('Y-m-d')) {
-            $next = Date::create_next($next, $resource['clocking']);
+            $next = Date::create_next($resource['start'], $resource['clocking']);
         }
         return $db->update(
             "UPDATE {$db->get_table_name("events")} SET name = %s, description = %s, clocking = %d, start = %s, next = %s WHERE id = %d",

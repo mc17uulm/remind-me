@@ -1,13 +1,12 @@
-import "@babel/polyfill";
+import "@babel/polyfill/noConflict";
 import React from "react";
 import ReactDOM from "react-dom";
-import {Container, Message} from "semantic-ui-react";
+import {Container} from "semantic-ui-react";
 import {ToastContainer} from "react-toastify";
 import 'semantic-ui-css/semantic.min.css';
 import 'react-toastify/dist/ReactToastify.css';
 import 'font-awesome/css/font-awesome.css';
 import {Request} from "./api/Request";
-import {__} from "@wordpress/i18n";
 import {LicenseWarning} from "./components/LicenseWarning";
 
 export interface FrontendDefinitions {
@@ -45,8 +44,6 @@ export class View {
             wp_reminder_definitions.slug,
             wp_reminder_definitions.version
         );
-
-
 
         const elem = document.getElementById("wp_reminder_container");
         elem ? ReactDOM.render(

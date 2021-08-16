@@ -9,7 +9,6 @@ use WPReminder\api\objects\settings\Templates;
 use WPReminder\cron\CronJob;
 use WPReminder\db\Database;
 use WPReminder\db\DatabaseException;
-use WPReminder\sites\Dashboard;
 use WPReminder\update\Updater;
 use WP_Upgrader;
 
@@ -59,7 +58,6 @@ final class Loader {
         Settings::create_default();
         Templates::create_default();
         CronJob::activate();
-        Log::create(WP_REMINDER_DIR, 'log.txt');
     }
 
     /**

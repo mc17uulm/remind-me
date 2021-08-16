@@ -45,11 +45,12 @@
     "sass-loader": "^11.0.1",
     "style-loader": "^2.0.0",
     "svg-url-loader": "^7.1.1",
-    "terser-webpack-plugin": "^5.1.1",
+    "terser-webpack-plugin": "^5.1.4",
     "ts-loader": "^8.0.18",
     "typescript": "^4.2.3",
     "url-loader": "^4.1.1",
     "webpack": "^5.28.0",
+    "webpack-bundle-analyzer": "^4.4.2",
     "webpack-cli": "^4.5.0"
   },
   "dependencies": {

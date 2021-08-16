@@ -1,0 +1,26 @@
+{
+  "name": "WPReminder",
+  "slug": "wp-reminder",
+  "version": "0.1.0",
+  "type": "plugin",
+  "author": {
+    "name": "CodeLeaf"
+  },
+  "build": {
+    "pre": {
+      "cmd": ""
+    },
+    "includes": [
+      "dist/fonts",
+      "dist/css",
+      "dist/js/*.js",
+      "dist/js/*.php",
+      "languages",
+      "plugin",
+      "schemas",
+      "composer.json",
+      "composer.lock",
+      "wp-reminder.php"
+    ]
+  }
+}
