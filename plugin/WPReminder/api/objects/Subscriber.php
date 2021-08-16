@@ -273,7 +273,7 @@ final class Subscriber
             "DELETE FROM {$db->get_table_name("subscribers")} WHERE id = %d",
             $id
         );
-        if($result) {
+        if($result && $subscriber->active) {
             MailHandler::send_unsubscribe($subscriber);
         }
         return $result;

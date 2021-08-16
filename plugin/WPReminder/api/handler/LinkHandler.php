@@ -25,7 +25,7 @@ final class LinkHandler {
      * @return string
      */
     public static function get_site() : string {
-        return get_site_url() . '/' . self::$slug;
+        return get_site_url();
     }
 
     /**

@@ -6,7 +6,7 @@ import {useCookie} from "../hooks/useCookie";
 
 export const LicenseWarning = (props : {active: boolean}) => {
 
-    if(!props.active) return <Fragment></Fragment>;
+    if(props.active) return <Fragment></Fragment>;
     const [cookie, setCookie] = useCookie('wp-reminder-license-notice');
     const [open, setOpen] = useState<boolean>(true);
 
