@@ -4,12 +4,10 @@
   "version": "0.1.0",
   "type": "plugin",
   "author": {
-    "name": "CodeLeaf"
+    "name": "CodeLeaf",
+    "email": "wp-reminder@code-leaf.de"
   },
   "build": {
-    "pre": {
-      "cmd": ""
-    },
     "includes": [
       "dist/fonts",
       "dist/css",

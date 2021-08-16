@@ -8,3 +8,9 @@ yarn-error.log
 test.php
 log.txt
 wp-reminder.zip
+tests/lib
+tests/bootstrap.php
+.dev/docker
+docker-compose.yml
+.phpcs.xml.dist
+phpunit.xml.dist
