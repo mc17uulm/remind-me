@@ -14,6 +14,7 @@ export const MessagePane = (props : FormikProps<APISettings>) => {
                 onChange={props.handleChange}
                 name='messages.signin'
                 disabled={props.isSubmitting}
+                maxLength={150}
                 error={props.errors.messages?.signin && props.touched.messages?.signin ? props.errors.messages?.signin : null}
                 label={__('Sign in success message', 'wp-reminder')}
             />
@@ -21,6 +22,7 @@ export const MessagePane = (props : FormikProps<APISettings>) => {
                 value={props.values.messages.double_opt_in}
                 disabled={props.isSubmitting}
                 onChange={props.handleChange}
+                maxLength={150}
                 name='messages.double_opt_in'
                 error={props.errors.messages?.double_opt_in && props.touched.messages?.double_opt_in ? props.errors.messages?.double_opt_in : null}
                 label={__('Double-opt-in success message', 'wp-reminder')}
@@ -29,14 +31,17 @@ export const MessagePane = (props : FormikProps<APISettings>) => {
                 value={props.values.messages.signout}
                 disabled={props.isSubmitting}
                 name='messages.signout'
+                maxLength={150}
                 onChange={props.handleChange}
                 error={props.errors.messages?.signout && props.touched.messages?.signout ? props.errors.messages?.signout : null}
                 label={__('Signout success message', 'wp-reminder')}
             />
             <h2>{__('Texts', 'wp-reminder')}</h2>
-            <Form.Input
+            <Form.TextArea
                 value={props.values.privacy_text}
                 disabled={props.isSubmitting}
+                maxLength={350}
+                style={{resize: 'none'}}
                 name='privacy_text'
                 onChange={props.handleChange}
                 error={props.errors.privacy_text && props.touched.privacy_text ? props.errors.privacy_text : null}

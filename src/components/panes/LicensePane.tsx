@@ -1,6 +1,6 @@
 import {FormikProps} from "formik";
 import {APISettings, SettingsHandler} from "../../api/handler/SettingsHandler";
-import {Button, Form, Header, Message, Modal, Tab} from "semantic-ui-react";
+import {Button, Form, Header, Icon, Message, Modal, Tab} from "semantic-ui-react";
 import {__} from "@wordpress/i18n";
 import React, {useState} from "react";
 import {toast} from "react-toastify";
@@ -11,9 +11,9 @@ export const LicensePane = (props : FormikProps<APISettings> & {update: () => Pr
 
     const renderInfo = (active : boolean) => {
         return active ? (
-            <span className='wp-reminder-text green'><i className='fa fa-check-circle'></i> {__('Active', 'wp-reminder')}</span>
+            <span className='wp-reminder-text green'><Icon name='check circle' /> {__('Active', 'wp-reminder')}</span>
         ) : (
-            <span className='wp-reminder-text red'><i className='fa fa-times-circle'></i> {__('Inactive', 'wp-reminder')}</span>
+            <span className='wp-reminder-text red'><Icon name='times circle' /> {__('Inactive', 'wp-reminder')}</span>
         )
     }
 
@@ -24,6 +24,7 @@ export const LicensePane = (props : FormikProps<APISettings> & {update: () => Pr
             toast.error(response.get_error());
         } else {
             await props.update();
+            toast.info(__('Removed license', 'wp-reminder'));
         }
         updateOpen(false);
     }
@@ -53,12 +54,12 @@ export const LicensePane = (props : FormikProps<APISettings> & {update: () => Pr
                     width={2}
                 >
                     <a
-                        className={'wp-reminder-delete-link' + (props.values.license.active ? '' : 'wp-reminder-disabled')}
+                        className={'wp-reminder-delete-link' + (props.values.license.active ? '' : ' wp-reminder-disabled')}
                         onClick={() => {
                             props.values.license.active ? updateOpen(true) : null;
                         }}
                     >
-                        <i className='fa fa-trash'></i> {__('Remove license', 'wp-reminder')}
+                        <Icon name='trash alternate outline' /> {__('Remove license', 'wp-reminder')}
                     </a>
                 </Form.Field>
             </Form.Group>

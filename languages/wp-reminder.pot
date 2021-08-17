@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-08-03T14:42:52+00:00\n"
+"POT-Creation-Date: 2021-08-17T19:52:43+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.5.0\n"
 "X-Domain: wp-reminder\n"
@@ -70,40 +70,39 @@ msgstr ""
 msgid "Reminder | %s"
 msgstr ""
 
-#: plugin/WPReminder/api/templates/ConfirmTemplate.php:47
+#: plugin/WPReminder/api/templates/ConfirmTemplate.php:46
 msgid "Confirm your subscription"
 msgstr ""
 
-#: plugin/WPReminder/api/templates/ConfirmTemplate.php:53
-#: plugin/WPReminder/api/templates/ReminderTemplate.php:45
-#: plugin/WPReminder/api/templates/SuccessTemplate.php:38
-msgid "Unsubscribe or edit subscription"
-msgstr ""
-
-#: plugin/WPReminder/api/templates/ConfirmTemplate.php:64
+#: plugin/WPReminder/api/templates/ConfirmTemplate.php:57
 #: plugin/WPReminder/api/templates/ReminderTemplate.php:56
 #: plugin/WPReminder/api/templates/SignoutTemplate.php:41
 #: plugin/WPReminder/api/templates/SuccessTemplate.php:49
 msgid "Company name"
 msgstr ""
 
-#: plugin/WPReminder/api/templates/ConfirmTemplate.php:66
+#: plugin/WPReminder/api/templates/ConfirmTemplate.php:59
 msgid "Thank you for subscribing our reminders:"
 msgstr ""
 
-#: plugin/WPReminder/api/templates/ConfirmTemplate.php:69
+#: plugin/WPReminder/api/templates/ConfirmTemplate.php:62
 msgid "To finish you subscription, please click this link: ${confirm_link}."
 msgstr ""
 
-#: plugin/WPReminder/api/templates/ConfirmTemplate.php:72
+#: plugin/WPReminder/api/templates/ConfirmTemplate.php:65
 msgid "If you haven't subscribed to our service, you can delete this email. Your subscription is only activated after clicking the above link."
 msgstr ""
 
-#: plugin/WPReminder/api/templates/ConfirmTemplate.php:76
+#: plugin/WPReminder/api/templates/ConfirmTemplate.php:69
 #: plugin/WPReminder/api/templates/ReminderTemplate.php:62
 #: plugin/WPReminder/api/templates/SignoutTemplate.php:46
 #: plugin/WPReminder/api/templates/SuccessTemplate.php:58
 msgid "Company name | Street 1 | 12345 City"
+msgstr ""
+
+#: plugin/WPReminder/api/templates/ReminderTemplate.php:45
+#: plugin/WPReminder/api/templates/SuccessTemplate.php:38
+msgid "Unsubscribe or edit subscription"
 msgstr ""
 
 #: plugin/WPReminder/api/templates/ReminderTemplate.php:58
@@ -126,803 +125,801 @@ msgstr ""
 msgid "If you want to change your subscription or unsubscribe, just click here: ${unsubscribe_link}"
 msgstr ""
 
-#: plugin/WPReminder/Loader.php:80
-#: dist/js/wp-reminder-edit-form-handler.js:6639
-#: dist/js/wp-reminder-edit-form-handler.js:6645
-#: dist/js/wp-reminder-new-form-handler.js:6639
-#: dist/js/wp-reminder-new-form-handler.js:6645
+#: plugin/WPReminder/Loader.php:81
+#: dist/js/wp-reminder-edit-form-handler.js:11
+#: dist/js/wp-reminder-new-form-handler.js:11
 msgid "Subscription"
 msgstr ""
 
-#: plugin/WPReminder/Loader.php:111
 #: plugin/WPReminder/Loader.php:112
-#: dist/js/wp-reminder-dashboard-handler.js:17101
+#: plugin/WPReminder/Loader.php:113
+#: plugin/WPReminder/sites/Dashboard.php:28
+#: plugin/WPReminder/sites/Dashboard.php:29
+#: dist/js/wp-reminder-dashboard-handler.js:20
 msgid "Dashboard"
 msgstr ""
 
-#: plugin/WPReminder/Loader.php:119
 #: plugin/WPReminder/Loader.php:120
-#: dist/js/wp-reminder-dashboard-handler.js:17068
-#: dist/js/wp-reminder-dashboard-handler.js:17091
-#: dist/js/wp-reminder-edit-form-handler.js:6843
-#: dist/js/wp-reminder-events-handler.js:17858
-#: dist/js/wp-reminder-new-form-handler.js:6843
-#: dist/js/wp-reminder-subscribers-handler.js:17148
+#: plugin/WPReminder/Loader.php:121
+#: plugin/WPReminder/sites/Events.php:19
+#: plugin/WPReminder/sites/Events.php:20
+#: dist/js/wp-reminder-dashboard-handler.js:20
+#: dist/js/wp-reminder-edit-form-handler.js:11
+#: dist/js/wp-reminder-events-handler.js:23
+#: dist/js/wp-reminder-new-form-handler.js:11
+#: dist/js/wp-reminder-subscribers-handler.js:23
 msgid "Events"
 msgstr ""
 
-#: plugin/WPReminder/Loader.php:128
 #: plugin/WPReminder/Loader.php:129
-#: dist/js/wp-reminder-dashboard-handler.js:17067
-#: dist/js/wp-reminder-subscribers-handler.js:17789
+#: plugin/WPReminder/Loader.php:130
+#: dist/js/wp-reminder-dashboard-handler.js:20
+#: dist/js/wp-reminder-subscribers-handler.js:25
 msgid "Subscribers"
 msgstr ""
 
-#: plugin/WPReminder/Loader.php:137
 #: plugin/WPReminder/Loader.php:138
-#: dist/js/wp-reminder-templates-handler.js:21230
+#: plugin/WPReminder/Loader.php:139
+#: dist/js/wp-reminder-templates-handler.js:85
 msgid "Email templates"
 msgstr ""
 
-#: plugin/WPReminder/Loader.php:146
 #: plugin/WPReminder/Loader.php:147
-#: dist/js/wp-reminder-settings-handler.js:17062
+#: plugin/WPReminder/Loader.php:148
+#: dist/js/wp-reminder-settings-handler.js:32
 msgid "Settings"
 msgstr ""
 
-#: dist/js/wp-reminder-blocks-handler.js:5981
-#: dist/js/wp-reminder-blocks-handler.js:6280
-#: dist/js/wp-reminder-dashboard-handler.js:16406
-#: dist/js/wp-reminder-edit-form-handler.js:5981
-#: dist/js/wp-reminder-edit-form-handler.js:6446
-#: dist/js/wp-reminder-events-handler.js:16530
-#: dist/js/wp-reminder-new-form-handler.js:5981
-#: dist/js/wp-reminder-new-form-handler.js:6446
-#: dist/js/wp-reminder-subscribers-handler.js:16406
+#: dist/js/wp-reminder-blocks-handler.js:8
+#: dist/js/wp-reminder-dashboard-handler.js:20
+#: dist/js/wp-reminder-edit-form-handler.js:8
+#: dist/js/wp-reminder-edit-form-handler.js:11
+#: dist/js/wp-reminder-events-handler.js:20
+#: dist/js/wp-reminder-new-form-handler.js:8
+#: dist/js/wp-reminder-new-form-handler.js:11
+#: dist/js/wp-reminder-subscribers-handler.js:20
 msgid "monthly"
 msgstr ""
 
-#: dist/js/wp-reminder-blocks-handler.js:5982
-#: dist/js/wp-reminder-blocks-handler.js:6281
-#: dist/js/wp-reminder-dashboard-handler.js:16407
-#: dist/js/wp-reminder-edit-form-handler.js:5982
-#: dist/js/wp-reminder-edit-form-handler.js:6447
-#: dist/js/wp-reminder-events-handler.js:16531
-#: dist/js/wp-reminder-new-form-handler.js:5982
-#: dist/js/wp-reminder-new-form-handler.js:6447
-#: dist/js/wp-reminder-subscribers-handler.js:16407
+#: dist/js/wp-reminder-blocks-handler.js:8
+#: dist/js/wp-reminder-dashboard-handler.js:20
+#: dist/js/wp-reminder-edit-form-handler.js:8
+#: dist/js/wp-reminder-edit-form-handler.js:11
+#: dist/js/wp-reminder-events-handler.js:20
+#: dist/js/wp-reminder-new-form-handler.js:8
+#: dist/js/wp-reminder-new-form-handler.js:11
+#: dist/js/wp-reminder-subscribers-handler.js:20
 msgid "2-monthly"
 msgstr ""
 
-#: dist/js/wp-reminder-blocks-handler.js:5983
-#: dist/js/wp-reminder-blocks-handler.js:6282
-#: dist/js/wp-reminder-dashboard-handler.js:16408
-#: dist/js/wp-reminder-edit-form-handler.js:5983
-#: dist/js/wp-reminder-edit-form-handler.js:6448
-#: dist/js/wp-reminder-events-handler.js:16532
-#: dist/js/wp-reminder-new-form-handler.js:5983
-#: dist/js/wp-reminder-new-form-handler.js:6448
-#: dist/js/wp-reminder-subscribers-handler.js:16408
+#: dist/js/wp-reminder-blocks-handler.js:8
+#: dist/js/wp-reminder-dashboard-handler.js:20
+#: dist/js/wp-reminder-edit-form-handler.js:8
+#: dist/js/wp-reminder-edit-form-handler.js:11
+#: dist/js/wp-reminder-events-handler.js:20
+#: dist/js/wp-reminder-new-form-handler.js:8
+#: dist/js/wp-reminder-new-form-handler.js:11
+#: dist/js/wp-reminder-subscribers-handler.js:20
 msgid "quarterly"
 msgstr ""
 
-#: dist/js/wp-reminder-blocks-handler.js:5984
-#: dist/js/wp-reminder-blocks-handler.js:6283
-#: dist/js/wp-reminder-dashboard-handler.js:16409
-#: dist/js/wp-reminder-edit-form-handler.js:5984
-#: dist/js/wp-reminder-edit-form-handler.js:6449
-#: dist/js/wp-reminder-events-handler.js:16533
-#: dist/js/wp-reminder-new-form-handler.js:5984
-#: dist/js/wp-reminder-new-form-handler.js:6449
-#: dist/js/wp-reminder-subscribers-handler.js:16409
+#: dist/js/wp-reminder-blocks-handler.js:8
+#: dist/js/wp-reminder-dashboard-handler.js:20
+#: dist/js/wp-reminder-edit-form-handler.js:8
+#: dist/js/wp-reminder-edit-form-handler.js:11
+#: dist/js/wp-reminder-events-handler.js:20
+#: dist/js/wp-reminder-new-form-handler.js:8
+#: dist/js/wp-reminder-new-form-handler.js:11
+#: dist/js/wp-reminder-subscribers-handler.js:20
 msgid "4-monthly"
 msgstr ""
 
-#: dist/js/wp-reminder-blocks-handler.js:5985
-#: dist/js/wp-reminder-blocks-handler.js:6284
-#: dist/js/wp-reminder-dashboard-handler.js:16410
-#: dist/js/wp-reminder-edit-form-handler.js:5985
-#: dist/js/wp-reminder-edit-form-handler.js:6450
-#: dist/js/wp-reminder-events-handler.js:16534
-#: dist/js/wp-reminder-new-form-handler.js:5985
-#: dist/js/wp-reminder-new-form-handler.js:6450
-#: dist/js/wp-reminder-subscribers-handler.js:16410
+#: dist/js/wp-reminder-blocks-handler.js:8
+#: dist/js/wp-reminder-dashboard-handler.js:20
+#: dist/js/wp-reminder-edit-form-handler.js:8
+#: dist/js/wp-reminder-edit-form-handler.js:11
+#: dist/js/wp-reminder-events-handler.js:20
+#: dist/js/wp-reminder-new-form-handler.js:8
+#: dist/js/wp-reminder-new-form-handler.js:11
+#: dist/js/wp-reminder-subscribers-handler.js:20
 msgid "half-yearly"
 msgstr ""
 
-#: dist/js/wp-reminder-blocks-handler.js:5986
-#: dist/js/wp-reminder-blocks-handler.js:6285
-#: dist/js/wp-reminder-dashboard-handler.js:16411
-#: dist/js/wp-reminder-edit-form-handler.js:5986
-#: dist/js/wp-reminder-edit-form-handler.js:6451
-#: dist/js/wp-reminder-events-handler.js:16535
-#: dist/js/wp-reminder-new-form-handler.js:5986
-#: dist/js/wp-reminder-new-form-handler.js:6451
-#: dist/js/wp-reminder-subscribers-handler.js:16411
+#: dist/js/wp-reminder-blocks-handler.js:8
+#: dist/js/wp-reminder-dashboard-handler.js:20
+#: dist/js/wp-reminder-edit-form-handler.js:8
+#: dist/js/wp-reminder-edit-form-handler.js:11
+#: dist/js/wp-reminder-events-handler.js:20
+#: dist/js/wp-reminder-new-form-handler.js:8
+#: dist/js/wp-reminder-new-form-handler.js:11
+#: dist/js/wp-reminder-subscribers-handler.js:20
 msgid "yearly"
 msgstr ""
 
-#: dist/js/wp-reminder-blocks-handler.js:5998
-#: dist/js/wp-reminder-blocks-handler.js:6001
-#: dist/js/wp-reminder-blocks-handler.js:6003
-#: dist/js/wp-reminder-blocks-handler.js:6005
-#: dist/js/wp-reminder-dashboard-handler.js:16423
-#: dist/js/wp-reminder-dashboard-handler.js:16426
-#: dist/js/wp-reminder-dashboard-handler.js:16428
-#: dist/js/wp-reminder-dashboard-handler.js:16430
-#: dist/js/wp-reminder-edit-form-handler.js:5998
-#: dist/js/wp-reminder-edit-form-handler.js:6001
-#: dist/js/wp-reminder-edit-form-handler.js:6003
-#: dist/js/wp-reminder-edit-form-handler.js:6005
-#: dist/js/wp-reminder-events-handler.js:16547
-#: dist/js/wp-reminder-events-handler.js:16550
-#: dist/js/wp-reminder-events-handler.js:16552
-#: dist/js/wp-reminder-events-handler.js:16554
-#: dist/js/wp-reminder-new-form-handler.js:5998
-#: dist/js/wp-reminder-new-form-handler.js:6001
-#: dist/js/wp-reminder-new-form-handler.js:6003
-#: dist/js/wp-reminder-new-form-handler.js:6005
-#: dist/js/wp-reminder-subscribers-handler.js:16423
-#: dist/js/wp-reminder-subscribers-handler.js:16426
-#: dist/js/wp-reminder-subscribers-handler.js:16428
-#: dist/js/wp-reminder-subscribers-handler.js:16430
+#: dist/js/wp-reminder-blocks-handler.js:8
+#: dist/js/wp-reminder-dashboard-handler.js:20
+#: dist/js/wp-reminder-edit-form-handler.js:8
+#: dist/js/wp-reminder-events-handler.js:20
+#: dist/js/wp-reminder-new-form-handler.js:8
+#: dist/js/wp-reminder-subscribers-handler.js:20
 msgid "month"
 msgstr ""
 
-#: dist/js/wp-reminder-blocks-handler.js:6003
-#: dist/js/wp-reminder-dashboard-handler.js:16428
-#: dist/js/wp-reminder-edit-form-handler.js:6003
-#: dist/js/wp-reminder-events-handler.js:16552
-#: dist/js/wp-reminder-new-form-handler.js:6003
-#: dist/js/wp-reminder-subscribers-handler.js:16428
+#: dist/js/wp-reminder-blocks-handler.js:8
+#: dist/js/wp-reminder-dashboard-handler.js:20
+#: dist/js/wp-reminder-edit-form-handler.js:8
+#: dist/js/wp-reminder-events-handler.js:20
+#: dist/js/wp-reminder-new-form-handler.js:8
+#: dist/js/wp-reminder-subscribers-handler.js:20
 msgid "quarter "
 msgstr ""
 
-#: dist/js/wp-reminder-blocks-handler.js:6003
-#: dist/js/wp-reminder-blocks-handler.js:6005
-#: dist/js/wp-reminder-blocks-handler.js:6007
-#: dist/js/wp-reminder-dashboard-handler.js:16428
-#: dist/js/wp-reminder-dashboard-handler.js:16430
-#: dist/js/wp-reminder-dashboard-handler.js:16432
-#: dist/js/wp-reminder-edit-form-handler.js:6003
-#: dist/js/wp-reminder-edit-form-handler.js:6005
-#: dist/js/wp-reminder-edit-form-handler.js:6007
-#: dist/js/wp-reminder-events-handler.js:16552
-#: dist/js/wp-reminder-events-handler.js:16554
-#: dist/js/wp-reminder-events-handler.js:16556
-#: dist/js/wp-reminder-new-form-handler.js:6003
-#: dist/js/wp-reminder-new-form-handler.js:6005
-#: dist/js/wp-reminder-new-form-handler.js:6007
-#: dist/js/wp-reminder-subscribers-handler.js:16428
-#: dist/js/wp-reminder-subscribers-handler.js:16430
-#: dist/js/wp-reminder-subscribers-handler.js:16432
+#: dist/js/wp-reminder-blocks-handler.js:8
+#: dist/js/wp-reminder-dashboard-handler.js:20
+#: dist/js/wp-reminder-edit-form-handler.js:8
+#: dist/js/wp-reminder-events-handler.js:20
+#: dist/js/wp-reminder-new-form-handler.js:8
+#: dist/js/wp-reminder-subscribers-handler.js:20
 msgid "year"
 msgstr ""
 
-#: dist/js/wp-reminder-blocks-handler.js:6005
-#: dist/js/wp-reminder-dashboard-handler.js:16430
-#: dist/js/wp-reminder-edit-form-handler.js:6005
-#: dist/js/wp-reminder-events-handler.js:16554
-#: dist/js/wp-reminder-new-form-handler.js:6005
-#: dist/js/wp-reminder-subscribers-handler.js:16430
+#: dist/js/wp-reminder-blocks-handler.js:8
+#: dist/js/wp-reminder-dashboard-handler.js:20
+#: dist/js/wp-reminder-edit-form-handler.js:8
+#: dist/js/wp-reminder-events-handler.js:20
+#: dist/js/wp-reminder-new-form-handler.js:8
+#: dist/js/wp-reminder-subscribers-handler.js:20
 msgid "half "
 msgstr ""
 
-#: dist/js/wp-reminder-blocks-handler.js:6014
-#: dist/js/wp-reminder-dashboard-handler.js:16439
-#: dist/js/wp-reminder-edit-form-handler.js:6014
-#: dist/js/wp-reminder-events-handler.js:16563
-#: dist/js/wp-reminder-new-form-handler.js:6014
-#: dist/js/wp-reminder-subscribers-handler.js:16439
+#: dist/js/wp-reminder-blocks-handler.js:8
+#: dist/js/wp-reminder-dashboard-handler.js:20
+#: dist/js/wp-reminder-edit-form-handler.js:8
+#: dist/js/wp-reminder-events-handler.js:20
+#: dist/js/wp-reminder-new-form-handler.js:8
+#: dist/js/wp-reminder-subscribers-handler.js:20
 msgid "Is executed every %s%s on the %d. of the %s"
 msgstr ""
 
-#: dist/js/wp-reminder-blocks-handler.js:6219
-msgid "Please add first a event on the WPReminder page"
-msgstr ""
-
-#: dist/js/wp-reminder-blocks-handler.js:6254
-msgid "Title"
-msgstr ""
-
-#: dist/js/wp-reminder-blocks-handler.js:6370
-#: dist/js/wp-reminder-edit-form-handler.js:6421
-#: dist/js/wp-reminder-edit-form-handler.js:6536
-#: dist/js/wp-reminder-new-form-handler.js:6421
-#: dist/js/wp-reminder-new-form-handler.js:6536
-#: dist/js/wp-reminder-settings-handler.js:16704
-#: dist/js/wp-reminder-templates-handler.js:20638
+#: dist/js/wp-reminder-blocks-handler.js:8
+#: dist/js/wp-reminder-edit-form-handler.js:8
+#: dist/js/wp-reminder-edit-form-handler.js:11
+#: dist/js/wp-reminder-new-form-handler.js:8
+#: dist/js/wp-reminder-new-form-handler.js:11
+#: dist/js/wp-reminder-settings-handler.js:32
+#: dist/js/wp-reminder-templates-handler.js:80
 msgid "Success"
 msgstr ""
 
-#: dist/js/wp-reminder-blocks-handler.js:6370
-#: dist/js/wp-reminder-dashboard-handler.js:16703
-#: dist/js/wp-reminder-edit-form-handler.js:6421
-#: dist/js/wp-reminder-edit-form-handler.js:6536
-#: dist/js/wp-reminder-events-handler.js:16746
-#: dist/js/wp-reminder-new-form-handler.js:6421
-#: dist/js/wp-reminder-new-form-handler.js:6536
-#: dist/js/wp-reminder-settings-handler.js:16407
-#: dist/js/wp-reminder-settings-handler.js:16702
-#: dist/js/wp-reminder-subscribers-handler.js:16703
-#: dist/js/wp-reminder-templates-handler.js:20455
-#: dist/js/wp-reminder-templates-handler.js:20636
+#: dist/js/wp-reminder-blocks-handler.js:8
+#: dist/js/wp-reminder-dashboard-handler.js:20
+#: dist/js/wp-reminder-edit-form-handler.js:8
+#: dist/js/wp-reminder-edit-form-handler.js:11
+#: dist/js/wp-reminder-events-handler.js:23
+#: dist/js/wp-reminder-new-form-handler.js:8
+#: dist/js/wp-reminder-new-form-handler.js:11
+#: dist/js/wp-reminder-settings-handler.js:32
+#: dist/js/wp-reminder-subscribers-handler.js:20
+#: dist/js/wp-reminder-templates-handler.js:80
 msgid "Error"
 msgstr ""
 
-#: dist/js/wp-reminder-dashboard-handler.js:16748
-#: dist/js/wp-reminder-events-handler.js:16828
-#: dist/js/wp-reminder-settings-handler.js:16489
-#: dist/js/wp-reminder-subscribers-handler.js:16829
-#: dist/js/wp-reminder-templates-handler.js:20570
+#: dist/js/wp-reminder-blocks-handler.js:8
+msgid "Please add first a event on the WPReminder page"
+msgstr ""
+
+#: dist/js/wp-reminder-blocks-handler.js:8
+msgid "Title"
+msgstr ""
+
+#: dist/js/wp-reminder-dashboard-handler.js:20
+#: dist/js/wp-reminder-events-handler.js:20
+#: dist/js/wp-reminder-settings-handler.js:27
+#: dist/js/wp-reminder-subscribers-handler.js:20
+#: dist/js/wp-reminder-templates-handler.js:80
 msgid "Plugin not licensed"
 msgstr ""
 
-#: dist/js/wp-reminder-dashboard-handler.js:16748
-#: dist/js/wp-reminder-events-handler.js:16828
-#: dist/js/wp-reminder-settings-handler.js:16489
-#: dist/js/wp-reminder-subscribers-handler.js:16829
-#: dist/js/wp-reminder-templates-handler.js:20570
-msgid "You have no license added. Some functions are therefore not available"
+#: dist/js/wp-reminder-dashboard-handler.js:20
+#: dist/js/wp-reminder-events-handler.js:20
+#: dist/js/wp-reminder-settings-handler.js:27
+#: dist/js/wp-reminder-subscribers-handler.js:20
+#: dist/js/wp-reminder-templates-handler.js:80
+msgid "You have no license added. Some functions are therefore not available. Learn more at "
 msgstr ""
 
-#: dist/js/wp-reminder-dashboard-handler.js:16781
-#: dist/js/wp-reminder-events-handler.js:16861
-#: dist/js/wp-reminder-settings-handler.js:16522
-#: dist/js/wp-reminder-subscribers-handler.js:16862
-#: dist/js/wp-reminder-templates-handler.js:20603
+#: dist/js/wp-reminder-dashboard-handler.js:20
+#: dist/js/wp-reminder-events-handler.js:23
+#: dist/js/wp-reminder-settings-handler.js:27
+#: dist/js/wp-reminder-subscribers-handler.js:20
+#: dist/js/wp-reminder-templates-handler.js:80
 msgid "Loading"
 msgstr ""
 
-#: dist/js/wp-reminder-dashboard-handler.js:17060
+#: dist/js/wp-reminder-dashboard-handler.js:20
 msgid "No subscriber found"
 msgstr ""
 
-#: dist/js/wp-reminder-dashboard-handler.js:17065
-#: dist/js/wp-reminder-subscribers-handler.js:17134
-#: dist/js/wp-reminder-subscribers-handler.js:17751
-#: dist/js/wp-reminder-subscribers-handler.js:17794
+#: dist/js/wp-reminder-dashboard-handler.js:20
+#: dist/js/wp-reminder-subscribers-handler.js:23
+#: dist/js/wp-reminder-subscribers-handler.js:25
 msgid "Add Subscriber"
 msgstr ""
 
-#: dist/js/wp-reminder-dashboard-handler.js:17068
-#: dist/js/wp-reminder-edit-form-handler.js:6847
-#: dist/js/wp-reminder-new-form-handler.js:6847
-#: dist/js/wp-reminder-subscribers-handler.js:17761
+#: dist/js/wp-reminder-dashboard-handler.js:20
+#: dist/js/wp-reminder-edit-form-handler.js:11
+#: dist/js/wp-reminder-new-form-handler.js:11
+#: dist/js/wp-reminder-subscribers-handler.js:25
 msgid "Email address"
 msgstr ""
 
-#: dist/js/wp-reminder-dashboard-handler.js:17068
-#: dist/js/wp-reminder-dashboard-handler.js:17072
-#: dist/js/wp-reminder-settings-handler.js:16766
-#: dist/js/wp-reminder-subscribers-handler.js:17733
-#: dist/js/wp-reminder-subscribers-handler.js:17761
+#: dist/js/wp-reminder-dashboard-handler.js:20
+#: dist/js/wp-reminder-settings-handler.js:32
+#: dist/js/wp-reminder-subscribers-handler.js:25
 msgid "Active"
 msgstr ""
 
-#: dist/js/wp-reminder-dashboard-handler.js:17068
+#: dist/js/wp-reminder-dashboard-handler.js:20
 msgid "Registered"
 msgstr ""
 
-#: dist/js/wp-reminder-dashboard-handler.js:17074
-#: dist/js/wp-reminder-settings-handler.js:16770
-#: dist/js/wp-reminder-subscribers-handler.js:17735
+#: dist/js/wp-reminder-dashboard-handler.js:20
+msgid "%d Event"
+msgstr ""
+
+#: dist/js/wp-reminder-dashboard-handler.js:20
+#: dist/js/wp-reminder-subscribers-handler.js:23
+msgid "%d Events"
+msgstr ""
+
+#: dist/js/wp-reminder-dashboard-handler.js:20
+#: dist/js/wp-reminder-settings-handler.js:32
+#: dist/js/wp-reminder-subscribers-handler.js:25
 msgid "Inactive"
 msgstr ""
 
-#: dist/js/wp-reminder-dashboard-handler.js:17079
+#: dist/js/wp-reminder-dashboard-handler.js:20
 msgid "Go to subscribers"
 msgstr ""
 
-#: dist/js/wp-reminder-dashboard-handler.js:17084
+#: dist/js/wp-reminder-dashboard-handler.js:20
 msgid "No event found"
 msgstr ""
 
-#: dist/js/wp-reminder-dashboard-handler.js:17089
-#: dist/js/wp-reminder-events-handler.js:17184
-#: dist/js/wp-reminder-events-handler.js:17818
-#: dist/js/wp-reminder-events-handler.js:17863
+#: dist/js/wp-reminder-dashboard-handler.js:20
+#: dist/js/wp-reminder-events-handler.js:23
 msgid "Add Event"
 msgstr ""
 
-#: dist/js/wp-reminder-dashboard-handler.js:17092
+#: dist/js/wp-reminder-dashboard-handler.js:20
 msgid "Name"
 msgstr ""
 
-#: dist/js/wp-reminder-dashboard-handler.js:17092
+#: dist/js/wp-reminder-dashboard-handler.js:20
 msgid "Clocking"
 msgstr ""
 
-#: dist/js/wp-reminder-dashboard-handler.js:17092
+#: dist/js/wp-reminder-dashboard-handler.js:20
 msgid "Last execution"
 msgstr ""
 
-#: dist/js/wp-reminder-dashboard-handler.js:17094
+#: dist/js/wp-reminder-dashboard-handler.js:20
 msgid "not executed yet"
 msgstr ""
 
-#: dist/js/wp-reminder-dashboard-handler.js:17099
+#: dist/js/wp-reminder-dashboard-handler.js:20
 msgid "Go to events"
 msgstr ""
 
-#: dist/js/wp-reminder-edit-form-handler.js:6716
-#: dist/js/wp-reminder-new-form-handler.js:6716
-#: dist/js/wp-reminder-subscribers-handler.js:17064
-msgid "Please select at least one event"
-msgstr ""
-
-#: dist/js/wp-reminder-edit-form-handler.js:6717
-#: dist/js/wp-reminder-new-form-handler.js:6717
-msgid "To subscribe to our service you have to accept the privacy settings"
-msgstr ""
-
-#: dist/js/wp-reminder-edit-form-handler.js:6777
-#: dist/js/wp-reminder-new-form-handler.js:6777
-msgid "Updated subscription successful"
-msgstr ""
-
-#: dist/js/wp-reminder-edit-form-handler.js:6822
-#: dist/js/wp-reminder-new-form-handler.js:6822
-msgid "Do you really want to unsubscribe from our service?"
-msgstr ""
-
-#: dist/js/wp-reminder-edit-form-handler.js:6827
-#: dist/js/wp-reminder-new-form-handler.js:6827
-msgid "No, go back"
-msgstr ""
-
-#: dist/js/wp-reminder-edit-form-handler.js:6831
-#: dist/js/wp-reminder-new-form-handler.js:6831
-msgid "Unsubscribing..."
-msgstr ""
-
-#: dist/js/wp-reminder-edit-form-handler.js:6831
-#: dist/js/wp-reminder-new-form-handler.js:6831
-msgid "Yes, unsubscribe"
-msgstr ""
-
-#: dist/js/wp-reminder-edit-form-handler.js:6836
-#: dist/js/wp-reminder-events-handler.js:17813
-#: dist/js/wp-reminder-new-form-handler.js:6836
-msgid "No events found"
-msgstr ""
-
-#: dist/js/wp-reminder-edit-form-handler.js:6858
-#: dist/js/wp-reminder-new-form-handler.js:6858
-msgid "Privacy settings"
-msgstr ""
-
-#: dist/js/wp-reminder-edit-form-handler.js:6878
-#: dist/js/wp-reminder-new-form-handler.js:6878
-msgid "All these fields are required"
-msgstr ""
-
-#: dist/js/wp-reminder-edit-form-handler.js:6888
-#: dist/js/wp-reminder-new-form-handler.js:6888
-msgid "Submitting..."
-msgstr ""
-
-#: dist/js/wp-reminder-edit-form-handler.js:6888
-#: dist/js/wp-reminder-new-form-handler.js:6888
-msgid "Submit"
-msgstr ""
-
-#: dist/js/wp-reminder-edit-form-handler.js:6899
-#: dist/js/wp-reminder-new-form-handler.js:6899
-msgid "Internal Error"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:16717
-msgid "Close"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:16717
-msgid "Expand"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:16980
-#: dist/js/wp-reminder-events-handler.js:17237
-#: dist/js/wp-reminder-subscribers-handler.js:16981
-#: dist/js/wp-reminder-subscribers-handler.js:17159
-msgid "Back"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:16986
-#: dist/js/wp-reminder-events-handler.js:17844
-#: dist/js/wp-reminder-subscribers-handler.js:16987
-#: dist/js/wp-reminder-subscribers-handler.js:17778
-msgid "Delete"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:17057
-msgid "January"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:17058
-msgid "February"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:17059
-msgid "March"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:17060
-msgid "April"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:17061
-msgid "May"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:17062
-msgid "June"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:17063
-msgid "July"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:17064
-msgid "August"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:17065
-msgid "September"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:17066
-msgid "October"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:17067
-msgid "November"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:17068
-msgid "December"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:17120
-msgid "Deleted Event"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:17120
-msgid "Saved Event"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:17184
-msgid "Edit Event"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:17191
-#: dist/js/wp-reminder-events-handler.js:17192
-msgid "Event name"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:17200
-#: dist/js/wp-reminder-events-handler.js:17828
-msgid "Description"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:17201
-msgid "Short description of your event for your clients"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:17208
-msgid "Day"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:17216
-msgid "Month"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:17222
-msgid "Year"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:17228
-msgid "Repeat"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:17232
-msgid "Next Executions"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:17234
-msgid "Summary"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:17241
-#: dist/js/wp-reminder-settings-handler.js:16669
-#: dist/js/wp-reminder-subscribers-handler.js:17163
-#: dist/js/wp-reminder-templates-handler.js:20802
-msgid "Save"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:17246
-msgid "Delete Event"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:17784
-msgid "active"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:17784
-msgid "not-active"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:17788
-msgid "Subscription Box title"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:17798
-msgid "Shortcode copied to clipboard"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:17828
-msgid "Event"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:17828
-msgid "Status"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:17828
-msgid "Next Execution"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:17838
-#: dist/js/wp-reminder-subscribers-handler.js:17773
-msgid "Edit"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:17852
-#: dist/js/wp-reminder-subscribers-handler.js:17787
-msgid "Delete selected"
-msgstr ""
-
-#: dist/js/wp-reminder-events-handler.js:17860
-msgid "Shortcode"
-msgstr ""
-
-#: dist/js/wp-reminder-settings-handler.js:16611
-msgid "Please insert a text for the privacy notice"
-msgstr ""
-
-#: dist/js/wp-reminder-settings-handler.js:16638
-#: dist/js/wp-reminder-settings-handler.js:16639
-#: dist/js/wp-reminder-templates-handler.js:20772
-msgid "Saved settings"
-msgstr ""
-
-#: dist/js/wp-reminder-settings-handler.js:16656
-#: dist/js/wp-reminder-settings-handler.js:16849
-msgid "Messages"
-msgstr ""
-
-#: dist/js/wp-reminder-settings-handler.js:16657
-#: dist/js/wp-reminder-settings-handler.js:16784
-msgid "License"
-msgstr ""
-
-#: dist/js/wp-reminder-settings-handler.js:16786
-#: dist/js/wp-reminder-settings-handler.js:16808
-msgid "License info"
-msgstr ""
-
-#: dist/js/wp-reminder-settings-handler.js:16786
-msgid "With a license you can add multiple events, add and export subscribers, and use the reliable backend of our service. More information at: "
-msgstr ""
-
-#: dist/js/wp-reminder-settings-handler.js:16788
-msgid "Your license"
-msgstr ""
-
-#: dist/js/wp-reminder-settings-handler.js:16790
-msgid "License code"
-msgstr ""
-
-#: dist/js/wp-reminder-settings-handler.js:16806
-msgid "Remove license"
-msgstr ""
-
-#: dist/js/wp-reminder-settings-handler.js:16813
-msgid "Remove license code"
-msgstr ""
-
-#: dist/js/wp-reminder-settings-handler.js:16816
-msgid "No"
-msgstr ""
-
-#: dist/js/wp-reminder-settings-handler.js:16819
-msgid "Yes"
-msgstr ""
-
-#: dist/js/wp-reminder-settings-handler.js:16855
-msgid "Sign in success message"
-msgstr ""
-
-#: dist/js/wp-reminder-settings-handler.js:16862
-msgid "Double-opt-in success message"
-msgstr ""
-
-#: dist/js/wp-reminder-settings-handler.js:16869
-msgid "Signout success message"
-msgstr ""
-
-#: dist/js/wp-reminder-settings-handler.js:16870
-msgid "Texts"
-msgstr ""
-
-#: dist/js/wp-reminder-settings-handler.js:16876
-msgid "Privacy text for shortcode"
-msgstr ""
-
-#: dist/js/wp-reminder-settings-handler.js:17055
-#: dist/js/wp-reminder-templates-handler.js:21223
-msgid "There was an internal error"
-msgstr ""
-
-#: dist/js/wp-reminder-subscribers-handler.js:17063
+#: dist/js/wp-reminder-edit-form-handler.js:11
+#: dist/js/wp-reminder-new-form-handler.js:11
+#: dist/js/wp-reminder-subscribers-handler.js:23
 msgid "Please insert a valid email address"
 msgstr ""
 
-#: dist/js/wp-reminder-subscribers-handler.js:17075
-msgid "Could not load events"
+#: dist/js/wp-reminder-edit-form-handler.js:11
+#: dist/js/wp-reminder-new-form-handler.js:11
+#: dist/js/wp-reminder-subscribers-handler.js:23
+msgid "Please select at least one event"
 msgstr ""
 
-#: dist/js/wp-reminder-subscribers-handler.js:17128
-msgid "Deleted Subscriber"
+#: dist/js/wp-reminder-edit-form-handler.js:11
+#: dist/js/wp-reminder-new-form-handler.js:11
+msgid "To subscribe to our service you have to accept the privacy settings"
 msgstr ""
 
-#: dist/js/wp-reminder-subscribers-handler.js:17128
-msgid "Saved Subscriber"
+#: dist/js/wp-reminder-edit-form-handler.js:11
+#: dist/js/wp-reminder-new-form-handler.js:11
+msgid "Updated subscription successful"
 msgstr ""
 
-#: dist/js/wp-reminder-subscribers-handler.js:17134
-msgid "Edit Subscriber"
+#: dist/js/wp-reminder-edit-form-handler.js:11
+#: dist/js/wp-reminder-new-form-handler.js:11
+msgid "Do you really want to unsubscribe from our service?"
 msgstr ""
 
-#: dist/js/wp-reminder-subscribers-handler.js:17136
+#: dist/js/wp-reminder-edit-form-handler.js:11
+#: dist/js/wp-reminder-new-form-handler.js:11
+msgid "No, go back"
+msgstr ""
+
+#: dist/js/wp-reminder-edit-form-handler.js:11
+#: dist/js/wp-reminder-new-form-handler.js:11
+msgid "Unsubscribing..."
+msgstr ""
+
+#: dist/js/wp-reminder-edit-form-handler.js:11
+#: dist/js/wp-reminder-new-form-handler.js:11
+msgid "Yes, unsubscribe"
+msgstr ""
+
+#: dist/js/wp-reminder-edit-form-handler.js:11
+#: dist/js/wp-reminder-events-handler.js:23
+#: dist/js/wp-reminder-new-form-handler.js:11
+msgid "No events found"
+msgstr ""
+
+#: dist/js/wp-reminder-edit-form-handler.js:11
+#: dist/js/wp-reminder-new-form-handler.js:11
+msgid "Privacy settings"
+msgstr ""
+
+#: dist/js/wp-reminder-edit-form-handler.js:11
+#: dist/js/wp-reminder-new-form-handler.js:11
+msgid "All these fields are required"
+msgstr ""
+
+#: dist/js/wp-reminder-edit-form-handler.js:11
+#: dist/js/wp-reminder-new-form-handler.js:11
+msgid "Submitting..."
+msgstr ""
+
+#: dist/js/wp-reminder-edit-form-handler.js:11
+#: dist/js/wp-reminder-new-form-handler.js:11
+msgid "Submit"
+msgstr ""
+
+#: dist/js/wp-reminder-edit-form-handler.js:11
+#: dist/js/wp-reminder-new-form-handler.js:11
+msgid "Internal Error"
+msgstr ""
+
+#: dist/js/wp-reminder-edit-form-handler.js:11
+#: dist/js/wp-reminder-new-form-handler.js:11
+msgid "You subscribed successfully"
+msgstr ""
+
+#: dist/js/wp-reminder-edit-form-handler.js:11
+#: dist/js/wp-reminder-new-form-handler.js:11
+msgid "Subscription Settings"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:20
+#: dist/js/wp-reminder-events-handler.js:23
+#: dist/js/wp-reminder-subscribers-handler.js:20
+#: dist/js/wp-reminder-subscribers-handler.js:23
+msgid "Back"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:20
+#: dist/js/wp-reminder-events-handler.js:23
+#: dist/js/wp-reminder-subscribers-handler.js:20
+#: dist/js/wp-reminder-subscribers-handler.js:25
+msgid "Delete"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+msgid "January"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+msgid "February"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+msgid "March"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+msgid "April"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+msgid "May"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+msgid "June"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+msgid "July"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+msgid "August"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+msgid "September"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+msgid "October"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+msgid "November"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+msgid "December"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+msgid "Deleted Event"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+msgid "Saved Event"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+#: dist/js/wp-reminder-subscribers-handler.js:23
 msgid "Important"
 msgstr ""
 
-#: dist/js/wp-reminder-subscribers-handler.js:17136
+#: dist/js/wp-reminder-events-handler.js:23
+msgid "On months with less than %d days, your event is executed on the last day of the month"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+msgid "Edit Event"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+msgid "Event name"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+msgid "Description"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+msgid "Short description of your event for your clients"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+msgid "Day"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+msgid "Month"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+msgid "Year"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+msgid "Repeat"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+msgid "Next Executions"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+msgid "Summary"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+#: dist/js/wp-reminder-settings-handler.js:32
+#: dist/js/wp-reminder-subscribers-handler.js:23
+#: dist/js/wp-reminder-templates-handler.js:85
+msgid "Save"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+msgid "Delete Event"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+msgid "Do you really like to delete the following event"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+msgid "Do you really like to delete the following events"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+msgid "Close"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+msgid "Expand"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+msgid "active"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+msgid "not-active"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+msgid "Subscription Box title"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+msgid "Shortcode copied to clipboard"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+msgid "Event"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+msgid "Status"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+msgid "Next Execution"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+#: dist/js/wp-reminder-subscribers-handler.js:25
+msgid "Edit"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+#: dist/js/wp-reminder-subscribers-handler.js:25
+msgid "Delete selected"
+msgstr ""
+
+#: dist/js/wp-reminder-events-handler.js:23
+msgid "Shortcode"
+msgstr ""
+
+#: dist/js/wp-reminder-settings-handler.js:32
+msgid "Messages"
+msgstr ""
+
+#: dist/js/wp-reminder-settings-handler.js:32
+msgid "Sign in success message"
+msgstr ""
+
+#: dist/js/wp-reminder-settings-handler.js:32
+msgid "Double-opt-in success message"
+msgstr ""
+
+#: dist/js/wp-reminder-settings-handler.js:32
+msgid "Signout success message"
+msgstr ""
+
+#: dist/js/wp-reminder-settings-handler.js:32
+msgid "Texts"
+msgstr ""
+
+#: dist/js/wp-reminder-settings-handler.js:32
+msgid "Privacy text for shortcode"
+msgstr ""
+
+#: dist/js/wp-reminder-settings-handler.js:32
+msgid "Removed license"
+msgstr ""
+
+#: dist/js/wp-reminder-settings-handler.js:32
+msgid "License"
+msgstr ""
+
+#: dist/js/wp-reminder-settings-handler.js:32
+msgid "License info"
+msgstr ""
+
+#: dist/js/wp-reminder-settings-handler.js:32
+msgid "With a license you can add multiple events, add and export subscribers and use the reliable backend of our service. More information at: "
+msgstr ""
+
+#: dist/js/wp-reminder-settings-handler.js:32
+msgid "Your license"
+msgstr ""
+
+#: dist/js/wp-reminder-settings-handler.js:32
+msgid "License code"
+msgstr ""
+
+#: dist/js/wp-reminder-settings-handler.js:32
+msgid "Remove license"
+msgstr ""
+
+#: dist/js/wp-reminder-settings-handler.js:32
+msgid "Remove license code"
+msgstr ""
+
+#: dist/js/wp-reminder-settings-handler.js:32
+msgid "Do you really want to remove your license code from this page?"
+msgstr ""
+
+#: dist/js/wp-reminder-settings-handler.js:32
+msgid "No"
+msgstr ""
+
+#: dist/js/wp-reminder-settings-handler.js:32
+msgid "Yes"
+msgstr ""
+
+#: dist/js/wp-reminder-settings-handler.js:32
+msgid "Please insert a text for the privacy notice"
+msgstr ""
+
+#: dist/js/wp-reminder-settings-handler.js:32
+#: dist/js/wp-reminder-templates-handler.js:85
+msgid "Saved settings"
+msgstr ""
+
+#: dist/js/wp-reminder-settings-handler.js:32
+#: dist/js/wp-reminder-templates-handler.js:85
+msgid "There was an internal error"
+msgstr ""
+
+#: dist/js/wp-reminder-subscribers-handler.js:23
+msgid "Could not load events"
+msgstr ""
+
+#: dist/js/wp-reminder-subscribers-handler.js:23
+msgid "Deleted Subscriber"
+msgstr ""
+
+#: dist/js/wp-reminder-subscribers-handler.js:23
+msgid "Saved Subscriber"
+msgstr ""
+
+#: dist/js/wp-reminder-subscribers-handler.js:23
+msgid "Edit Subscriber"
+msgstr ""
+
+#: dist/js/wp-reminder-subscribers-handler.js:23
 msgid "Manually inserted email addresses require the consent of the email address owner! Add new subscribers only if you have their consent!"
 msgstr ""
 
-#: dist/js/wp-reminder-subscribers-handler.js:17140
-#: dist/js/wp-reminder-subscribers-handler.js:17141
+#: dist/js/wp-reminder-subscribers-handler.js:23
 msgid "Subscriber email address"
 msgstr ""
 
-#: dist/js/wp-reminder-subscribers-handler.js:17156
+#: dist/js/wp-reminder-subscribers-handler.js:23
 msgid "The owner of the email address has to verify his subscription. If you save, a welcome email is sent to the new subscriber"
 msgstr ""
 
-#: dist/js/wp-reminder-subscribers-handler.js:17168
+#: dist/js/wp-reminder-subscribers-handler.js:23
 msgid "Delete Subscriber"
 msgstr ""
 
-#: dist/js/wp-reminder-subscribers-handler.js:17745
+#: dist/js/wp-reminder-subscribers-handler.js:23
+msgid "Do you really like to delete the following subscriber?"
+msgstr ""
+
+#: dist/js/wp-reminder-subscribers-handler.js:23
+msgid "Do you really like to delete the following subscribers?"
+msgstr ""
+
+#: dist/js/wp-reminder-subscribers-handler.js:25
 msgid "No subscribers found"
 msgstr ""
 
-#: dist/js/wp-reminder-subscribers-handler.js:17761
+#: dist/js/wp-reminder-subscribers-handler.js:25
 msgid "Registered events"
 msgstr ""
 
-#: dist/js/wp-reminder-subscribers-handler.js:17761
+#: dist/js/wp-reminder-subscribers-handler.js:25
 msgid "Registration date"
 msgstr ""
 
-#: dist/js/wp-reminder-subscribers-handler.js:17799
+#: dist/js/wp-reminder-subscribers-handler.js:25
 msgid "Export selected"
 msgstr ""
 
-#: dist/js/wp-reminder-templates-handler.js:20728
-msgid "Given string is empty"
-msgstr ""
-
-#: dist/js/wp-reminder-templates-handler.js:20734
-msgid "Required keywords are missing: %s"
-msgstr ""
-
-#: dist/js/wp-reminder-templates-handler.js:20771
-msgid "Saved templates"
-msgstr ""
-
-#: dist/js/wp-reminder-templates-handler.js:20789
-msgid "Registration confirmation"
-msgstr ""
-
-#: dist/js/wp-reminder-templates-handler.js:20790
-msgid "Activation confirmation"
-msgstr ""
-
-#: dist/js/wp-reminder-templates-handler.js:20791
-msgid "Signout"
-msgstr ""
-
-#: dist/js/wp-reminder-templates-handler.js:20792
-msgid "Reminder"
-msgstr ""
-
-#: dist/js/wp-reminder-templates-handler.js:20889
-msgid "Success message for subscription"
-msgstr ""
-
-#: dist/js/wp-reminder-templates-handler.js:20895
-msgid "Subject | Success message for subscription"
-msgstr ""
-
-#: dist/js/wp-reminder-templates-handler.js:20898
-msgid "Template | Success message for subscription"
-msgstr ""
-
-#: dist/js/wp-reminder-templates-handler.js:20900
-#: dist/js/wp-reminder-templates-handler.js:20955
-#: dist/js/wp-reminder-templates-handler.js:21010
-msgid "Required placeholders:"
-msgstr ""
-
-#: dist/js/wp-reminder-templates-handler.js:20902
-msgid "Link to edit/unsubscribe from subscription"
-msgstr ""
-
-#: dist/js/wp-reminder-templates-handler.js:20944
+#: dist/js/wp-reminder-templates-handler.js:85
 msgid "Confirm email address"
 msgstr ""
 
-#: dist/js/wp-reminder-templates-handler.js:20950
+#: dist/js/wp-reminder-templates-handler.js:85
 msgid "Subject | Confirm email address"
 msgstr ""
 
-#: dist/js/wp-reminder-templates-handler.js:20953
+#: dist/js/wp-reminder-templates-handler.js:85
 msgid "Template | Confirm email address"
 msgstr ""
 
-#: dist/js/wp-reminder-templates-handler.js:20957
+#: dist/js/wp-reminder-templates-handler.js:85
+msgid "Required placeholders:"
+msgstr ""
+
+#: dist/js/wp-reminder-templates-handler.js:85
 msgid "Lists the subscribed events"
 msgstr ""
 
-#: dist/js/wp-reminder-templates-handler.js:20957
+#: dist/js/wp-reminder-templates-handler.js:85
 msgid "Link to confirm the subscription"
 msgstr ""
 
-#: dist/js/wp-reminder-templates-handler.js:20957
-#: dist/js/wp-reminder-templates-handler.js:21012
-msgid "Link to unsubscribe from subscription"
+#: dist/js/wp-reminder-templates-handler.js:85
+msgid "Success message for subscription"
 msgstr ""
 
-#: dist/js/wp-reminder-templates-handler.js:20999
-msgid "Reminder email"
+#: dist/js/wp-reminder-templates-handler.js:85
+msgid "Subject | Success message for subscription"
 msgstr ""
 
-#: dist/js/wp-reminder-templates-handler.js:21005
-msgid "Subject | Reminder email"
+#: dist/js/wp-reminder-templates-handler.js:85
+msgid "Template | Success message for subscription"
 msgstr ""
 
-#: dist/js/wp-reminder-templates-handler.js:21008
-msgid "Template | Reminder email"
+#: dist/js/wp-reminder-templates-handler.js:85
+msgid "Link to edit/unsubscribe from subscription"
 msgstr ""
 
-#: dist/js/wp-reminder-templates-handler.js:21008
-msgid "The email template for your reminder messages"
-msgstr ""
-
-#: dist/js/wp-reminder-templates-handler.js:21012
-msgid "Lists of events to be reminded"
-msgstr ""
-
-#: dist/js/wp-reminder-templates-handler.js:21052
+#: dist/js/wp-reminder-templates-handler.js:85
 msgid "Signout email"
 msgstr ""
 
-#: dist/js/wp-reminder-templates-handler.js:21058
+#: dist/js/wp-reminder-templates-handler.js:85
 msgid "Subject | Signout email"
 msgstr ""
 
-#: dist/js/wp-reminder-templates-handler.js:21061
+#: dist/js/wp-reminder-templates-handler.js:85
 msgid "Template | Signout email"
+msgstr ""
+
+#: dist/js/wp-reminder-templates-handler.js:85
+msgid "Reminder email"
+msgstr ""
+
+#: dist/js/wp-reminder-templates-handler.js:85
+msgid "Subject | Reminder email"
+msgstr ""
+
+#: dist/js/wp-reminder-templates-handler.js:85
+msgid "Template | Reminder email"
+msgstr ""
+
+#: dist/js/wp-reminder-templates-handler.js:85
+msgid "The email template for your reminder messages"
+msgstr ""
+
+#: dist/js/wp-reminder-templates-handler.js:85
+msgid "Lists of events to be reminded"
+msgstr ""
+
+#: dist/js/wp-reminder-templates-handler.js:85
+msgid "Link to unsubscribe from subscription"
+msgstr ""
+
+#: dist/js/wp-reminder-templates-handler.js:85
+msgid "Given string is empty"
+msgstr ""
+
+#: dist/js/wp-reminder-templates-handler.js:85
+msgid "Required keywords are missing: %s"
+msgstr ""
+
+#: dist/js/wp-reminder-templates-handler.js:85
+msgid "Saved templates"
+msgstr ""
+
+#: dist/js/wp-reminder-templates-handler.js:85
+msgid "Registration confirmation"
+msgstr ""
+
+#: dist/js/wp-reminder-templates-handler.js:85
+msgid "Activation confirmation"
+msgstr ""
+
+#: dist/js/wp-reminder-templates-handler.js:85
+msgid "Signout"
+msgstr ""
+
+#: dist/js/wp-reminder-templates-handler.js:85
+msgid "Reminder"
 msgstr ""

@@ -183,13 +183,17 @@ final class Event
      */
     public static function set(array $resource) : int {
         $db = Database::get_database();
+        $next = $resource['start'];
+        if($next <= date('Y-m-d')) {
+            $next = Date::create_next($resource['start'], $resource['clocking']);
+        }
         return $db->insert(
             "INSERT INTO {$db->get_table_name("events")} (name, description, clocking, start, next, last, active) VALUES (%s, %s, %d, %s, %s, 0, 1)",
             sanitize_text_field($resource["name"]),
             sanitize_text_field($resource["description"]),
             $resource["clocking"],
             $resource["start"],
-            $resource["start"]
+            $next
         );
     }
 
@@ -203,7 +207,7 @@ final class Event
     public static function update(int $id, array $resource) : bool {
         $db = Database::get_database();
         $next = $resource['start'];
-        if($next < date('Y-m-d')) {
+        if($next <= date('Y-m-d')) {
             $next = Date::create_next($resource['start'], $resource['clocking']);
         }
         return $db->update(

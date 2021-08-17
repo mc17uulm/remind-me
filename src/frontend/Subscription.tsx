@@ -65,10 +65,10 @@ export const Subscription = (props : SubscriptionProps) => {
         if(props.fresh) {
             return props.title !== null ? (<h4>{props.title}</h4>) : __('Subscription', 'wp-reminder');
         } else {
-            const success = props.success ? <Message exit msg={{type: 'success', msg: __('You subscribed successfully')}} /> : "";
+            const success = props.success ? <Message exit msg={{type: 'success', msg: __('You subscribed successfully', 'wp-reminder')}} /> : "";
             return (
                 <Fragment>
-                    <h4>{__('Subscription', 'wp-reminder')}</h4>
+                    <h4>{__('Subscription Settings', 'wp-reminder')}</h4>
                     {success}
                 </Fragment>
             );

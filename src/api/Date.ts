@@ -22,19 +22,21 @@ export class Date {
     }
 
     public get_next(clocking : number, step : number = 1) : Date {
-        const comp = this.month + (step * clocking);
+        let comp = this.month + (step * clocking);
         const year = this.year + Math.floor(comp / 12);
         return Date.create_by_date(year, comp % 12, this.day);
     }
 
     public get_next_array(clocking : number, steps: number) : Date[] {
-        let iterator = Array.from(Array(steps).keys());
-        iterator.shift();
-        let next = iterator.map((step : number) : Date => {
+        const same_day = this.equal(Date.create());
+        const current_steps = same_day ? steps + 1 : steps;
+        let iterator = Array.from(Array(current_steps).keys());
+        if(same_day) {
+            iterator.shift();
+        }
+        return iterator.map((step : number) : Date => {
             return this.get_next(clocking, step);
         });
-        next.unshift(this);
-        return next;
     }
 
     public to_string() : string {
@@ -61,6 +63,14 @@ export class Date {
 
     public format(format : string = 'LLLL') : string {
         return dayjs(this.to_string(), 'YYYY-MM-DD').format(format);
+    }
+
+    public equal(date : Date) : boolean {
+        return (
+            (this.day === date.day) &&
+            (this.month === date.month) &&
+            (this.year === date.year)
+        );
     }
 
     public static create_by_string(date : string) : Date {

@@ -2,7 +2,7 @@ import React from "react";
 import {IMessage} from "../frontend/Message";
 import {__} from "@wordpress/i18n";
 import { Fragment } from "react";
-import {Icon} from "./Icon";
+import {Icon} from "semantic-ui-react";
 
 interface SubmitBtnContainerProps {
     message: IMessage | null
@@ -19,8 +19,8 @@ export const SubmitBtnContainer = (props : SubmitBtnContainerProps) => {
                 >
                 <strong>
                     {props.message.type === 'error' ?
-                        (<Fragment><Icon class='times-circle-o' /> {__('Error', 'wp-reminder')}</Fragment>) :
-                        (<Fragment><Icon class='check-circle-o' /> {__('Success', 'wp-reminder')}</Fragment>)
+                        (<Fragment><Icon name='times circle' /> {__('Error', 'wp-reminder')}</Fragment>) :
+                        (<Fragment><Icon name='check circle' /> {__('Success', 'wp-reminder')}</Fragment>)
                     }:
                 </strong> {props.message.msg}
             </span>

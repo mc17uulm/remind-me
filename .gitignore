@@ -8,6 +8,7 @@ yarn-error.log
 test.php
 log.txt
 wp-reminder.zip
+languages/backup
 tests/lib
 tests/bootstrap.php
 .dev/docker

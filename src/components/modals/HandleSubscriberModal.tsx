@@ -157,12 +157,10 @@ export const HandleSubscriberModal = (props : ModalProps<APISubscriber>) => {
                     onClose={props.onClose}
                     onDelete={onSubmit}
                 >
-                    {_n(
-                        'Do you really like to delete the following subscriber?',
-                        'Do you really like to delete the following subscribers?',
-                        props.elements.length,
-                        'wp-reminder'
-                    )}
+                    {props.elements.length === 1 ?
+                        __('Do you really like to delete the following subscriber?', 'wp-reminder') :
+                        __('Do you really like to delete the following subscribers?', 'wp-reminder')
+                    }
                     <br />
                     <List bulleted>
                         {props.elements.map((subscriber : APISubscriber, index : number) => (

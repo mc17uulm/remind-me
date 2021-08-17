@@ -57,7 +57,7 @@ export const Dashboard = () => {
                                     {val.map((subscriber : APISubscriber, index : number) => (
                                         <Table.Row key={`subscriber_${index}`}>
                                             <Table.Cell>{subscriber.email}</Table.Cell>
-                                            <Table.Cell>{sprintf(_n('%d Event', '%d Events', subscriber.events.length, 'wp-reminder'), subscriber.events.length)}</Table.Cell>
+                                            <Table.Cell>{sprintf(subscriber.events.length === 1 ? __('%d Event', 'wp-reminder') : __('%d Events', 'wp-reminder'), subscriber.events.length)}</Table.Cell>
                                             <Table.Cell>{subscriber.active ? (<Label color="green">{__('Active', 'wp-reminder')}</Label>) : (<Label color="red">{__('Inactive', 'wp-reminder')}</Label>)}</Table.Cell>
                                             <Table.Cell>{dayjs(subscriber.registered).format('LLLL')}</Table.Cell>
                                         </Table.Row>

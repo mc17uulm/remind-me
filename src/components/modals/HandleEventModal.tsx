@@ -277,12 +277,10 @@ export const HandleEventModal = (props : ModalProps<APIEvent>) => {
                     onClose={props.onClose}
                     onDelete={onSubmit}
                 >
-                    {_n(
-                        'Do you really like to delete the following event',
-                        'Do you really like to delete the following events',
-                        props.elements.length,
-                        'wp-reminder'
-                    )}
+                    {props.elements.length === 1 ?
+                        __('Do you really like to delete the following event', 'wp-reminder') :
+                        __('Do you really like to delete the following events', 'wp-reminder')
+                    }
                     <br />
                     <List bulleted>
                         {props.elements.map((event : APIEvent, index : number) => (

@@ -1,5 +1,5 @@
 import {Message} from "semantic-ui-react";
-import {__} from "@wordpress/i18n";
+import {__, sprintf} from "@wordpress/i18n";
 import React, {useEffect, useState} from "react";
 import { Fragment } from "react";
 import {useCookie} from "../hooks/useCookie";
@@ -27,7 +27,10 @@ export const LicenseWarning = (props : {active: boolean}) => {
             onDismiss={onClose}
         >
             <Message.Header>{__('Plugin not licensed', 'wp-reminder')}</Message.Header>
-            <p>{__('You have no license added. Some functions are therefore not available', 'wp-reminder')}</p>
+            <p>
+                {__('You have no license added. Some functions are therefore not available. Learn more at ', 'wp-reminder')}
+                <a href='https://code-leaf.de'>CodeLeaf.de</a>
+            </p>
         </Message>
     ) : <Fragment></Fragment>;
 
