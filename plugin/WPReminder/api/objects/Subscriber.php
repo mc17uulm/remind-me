@@ -177,7 +177,7 @@ final class Subscriber
         $db = Database::get_database();
         $db_res = $db->select("SELECT * FROM {$db->get_table_name("subscribers")} WHERE token = %s", $token);
         if(count($db_res) !== 1) throw new APIException("no dataset with given token in db");
-        return new Subscriber($db_res[0]["token"], $db_res[0]["email"], json_decode($db_res[0]["events"]), $db_res[0]["id"], $db_res[0]["registered"], $db_res[0]["active"]);
+        return new Subscriber($db_res[0]["token"], $db_res[0]["email"], json_decode($db_res[0]["events"], true), $db_res[0]["id"], $db_res[0]["registered"], $db_res[0]["active"]);
     }
 
     /**
@@ -190,7 +190,7 @@ final class Subscriber
         $db = Database::get_database();
         $db_res = $db->select("SELECT * FROM {$db->get_table_name("subscribers")} WHERE id = %d", $id);
         if(count($db_res) !== 1) throw new APIException("no dataset with given token in db");
-        return new Subscriber($db_res[0]["token"], $db_res[0]["email"], json_decode($db_res[0]["events"]), $db_res[0]["id"], $db_res[0]["registered"], $db_res[0]["active"]);
+        return new Subscriber($db_res[0]["token"], $db_res[0]["email"], json_decode($db_res[0]["events"], true), $db_res[0]["id"], $db_res[0]["registered"], $db_res[0]["active"]);
 
     }
 
@@ -204,7 +204,7 @@ final class Subscriber
         $db = Database::get_database();
         $db_res = $db->select("SELECT * FROM {$db->get_table_name("subscribers")}");
         return array_map(function(array $entry) {
-            return new Subscriber($entry["token"], $entry["email"], json_decode($entry["events"]), $entry["id"], $entry["registered"], $entry["active"]);
+            return new Subscriber($entry["token"], $entry["email"], json_decode($entry["events"], true), $entry["id"], $entry["registered"], $entry["active"]);
         }, $db_res);
     }
 

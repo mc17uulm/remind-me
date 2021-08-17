@@ -3,7 +3,7 @@ import {useLoader} from "../../hooks/useLoader";
 import {useForm} from "../../hooks/useForm";
 import {APIEvent, EventHandler} from "../../api/handler/EventHandler";
 import React, {Fragment, useEffect, useState} from "react";
-import {Button, DropdownItemProps, Form, Message, Modal} from "semantic-ui-react";
+import {Button, DropdownItemProps, Form, List, Message, Modal} from "semantic-ui-react";
 import {DeleteModal} from "./DeleteModal";
 import {__, _n, sprintf} from "@wordpress/i18n";
 import {ModalProps, ModalState} from "../../hooks/useModal";
@@ -153,21 +153,23 @@ export const HandleSubscriberModal = (props : ModalProps<APISubscriber>) => {
             return (
                 <DeleteModal
                     title={__('Delete Subscriber', 'wp-reminder')}
-                    content={
-                        sprintf(
-                            _n(
-                                'Do you really like to delete the subscriber "%s"?',
-                                'Do you really like to delete the subscribers [%s]?',
-                                props.elements.length,
-                                'wp-reminder'
-                            ),
-                            (props.elements.length === 1) ? props.elements[0].email : props.elements.map(val => val.email).join(", ")
-                        )
-                    }
                     loading={loading}
                     onClose={props.onClose}
                     onDelete={onSubmit}
-                />
+                >
+                    {_n(
+                        'Do you really like to delete the following subscriber?',
+                        'Do you really like to delete the following subscribers?',
+                        props.elements.length,
+                        'wp-reminder'
+                    )}
+                    <br />
+                    <List bulleted>
+                        {props.elements.map((subscriber : APISubscriber, index : number) => (
+                            <List.Item key={`subscriber_${index}`}>{subscriber.email}</List.Item>
+                        ))}
+                    </List>
+                </DeleteModal>
             );
         } else {
             return "";

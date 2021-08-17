@@ -189,8 +189,11 @@ export class EventHandler {
     public static async delete(index : number[]) : Promise<Either<boolean>> {
         const list = await Promise.all(index.map(async (elem : number) => {
             return await Request.delete<boolean>(`event/${elem}`, DeleteResponseSchema);
-        }))
-        return Either.collapse(list, true,(t1 : boolean, t2 : boolean) => t1 && t2);
+        }));
+        console.log(list);
+        const back = Either.collapse(list, true,(t1 : boolean, t2 : boolean) => t1 && t2);
+        console.log(back);
+        return back;
     }
 
 }

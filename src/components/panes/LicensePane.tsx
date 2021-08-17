@@ -79,7 +79,7 @@ export const LicensePane = (props : FormikProps<APISettings> & {update: () => Pr
                 <Header>{__('Remove license code', 'wp-reminder')}</Header>
                 <Modal.Content>
                     <p>
-                        {__('Do you really want to remove your license code from this page?')}
+                        {__('Do you really want to remove your license code from this page?', 'wp-reminder')}
                     </p>
                 </Modal.Content>
                 <Modal.Actions>

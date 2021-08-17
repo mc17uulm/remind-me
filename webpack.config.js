@@ -79,6 +79,7 @@ module.exports = (env, argv) => {
             events: "./src/events",
             subscribers: "./src/subscribers",
             settings: "./src/settings",
+            templates: "./src/templates",
             'new-form': "./src/new-form",
             'edit-form': './src/edit-form'
         },

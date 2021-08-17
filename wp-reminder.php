@@ -35,6 +35,8 @@
  * If there are problems, bugs or errors, please report on github: https://github.com/mc17uulm/wp-reminder
  */
 
+declare(strict_types=1);
+
 if(!defined('ABSPATH')) die("Invalid Request");
 if(!defined('PHP_VERSION_ID')) {
     define(PHP_VERSION_ID, 0);
@@ -70,10 +72,10 @@ try {
     die();
 }
 
-$loader = new Loader();
+$loader = new Loader(__FILE__);
 
 try {
-    $loader->run(__FILE__);
+    $loader->run();
 } catch(PluginException $e) {
     $log->error($e->getMessage());
     if(WP_REMINDER_DEBUG) {

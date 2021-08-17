@@ -30,7 +30,7 @@ const empty_form : FormObject = {
 }
 
 const SubscriptionFormSchema : yup.SchemaOf<any> = yup.object({
-    email: yup.string().email().required(__('Please insert a valid email address')),
+    email: yup.string().email().required(__('Please insert a valid email address', 'wp-reminder')),
     events: yup.array()
         .min(1, __('Please select at least one event', 'wp-reminder'))
         .required(__('Please select at least one event', 'wp-reminder')),

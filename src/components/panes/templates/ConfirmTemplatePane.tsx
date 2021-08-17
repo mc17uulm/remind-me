@@ -29,7 +29,6 @@ export const ConfirmTemplatePane = (props : FormikProps<Templates>) => {
                     <List bulleted>
                         <List.Item><code>{'${event_list}'}</code>{__('Lists the subscribed events', 'wp-reminder')}</List.Item>
                         <List.Item><code>{'${confirm_link}'}</code>{__('Link to confirm the subscription', 'wp-reminder')}</List.Item>
-                        <List.Item><code>{'${unsubscribe_link}'}</code>{__('Link to unsubscribe from subscription', 'wp-reminder')}</List.Item>
                     </List>
                 </Message>
                 <Editor

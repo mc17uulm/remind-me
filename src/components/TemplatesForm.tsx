@@ -42,7 +42,7 @@ const TemplateSchema = (keywords : string[]) => yup.object({
 });
 
 const TemplatesSchema : yup.SchemaOf<Templates> = yup.object({
-    confirm: TemplateSchema(['${event_list}', '${confirm_link}', '${unsubscribe_link}']),
+    confirm: TemplateSchema(['${event_list}', '${confirm_link}']),
     success: TemplateSchema(['${unsubscribe_link}']),
     signout: TemplateSchema([]),
     reminder: TemplateSchema(['${event_list}', '${unsubscribe_link}'])
@@ -59,9 +59,7 @@ export const TemplatesForm = (props : {templates : Templates}) => {
             console.error(resp.get_error());
             toast.error(resp.get_error());
         } else {
-            console.log("set settings");
             setTemplates(resp.get_value());
-            console.log("after set");
         }
     }
 

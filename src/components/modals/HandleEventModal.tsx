@@ -6,7 +6,7 @@ import {
     get_repetition
 } from "../../api/handler/EventHandler";
 import React, {Fragment, useEffect} from "react";
-import {Button, DropdownItemProps, Form, List, Modal, ModalActions} from "semantic-ui-react";
+import {Button, DropdownItemProps, Form, List, Message, Modal, ModalActions} from "semantic-ui-react";
 import {__, _n, sprintf} from "@wordpress/i18n";
 import {DeleteModal} from "./DeleteModal";
 import {toast} from "react-toastify";
@@ -158,6 +158,15 @@ export const HandleEventModal = (props : ModalProps<APIEvent>) => {
         form.setValue('start', start);
     }
 
+    const renderWarning = (day : number) => {
+        return (day >= 29) ? (
+            <Message warning visible>
+                <Message.Header>{__('Important', 'wp-reminder')}</Message.Header>
+                <p>{sprintf(__('On months with less than %d days, your event is executed on the last day of the month', 'wp-reminder'), day)}</p>
+            </Message>
+        ) : null;
+    }
+
     const renderContent = () => {
         return (
             <Fragment>
@@ -244,6 +253,7 @@ export const HandleEventModal = (props : ModalProps<APIEvent>) => {
                                 <code>
                                     {get_repetition(form.values.start, form.values.clocking)}
                                 </code>
+                                {renderWarning(form.values.start.day)}
                             </Form.Field>
                         </Form.Group>
                     </Form>

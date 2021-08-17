@@ -4,7 +4,6 @@ namespace WPReminder\api\templates;
 
 use WPReminder\api\handler\LinkHandler;
 use WPReminder\api\objects\Event;
-use WPReminder\api\objects\Settings;
 use WPReminder\api\objects\Subscriber;
 use WPReminder\api\objects\Token;
 use WPReminder\PluginException;
@@ -44,13 +43,7 @@ final class ConfirmTemplate extends Template
         ], LinkHandler::get_site());
         $list = "<li>" . implode("</li><li>", array_map(fn(int $id) => Event::get($id)->get_name(), $subscriber->events)) . "</li>";
         $message = str_replace('${event_list}', "<ul>$list</ul>", $this->html);
-        $message = str_replace('${confirm_link}', "<a href='$url'>" . __('Confirm your subscription', 'wp-reminder') . "</a>", $message);
-
-        $edit_url = self::parse_url(LinkHandler::get_site(), [
-            'wp-reminder-action=edit',
-            'wp-reminder-token=' . $subscriber->get_token()
-        ]);
-        return str_replace('${unsubscribe_link}', "<a href='$edit_url'>" . __('Unsubscribe or edit subscription', 'wp-reminder') . "</a>", $message);
+        return str_replace('${confirm_link}', "<a href='$url'>" . __('Confirm your subscription', 'wp-reminder') . "</a>", $message);
     }
 
     /**
@@ -74,7 +67,6 @@ final class ConfirmTemplate extends Template
             <p class="ql-align-center"><br></p>
             <p class="ql-align-center">--</p>
             <p class="ql-align-center"><?= __('Company name | Street 1 | 12345 City', 'wp-reminder') ?></p>
-            <p class="ql-align-center"><?= __('Unsubscribe or edit subscription: ${unsubscribe_link}') ?></p>
             <?php
         });
     }
