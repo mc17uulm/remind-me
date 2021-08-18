@@ -43,6 +43,7 @@
     "node-sass": "^5.0.0",
     "path-browserify": "^1.0.1",
     "sass-loader": "^11.0.1",
+    "snowpack": "^3.8.6",
     "style-loader": "^2.0.0",
     "svg-url-loader": "^7.1.1",
     "terser-webpack-plugin": "^5.1.4",

@@ -3,6 +3,7 @@
 node_modules/
 vendor/
 build/
+.build/
 dist/
 yarn-error.log
 test.php
@@ -11,7 +12,3 @@ wp-reminder.zip
 languages/backup
 tests/lib
 tests/bootstrap.php
-.dev/docker
-docker-compose.yml
-.phpcs.xml.dist
-phpunit.xml.dist
