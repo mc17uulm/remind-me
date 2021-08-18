@@ -41,7 +41,7 @@ export const BlockHandler = (props : PropsWithChildren<BlockEditProps<BlockAttri
 
     const renderEvents = (events : APIEvent[]) : JSX.Element => {
         return (events.length === 0)  ? (
-            <Message msg={{type: 'error', msg: __('Please add first a event on the WPReminder page', 'wp-reminder')}} />
+            <Message msg={{type: 'error', msg: __('Please add first a event on the RemindMe page', 'remind-me')}} />
         ) : (
             <Fragment>
                 {events.map((event: APIEvent, index: number) => (
@@ -76,12 +76,12 @@ export const BlockHandler = (props : PropsWithChildren<BlockEditProps<BlockAttri
     }
 
     return (
-        <div className='wp-reminder-container'>
+        <div className='remind-me-container'>
             <h4>
                 <input
                     onChange={handleTitleChange}
                     value={props.attributes.title}
-                    placeholder={__('Title', 'wp-reminder')}
+                    placeholder={__('Title', 'remind-me')}
                 />
             </h4>
             <form>

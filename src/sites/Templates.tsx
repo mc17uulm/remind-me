@@ -19,7 +19,7 @@ export const TemplateSite = () => {
             case InitializeStates.Loading: return <Loader />;
             case InitializeStates.Error: return (
                 <Error>
-                    {__('There was an internal error', 'wp-reminder')}
+                    {__('There was an internal error', 'remind-me')}
                 </Error>
             );
             case InitializeStates.Success: return <TemplatesForm templates={initObject.value} />
@@ -28,7 +28,7 @@ export const TemplateSite = () => {
 
     return (
         <Fragment>
-            <h3>{__('Email templates', 'wp-reminder')}</h3>
+            <h3>{__('Email templates', 'remind-me')}</h3>
             {loadContent()}
         </Fragment>
     );

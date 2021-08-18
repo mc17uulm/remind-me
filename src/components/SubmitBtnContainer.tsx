@@ -12,15 +12,15 @@ interface SubmitBtnContainerProps {
 export const SubmitBtnContainer = (props : SubmitBtnContainerProps) => {
 
     return (
-        <div className='wp-reminder-submit-container'>
+        <div className='remind-me-submit-container'>
             {props.message === null ? "" : (
                 <span
-                    className={`wp-reminder-btn-text ${props.message.type}`}
+                    className={`remind-me-btn-text ${props.message.type}`}
                 >
                 <strong>
                     {props.message.type === 'error' ?
-                        (<Fragment><Icon name='times circle' /> {__('Error', 'wp-reminder')}</Fragment>) :
-                        (<Fragment><Icon name='check circle' /> {__('Success', 'wp-reminder')}</Fragment>)
+                        (<Fragment><Icon name='times circle' /> {__('Error', 'remind-me')}</Fragment>) :
+                        (<Fragment><Icon name='check circle' /> {__('Success', 'remind-me')}</Fragment>)
                     }:
                 </strong> {props.message.msg}
             </span>

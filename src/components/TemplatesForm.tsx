@@ -22,13 +22,13 @@ yup.addMethod(yup.string, 'contains_keywords', function(keywords : string[]) {
     return this.test('contain', 'does not contain keywords', function(value : string | undefined) {
         const {path, createError} = this;
         if(typeof value === "undefined") {
-            return createError({path, message: __('Given string is empty', 'wp-reminder')});
+            return createError({path, message: __('Given string is empty', 'remind-me')});
         }
         const missing = getMissingKeywords(value, keywords);
         if(missing.length > 0) {
             return createError({
                 path,
-                message: sprintf(__('Required keywords are missing: %s', 'wp-reminder'), missing.join(','))
+                message: sprintf(__('Required keywords are missing: %s', 'remind-me'), missing.join(','))
             });
         }
         return true;
@@ -70,8 +70,8 @@ export const TemplatesForm = (props : {templates : Templates}) => {
             toast.error(resp.get_error());
         } else {
             await update();
-            setMessage({type: "success", msg: __('Saved templates', 'wp-reminder')})
-            toast.success(__('Saved settings', 'wp-reminder'));
+            setMessage({type: "success", msg: __('Saved templates', 'remind-me')})
+            toast.success(__('Saved settings', 'remind-me'));
         }
         actions.setSubmitting(false);
     }
@@ -91,14 +91,14 @@ export const TemplatesForm = (props : {templates : Templates}) => {
                             pointing: true
                         }}
                         panes={[
-                            {menuItem: __('Registration confirmation', 'wp-reminder'), render: () => <ConfirmTemplatePane {..._props} />},
-                            {menuItem: __('Activation confirmation', 'wp-reminder'), render: () => <ActivationTemplatePane {..._props} />},
-                            {menuItem: __('Signout', 'wp-reminder'), render: () => <SignoutTemplatePane {..._props} />},
-                            {menuItem: __('Reminder', 'wp-reminder'), render: () => <ReminderTemplatePane {..._props} />}
+                            {menuItem: __('Registration confirmation', 'remind-me'), render: () => <ConfirmTemplatePane {..._props} />},
+                            {menuItem: __('Activation confirmation', 'remind-me'), render: () => <ActivationTemplatePane {..._props} />},
+                            {menuItem: __('Signout', 'remind-me'), render: () => <SignoutTemplatePane {..._props} />},
+                            {menuItem: __('Reminder', 'remind-me'), render: () => <ReminderTemplatePane {..._props} />}
                         ]}
                     />
                     <SubmitBtnContainer message={message}>
-                        <Button color='green' disabled={_props.isSubmitting} loading={_props.isSubmitting} type='submit' floated='right'>{__('Save', 'wp-reminder')}</Button>
+                        <Button color='green' disabled={_props.isSubmitting} loading={_props.isSubmitting} type='submit' floated='right'>{__('Save', 'remind-me')}</Button>
                     </SubmitBtnContainer>
                 </Form>
             )}

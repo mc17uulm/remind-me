@@ -1,6 +1,6 @@
 # Contact
 
-WPReminder is a product of **CodeLeaf**.
+RemindMe is a product of **CodeLeaf**.
 
 > **CodeLeaf**
 > 

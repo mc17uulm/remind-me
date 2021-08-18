@@ -20,9 +20,9 @@ export const EventsList = (props: EventsListProps) => {
 
     return (
         <Fragment>
-            <a className='wp-reminder-link' onClick={toggle}>
+            <a className='remind-me-link' onClick={toggle}>
                 <Icon class='list' />{" "}
-                {sprintf(props.events.length === 1 ? __('%d Event', ' wp-reminder') : __('%d Events', 'wp-reminder'), props.events.length)}
+                {sprintf(props.events.length === 1 ? __('%d Event', ' remind-me') : __('%d Events', 'remind-me'), props.events.length)}
             </a>
             <List>
                 {open ? props.events.map((event : APIEvent, _index : number) => (

@@ -46,7 +46,7 @@ jobs:
 
       - name: Sync to development server
         env:
-          dest: '${{ secrets.USER }}@${{ secrets.HOST }}:/var/www/vhosts/code-leaf.de/development.code-leaf.de/wp-content/plugins/wp-reminder'
+          dest: '${{ secrets.USER }}@${{ secrets.HOST }}:/var/www/vhosts/code-leaf.de/development.code-leaf.de/wp-content/plugins/remind-me'
         run: |
           echo "${{ secrets.DEPLOY_KEY }}" > deploy_key
           chmod 600 ./deploy_key

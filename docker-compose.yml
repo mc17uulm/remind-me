@@ -22,7 +22,7 @@ services:
         restart: always
         stdin_open: true
         volumes:
-            - ./:/var/www/html/wp-content/plugins/wp-reminder
+            - ./:/var/www/html/wp-content/plugins/remind-me
         tty: true
         environment:
             WORDPRESS_DB_HOST: db:3306

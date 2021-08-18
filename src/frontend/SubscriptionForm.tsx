@@ -30,11 +30,11 @@ const empty_form : FormObject = {
 }
 
 const SubscriptionFormSchema : yup.SchemaOf<any> = yup.object({
-    email: yup.string().email().required(__('Please insert a valid email address', 'wp-reminder')),
+    email: yup.string().email().required(__('Please insert a valid email address', 'remind-me')),
     events: yup.array()
-        .min(1, __('Please select at least one event', 'wp-reminder'))
-        .required(__('Please select at least one event', 'wp-reminder')),
-    accept: yup.boolean().oneOf([true], __('To subscribe to our service you have to accept the privacy settings', 'wp-reminder'))
+        .min(1, __('Please select at least one event', 'remind-me'))
+        .required(__('Please select at least one event', 'remind-me')),
+    accept: yup.boolean().oneOf([true], __('To subscribe to our service you have to accept the privacy settings', 'remind-me'))
 })
 
 export const SubscriptionForm = (props : RegisterFormProps) => {
@@ -102,7 +102,7 @@ export const SubscriptionForm = (props : RegisterFormProps) => {
             }
             setMessage({
                 type: "success",
-                msg: __('Updated subscription successful', 'wp-reminder')
+                msg: __('Updated subscription successful', 'remind-me')
             });
         });
     }
@@ -158,11 +158,11 @@ export const SubscriptionForm = (props : RegisterFormProps) => {
     const renderConfirm = () => {
         return (
             <div className='unsubscribe-confirm-box'>
-                {__('Do you really want to unsubscribe from our service?', 'wp-reminder')}
+                {__('Do you really want to unsubscribe from our service?', 'remind-me')}
                 <div className='btn-group'>
-                    <button className='back' onClick={() => setStep(0)}>{__('No, go back', 'wp-reminder')}</button>
+                    <button className='back' onClick={() => setStep(0)}>{__('No, go back', 'remind-me')}</button>
                     <button className='confirm' disabled={submitting} onClick={unsubscribe}>
-                        {submitting ? __('Unsubscribing...', 'wp-reminder') : __('Yes, unsubscribe', 'wp-reminder')}
+                        {submitting ? __('Unsubscribing...', 'remind-me') : __('Yes, unsubscribe', 'remind-me')}
                     </button>
                 </div>
             </div>
@@ -172,18 +172,18 @@ export const SubscriptionForm = (props : RegisterFormProps) => {
     const renderForm = () => {
         if(props.events.length === 0) {
             return (
-                <Message msg={{type: 'error', msg: __('No events found', 'wp-reminder')}}/>
+                <Message msg={{type: 'error', msg: __('No events found', 'remind-me')}}/>
             );
         } else {
             return (
                 <form onSubmit={form.handleSubmit}>
                     <div className='row'>
-                        <label>{__('Events', 'wp-reminder')} *</label>
+                        <label>{__('Events', 'remind-me')} *</label>
                         {renderEvents()}
                         <small className={form.errors.events === null ? 'hidden' : 'error-text'}>{form.errors.events}</small>
                     </div>
                     <div className='row'>
-                        <label>{__('Email address', 'wp-reminder')} *</label>
+                        <label>{__('Email address', 'remind-me')} *</label>
                         <input
                             className={form.errors.email === null ? '' : 'error'}
                             type='email'
@@ -196,7 +196,7 @@ export const SubscriptionForm = (props : RegisterFormProps) => {
                     </div>
                     {(typeof props.subscriber === "undefined") ? (
                         <div className='row'>
-                            <label>{__('Privacy settings', 'wp-reminder')}</label>
+                            <label>{__('Privacy settings', 'remind-me')}</label>
                             <div className='checkbox-container'>
                                 <div className='checkbox'>
                                     <input
@@ -217,7 +217,7 @@ export const SubscriptionForm = (props : RegisterFormProps) => {
                         </div>
                     ) : ""}
                     <div className='row'>
-                        <span className='small'>* {__('All these fields are required', 'wp-reminder')}</span>
+                        <span className='small'>* {__('All these fields are required', 'remind-me')}</span>
                     </div>
                     <div className='row btn-row'>
                         {(typeof props.subscriber !== "undefined") ? (
@@ -225,7 +225,7 @@ export const SubscriptionForm = (props : RegisterFormProps) => {
                         ) : ""}
                         <ButtonMessage msg={message} />
                         <button type='button' disabled={submitting} onClick={onSubmit}>
-                            {submitting ? __('Submitting...', 'wp-reminder') : __('Submit', 'wp-reminder')}
+                            {submitting ? __('Submitting...', 'remind-me') : __('Submit', 'remind-me')}
                         </button>
                     </div>
                 </form>
@@ -237,7 +237,7 @@ export const SubscriptionForm = (props : RegisterFormProps) => {
         case 0: return renderForm();
         case 1: return renderConfirm();
         case 2: return renderSuccess();
-        default: return <Fragment>{__('Internal Error', 'wp-reminder')}</Fragment>;
+        default: return <Fragment>{__('Internal Error', 'remind-me')}</Fragment>;
     }
 
 }

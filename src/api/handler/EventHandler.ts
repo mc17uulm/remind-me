@@ -29,12 +29,12 @@ export interface APIEvent extends Event {
 }
 
 export const ClockingList : DropdownItemProps[] = [
-    {key: '1', value: 1, text: __('monthly', 'wp-reminder')},
-    {key: '2', value: 2, text: __('2-monthly', 'wp-reminder')},
-    {key: '3', value: 3, text: __('quarterly', 'wp-reminder')},
-    {key: '4', value: 4, text: __('4-monthly', 'wp-reminder')},
-    {key: '6', value: 6, text: __('half-yearly', 'wp-reminder')},
-    {key: '12', value: 12, text: __('yearly', 'wp-reminder')},
+    {key: '1', value: 1, text: __('monthly', 'remind-me')},
+    {key: '2', value: 2, text: __('2-monthly', 'remind-me')},
+    {key: '3', value: 3, text: __('quarterly', 'remind-me')},
+    {key: '4', value: 4, text: __('4-monthly', 'remind-me')},
+    {key: '6', value: 6, text: __('half-yearly', 'remind-me')},
+    {key: '12', value: 12, text: __('yearly', 'remind-me')},
 ];
 
 export const get_clocking_str = (clocking : number) : string => {
@@ -48,12 +48,12 @@ export const get_clocking_str = (clocking : number) : string => {
 
 const get_components = (clocking : number) : {divider : string, of: string, on : string} => {
     switch(clocking) {
-        case 1: return {divider: "", of: __('month', 'wp-reminder'), on: __('month', 'wp-reminder')};
+        case 1: return {divider: "", of: __('month', 'remind-me'), on: __('month', 'remind-me')};
         case 2:
-        case 4: return  {divider: `${clocking}. `, of: __('month', 'wp-reminder'), on: __('month', 'wp-reminder')}
-        case 3: return {divider: __('quarter ', 'wp-reminder'), of: __('year', 'wp-reminder'), on: __('month', 'wp-reminder')};
-        case 6: return {divider: __('half ', 'wp-reminder'), of: __('year', 'wp-reminder'), on: __('month', 'wp-reminder')};
-        case 12: return {divider: "", of: __('year', 'wp-reminder'), on: __('year', 'wp-reminder')};
+        case 4: return  {divider: `${clocking}. `, of: __('month', 'remind-me'), on: __('month', 'remind-me')}
+        case 3: return {divider: __('quarter ', 'remind-me'), of: __('year', 'remind-me'), on: __('month', 'remind-me')};
+        case 6: return {divider: __('half ', 'remind-me'), of: __('year', 'remind-me'), on: __('month', 'remind-me')};
+        case 12: return {divider: "", of: __('year', 'remind-me'), on: __('year', 'remind-me')};
         default: return {divider: "", of: "", on: ''};
     }
 }
@@ -62,7 +62,7 @@ const get_components = (clocking : number) : {divider : string, of: string, on :
 export const get_repetition = (date: Date, clocking : number) : string => {
     const components = get_components(clocking);
     return sprintf(
-        __('Is executed every %s%s on the %d. of the %s', 'wp-reminder'),
+        __('Is executed every %s%s on the %d. of the %s', 'remind-me'),
         components.divider,
         components.of,
         date.day,

@@ -13,12 +13,12 @@ interface EventCheckboxProps {
 }
 
 const ClockingMap : {id: number, text: string}[] = [
-    {id : 1, text : __('monthly', 'wp-reminder')},
-    {id: 2, text: __('2-monthly', 'wp-reminder')},
-    {id: 3, text: __('quarterly', 'wp-reminder')},
-    {id: 4, text: __('4-monthly', 'wp-reminder')},
-    {id: 6, text: __('half-yearly', 'wp-reminder')},
-    {id: 12, text: __('yearly', 'wp-reminder')},
+    {id : 1, text : __('monthly', 'remind-me')},
+    {id: 2, text: __('2-monthly', 'remind-me')},
+    {id: 3, text: __('quarterly', 'remind-me')},
+    {id: 4, text: __('4-monthly', 'remind-me')},
+    {id: 6, text: __('half-yearly', 'remind-me')},
+    {id: 12, text: __('yearly', 'remind-me')},
 ];
 
 export const clockingToStr = (clocking : number) : string => {

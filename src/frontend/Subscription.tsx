@@ -63,12 +63,12 @@ export const Subscription = (props : SubscriptionProps) => {
 
     const renderHeader = () => {
         if(props.fresh) {
-            return props.title !== null ? (<h4>{props.title}</h4>) : __('Subscription', 'wp-reminder');
+            return props.title !== null ? (<h4>{props.title}</h4>) : __('Subscription', 'remind-me');
         } else {
-            const success = props.success ? <Message exit msg={{type: 'success', msg: __('You subscribed successfully', 'wp-reminder')}} /> : "";
+            const success = props.success ? <Message exit msg={{type: 'success', msg: __('You subscribed successfully', 'remind-me')}} /> : "";
             return (
                 <Fragment>
-                    <h4>{__('Subscription Settings', 'wp-reminder')}</h4>
+                    <h4>{__('Subscription Settings', 'remind-me')}</h4>
                     {success}
                 </Fragment>
             );
@@ -76,7 +76,7 @@ export const Subscription = (props : SubscriptionProps) => {
     }
 
     return (
-        <div className='wp-reminder-container'>
+        <div className='remind-me-container'>
             {renderHeader()}
             {render()}
         </div>

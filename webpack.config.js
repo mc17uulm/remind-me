@@ -3,7 +3,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const DependencyExtractionWebpackPlugin = require('@wordpress/dependency-extraction-webpack-plugin');
 const { ESBuildMinifyPlugin } = require('esbuild-loader');
 
-const base = '/wp-content/plugins/wp-reminder/';
+const base = '/wp-content/plugins/remind-me/';
 
 const exclude = [
     /node_modules/,
@@ -74,7 +74,7 @@ module.exports = (env, argv) => {
     return {
         name: "handler",
         entry: {
-            blocks: './src/block',
+            block: './src/block',
             dashboard: "./src/index",
             events: "./src/events",
             subscribers: "./src/subscribers",
@@ -96,12 +96,12 @@ module.exports = (env, argv) => {
         devtool: 'source-map',
         plugins: [
             new MiniCssExtractPlugin({
-                filename: 'css/wp-reminder-[name]-style.css'
+                filename: 'css/remind-me-[name].css'
             }),
             new DependencyExtractionWebpackPlugin({injectPolyfill: true})
         ],
         output: {
-            filename: 'js/wp-reminder-[name]-handler.js',
+            filename: 'js/remind-me-[name].js',
             path: resolve(__dirname, 'dist/'),
             publicPath: base
         },

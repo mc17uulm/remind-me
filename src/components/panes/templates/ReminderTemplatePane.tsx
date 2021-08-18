@@ -10,25 +10,25 @@ export const ReminderTemplatePane = (props : FormikProps<Templates>) => {
     
     return (
         <Tab.Pane attached={false}>
-            <h3>{__('Reminder email', 'wp-reminder')}</h3>
+            <h3>{__('Reminder email', 'remind-me')}</h3>
             <Form.Input
                 value={props.values.reminder.subject}
                 onChange={props.handleChange}
                 name='reminder.subject'
                 disabled={props.isSubmitting}
                 error={props.errors.reminder?.subject && props.touched.reminder?.subject ? props.errors.reminder?.subject : null}
-                label={__('Subject | Reminder email', 'wp-reminder')}
+                label={__('Subject | Reminder email', 'remind-me')}
             />
             <Form.Field error={!!(props.errors.reminder?.html && props.touched.reminder?.html)}>
                 <label>
-                    {__('Template | Reminder email', 'wp-reminder') + " "}
-                    <Info>{__('The email template for your reminder messages', 'wp-reminder')}</Info>
+                    {__('Template | Reminder email', 'remind-me') + " "}
+                    <Info>{__('The email template for your reminder messages', 'remind-me')}</Info>
                 </label>
                 <Message info>
-                    {__('Required placeholders:', 'wp-reminder')}
+                    {__('Required placeholders:', 'remind-me')}
                     <List bulleted>
-                        <List.Item><code>{'${event_list}'}</code>{__('Lists of events to be reminded', 'wp-reminder')}</List.Item>
-                        <List.Item><code>{'${unsubscribe_link}'}</code>{__('Link to unsubscribe from subscription', 'wp-reminder')}</List.Item>
+                        <List.Item><code>{'${event_list}'}</code>{__('Lists of events to be reminded', 'remind-me')}</List.Item>
+                        <List.Item><code>{'${unsubscribe_link}'}</code>{__('Link to unsubscribe from subscription', 'remind-me')}</List.Item>
                     </List>
                 </Message>
                 <Editor

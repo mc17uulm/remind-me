@@ -29,7 +29,7 @@ $indigo_fade: rgba(99,102,241,0.5);
   100% {opacity: 0;}
 }
 
-.wp-reminder-text {
+.remind-me-text {
   &.green {
     color: $green;
   }
@@ -41,14 +41,14 @@ $indigo_fade: rgba(99,102,241,0.5);
   }
 }
 
-.wp-reminder-submit-container {
+.remind-me-submit-container {
   margin-top: 15px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
   position: relative;
 
-  .wp-reminder-btn-text {
+  .remind-me-btn-text {
 
     width: 35%;
     margin-right: 10px;
@@ -66,16 +66,16 @@ $indigo_fade: rgba(99,102,241,0.5);
 }
 
 
-.wp-reminder-link {
+.remind-me-link {
   cursor: pointer;
 }
 
-.wp-reminder-add-link {
+.remind-me-add-link {
   color: $green !important;
   cursor: pointer;
 }
 
-.wp-reminder-delete-link {
+.remind-me-delete-link {
   white-space: nowrap;
   color: $red_fade !important;
   cursor: pointer;
@@ -85,7 +85,7 @@ $indigo_fade: rgba(99,102,241,0.5);
   }
 }
 
-.wp-reminder-edit-link {
+.remind-me-edit-link {
   white-space: nowrap;
   color: $indigo_fade !important;
   cursor: pointer;
@@ -96,19 +96,19 @@ $indigo_fade: rgba(99,102,241,0.5);
 
 }
 
-.wp-reminder-small {
+.remind-me-small {
   font-size: 13px;
 }
 
-.wp-reminder-disabled {
+.remind-me-disabled {
   pointer-events: none;
   color: grey !important;
 }
 
-.wp-reminder-float-right {
+.remind-me-float-right {
   float: right;
 }
 
-.wp-reminder-float-left {
+.remind-me-float-left {
   float: left;
 }

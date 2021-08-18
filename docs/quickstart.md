@@ -2,8 +2,8 @@
 
 ### Installation
 
-WPReminder können Sie einfach in Ihrem WordPress-Backend unter `Plugins` hinzufügen. Suchen Sie dazu
-einfach nach `WPReminder`. Danach müssen Sie das Plugin nur noch aktivieren.
+RemindMe können Sie einfach in Ihrem WordPress-Backend unter `Plugins` hinzufügen. Suchen Sie dazu
+einfach nach `RemindMe`. Danach müssen Sie das Plugin nur noch aktivieren.
 
 Weitere Informationen, auch zur manuellen Installation, finden Sie unter [Installation](installation.md).
 
@@ -24,7 +24,7 @@ Eine ausführliche Anleitung finden Sie unter [Neues Eregnis erstellen](events.m
 
 ![Anmeldeformular](_images/screenshot-05.PNG)
 
-Ein Anmeldeformular können Sie als [Shortcode](shortcode.md) `[wp-reminder name='Anmeldung' events='[1,5,6]']` erstellen.
+Ein Anmeldeformular können Sie als [Shortcode](shortcode.md) `[remind-me name='Anmeldung' events='[1,5,6]']` erstellen.
 Es steht Ihnen aber auch ein Gutenberg Block zur Verfügung (siehe [Gutenberg Block](block.md)).
 
 #### E-Mail-Templates bearbeiten

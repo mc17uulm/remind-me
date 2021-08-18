@@ -10,7 +10,7 @@ export const Error = (props : ErrorProps) => {
 
     return (
         <Message negative>
-            <Message.Header>{__('Error', 'wp-reminder')}</Message.Header>
+            <Message.Header>{__('Error', 'remind-me')}</Message.Header>
             {props.children}
         </Message>
     );

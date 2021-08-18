@@ -11,9 +11,9 @@ export const LicensePane = (props : FormikProps<APISettings> & {update: () => Pr
 
     const renderInfo = (active : boolean) => {
         return active ? (
-            <span className='wp-reminder-text green'><Icon name='check circle' /> {__('Active', 'wp-reminder')}</span>
+            <span className='remind-me-text green'><Icon name='check circle' /> {__('Active', 'remind-me')}</span>
         ) : (
-            <span className='wp-reminder-text red'><Icon name='times circle' /> {__('Inactive', 'wp-reminder')}</span>
+            <span className='remind-me-text red'><Icon name='times circle' /> {__('Inactive', 'remind-me')}</span>
         )
     }
 
@@ -24,23 +24,23 @@ export const LicensePane = (props : FormikProps<APISettings> & {update: () => Pr
             toast.error(response.get_error());
         } else {
             await props.update();
-            toast.info(__('Removed license', 'wp-reminder'));
+            toast.info(__('Removed license', 'remind-me'));
         }
         updateOpen(false);
     }
 
     return (
         <Tab.Pane attached={false}>
-            <h2>{__('License', 'wp-reminder')}</h2>
+            <h2>{__('License', 'remind-me')}</h2>
             <Message info>
-                <Message.Header>{__('License info', 'wp-reminder')}</Message.Header>
-                {__('With a license you can add multiple events, add and export subscribers and use the reliable backend of our service. More information at: ', 'wp-reminder')}
+                <Message.Header>{__('License info', 'remind-me')}</Message.Header>
+                {__('With a license you can add multiple events, add and export subscribers and use the reliable backend of our service. More information at: ', 'remind-me')}
                 <a href='https://code-leaf.de'>CodeLeaf</a>
             </Message>
-            <h3>{__('Your license', 'wp-reminder')}</h3>
+            <h3>{__('Your license', 'remind-me')}</h3>
             <Form.Group inline>
                 <Form.Field>
-                    <label>{__('License code', 'wp-reminder')}</label>
+                    <label>{__('License code', 'remind-me')}</label>
                 </Form.Field>
                 <Form.Input
                     value={props.values.license.code}
@@ -54,18 +54,18 @@ export const LicensePane = (props : FormikProps<APISettings> & {update: () => Pr
                     width={2}
                 >
                     <a
-                        className={'wp-reminder-delete-link' + (props.values.license.active ? '' : ' wp-reminder-disabled')}
+                        className={'remind-me-delete-link' + (props.values.license.active ? '' : ' remind-me-disabled')}
                         onClick={() => {
                             props.values.license.active ? updateOpen(true) : null;
                         }}
                     >
-                        <Icon name='trash alternate outline' /> {__('Remove license', 'wp-reminder')}
+                        <Icon name='trash alternate outline' /> {__('Remove license', 'remind-me')}
                     </a>
                 </Form.Field>
             </Form.Group>
             <Form.Group inline>
                 <Form.Field>
-                    <label>{__('License info', 'wp-reminder')}</label>
+                    <label>{__('License info', 'remind-me')}</label>
                 </Form.Field>
                 <Form.Field>
                     {renderInfo(props.values.license.active)}
@@ -77,18 +77,18 @@ export const LicensePane = (props : FormikProps<APISettings> & {update: () => Pr
                 onClose={() => updateOpen(false)}
                 onOpen={() => updateOpen(true)}
             >
-                <Header>{__('Remove license code', 'wp-reminder')}</Header>
+                <Header>{__('Remove license code', 'remind-me')}</Header>
                 <Modal.Content>
                     <p>
-                        {__('Do you really want to remove your license code from this page?', 'wp-reminder')}
+                        {__('Do you really want to remove your license code from this page?', 'remind-me')}
                     </p>
                 </Modal.Content>
                 <Modal.Actions>
                     <Button color='green' onClick={() => updateOpen(false)}>
-                        {__('No', 'wp-reminder')}
+                        {__('No', 'remind-me')}
                     </Button>
                     <Button color='red' onClick={onRemove}>
-                        {__('Yes', 'wp-reminder')}
+                        {__('Yes', 'remind-me')}
                     </Button>
                 </Modal.Actions>
             </Modal>

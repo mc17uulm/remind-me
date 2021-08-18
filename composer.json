@@ -1,11 +1,11 @@
 {
-    "name": "mc17/wp_reminder",
+    "name": "code-leaf/remind-me",
     "description": "WP Plugin for reminder handling",
     "type": "library",
     "authors": [
         {
-            "name": "Marco Combosch",
-            "email": "marco.combosch@uni-ulm.de"
+            "name": "CodeLeaf",
+            "email": "plugins@code-leaf.de"
         }
     ],
     "require": {
@@ -16,7 +16,7 @@
     },
     "autoload": {
         "psr-4": {
-            "WPReminder\\": "./plugin/WPReminder"
+            "RemindMe\\": "./plugin/RemindMe"
         }
     },
     "require-dev": {

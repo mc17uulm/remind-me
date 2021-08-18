@@ -1,4 +1,4 @@
-=== WP Reminder ===
+=== RemindMe ===
 Contributors: CodeLeaf
 Tags: reminder
 Requires at least: 5.5
@@ -12,16 +12,16 @@ Simple and modern plugin for delivering reminders to your WordPress site
 
 == Description ==
 
-# WP Reminder
+# RemindMe
 <sup>Version 0.1.0</sup>
 
 > Schicken Sie mit diesem einfachen WordPress Plugin ganz einfach Erinnerungen an Ihre Kunden
 
-## Was ist WP Reminder
+## Was ist RemindMe
 
-WPReminder hilt Ihnen Erinnerungen für Ihre Kunden zu erstellen. Erzeugen Sie einfach wiederkehrende Ereignisse, für
-welche sich Ihre Kunden registieren können. WPReminder schickt Ihren Kunden dann automatisch am Tag des Ereignisses eine
-Erinnerung per E-Mail. Um das WPReminder-Plugin nutzen zu können, installieren Sie einfach die `wp-reminder.zip` Datei in
+RemindMe hilt Ihnen Erinnerungen für Ihre Kunden zu erstellen. Erzeugen Sie einfach wiederkehrende Ereignisse, für
+welche sich Ihre Kunden registieren können. RemindMe schickt Ihren Kunden dann automatisch am Tag des Ereignisses eine
+Erinnerung per E-Mail. Um das RemindMe-Plugin nutzen zu können, installieren Sie einfach die `remind-me.zip` Datei in
 Ihrem WordPress Backend.
 
 Mehr Informationen zur Installation finden Sie hier: [Installation](installation.md).
@@ -40,20 +40,20 @@ Mehr Informationen zur Installation finden Sie hier: [Installation](installation
 
 ## Beispiele
 
-Unter dem Menüpunkt **Nutzung** sehen Sie Beispiele und Anleitungen wie WPReminder benutzt werden kann.
+Unter dem Menüpunkt **Nutzung** sehen Sie Beispiele und Anleitungen wie RemindMe benutzt werden kann.
 
 ## Lizenz erwerben
 
-WPReminder kann kostenlos genutzt werden. Um einige extra Funktionen nutzen zu können (Kunden exportieren, bestehende Kunden hinzufügen,
+RemindMe kann kostenlos genutzt werden. Um einige extra Funktionen nutzen zu können (Kunden exportieren, bestehende Kunden hinzufügen,
 kein Limit bei der Anzahl von Ereignissen, zuverlässige Ausführung durch unsere Server), brauchen Sie eine CodeLeaf-Lizenz. Die
 Lizenz erhalten Sie hier: [code-leaf.de](https://code-leaf.de).
 
 == Installation ==
 
-WPReminder can be easily installed in your WordPress backend. Go to `Plugins` 
-and search for `WPReminder`. After installations, just activate the plugin.
+RemindMe can be easily installed in your WordPress backend. Go to `Plugins` 
+and search for `RemindMe`. After installations, just activate the plugin.
 
-More information can be found in our [Documentation](https://mc17uulm.github.io/wp-reminder/#/installation).
+More information can be found in our [Documentation](https://mc17uulm.github.io/remind-me/#/installation).
 
 == Screenshots ==
 

@@ -7,7 +7,7 @@ export const Loader = () => {
     return (
         <Segment style={{height: "250px"}}>
             <Dimmer active>
-                <LoaderContainer>{__('Loading', 'wp-reminder')}</LoaderContainer>
+                <LoaderContainer>{__('Loading', 'remind-me')}</LoaderContainer>
             </Dimmer>
 
             <Placeholder />

@@ -42,7 +42,7 @@ export const Events = () => {
         return (
             <Fragment>
                 <Label color={event.active ? 'green' : 'red'} horizontal>
-                    {event.active ? __('active', 'wp-reminder') : __('not-active', 'wp-reminder')}
+                    {event.active ? __('active', 'remind-me') : __('not-active', 'remind-me')}
                 </Label>
                 {get_repetition(event.start, event.clocking)}<br />
             </Fragment>
@@ -51,7 +51,7 @@ export const Events = () => {
 
     const generateShortcode = () : string => {
         const _events = events.state === InitializeStates.Success ? events.value : [];
-        return "[wp-reminder name='" + __('Subscription Box title', 'wp-reminder') + "' events='" +
+        return "[remind-me name='" + __('Subscription Box title', 'remind-me') + "' events='" +
             checkbox.filtered().map((_, index : number) => _events[index].id).join(',') +
             "']";
     }
@@ -66,7 +66,7 @@ export const Events = () => {
                 action={
                     <CopyToClipboard
                         text={shortcode}
-                        onCopy={() => toast.success(__('Shortcode copied to clipboard', 'wp-reminder'))}
+                        onCopy={() => toast.success(__('Shortcode copied to clipboard', 'remind-me'))}
                     >
                         <Button>
                             <Icon class="copy" />
@@ -88,13 +88,13 @@ export const Events = () => {
         return (
             <LoadingContent
                 state={events}
-                header={__('No events found', 'wp-reminder')}
+                header={__('No events found', 'remind-me')}
                 icon='calendar times'
                 button={
                     <Button
                         color='green'
                         onClick={modal.add}
-                    >{__('Add Event', 'wp-reminder')}</Button>
+                    >{__('Add Event', 'remind-me')}</Button>
                 }
             >
                 {(val : APIEvent[]) => (
@@ -109,10 +109,10 @@ export const Events = () => {
                                             onChange={(e, d) => checkbox.update_all(d.checked ?? false)}
                                         />
                                     </Table.HeaderCell>
-                                    <Table.HeaderCell>{__('Event', 'wp-reminder')}</Table.HeaderCell>
-                                    <Table.HeaderCell>{__('Description', 'wp-reminder')}</Table.HeaderCell>
-                                    <Table.HeaderCell>{__('Status', 'wp-reminder')}</Table.HeaderCell>
-                                    <Table.HeaderCell>{__('Next Execution', 'wp-reminder')}</Table.HeaderCell>
+                                    <Table.HeaderCell>{__('Event', 'remind-me')}</Table.HeaderCell>
+                                    <Table.HeaderCell>{__('Description', 'remind-me')}</Table.HeaderCell>
+                                    <Table.HeaderCell>{__('Status', 'remind-me')}</Table.HeaderCell>
+                                    <Table.HeaderCell>{__('Next Execution', 'remind-me')}</Table.HeaderCell>
                                 </Table.Row>
                             </Table.Header>
                             <Table.Body>
@@ -122,18 +122,18 @@ export const Events = () => {
                                         <Table.Cell>
                                             <strong>{event.name}</strong><br />
                                             <a
-                                                className="wp-reminder-edit-link wp-reminder-small"
+                                                className="remind-me-edit-link remind-me-small"
                                                 onClick={(e) => modal.edit(e, event)}
                                             >
-                                                <Icon class="cogs" /> {__('Edit', 'wp-reminder')}
+                                                <Icon class="cogs" /> {__('Edit', 'remind-me')}
                                             </a> <a
-                                            className="wp-reminder-delete-link wp-reminder-small"
+                                            className="remind-me-delete-link remind-me-small"
                                             onClick={(e) =>  modal.delete(e, [event])} color="red"
                                         >
-                                            <Icon class="trash" /> {__('Delete', 'wp-reminder')}
+                                            <Icon class="trash" /> {__('Delete', 'remind-me')}
                                         </a>
                                         </Table.Cell>
-                                        <Table.Cell className='wp-reminder-description'>
+                                        <Table.Cell className='remind-me-description'>
                                             <DescriptionView description={event.description} count={100} />
                                         </Table.Cell>
                                         <Table.Cell>
@@ -147,9 +147,9 @@ export const Events = () => {
                             </Table.Body>
                         </Table>
                         <a
-                            className={"wp-reminder-delete-link" + (checkbox.filtered().length === 0 ? " wp-reminder-disabled" : "")}
+                            className={"remind-me-delete-link" + (checkbox.filtered().length === 0 ? " remind-me-disabled" : "")}
                             onClick={(e) => modal.delete(e, val.filter((event, index) => checkbox.get(index)))}>
-                            {__('Delete selected', 'wp-reminder')}
+                            {__('Delete selected', 'remind-me')}
                         </a>
                     </Fragment>
                 )}
@@ -159,19 +159,19 @@ export const Events = () => {
 
     return (
         <Fragment>
-            <div className="wp-reminder-header-container">
-                <h3 className="wp-reminder-float-left">
-                    {__('Events', 'wp-reminder')}
+            <div className="remind-me-header-container">
+                <h3 className="remind-me-float-left">
+                    {__('Events', 'remind-me')}
                 </h3>
-                <span className='wp-reminder-shortcode-container'>
-                    <label>{__('Shortcode', 'wp-reminder')}</label>
+                <span className='remind-me-shortcode-container'>
+                    <label>{__('Shortcode', 'remind-me')}</label>
                     {renderShortcode()}
                 </span>
             </div>
             <a
-                className={"wp-reminder-add-link" + (isDisabled() ? ' wp-reminder-disabled' : '')}
+                className={"remind-me-add-link" + (isDisabled() ? ' remind-me-disabled' : '')}
                 onClick={modal.add}
-            >{__('Add Event', 'wp-reminder')}</a>
+            >{__('Add Event', 'remind-me')}</a>
             {renderTable()}
             <HandleEventModal
                 open={modal.isOpen()}

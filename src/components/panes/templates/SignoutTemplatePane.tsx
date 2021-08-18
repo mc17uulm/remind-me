@@ -10,18 +10,18 @@ export const SignoutTemplatePane = (props : FormikProps<Templates>) => {
 
     return (
         <Tab.Pane attached={false}>
-            <h3>{__('Signout email', 'wp-reminder')}</h3>
+            <h3>{__('Signout email', 'remind-me')}</h3>
             <Form.Input
                 value={props.values.signout.subject}
                 onChange={props.handleChange}
                 name='signout.subject'
                 disabled={props.isSubmitting}
                 error={props.errors.signout?.subject && props.touched.signout?.subject ? props.errors.signout?.subject : null}
-                label={__('Subject | Signout email', 'wp-reminder')}
+                label={__('Subject | Signout email', 'remind-me')}
             />
             <Form.Field error={!!(props.errors.signout?.html && props.touched.signout?.html)}>
                 <label>
-                    {__('Template | Signout email', 'wp-reminder') + " "}
+                    {__('Template | Signout email', 'remind-me') + " "}
                     <Info>{__('If the user signed out, this confirm message is send.')}</Info>
                 </label>
                 <Editor

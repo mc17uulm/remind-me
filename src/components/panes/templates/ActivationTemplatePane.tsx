@@ -10,24 +10,24 @@ export const ActivationTemplatePane = (props : FormikProps<Templates>) => {
     
     return (
         <Tab.Pane attached={false}>
-            <h3>{__('Success message for subscription', 'wp-reminder')}</h3>
+            <h3>{__('Success message for subscription', 'remind-me')}</h3>
             <Form.Input
                 value={props.values.success.subject}
                 onChange={props.handleChange}
                 name='success.subject'
                 disabled={props.isSubmitting}
                 error={props.errors.success?.subject && props.touched.success?.subject ? props.errors.success?.subject : null}
-                label={__('Subject | Success message for subscription', 'wp-reminder')}
+                label={__('Subject | Success message for subscription', 'remind-me')}
             />
             <Form.Field error={!!(props.errors.confirm?.html && props.touched.confirm?.html)}>
                 <label>
-                    {__('Template | Success message for subscription', 'wp-reminder') + " "}
+                    {__('Template | Success message for subscription', 'remind-me') + " "}
                     <Info>{__('Is the user confirmed the subscription this success mail is send')}</Info>
                 </label>
                 <Message info>
-                    {__('Required placeholders:', 'wp-reminder')}
+                    {__('Required placeholders:', 'remind-me')}
                     <List bulleted>
-                        <List.Item><code>{'${unsubscribe_link}'}</code>{__('Link to edit/unsubscribe from subscription', 'wp-reminder')}</List.Item>
+                        <List.Item><code>{'${unsubscribe_link}'}</code>{__('Link to edit/unsubscribe from subscription', 'remind-me')}</List.Item>
                     </List>
                 </Message>
                 <Editor

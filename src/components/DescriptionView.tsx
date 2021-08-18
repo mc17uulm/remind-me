@@ -25,8 +25,8 @@ export const DescriptionView = (props : DescriptionViewProps) => {
                 {(open ? props.description : split)}
                 <br />
                 <span style={{textAlign: 'center', display: 'block'}}>
-                <a className='wp-reminder-link' onClick={() => setOpen(!open)}>
-                    {open ? __('Close', 'wp-reminder') : __('Expand', 'wp-reminder')}
+                <a className='remind-me-link' onClick={() => setOpen(!open)}>
+                    {open ? __('Close', 'remind-me') : __('Expand', 'remind-me')}
                 </a>
                 </span>
             </Fragment>

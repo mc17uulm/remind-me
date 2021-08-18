@@ -7,7 +7,7 @@ import {useCookie} from "../hooks/useCookie";
 export const LicenseWarning = (props : {active: boolean}) => {
 
     if(props.active) return <Fragment></Fragment>;
-    const [cookie, setCookie] = useCookie('wp-reminder-license-notice');
+    const [cookie, setCookie] = useCookie('remind-me-license-notice');
     const [open, setOpen] = useState<boolean>(true);
 
     useEffect(() => {
@@ -26,9 +26,9 @@ export const LicenseWarning = (props : {active: boolean}) => {
             warning
             onDismiss={onClose}
         >
-            <Message.Header>{__('Plugin not licensed', 'wp-reminder')}</Message.Header>
+            <Message.Header>{__('Plugin not licensed', 'remind-me')}</Message.Header>
             <p>
-                {__('You have no license added. Some functions are therefore not available. Learn more at ', 'wp-reminder')}
+                {__('You have no license added. Some functions are therefore not available. Learn more at ', 'remind-me')}
                 <a href='https://code-leaf.de'>CodeLeaf.de</a>
             </p>
         </Message>

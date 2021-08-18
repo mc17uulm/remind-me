@@ -1,7 +1,7 @@
 <?php
 
-use WPReminder\api\APIHandler;
-use WPReminder\Loader;
+use RemindMe\api\APIHandler;
+use RemindMe\Loader;
 
 final class LoaderTest extends WP_UnitTestCase
 {

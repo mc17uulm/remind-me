@@ -1,4 +1,4 @@
-# WP Reminder
+# RemindMe
 
 *in development*
 

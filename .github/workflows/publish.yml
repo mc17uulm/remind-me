@@ -48,8 +48,8 @@ jobs:
       - name: Push to production server
         uses: fjogeleit/http-request-action@master
         with:
-          url: 'https://plugins.code-leaf.de/plugin/wp-reminder/0.0.1'
+          url: 'https://plugins.code-leaf.de/plugin/remind-me/0.0.1'
           method: 'PUT'
           contentType: 'application/zip'
-          files: './wp-reminder.zip'
+          files: './remind-me.zip'
           customHeaders: '{"X-Auth-Token":"${{ secrets.AUTH_TOKEN }}"}'

@@ -19,7 +19,7 @@ const SettingsSchema : yup.SchemaOf<Settings> = yup.object({
     license: yup.object({
         code: yup.string()
     }),
-    privacy_text: yup.string().required(__('Please insert a text for the privacy notice', 'wp-reminder')),
+    privacy_text: yup.string().required(__('Please insert a text for the privacy notice', 'remind-me')),
 });
 
 interface SettingsFormProps {
@@ -54,8 +54,8 @@ export const SettingsForm = (props : SettingsFormProps) => {
             toast.error(resp.get_error());
         } else {
             await update();
-            setMessage({type: "success", msg: __('Saved settings', 'wp-reminder')})
-            toast.success(__('Saved settings', 'wp-reminder'));
+            setMessage({type: "success", msg: __('Saved settings', 'remind-me')})
+            toast.success(__('Saved settings', 'remind-me'));
         }
         actions.setSubmitting(false);
     }
@@ -76,12 +76,12 @@ export const SettingsForm = (props : SettingsFormProps) => {
                                 pointing: true
                             }}
                             panes={[
-                                {menuItem: __('Messages', 'wp-reminder'), render: () => <MessagePane {..._props} />},
-                                {menuItem: __('License', 'wp-reminder'), render: () => <LicensePane {..._props} update={update} />}
+                                {menuItem: __('Messages', 'remind-me'), render: () => <MessagePane {..._props} />},
+                                {menuItem: __('License', 'remind-me'), render: () => <LicensePane {..._props} update={update} />}
                             ]}
                         />
                         <SubmitBtnContainer message={message}>
-                            <Button color='green' disabled={_props.isSubmitting} loading={_props.isSubmitting} type='submit' floated={"right"}>{__('Save', 'wp-reminder')}</Button>
+                            <Button color='green' disabled={_props.isSubmitting} loading={_props.isSubmitting} type='submit' floated={"right"}>{__('Save', 'remind-me')}</Button>
                         </SubmitBtnContainer>
                     </Form>
                 )}

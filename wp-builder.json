@@ -1,11 +1,11 @@
 {
-  "name": "WPReminder",
-  "slug": "wp-reminder",
+  "name": "RemindMe",
+  "slug": "remind-me",
   "version": "0.1.0",
   "type": "plugin",
   "author": {
     "name": "CodeLeaf",
-    "email": "wp-reminder@code-leaf.de"
+    "email": "memosyne@code-leaf.de"
   },
   "build": {
     "includes": [
@@ -18,7 +18,8 @@
       "schemas",
       "composer.json",
       "composer.lock",
-      "wp-reminder.php"
+      "readme.txt",
+      "remind-me.php"
     ]
   }
 }

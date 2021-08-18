@@ -3,7 +3,7 @@
 All products of CodeLeaf can be used for free. Some functions, extensions and a better
 support are only available with a valid license.
 
-These functions of WPReminder are only usable with a valid license:
+These functions of RemindMe are only usable with a valid license:
 
 - unlimited number of events
 - add, edit and delete clients

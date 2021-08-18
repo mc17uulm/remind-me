@@ -19,8 +19,8 @@ export const DeleteModal = (props : DeleteModalProps) => {
                 {props.children}
             </Modal.Content>
             <Modal.Actions>
-                <Button color="black" onClick={props.onClose}>{__('Back', 'wp-reminder')}</Button>
-                <Button color="red" loading={props.loading} onClick={props.onDelete}><Icon class="trash" /> {__('Delete', 'wp-reminder')}</Button>
+                <Button color="black" onClick={props.onClose}>{__('Back', 'remind-me')}</Button>
+                <Button color="red" loading={props.loading} onClick={props.onDelete}><Icon class="trash" /> {__('Delete', 'remind-me')}</Button>
             </Modal.Actions>
         </Fragment>
     )
