@@ -1,41 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema",
-  "definitions": {
-    "template": {
-      "type": "object",
-      "properties": {
-        "html": {
-          "type": "string"
-        },
-        "subject": {
-          "type": "string"
-        }
-      },
-      "required": ["html", "subject"],
-      "additionalProperties": false
-    }
-  },
   "type": "object",
   "properties": {
-    "templates": {
-      "type": "object",
-      "properties": {
-        "confirm": {
-          "$ref": "#/definitions/template"
-        },
-        "success": {
-          "$ref": "#/definitions/template"
-        },
-        "signout": {
-          "$ref": "#/definitions/template"
-        },
-        "reminder": {
-          "$ref": "#/definitions/template"
-        }
-      },
-      "required": ["confirm", "success", "signout", "reminder"],
-      "additionalProperties": false
-    },
     "messages": {
       "type": "object",
       "properties": {
@@ -62,18 +28,13 @@
       "required": ["code"],
       "additionalProperties": false
     },
-    "settings_page": {
-      "type": "string"
-    },
     "privacy_text": {
       "type": "string"
     }
   },
   "required": [
-    "templates",
     "messages",
     "license",
-    "settings_page",
     "privacy_text"
   ],
   "additionalProperties": false

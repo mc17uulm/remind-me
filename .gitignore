@@ -3,8 +3,12 @@
 node_modules/
 vendor/
 build/
+.build/
 dist/
 yarn-error.log
 test.php
 log.txt
-wp-reminder.zip
+remind-me.zip
+languages/backup
+tests/lib
+tests/bootstrap.php

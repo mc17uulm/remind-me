@@ -1,7 +1,7 @@
 # Zukünftige Funktionen
 
 Hier finden Sie Funktionen und Features, welche in zukünftigen
-Versionen von WPReminder implementiert werden sollen.
+Versionen von RemindMe implementiert werden sollen.
 
 Wenn Sie eine [Lizenz](license.md) erworben haben, können Sie 
 in Ihrem Code-Leaf Backend auch eigene Features und Funktionen vorschlagen.

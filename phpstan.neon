@@ -4,15 +4,15 @@ parameters:
         - plugin
     checkMissingIterableValueType: false
     dynamicConstantNames:
-        - WP_REMINDER_VERSION
-        - WP_REMINDER_SLUG
-        - WP_REMINDER_TEXTDOMAIN
-        - WP_REMINDER_FILE
-        - WP_REMINDER_URL
-        - WP_REMINDER_PATH
-        - WP_REMINDER_DIR
-        - WP_REMINDER_DEBUG
-        - WP_REMINDER_SCHEMAS
+        - REMIND_ME_VERSION
+        - REMIND_ME_SLUG
+        - REMIND_ME_TEXTDOMAIN
+        - REMIND_ME_FILE
+        - REMIND_ME_URL
+        - REMIND_ME_PATH
+        - REMIND_ME_DIR
+        - REMIND_ME_DEBUG
+        - REMIND_ME_SCHEMAS
 
 includes:
     - vendor/szepeviktor/phpstan-wordpress/extension.neon

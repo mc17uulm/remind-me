@@ -69,8 +69,10 @@ export const Subscribers = () => {
         }
     }
 
+    const active = settings.active && (events.length > 0);
+
     const renderActive = (active : boolean) => {
-        return active ? (<Label color="green">{__('Active', 'wp-reminder')}</Label>) : (<Label color="red">{__('Inactive', 'wp-reminder')}</Label>);
+        return active ? (<Label color="green">{__('Active', 'remind-me')}</Label>) : (<Label color="red">{__('Inactive', 'remind-me')}</Label>);
     }
 
     const renderDate = (timestamp : number) => {
@@ -85,10 +87,10 @@ export const Subscribers = () => {
         return (
             <LoadingContent
                 state={subscribers}
-                header={__('No subscribers found', 'wp-reminder')}
+                header={__('No subscribers found', 'remind-me')}
                 icon='users'
                 button={
-                    <Button color='green' onClick={modal.add}>{__('Add Subscriber', 'wp-reminder')}</Button>
+                    <Button color='green' disabled={!active} onClick={modal.add}>{__('Add Subscriber', 'remind-me')}</Button>
                 }
             >
                 {(val : APISubscriber[]) => (
@@ -103,10 +105,10 @@ export const Subscribers = () => {
                                             onChange={(e, d) => checkbox.update_all(d.checked ?? false)}
                                         />
                                     </Table.HeaderCell>
-                                    <Table.HeaderCell>{__('Email address', 'wp-reminder')}</Table.HeaderCell>
-                                    <Table.HeaderCell>{__('Registered events', 'wp-reminder')}</Table.HeaderCell>
-                                    <Table.HeaderCell>{__('Registration date', 'wp-reminder')}</Table.HeaderCell>
-                                    <Table.HeaderCell>{__('Active', 'wp-reminder')}</Table.HeaderCell>
+                                    <Table.HeaderCell>{__('Email address', 'remind-me')}</Table.HeaderCell>
+                                    <Table.HeaderCell>{__('Registered events', 'remind-me')}</Table.HeaderCell>
+                                    <Table.HeaderCell>{__('Registration date', 'remind-me')}</Table.HeaderCell>
+                                    <Table.HeaderCell>{__('Active', 'remind-me')}</Table.HeaderCell>
                                 </Table.Row>
                             </Table.Header>
                             <Table.Body>
@@ -116,15 +118,15 @@ export const Subscribers = () => {
                                         <Table.Cell>
                                             <strong>{subscriber.email}</strong><br />
                                             <a
-                                                className={'wp-reminder-edit-link' + (settings.active ? '' : ' wp-reminder-disabled')}
+                                                className={'remind-me-edit-link' + (settings.active ? '' : ' remind-me-disabled')}
                                                 onClick={(e) => modal.edit(e, subscriber)}
                                             >
-                                                <Icon class='cogs' /> {__('Edit', 'wp-reminder')}
+                                                <Icon class='cogs' /> {__('Edit', 'remind-me')}
                                             </a> <a
-                                            className={'wp-reminder-delete-link' + (settings.active ? '' : ' wp-reminder-disabled')}
+                                            className={'remind-me-delete-link' + (settings.active ? '' : ' remind-me-disabled')}
                                             onClick={(e) => modal.delete(e, [subscriber])}
                                         >
-                                            <Icon class='trash' /> {__('Delete', 'wp-reminder')}
+                                            <Icon class='trash' /> {__('Delete', 'remind-me')}
                                         </a>
                                         </Table.Cell>
                                         <Table.Cell>
@@ -137,10 +139,10 @@ export const Subscribers = () => {
                             </Table.Body>
                         </Table>
                         <a
-                            className={'wp-reminder-float-left wp-reminder-delete-link' + (checkbox.filtered().length === 0 || !settings.active ? ' wp-reminder-disabled' : '')}
+                            className={'remind-me-float-left remind-me-delete-link' + (checkbox.filtered().length === 0 || !settings.active ? ' remind-me-disabled' : '')}
                             onClick={(e) => {settings.active ? modal.delete(e, val.filter((subscriber , index) => checkbox.get(index))) : null}}
                         >
-                            {__('Delete selected', 'wp-reminder')}
+                            {__('Delete selected', 'remind-me')}
                         </a>
                     </Fragment>
                 )}
@@ -150,18 +152,18 @@ export const Subscribers = () => {
 
     return (
         <Fragment>
-            <h3>{__('Subscribers', 'wp-reminder')}</h3>
+            <h3>{__('Subscribers', 'remind-me')}</h3>
             <a
-                className={'wp-reminder-add-link' + (settings.active ? '' : ' wp-reminder-disabled')}
-                onClick={(e) => {settings.active ? modal.add(e) : null}}>
-                {__('Add Subscriber', 'wp-reminder')}
+                className={'remind-me-add-link' + (active ? '' : ' remind-me-disabled')}
+                onClick={(e) => {active ? modal.add(e) : null}}>
+                {__('Add Subscriber', 'remind-me')}
             </a>
             {renderTable()}
             <a
-                onClick={(e) => {settings.active ? handleExport(e) : null;}}
-                className={'wp-reminder-float-right wp-reminder-link' + (checkbox.filtered().length === 0 || !settings.active ? ' wp-reminder-disabled' : '')}
+                onClick={(e) => {active ? handleExport(e) : null;}}
+                className={'remind-me-float-right remind-me-link' + (checkbox.filtered().length === 0 || !settings.active ? ' remind-me-disabled' : '')}
             >
-                {__('Export selected', 'wp-reminder')}
+                {__('Export selected', 'remind-me')}
             </a>
             <HandleSubscriberModal
                 type={modal.state}

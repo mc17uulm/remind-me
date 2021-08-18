@@ -2,7 +2,7 @@
 
 ### Was ist ein Ereignis?
 
-Mit WPReminder können Sie Ereignisse erstellen. Ein Ereignis hat 
+Mit RemindMe können Sie Ereignisse erstellen. Ein Ereignis hat 
 
 - einen Namen 
 - ein Startdatum und 
@@ -33,7 +33,7 @@ Ereignis erinnert:
 
 ### Wie lege ich ein Ereignis an?
 
-Wenn Sie WPReminder installiert und aktiviert haben ([Installation](installation.md)), finden Sie
+Wenn Sie RemindMe installiert und aktiviert haben ([Installation](installation.md)), finden Sie
 in ihrem Backend auf der Seitenleiste einen neuen Menüpunkt: `Reminder`. Im Untermenü von `Reminder` finden 
 Sie den Punkt `Ereignisse`. Klicken Sie darauf.
 

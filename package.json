@@ -1,9 +1,9 @@
 {
-  "name": "wp_reminder",
+  "name": "remind-me",
   "version": "0.1.0",
   "description": "WP Plugin for reminder handling",
   "main": "index.js",
-  "author": "Marco Combosch <marco.combosch@uni-ulm.de>",
+  "author": "CodeLeaf <plugins@code-leaf.de>",
   "license": "MIT",
   "scripts": {
     "tsc": "tsc",
@@ -13,7 +13,7 @@
     "zip": "./.scripts/build_zip",
     "php:analyse": "./vendor/bin/phpstan analyse --memory-limit=-1 -c phpstan.neon",
     "php:test": "phpunit",
-    "wp:lang:build": "wp i18n make-pot . ./languages/wp-reminder.pot --domain='wp-reminder' --debug",
+    "wp:lang:build": "cp ./languages/remind-me.pot ./languages/remind-me.backup.pot && wp i18n make-pot . ./languages/remind-me.pot --domain='remind-me' --debug --exclude='tests'",
     "wp:lang:json": "wp i18n make-json ./languages --no-purge"
   },
   "devDependencies": {
@@ -43,13 +43,15 @@
     "node-sass": "^5.0.0",
     "path-browserify": "^1.0.1",
     "sass-loader": "^11.0.1",
+    "snowpack": "^3.8.6",
     "style-loader": "^2.0.0",
     "svg-url-loader": "^7.1.1",
-    "terser-webpack-plugin": "^5.1.1",
+    "terser-webpack-plugin": "^5.1.4",
     "ts-loader": "^8.0.18",
     "typescript": "^4.2.3",
     "url-loader": "^4.1.1",
     "webpack": "^5.28.0",
+    "webpack-bundle-analyzer": "^4.4.2",
     "webpack-cli": "^4.5.0"
   },
   "dependencies": {

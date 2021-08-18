@@ -1,30 +1,39 @@
-version: "3"
+version: "3.3"
 
 services:
 
-  db:
-    image: "mysql:5.7"
-    environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-      MYSQL_DATABASE: "wordpress"
-      MYSQL_USER: "wordpress"
-      MYSQL_PASSWORD: "123"
-      MYSQL_ROOT_PASSWORD: ""
-    networks:
-      - intranet
+    db:
+        image: mysql:5.7
+        volumes:
+            - db_data:/var/lib/mysql
+        environment:
+            MYSQL_DATABASE: wordpress
+            MYSQL_USER: wordpress
+            MYSQL_PASSWORD: 123
+            MYSQL_ROOT_PASSWORD: 1234
+        networks:
+            - intranet
 
-  wordpress:
-    depends_on:
-      - db
-    build: ./docker/
-    volumes:
-      - "./:/var/www/html/wp-content/plugins/wp-reminder"
-      - "testsuite:/tmp"
-    networks:
-      - intranet
+    wordpress:
+        depends_on:
+            - db
+        container_name: wordpress_test
+        build: ./.dev/docker/
+        restart: always
+        stdin_open: true
+        volumes:
+            - ./:/var/www/html/wp-content/plugins/remind-me
+        tty: true
+        environment:
+            WORDPRESS_DB_HOST: db:3306
+            WORDPRESS_DB_USER: wordpress
+            WORDPRESS_DB_PASSWORD: 123
+            WORDPRESS_DB_NAME: wordpress
+        networks:
+        - intranet
 
 
 volumes:
-  testsuite: {}
+    db_data: {}
 networks:
-  intranet:
+    intranet:

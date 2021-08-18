@@ -1,6 +1,6 @@
 # Funktionen und Features
 
-Hier finden Sie aufgelistet eine Auswahl der wichtigsten Funktionen von WPReminder. Es werden laufend
+Hier finden Sie aufgelistet eine Auswahl der wichtigsten Funktionen von RemindMe. Es werden laufend
 weitere Funktionen hinzugefügt (siehe [Zukünftige Funktionen](future.md)). Sie können auch eigene Funktionen
 vorschlagen*:
 

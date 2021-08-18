@@ -1,7 +1,7 @@
 # Kunden anzeigen, bearbeiten und hinzufügen
 
 ?> Damit sich Ihre Kunden für die von Ihnen erstellen Ereignisse (siehe [Neues Ereignis erstellen](events.md))
-anmelden können, müssen Sie auf Ihrer Seite ein Anmeldeformular erstellen. WPReminder nimmt Ihnen dabei fast alle 
+anmelden können, müssen Sie auf Ihrer Seite ein Anmeldeformular erstellen. RemindMe nimmt Ihnen dabei fast alle 
 Arbeit ab. Wie Sie ein Formular erstellen finden Sie unter [Gutenberg Block](block.md) oder unter [Shortcode](shortcode.md).
 
 Wenn sich Ihre Kunden für eines oder mehrerer Ihrer Ereignisse angemeldet haben, finden Sie Informationen dazu

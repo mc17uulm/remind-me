@@ -7,6 +7,7 @@ import {Date} from "../Date";
 
 export interface Event {
     name: string,
+    description: string,
     clocking: number,
     start: Date | string
 }
@@ -28,12 +29,12 @@ export interface APIEvent extends Event {
 }
 
 export const ClockingList : DropdownItemProps[] = [
-    {key: '1', value: 1, text: __('monthly', 'wp-reminder')},
-    {key: '2', value: 2, text: __('2-monthly', 'wp-reminder')},
-    {key: '3', value: 3, text: __('quarterly', 'wp-reminder')},
-    {key: '4', value: 4, text: __('4-monthly', 'wp-reminder')},
-    {key: '6', value: 6, text: __('half-yearly', 'wp-reminder')},
-    {key: '12', value: 12, text: __('yearly', 'wp-reminder')},
+    {key: '1', value: 1, text: __('monthly', 'remind-me')},
+    {key: '2', value: 2, text: __('2-monthly', 'remind-me')},
+    {key: '3', value: 3, text: __('quarterly', 'remind-me')},
+    {key: '4', value: 4, text: __('4-monthly', 'remind-me')},
+    {key: '6', value: 6, text: __('half-yearly', 'remind-me')},
+    {key: '12', value: 12, text: __('yearly', 'remind-me')},
 ];
 
 export const get_clocking_str = (clocking : number) : string => {
@@ -47,12 +48,12 @@ export const get_clocking_str = (clocking : number) : string => {
 
 const get_components = (clocking : number) : {divider : string, of: string, on : string} => {
     switch(clocking) {
-        case 1: return {divider: "", of: __('month', 'wp-reminder'), on: __('month', 'wp-reminder')};
+        case 1: return {divider: "", of: __('month', 'remind-me'), on: __('month', 'remind-me')};
         case 2:
-        case 4: return  {divider: `${clocking}. `, of: __('month', 'wp-reminder'), on: __('month', 'wp-reminder')}
-        case 3: return {divider: __('quarter ', 'wp-reminder'), of: __('year', 'wp-reminder'), on: __('month', 'wp-reminder')};
-        case 6: return {divider: __('half ', 'wp-reminder'), of: __('year', 'wp-reminder'), on: __('month', 'wp-reminder')};
-        case 12: return {divider: "", of: __('year', 'wp-reminder'), on: __('year', 'wp-reminder')};
+        case 4: return  {divider: `${clocking}. `, of: __('month', 'remind-me'), on: __('month', 'remind-me')}
+        case 3: return {divider: __('quarter ', 'remind-me'), of: __('year', 'remind-me'), on: __('month', 'remind-me')};
+        case 6: return {divider: __('half ', 'remind-me'), of: __('year', 'remind-me'), on: __('month', 'remind-me')};
+        case 12: return {divider: "", of: __('year', 'remind-me'), on: __('year', 'remind-me')};
         default: return {divider: "", of: "", on: ''};
     }
 }
@@ -61,7 +62,7 @@ const get_components = (clocking : number) : {divider : string, of: string, on :
 export const get_repetition = (date: Date, clocking : number) : string => {
     const components = get_components(clocking);
     return sprintf(
-        __('Is executed every %s%s on the %d. of the %s', 'wp-reminder'),
+        __('Is executed every %s%s on the %d. of the %s', 'remind-me'),
         components.divider,
         components.of,
         date.day,
@@ -73,6 +74,7 @@ export const empty_event = () : APIEvent => {
     return {
         id: -1,
         name: "",
+        description: "",
         clocking: 1,
         start: Date.create(),
         next: Date.create(),
@@ -88,6 +90,9 @@ export const EventSchema : JSONSchemaType<EventResponse> = {
             type: "integer"
         },
         name: {
+            type: "string"
+        },
+        description: {
             type: "string"
         },
         clocking: {
@@ -106,7 +111,7 @@ export const EventSchema : JSONSchemaType<EventResponse> = {
             type: "boolean"
         }
     },
-    required: ["id", "name", "clocking", "start", "next", "active", "last"],
+    required: ["id", "name", "description", "clocking", "start", "next", "active", "last"],
     additionalProperties: false
 }
 
@@ -133,12 +138,17 @@ export class EventHandler {
         return Either.success<APIEvent>({
             id: res.get_value().id,
             name: res.get_value().name,
+            description: res.get_value().description,
             clocking: res.get_value().clocking,
             start: Date.create_by_string(res.get_value().start),
             next: Date.create_by_string(res.get_value().next),
             last : res.get_value().last,
             active: res.get_value().active
         });
+    }
+
+    public static async count() : Promise<Either<number>> {
+        return await Request.get<number>('events/count', PostResponseSchema);
     }
 
     public static async get_list(indices : number[]) : Promise<Either<APIEvent[]>> {
@@ -154,6 +164,7 @@ export class EventHandler {
             return {
                 id: event.id,
                 name: event.name,
+                description: event.description,
                 clocking: event.clocking,
                 start: Date.create_by_string(event.start),
                 next: Date.create_by_string(event.next),
@@ -178,7 +189,7 @@ export class EventHandler {
     public static async delete(index : number[]) : Promise<Either<boolean>> {
         const list = await Promise.all(index.map(async (elem : number) => {
             return await Request.delete<boolean>(`event/${elem}`, DeleteResponseSchema);
-        }))
+        }));
         return Either.collapse(list, true,(t1 : boolean, t2 : boolean) => t1 && t2);
     }
 

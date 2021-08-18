@@ -1,4 +1,4 @@
-# Documentation for WP Reminder API
+# Documentation for RemindMe API
 
 <a name="documentation-for-api-endpoints"></a>
 ## Documentation for API Endpoints

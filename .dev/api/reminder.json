@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "WP Reminder API",
-    "description": "API specification for the WPReminder WordPress plugin",
+    "title": "RemindMe API",
+    "description": "API specification for the RemindMe WordPress plugin",
     "version": "1.0.0",
     "contact": {
       "email": "contact@code-leaf.de",
@@ -33,7 +33,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "$ref": "./../schemas/error.schema.json"
+              "$ref": "./../../schemas/error.schema.json"
             }
           }
         }
@@ -97,7 +97,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "./../schemas/event.schema.json"
+                    "$ref": "./../../schemas/event.schema.json"
                   }
                 }
               }
@@ -118,7 +118,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "./../schemas/event.schema.json"
+                "$ref": "./../../schemas/event.schema.json"
               }
             }
           }
@@ -152,7 +152,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "./../schemas/event.schema.json"
+                  "$ref": "./../../schemas/event.schema.json"
                 }
               }
             }
@@ -180,7 +180,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "./../schemas/event.schema.json"
+                "$ref": "./../../schemas/event.schema.json"
               },
               "examples": {
                 "basic": {
@@ -234,7 +234,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "./../schemas/subscriber.schema.json"
+                    "$ref": "./../../schemas/subscriber.schema.json"
                   }
                 }
               }
@@ -255,7 +255,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "./../schemas/subscriber.schema.json"
+                "$ref": "./../../schemas/subscriber.schema.json"
               }
             }
           }
@@ -288,7 +288,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "./../schemas/subscriber.schema.json"
+                "$ref": "./../../schemas/subscriber.schema.json"
               }
             }
           }
@@ -341,7 +341,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "./../schemas/subscriber.schema.json"
+                  "$ref": "./../../schemas/subscriber.schema.json"
                 }
               }
             }
@@ -369,7 +369,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "./../schemas/subscriber.schema.json"
+                "$ref": "./../../schemas/subscriber.schema.json"
               }
             }
           }
@@ -410,7 +410,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "./../schemas/subscriber.schema.json"
+                "$ref": "./../../schemas/subscriber.schema.json"
               }
             }
           }
@@ -433,7 +433,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "./../schemas/settings.schema.json"
+                  "$ref": "./../../schemas/settings.schema.json"
                 }
               }
             }
@@ -450,7 +450,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "./../schemas/settings.schema.json"
+                "$ref": "./../../schemas/settings.schema.json"
               }
             }
           }

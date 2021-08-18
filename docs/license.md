@@ -3,7 +3,7 @@
 Alle Produkte von Code-Leaf können Sie kostenfrei nutzen. Einige Funktionen,
 Erweiterungen und ein besserer Support, sind aber nur mit einer Lizenz möglich.
 
-Folgende Funktionen von WPReminder erhalten Sie mit dem Kauf einer Lizenz:
+Folgende Funktionen von RemindMe erhalten Sie mit dem Kauf einer Lizenz:
 
 - unendliche Anzahl an Ereignissen erstellen
 - Kunden selbständig hinzufügen, bearbeiten und löschen

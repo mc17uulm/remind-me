@@ -3,7 +3,7 @@ import {useLoader} from "../../hooks/useLoader";
 import {useForm} from "../../hooks/useForm";
 import {APIEvent, EventHandler} from "../../api/handler/EventHandler";
 import React, {Fragment, useEffect, useState} from "react";
-import {Button, DropdownItemProps, Form, Message, Modal} from "semantic-ui-react";
+import {Button, DropdownItemProps, Form, List, Message, Modal} from "semantic-ui-react";
 import {DeleteModal} from "./DeleteModal";
 import {__, _n, sprintf} from "@wordpress/i18n";
 import {ModalProps, ModalState} from "../../hooks/useModal";
@@ -22,10 +22,10 @@ const eventsToItemProps = (events : APIEvent[]) : DropdownItemProps[] => {
 }
 
 const SubscriberSchema : yup.SchemaOf<any> = yup.object({
-    email: yup.string().email().required(__('Please insert a valid email address', 'wp-reminder')),
+    email: yup.string().email().required(__('Please insert a valid email address', 'remind-me')),
     events: yup.array()
-        .min(1, __('Please select at least one event', 'wp-reminder'))
-        .required(__('Please select at least one event', 'wp-reminder')),
+        .min(1, __('Please select at least one event', 'remind-me'))
+        .required(__('Please select at least one event', 'remind-me')),
 })
 
 export const HandleSubscriberModal = (props : ModalProps<APISubscriber>) => {
@@ -39,7 +39,7 @@ export const HandleSubscriberModal = (props : ModalProps<APISubscriber>) => {
         if(resp.has_error()) {
             props.onClose();
             console.error(resp.get_error());
-            toast.error(__('Could not load events', 'wp-reminder'));
+            toast.error(__('Could not load events', 'remind-me'));
             return;
         }
         setEvents(eventsToItemProps(resp.get_value()));
@@ -91,7 +91,7 @@ export const HandleSubscriberModal = (props : ModalProps<APISubscriber>) => {
             if(resp.has_error()){
                 toast.error(resp.get_error());
             } else {
-                toast.success(props.type === ModalState.DELETE ? __('Deleted Subscriber', 'wp-reminder') : __('Saved Subscriber', 'wp-reminder'));
+                toast.success(props.type === ModalState.DELETE ? __('Deleted Subscriber', 'remind-me') : __('Saved Subscriber', 'remind-me'));
                 props.onSuccess();
             }
         })
@@ -102,14 +102,14 @@ export const HandleSubscriberModal = (props : ModalProps<APISubscriber>) => {
             <Fragment>
                 <Modal.Header>
                     {props.type === ModalState.ADD ?
-                        __('Add Subscriber', 'wp-reminder') :
-                        __('Edit Subscriber', 'wp-reminder')
+                        __('Add Subscriber', 'remind-me') :
+                        __('Edit Subscriber', 'remind-me')
                     }
                 </Modal.Header>
                 <Modal.Content>
                     <Message warning>
-                        <Message.Header>{__('Important', 'wp-reminder')}</Message.Header>
-                        {__('Manually inserted email addresses require the consent of the email address owner! Add new subscribers only if you have their consent!', 'wp-reminder')}
+                        <Message.Header>{__('Important', 'remind-me')}</Message.Header>
+                        {__('Manually inserted email addresses require the consent of the email address owner! Add new subscribers only if you have their consent!', 'remind-me')}
                     </Message>
                     <Form>
                         <Form.Group>
@@ -117,8 +117,8 @@ export const HandleSubscriberModal = (props : ModalProps<APISubscriber>) => {
                                 width={10}
                                 value={form.values.email}
                                 name='email'
-                                label={__('Subscriber email address', 'wp-reminder')}
-                                placeholder={__('Subscriber email address', 'wp-reminder')}
+                                label={__('Subscriber email address', 'remind-me')}
+                                placeholder={__('Subscriber email address', 'remind-me')}
                                 onChange={form.onChange}
                                 error={form.errors.email}
                             />
@@ -126,7 +126,7 @@ export const HandleSubscriberModal = (props : ModalProps<APISubscriber>) => {
                                 width={5}
                                 multiple
                                 search
-                                label={__('Events', 'wp-reminder')}
+                                label={__('Events', 'remind-me')}
                                 onChange={(e, d) => form.setValue('events', d.value)}
                                 value={form.values.events}
                                 error={form.errors.events}
@@ -136,12 +136,12 @@ export const HandleSubscriberModal = (props : ModalProps<APISubscriber>) => {
                     </Form>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Message info>
-                        {__('The owner of the email address has to verify his subscription. If you save, a welcome email is sent to the new subscriber', 'wp-reminder')}
+                    <Message info style={{textAlign: 'left'}}>
+                        {__('The owner of the email address has to verify his subscription. If you save, a welcome email is sent to the new subscriber', 'remind-me')}
                     </Message>
-                    <Button color='black' onClick={props.onClose}>{__('Back', 'wp-reminder')}</Button>
+                    <Button color='black' onClick={props.onClose}>{__('Back', 'remind-me')}</Button>
                     <Button color='green' loading={loading} onClick={() => onSubmit()}>
-                        {__('Save', 'wp-reminder')}
+                        {__('Save', 'remind-me')}
                     </Button>
                 </Modal.Actions>
             </Fragment>
@@ -152,22 +152,22 @@ export const HandleSubscriberModal = (props : ModalProps<APISubscriber>) => {
         if(props.type === ModalState.DELETE) {
             return (
                 <DeleteModal
-                    title={__('Delete Subscriber', 'wp-reminder')}
-                    content={
-                        sprintf(
-                            _n(
-                                'Do you really like to delete the subscriber "%s"?',
-                                'Do you really like to delete the subscribers [%s]?',
-                                props.elements.length,
-                                'wp-reminder'
-                            ),
-                            (props.elements.length === 1) ? props.elements[0].email : props.elements.map(val => val.email).join(", ")
-                        )
-                    }
+                    title={__('Delete Subscriber', 'remind-me')}
                     loading={loading}
                     onClose={props.onClose}
                     onDelete={onSubmit}
-                />
+                >
+                    {props.elements.length === 1 ?
+                        __('Do you really like to delete the following subscriber?', 'remind-me') :
+                        __('Do you really like to delete the following subscribers?', 'remind-me')
+                    }
+                    <br />
+                    <List bulleted>
+                        {props.elements.map((subscriber : APISubscriber, index : number) => (
+                            <List.Item key={`subscriber_${index}`}>{subscriber.email}</List.Item>
+                        ))}
+                    </List>
+                </DeleteModal>
             );
         } else {
             return "";

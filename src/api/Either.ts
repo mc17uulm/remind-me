@@ -18,19 +18,21 @@ export class Either<T> {
 
     public static collapse<T>(list : Either<T>[], start : T, collapse : (t1: T, t2: T) => T) : Either<T> {
         let elem : Either<T> = Either.success(start);
-        list.forEach((item : Either<T>) => {
-            if(item.has_error()) return item;
+        for(let item of list) {
+            if(item.has_error()) {
+                return item;
+            }
             elem = Either.success(collapse(elem.get_value(), item.get_value()));
-        })
+        }
         return elem;
     }
 
     public static map<T>(list : Either<T>[]) : Either<T[]> {
         let _list : T[] = [];
-        list.forEach((item : Either<T>) => {
-            if(item.has_error()) return item;
+        for(let item of list) {
+            if(item.has_error()) return Either.error(item.get_error());
             _list.push(item.get_value());
-        });
+        }
         return Either.success(_list);
     }
 

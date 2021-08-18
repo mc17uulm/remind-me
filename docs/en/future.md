@@ -1,7 +1,7 @@
 # Future features
 
 Here you find functions and features, which we want to add to future versions of
-WPReminder.
+RemindMe.
 
 I you have bought a [license](license.md), you can suggest your own features and functions.
 

@@ -2,18 +2,6 @@ import {JSONSchemaType} from "ajv";
 import {Either} from "../Either";
 import {DeleteResponseSchema, PutResponseSchema, Request} from "../Request";
 
-export interface Template {
-    html: string,
-    subject: string
-}
-
-export interface Templates {
-    confirm: Template,
-    success: Template,
-    signout: Template,
-    reminder: Template
-}
-
 export interface Messages {
     signin: string,
     signout: string,
@@ -31,11 +19,15 @@ export interface APILicense extends License {
     status: string
 }
 
+export interface PublicSettings {
+    messages: Messages,
+    license: boolean,
+    privacy_text: string
+}
+
 export interface Settings {
-    templates: Templates,
     messages: Messages,
     license: License,
-    settings_page: string,
     privacy_text: string
 }
 
@@ -43,43 +35,43 @@ export interface APISettings extends Settings {
     license: APILicense
 }
 
-export const SettingsSchema : JSONSchemaType<APISettings> = {
-    definitions: {
-        template: {
-            type: "object",
-            properties: {
-                html: {
-                    type: "string"
-                },
-                subject: {
-                    type: "string"
-                }
-            },
-            required: ["html", "subject"],
-            additionalProperties: false
-        }
-    },
+export const PublicSettingsSchema : JSONSchemaType<PublicSettings> = {
     type: "object",
     properties: {
-        templates: {
+        messages: {
             type: "object",
             properties: {
-                confirm: {
-                    "$ref": "#/definitions/template"
-                },
-                success: {
-                    "$ref": "#/definitions/template"
+                signin: {
+                    type: "string"
                 },
                 signout: {
-                    "$ref": "#/definitions/template"
+                    type: "string"
                 },
-                reminder: {
-                    "$ref": "#/definitions/template"
+                double_opt_in: {
+                    type: "string"
                 }
             },
-            required: ["confirm", "success", "signout", "reminder"],
+            required: ["signin", "signout", "double_opt_in"],
             additionalProperties: false
         },
+        license: {
+            type: "boolean"
+        },
+        privacy_text: {
+            type: "string"
+        }
+    },
+    required: [
+        "messages",
+        "license",
+        "privacy_text"
+    ],
+    additionalProperties: false
+}
+
+export const SettingsSchema : JSONSchemaType<APISettings> = {
+    type: "object",
+    properties: {
         messages: {
             type: "object",
             properties: {
@@ -115,18 +107,13 @@ export const SettingsSchema : JSONSchemaType<APISettings> = {
             required: ["code", "active", "til", "status"],
             additionalProperties: false
         },
-        settings_page: {
-            type: "string"
-        },
         privacy_text: {
             type: "string"
         }
     },
     required: [
-        "templates",
         "messages",
         "license",
-        "settings_page",
         "privacy_text"
     ],
     additionalProperties: false
@@ -137,6 +124,10 @@ export class SettingsHandler
 
     public static async get() : Promise<Either<APISettings>> {
         return await Request.get<APISettings>('settings', SettingsSchema);
+    }
+
+    public static async get_public() : Promise<Either<PublicSettings>> {
+        return await Request.get<PublicSettings>('public/settings', PublicSettingsSchema);
     }
 
     public static async update(settings : Settings) : Promise<Either<boolean>> {

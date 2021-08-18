@@ -22,14 +22,18 @@ export class Date {
     }
 
     public get_next(clocking : number, step : number = 1) : Date {
-        const comp = this.month + (step * clocking);
+        let comp = this.month + (step * clocking);
         const year = this.year + Math.floor(comp / 12);
         return Date.create_by_date(year, comp % 12, this.day);
     }
 
     public get_next_array(clocking : number, steps: number) : Date[] {
-        let iterator = Array.from(Array(steps + 1).keys());
-        iterator.shift();
+        const same_day = this.equal(Date.create());
+        const current_steps = same_day ? steps + 1 : steps;
+        let iterator = Array.from(Array(current_steps).keys());
+        if(same_day) {
+            iterator.shift();
+        }
         return iterator.map((step : number) : Date => {
             return this.get_next(clocking, step);
         });
@@ -37,12 +41,36 @@ export class Date {
 
     public to_string() : string {
         const month = this.month < 10 ? `0${this.month}` : this.month;
-        const day = this.day < 10 ? `0${this.day}` : this.day;
-        return `${this.year}-${month}-${day}`;
+        let day = this.day;
+        if(day > 28) {
+            switch(this.month) {
+                case 4:
+                case 6:
+                case 9:
+                case 11:
+                    if(day > 30) day = 30;
+                    break;
+                case 2:
+                    day = 28;
+                    break;
+                default:
+                    break;
+            }
+        }
+        const day_str =  day < 10 ? `0${day}` : day;
+        return `${this.year}-${month}-${day_str}`;
     }
 
     public format(format : string = 'LLLL') : string {
         return dayjs(this.to_string(), 'YYYY-MM-DD').format(format);
+    }
+
+    public equal(date : Date) : boolean {
+        return (
+            (this.day === date.day) &&
+            (this.month === date.month) &&
+            (this.year === date.year)
+        );
     }
 
     public static create_by_string(date : string) : Date {

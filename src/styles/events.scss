@@ -1,10 +1,16 @@
 @import "defaults";
 
-.wp-reminder-header-container {
+.remind-me-header-container {
   height: 50px;
 }
 
-.wp-reminder-shortcode-container {
+.remind-me-shortcode-container {
   width: 50%;
   float: right;
+}
+
+.remind-me-description {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 300px;
 }

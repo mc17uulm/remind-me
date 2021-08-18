@@ -2,9 +2,8 @@ const { resolve } = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const DependencyExtractionWebpackPlugin = require('@wordpress/dependency-extraction-webpack-plugin');
 const { ESBuildMinifyPlugin } = require('esbuild-loader');
-const mode = process.env.NODE_ENV !== 'production';
 
-const base = '/wp-content/plugins/wp-reminder/';
+const base = '/wp-content/plugins/remind-me/';
 
 const exclude = [
     /node_modules/,
@@ -71,44 +70,49 @@ const rules = [
     }
 ];
 
-module.exports = {
-    name: "handler",
-    entry: {
-        blocks: './src/block',
-        dashboard: "./src/index",
-        events: "./src/events",
-        subscribers: "./src/subscribers",
-        settings: "./src/settings",
-        'new-form': "./src/new-form",
-        'edit-form': './src/edit-form'
-    },
-    optimization: {
-        minimizer: [
-            new ESBuildMinifyPlugin({
-                target: 'es2015'
-            })
-        ]
-    },
-    module: {
-        rules: rules
-    },
-    devtool: 'source-map',
-    plugins: [
-        new MiniCssExtractPlugin({
-            filename: 'css/wp-reminder-[name]-style.css'
-        }),
-        new DependencyExtractionWebpackPlugin({injectPolyfill: true})
-    ],
-    output: {
-        filename: 'js/wp-reminder-[name]-handler.js',
-        path: resolve(__dirname, 'dist/'),
-        publicPath: base
-    },
-    externals: {
-        '@wordpress/i18n': "wp.i18n"
-    },
-    resolve: {
-        extensions: [".js", ".jsx", ".ts", ".tsx", ".scss"]
-    },
-    mode: mode ? 'development' : 'production'
+module.exports = (env, argv) => {
+    return {
+        name: "handler",
+        entry: {
+            block: './src/block',
+            dashboard: "./src/index",
+            events: "./src/events",
+            subscribers: "./src/subscribers",
+            settings: "./src/settings",
+            templates: "./src/templates",
+            'new-form': "./src/new-form",
+            'edit-form': './src/edit-form'
+        },
+        optimization: {
+            minimizer: [
+                new ESBuildMinifyPlugin({
+                    target: 'es2015'
+                })
+            ]
+        },
+        module: {
+            rules: rules
+        },
+        devtool: 'source-map',
+        plugins: [
+            new MiniCssExtractPlugin({
+                filename: 'css/remind-me-[name].css'
+            }),
+            new DependencyExtractionWebpackPlugin({injectPolyfill: true})
+        ],
+        output: {
+            filename: 'js/remind-me-[name].js',
+            path: resolve(__dirname, 'dist/'),
+            publicPath: base
+        },
+        externals: {
+            '@wordpress/i18n': "wp.i18n",
+            'react': 'React',
+            'react-dom': 'ReactDOM'
+        },
+        resolve: {
+            extensions: [".js", ".jsx", ".ts", ".tsx", ".scss"]
+        },
+        mode: argv.mode
+    }
 }

@@ -3,25 +3,24 @@ import {Button, Modal} from "semantic-ui-react";
 import {__} from "@wordpress/i18n";
 import {Icon} from "../Icon";
 
-interface DeleteModalProps<S> {
+interface DeleteModalProps {
     title: string,
-    content : string
+    children? : React.ReactNode,
     onClose : () => void,
     onDelete : () => Promise<void>,
     loading? : boolean
 }
 
-export const DeleteModal = <T extends unknown>(props : DeleteModalProps<T>) => {
-    console.log("loading", props.loading);
+export const DeleteModal = (props : DeleteModalProps) => {
     return (
         <Fragment>
             <Modal.Header>{props.title}</Modal.Header>
             <Modal.Content>
-                {props.content}
+                {props.children}
             </Modal.Content>
             <Modal.Actions>
-                <Button color="black" onClick={props.onClose}>{__('Back', 'wp-reminder')}</Button>
-                <Button color="red" loading={props.loading} onClick={props.onDelete}><Icon class="trash" /> {__('Delete', 'wp-reminder')}</Button>
+                <Button color="black" onClick={props.onClose}>{__('Back', 'remind-me')}</Button>
+                <Button color="red" loading={props.loading} onClick={props.onDelete}><Icon class="trash" /> {__('Delete', 'remind-me')}</Button>
             </Modal.Actions>
         </Fragment>
     )

@@ -12,8 +12,8 @@ Aber auch die Möglichkeit das Formular mittels [Shortcode](shortcode.md) zu ers
 ### Wie erstelle ich ein Anmeldeformular auf einer Seite/in einem Beitrag?
 
 Öffnen Sie dazu die gewünschte Seite/Beitrag in Ihrem WordPress-Backend. An der gewünschten
-Stelle fügen Sie einen neuen Block hinzu (mittels dem `+` Button). In der Suche geben Sie nun `WPReminder` ein
-und der `WPReminder Block` wird Ihnen angezeigt. Mit einem Klick darauf wird Ihnen dieser direkt in die 
+Stelle fügen Sie einen neuen Block hinzu (mittels dem `+` Button). In der Suche geben Sie nun `RemindMe` ein
+und der `RemindMe Block` wird Ihnen angezeigt. Mit einem Klick darauf wird Ihnen dieser direkt in die 
 Seite eingefügt.
 
 ![Block](_images/block.PNG)

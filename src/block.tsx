@@ -3,24 +3,25 @@ import { registerBlockType } from "@wordpress/blocks";
 import {BlockHandler} from "./block/BlockHandler";
 import {Request} from "./api/Request";
 import {Definitions} from "./View";
-import "./styles/block";
+import "./styles/frontend";
+import "./styles/block.scss";
 
 export interface BlockAttributes {
     title: string,
     events: string
 }
 
-declare var wp_reminder_definitions : Definitions;
+declare var remind_me_definitions : Definitions;
 
 Request.initialize(
-    wp_reminder_definitions.root,
-    wp_reminder_definitions.nonce,
-    wp_reminder_definitions.slug,
-    wp_reminder_definitions.version
+    remind_me_definitions.root,
+    remind_me_definitions.nonce,
+    remind_me_definitions.slug,
+    remind_me_definitions.version
 );
 
-registerBlockType<BlockAttributes>('wp-reminder/block', {
-    title: 'WPReminder Block',
+registerBlockType<BlockAttributes>('remind-me/block', {
+    title: 'RemindMe Block',
     icon: 'post-status',
     category: 'layout',
     attributes: {
@@ -41,7 +42,7 @@ registerBlockType<BlockAttributes>('wp-reminder/block', {
     save: (props) => {
         return (
             <div
-                id='wp-reminder-frontend-form'
+                id='remind-me-frontend-form'
                 data-title={props.attributes.title}
                 datalist-events={props.attributes.events}
             ></div>

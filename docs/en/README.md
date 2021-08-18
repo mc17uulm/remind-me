@@ -1,12 +1,12 @@
-## WP Reminder
+## RemindMe
 
 > Easily remind your clients with this simple WordPress plugin
 
 ## What it is
 
-WPReminder helps you to create reminders for your clients. Create easy recurring events, to which your
-clients can subscribe. WPReminder than notifies your clients on the date of the event. To start
-using the WPReminder WordPress plugin, easily install the `wp-reminder.zip` file on your WordPress backend.
+RemindMe helps you to create reminders for your clients. Create easy recurring events, to which your
+clients can subscribe. RemindMe than notifies your clients on the date of the event. To start
+using the RemindMe WordPress plugin, easily install the `remind-me.zip` file on your WordPress backend.
 
 See the [Installation](installation.md) guide for more details.
 
@@ -24,11 +24,11 @@ See the [Installation](installation.md) guide for more details.
 
 ## Examples
 
-Check out the [Showcase](showcase.md) to see WPReminder in use.
+Check out the [Showcase](showcase.md) to see RemindMe in use.
 
 ## Buy License
 
-WPReminder can be used for free. Some extra features (like export subscribers, add own clients, no events limit) require a CodeLeaf license. 
+RemindMe can be used for free. Some extra features (like export subscribers, add own clients, no events limit) require a CodeLeaf license. 
 You can get a license on [code-leaf.de](https://code-leaf.de).
 
 

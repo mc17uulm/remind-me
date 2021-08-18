@@ -16,8 +16,8 @@ export const ButtonMessage = (props : ButtonMessageProps) => {
         >
             <strong>
                 {props.msg.type === 'error' ?
-                    __('Error', 'wp-reminder') :
-                    __('Success', 'wp-reminder')
+                    __('Error', 'remind-me') :
+                    __('Success', 'remind-me')
                 }:
             </strong> {props.msg.msg}
         </span>

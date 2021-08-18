@@ -1,0 +1,25 @@
+{
+  "name": "RemindMe",
+  "slug": "remind-me",
+  "version": "0.1.0",
+  "type": "plugin",
+  "author": {
+    "name": "CodeLeaf",
+    "email": "memosyne@code-leaf.de"
+  },
+  "build": {
+    "includes": [
+      "dist/fonts",
+      "dist/css",
+      "dist/js/*.js",
+      "dist/js/*.php",
+      "languages",
+      "plugin",
+      "schemas",
+      "composer.json",
+      "composer.lock",
+      "readme.txt",
+      "remind-me.php"
+    ]
+  }
+}

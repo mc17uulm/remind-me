@@ -1,10 +1,8 @@
 # Kontakt
 
-WPReminder ist ein Produkt von **CodeLeaf**.
+RemindMe ist ein Produkt von **CodeLeaf**.
 
-> **CodeLeaf**\
-> Fichtestraße 15\
-> 89231 Neu-Ulm
-> 
+> **CodeLeaf**
+>
 > [plugins@code-leaf.de](mailto:plugins@code-leaf.de)\
 > [https://code-leaf.de](https://code-leaf.de)

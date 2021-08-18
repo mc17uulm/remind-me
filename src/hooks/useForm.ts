@@ -7,7 +7,7 @@ export type Errors<S> = {
     [key in keyof S]: string | null
 }
 
-interface Form<S> {
+export interface Form<S> {
     values: S,
     onChange: (e : ChangeEvent<HTMLInputElement>) => void,
     setValue: (key: keyof S, value: any) => void,

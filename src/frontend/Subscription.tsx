@@ -1,6 +1,6 @@
 import {APISubscriber, SubscriberHandler} from "../api/handler/SubscriberHandler";
 import {APIEvent, EventHandler} from "../api/handler/EventHandler";
-import {Settings, SettingsHandler} from "../api/handler/SettingsHandler";
+import {PublicSettings, Settings, SettingsHandler} from "../api/handler/SettingsHandler";
 import {InitializeStates, useInitializer} from "../hooks/useInitializer";
 import React, {Fragment, useEffect} from "react";
 import {Either} from "../api/Either";
@@ -26,7 +26,7 @@ type SubscriptionProps = FreshForm | EditForm;
 interface SubscriptionSettingsState {
     subscriber?: APISubscriber,
     events: APIEvent[],
-    settings: Settings
+    settings: PublicSettings
 }
 
 export const Subscription = (props : SubscriptionProps) => {
@@ -35,7 +35,7 @@ export const Subscription = (props : SubscriptionProps) => {
 
     useEffect(() => {
         load(async () => {
-            const settings = await SettingsHandler.get();
+            const settings = await SettingsHandler.get_public();
             if(settings.has_error()) return Either.error(settings.get_error());
             const events = props.fresh ? await EventHandler.get_list(props.list) : await EventHandler.get_all();
             if(events.has_error()) return Either.error(events.get_error());
@@ -63,12 +63,12 @@ export const Subscription = (props : SubscriptionProps) => {
 
     const renderHeader = () => {
         if(props.fresh) {
-            return props.title !== null ? (<h4>{props.title}</h4>) : __('Subscription', 'wp-reminder');
+            return props.title !== null ? (<h4>{props.title}</h4>) : __('Subscription', 'remind-me');
         } else {
-            const success = props.success ? <Message exit msg={{type: 'success', msg: __('You subscribed successfully')}} /> : "";
+            const success = props.success ? <Message exit msg={{type: 'success', msg: __('You subscribed successfully', 'remind-me')}} /> : "";
             return (
                 <Fragment>
-                    <h4>{__('Subscription', 'wp-reminder')}</h4>
+                    <h4>{__('Subscription Settings', 'remind-me')}</h4>
                     {success}
                 </Fragment>
             );
@@ -76,7 +76,7 @@ export const Subscription = (props : SubscriptionProps) => {
     }
 
     return (
-        <div className='wp-reminder-container'>
+        <div className='remind-me-container'>
             {renderHeader()}
             {render()}
         </div>

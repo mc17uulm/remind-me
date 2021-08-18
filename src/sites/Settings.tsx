@@ -21,7 +21,7 @@ export const SettingsView = () => {
             case InitializeStates.Loading: return <Loader />;
             case InitializeStates.Error: return (
                 <Error>
-                    {__('There was an internal error', 'wp-reminder')}
+                    {__('There was an internal error', 'remind-me')}
                 </Error>
             );
             case InitializeStates.Success: return <SettingsForm settings={initObject.value} />
@@ -30,7 +30,7 @@ export const SettingsView = () => {
 
     return (
         <Fragment>
-            <h3>{__('Settings', 'wp-reminder')}</h3>
+            <h3>{__('Settings', 'remind-me')}</h3>
             {loadContent()}
         </Fragment>
     )

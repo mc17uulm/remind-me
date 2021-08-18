@@ -16,7 +16,7 @@ const ToolbarOptions = [
     [{color: []}, {background: []}],
     [{script: "sub"}, {script: "super"}],
     [{align: []}],
-    ["image", "blockquote"],
+    ["blockquote"],
     ["clean"]
 ]
 

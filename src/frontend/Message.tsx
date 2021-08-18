@@ -26,7 +26,7 @@ export const Message = (props : MessageProps) => {
 
     return props.msg === null ? null : (
         <div className={'alert alert-' + (props.msg.type === "success" ? 'success' : 'danger')}>
-            <h4>{props.msg.type === "success" ? __('Success', 'wp-reminder') : __('Error', 'wp-reminder')}</h4>
+            <h4>{props.msg.type === "success" ? __('Success', 'remind-me') : __('Error', 'remind-me')}</h4>
             {props.msg.msg}
             {exit ? (
                 <button onClick={onExit}></button>
