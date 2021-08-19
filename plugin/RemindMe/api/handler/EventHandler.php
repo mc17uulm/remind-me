@@ -31,7 +31,7 @@ final class EventHandler implements RestHandler
         $id = $req->get_param("id");
         if(!is_numeric($id)) throw new APIException("'id' isn't set or not numeric");
 
-        $res->success(Event::get($id)->to_json());
+        $res->success(Event::get((int) $id)->to_json());
     }
 
     /**
@@ -88,7 +88,7 @@ final class EventHandler implements RestHandler
 
         if($result['start'] < date('Y-m-d')) throw new APIException('Given date is in the past');
 
-        $res->success(Event::update($id, $result));
+        $res->success(Event::update((int) $id, $result));
     }
 
     /**
@@ -103,7 +103,7 @@ final class EventHandler implements RestHandler
 
         if(!is_numeric($id)) throw new APIException("'id' is not set or not numeric");
 
-        $res->success(Event::delete($id));
+        $res->success(Event::delete((int) $id));
     }
 
 }

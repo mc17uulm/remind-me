@@ -66,7 +66,7 @@ final class SubscriberHandler implements RestHandler
 
         if(!is_numeric($id)) throw new APIException("'id' is not set or not numeric");
 
-        $res->success(Subscriber::update_by_id($id, $subscriber));
+        $res->success(Subscriber::update_by_id((int) $id, $subscriber));
     }
 
     /**
@@ -95,7 +95,7 @@ final class SubscriberHandler implements RestHandler
 
         if(!is_numeric($id)) throw new APIException("'id' is not set or not numeric");
 
-        $res->success(Subscriber::delete($id));
+        $res->success(Subscriber::delete((int) $id));
     }
 
     /**

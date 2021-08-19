@@ -74,6 +74,7 @@ final class Event
      * @return int
      */
     public function get_id() : int {
+        if($this->id === null) return -1;
         return $this->id;
     }
 

@@ -36,7 +36,7 @@ final class ConfirmTemplate extends Template
      */
     public function render(Subscriber $subscriber): string
     {
-        $token = Token::create($subscriber->id, "activate");
+        $token = Token::create($subscriber->get_id(), "activate");
         $url = add_query_arg([
             'remind-me-action' => 'activate',
             'remind-me-token' => $token->get_token()
@@ -54,19 +54,19 @@ final class ConfirmTemplate extends Template
     {
         return parent::create(function() {
             ?>
-            <h1 class="ql-align-center"><?= __('Company name', 'remind-me') ?></h1>
+            <h1 class="ql-align-center"><?php echo __('Company name', 'remind-me') ?></h1>
             <p class="ql-align-center"><br></p>
-            <p class="ql-align-center"><?= __('Thank you for subscribing our reminders:', 'remind-me') ?></p>
+            <p class="ql-align-center"><?php echo __('Thank you for subscribing our reminders:', 'remind-me') ?></p>
             <p class="ql-align-center">${event_list}.</p>
             <p class="ql-align-center"><br></p>
-            <p class="ql-align-center"><?= __('To finish you subscription, please click this link: ${confirm_link}.', 'remind-me') ?></p>
+            <p class="ql-align-center"><?php echo __('To finish you subscription, please click this link: ${confirm_link}.', 'remind-me') ?></p>
             <p class="ql-align-center"><br></p>
             <p class="ql-align-center">
-                <em><?= __("If you haven't subscribed to our service, you can delete this email. Your subscription is only activated after clicking the above link.", 'remind-me') ?></em>
+                <em><?php echo __("If you haven't subscribed to our service, you can delete this email. Your subscription is only activated after clicking the above link.", 'remind-me') ?></em>
             </p>
             <p class="ql-align-center"><br></p>
             <p class="ql-align-center">--</p>
-            <p class="ql-align-center"><?= __('Company name | Street 1 | 12345 City', 'remind-me') ?></p>
+            <p class="ql-align-center"><?php echo __('Company name | Street 1 | 12345 City', 'remind-me') ?></p>
             <?php
         });
     }

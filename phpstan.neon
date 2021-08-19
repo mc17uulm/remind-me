@@ -1,18 +1,8 @@
 parameters:
-    level: 6
+    level: 8
     paths:
         - plugin
     checkMissingIterableValueType: false
-    dynamicConstantNames:
-        - REMIND_ME_VERSION
-        - REMIND_ME_SLUG
-        - REMIND_ME_TEXTDOMAIN
-        - REMIND_ME_FILE
-        - REMIND_ME_URL
-        - REMIND_ME_PATH
-        - REMIND_ME_DIR
-        - REMIND_ME_DEBUG
-        - REMIND_ME_SCHEMAS
 
 includes:
     - vendor/szepeviktor/phpstan-wordpress/extension.neon

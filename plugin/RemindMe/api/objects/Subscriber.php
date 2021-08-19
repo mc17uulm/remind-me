@@ -19,7 +19,7 @@ final class Subscriber
     /**
      * @var int|null
      */
-    public ?int $id;
+    private ?int $id;
     /**
      * @var string
      */
@@ -62,6 +62,14 @@ final class Subscriber
         $this->registered = $registered;
         $this->active = $active;
         $this->executable_events = [];
+    }
+
+    /**
+     * @return int
+     */
+    public function get_id() : int {
+        if($this->id === null) return -1;
+        return $this->id;
     }
 
     /**

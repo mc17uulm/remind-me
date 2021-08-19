@@ -24,9 +24,11 @@ final class TemplatesSchema extends JsonSchema
 
     /**
      * @return Templates
+     * @throws ValidationException
      */
     public function cast() : Templates
     {
+        if($this->result === null) throw new ValidationException('JsonSchema returned null result');
         return new Templates($this->result);
     }
 

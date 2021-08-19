@@ -100,6 +100,9 @@ class Template {
      */
     public static function parse_url(string $url, array $params) : string {
         $parsed = parse_url($url);
+        if(!is_array($parsed)) {
+            $parsed = [];
+        }
         if(!isset($parsed['path'])) {
             $url .= '/';
         }
@@ -120,7 +123,7 @@ class Template {
         }
         $content = ob_get_contents();
         ob_clean();
-        return $content;
+        return ($content === false) ? "" : $content;
     }
 
 }

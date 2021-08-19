@@ -172,11 +172,11 @@ final class Loader {
      * @throws PluginException
      */
     public function register_backend_scripts() : void {
-        if(!defined('REMIND_ME_URL') || !defined('REMIND_ME_VERSION')) die('invalid request');
-        $token = $this->get_token($_GET["page"]);
+        $token = $this->get_token(sanitize_text_field($_GET["page"]));
         if($token !== "") {
 
             $settings = Settings::get();
+            $version = defined("REMIND_ME_VERSION") ? REMIND_ME_VERSION : false;
 
             wp_enqueue_script(
                 'react-js',
@@ -191,7 +191,7 @@ final class Loader {
                 "remind-me-$token-runtime",
                 plugin_dir_url($this->file) . "dist/js/remind-me-$token.js",
                 ['wp-i18n'],
-                REMIND_ME_VERSION,
+                $version,
                 true
             );
 
@@ -199,7 +199,7 @@ final class Loader {
                 'remind-me-style',
                 plugin_dir_url($this->file) . "dist/css/remind-me-$token.css",
                 [],
-                REMIND_ME_VERSION
+                $version
             );
 
             wp_localize_script(
@@ -210,7 +210,7 @@ final class Loader {
                     'nonce' => wp_create_nonce('wp_rest'),
                     'slug' => 'remind-me',
                     'version' => 'v1',
-                    'site' => $_GET["page"],
+                    'site' => esc_js($_GET["page"]),
                     'base' => admin_url('admin.php'),
                     'active' =>  $settings->license->active ? 'true' : 'false'
                 ]
@@ -225,7 +225,8 @@ final class Loader {
     }
 
     public function register_frontend_scripts() : void {
-        if(!defined('REMIND_ME_URL') || !defined('REMIND_ME_VERSION')) die('invalid request');
+
+        $version = defined("REMIND_ME_VERSION") ? REMIND_ME_VERSION : false;
 
         wp_enqueue_script(
             'react-js',
@@ -240,7 +241,7 @@ final class Loader {
             'remind-me-new-form-runtime',
             plugin_dir_url($this->file) . "dist/js/remind-me-new-form.js",
             ['wp-i18n'],
-            REMIND_ME_VERSION,
+            $version,
             true
         );
 
@@ -248,7 +249,7 @@ final class Loader {
             'remind-me-edit-form-runtime',
             plugin_dir_url($this->file) . "dist/js/remind-me-edit-form.js",
             ['wp-i18n'],
-            REMIND_ME_VERSION,
+            $version,
             true
         );
 
@@ -256,7 +257,7 @@ final class Loader {
             'remind-me-frontend-style',
             plugin_dir_url($this->file) . "dist/css/remind-me-new-form.css",
             [],
-            REMIND_ME_VERSION
+            $version
         );
 
     }
@@ -308,7 +309,6 @@ final class Loader {
      * @throws PluginException
      */
     public function register_block() : void {
-        if(!defined('REMIND_ME_URL') || !defined('REMIND_ME_VERSION')) die('invalid request');
         if(is_admin()) {
             $this->load_backend_block_script();
         } else {
@@ -321,19 +321,20 @@ final class Loader {
      */
     private function load_backend_block_script() : void {
         $settings = Settings::get();
+        $version = defined("REMIND_ME_VERSION") ? REMIND_ME_VERSION : false;
 
         wp_enqueue_style(
             'remind-me-block-style',
             plugin_dir_url($this->file) . "dist/css/remind-me-block.css",
             [],
-            REMIND_ME_VERSION
+            $version
         );
 
         wp_enqueue_script(
             'remind-me-block-runtime',
             plugin_dir_url($this->file) . "dist/js/remind-me-block.js",
             ['wp-blocks', 'wp-editor', 'wp-i18n', 'wp-element'],
-            REMIND_ME_VERSION,
+            $version,
             true
         );
 
@@ -346,7 +347,7 @@ final class Loader {
                 'nonce' => wp_create_nonce('wp_rest'),
                 'slug' => 'remind-me',
                 'version' => 'v1',
-                'site' => $_GET["page"],
+                'site' => esc_js($_GET["page"]),
                 'base' => admin_url('admin.php'),
                 'active' =>  $settings->license->active ? 'true' : 'false'
             ]
@@ -355,7 +356,7 @@ final class Loader {
         wp_set_script_translations(
             'remind-me-block-runtime',
             'remind-me',
-            REMIND_ME_PATH . "/languages/"
+            plugin_dir_path($this->file) . "languages/"
         );
     }
 

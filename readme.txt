@@ -3,7 +3,7 @@ Contributors: CodeLeaf
 Tags: reminder, form
 Requires at least: 5.5
 Tested up to: 5.8
-Stable tag: trunk
+Stable tag: 0.1.0
 Requires PHP: 7.4
 License: GNUv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html

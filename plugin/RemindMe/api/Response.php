@@ -24,6 +24,7 @@ final class Response
     public function build() : WP_REST_Response {
         if(is_null($this->res)) {
             $this->error("Internal Server Error", "Response not initialized before build");
+            die();
         }
         return $this->res;
     }

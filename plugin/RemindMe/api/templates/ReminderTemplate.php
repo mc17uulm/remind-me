@@ -53,14 +53,14 @@ final class ReminderTemplate extends Template
     {
         return parent::create(function() {
             ?>
-            <h1 class="ql-align-center"><?= __('Company name', 'remind-me') ?></h1>
+            <h1 class="ql-align-center"><?php echo __('Company name', 'remind-me') ?></h1>
             <p class="ql-align-center"><br></p>
-            <p class="ql-align-center"><?= __('We remind you for the following events:', 'remind-me') ?></p>
+            <p class="ql-align-center"><?php echo __('We remind you for the following events:', 'remind-me') ?></p>
             <p class="ql-align-center">${event_list}.</p>
             <p class="ql-align-center"><br></p>
             <p class="ql-align-center">--</p>
-            <p class="ql-align-center"><?= __('Company name | Street 1 | 12345 City', 'remind-me') ?></p>
-            <p class="ql-align-center"><?= __('Unsubscribe or edit subscription: ${unsubscribe_link}') ?></p>
+            <p class="ql-align-center"><?php echo __('Company name | Street 1 | 12345 City', 'remind-me') ?></p>
+            <p class="ql-align-center"><?php echo __('Unsubscribe or edit subscription: ${unsubscribe_link}') ?></p>
             <?php
         });
     }

@@ -69,7 +69,11 @@ class JsonSchema
                 return $this;
             }
 
-            $this->error = $result->getFirstError()->keyword() . ": " . implode(", ", $result->getFirstError()->keywordArgs());
+            if($result->getFirstError() !== null) {
+                $this->error = $result->getFirstError()->keyword() . ": " . implode(", ", $result->getFirstError()->keywordArgs());
+            } else {
+                $this->error = "no error given";
+            }
             if($throw_on_error) throw new ValidationException($this->error);
             return $this;
         } catch (JsonException $e) {
@@ -86,14 +90,14 @@ class JsonSchema
      * @return bool
      */
     public function has_error() : bool {
-        return !is_null($this->error);
+        return $this->error !== null;
     }
 
     /**
      * @return string
      */
     public function get_error() : string {
-        if(!$this->has_error()) return "";
+        if($this->error === null) return "";
         return $this->error;
     }
 
@@ -101,6 +105,7 @@ class JsonSchema
      * @return array
      */
     public function get_result() : array {
+        if($this->result === null) return [];
         return $this->result;
     }
 

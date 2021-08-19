@@ -27,9 +27,11 @@ final class SettingsSchema extends JsonSchema
 
     /**
      * @return Settings
+     * @throws ValidationException
      */
     public function cast() : Settings
     {
+        if($this->result === null) throw new ValidationException('JsonSchema returned null result');
         return new Settings(
             new Messages($this->result['messages']),
             new License($this->result['license']),

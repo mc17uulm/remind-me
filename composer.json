@@ -11,8 +11,7 @@
     "require": {
         "php": ">=7.4",
         "opis/json-schema": "^1.0",
-        "ext-json": "*",
-        "phpmailer/phpmailer": "^6.4"
+        "ext-json": "*"
     },
     "autoload": {
         "psr-4": {
@@ -22,6 +21,7 @@
     "require-dev": {
         "phpstan/phpstan": "^0.12.82",
         "szepeviktor/phpstan-wordpress": "^0.7.5",
-        "phpunit/phpunit": "^9.5"
+        "phpunit/phpunit": "^9.5",
+        "phpmailer/phpmailer": "^6.4"
     }
 }

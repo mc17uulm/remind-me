@@ -36,11 +36,7 @@
 declare(strict_types=1);
 
 if(!defined('ABSPATH')) die("Invalid Request");
-if(!defined('PHP_VERSION_ID')) {
-    define(PHP_VERSION_ID, 0);
-}
-
-if(PHP_VERSION_ID < 70400) {
+if(!defined('PHP_VERSION_ID') || PHP_VERSION_ID < 70400) {
     error_log('RemindMe | ERROR | plugin requires php version >= 7.4. Given (' . PHP_VERSION . ')');
     die("Plugin requires php version >= 7.4");
 }

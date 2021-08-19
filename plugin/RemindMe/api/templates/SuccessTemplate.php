@@ -46,17 +46,17 @@ final class SuccessTemplate extends Template
     {
         return parent::create(function() {
             ?>
-            <h1 class="ql-align-center"><?= __('Company name', 'remind-me') ?></h1>
+            <h1 class="ql-align-center"><?php echo __('Company name', 'remind-me') ?></h1>
             <p class="ql-align-center"><br></p>
-            <p class="ql-align-center"><?= __('Your subscription was activated.', 'remind-me') ?></p>
+            <p class="ql-align-center"><?php echo __('Your subscription was activated.', 'remind-me') ?></p>
             <p class="ql-align-center"><br></p>
-            <p class="ql-align-center"><?= __('You can now enjoy our service.', 'remind-me') ?></p>
+            <p class="ql-align-center"><?php echo __('You can now enjoy our service.', 'remind-me') ?></p>
             <p class="ql-align-center"><br></p>
-            <p class="ql-align-center"><?= __('If you want to change your subscription or unsubscribe, just click here: ${unsubscribe_link}', 'remind-me') ?></p>
+            <p class="ql-align-center"><?php echo __('If you want to change your subscription or unsubscribe, just click here: ${unsubscribe_link}', 'remind-me') ?></p>
             <p class="ql-align-center"><br></p>
             <p class="ql-align-center">--</p>
-            <p class="ql-align-center"><?= __('Company name | Street 1 | 12345 City', 'remind-me') ?></p>
-            <p class="ql-align-center"><?= __('Unsubscribe or edit subscription: ${unsubscribe_link}') ?></p>
+            <p class="ql-align-center"><?php echo __('Company name | Street 1 | 12345 City', 'remind-me') ?></p>
+            <p class="ql-align-center"><?php echo __('Unsubscribe or edit subscription: ${unsubscribe_link}') ?></p>
             <?php
         });
     }
