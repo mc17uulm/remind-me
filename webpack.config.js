@@ -1,5 +1,6 @@
 const { resolve } = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const SveltePreprocess = require('svelte-preprocess');
 const DependencyExtractionWebpackPlugin = require('@wordpress/dependency-extraction-webpack-plugin');
 const { ESBuildMinifyPlugin } = require('esbuild-loader');
 
@@ -67,6 +68,9 @@ const rules = [
 ];
 
 module.exports = (env, argv) => {
+
+    const prod = argv.mode === 'production';
+
     return {
         name: "handler",
         entry: {
@@ -102,6 +106,9 @@ module.exports = (env, argv) => {
                 import: './src/edit-form',
                 dependOn: 'vendor'
             },
+            svelte: {
+                import: './src/edit-form-svelte'
+            },
             vendor: ['react', 'react-dom']
         },
         optimization: {
@@ -112,7 +119,36 @@ module.exports = (env, argv) => {
             ]
         },
         module: {
-            rules: rules
+            rules: [
+                ...rules,
+                {
+                    test: /\.svelte$/,
+                    exclude: exclude,
+                    use: {
+                        loader: 'svelte-loader',
+                        options: {
+                            compilerOptions: {
+                                dev: !prod
+                            },
+                            emitCss: prod,
+                            hotReload: !prod,
+                            hotOptions: {
+                                noPreserveState: false,
+                                optimistic: true
+                            },
+                            preprocess: SveltePreprocess({
+                                scss: true,
+                                sass: true
+                            })
+                        }
+                    }
+                }, {
+                    test: /node_modules\/svelte\/.*\.mjs$/,
+                    resolve: {
+                        fullySpecified: false
+                    }
+                }
+            ]
         },
         devtool: 'source-map',
         plugins: [
@@ -126,7 +162,11 @@ module.exports = (env, argv) => {
             path: resolve(__dirname, 'dist/')
         },
         resolve: {
-            extensions: [".js", ".jsx", ".ts", ".tsx", ".scss"]
+            alias: {
+                svelte: resolve('node_modules', 'svelte')
+            },
+            extensions: [".mjs", ".svelte", ".js", ".jsx", ".ts", ".tsx", ".scss"],
+            mainFields: ['svelte', 'browser', 'module', 'main']
         },
         mode: argv.mode
     }

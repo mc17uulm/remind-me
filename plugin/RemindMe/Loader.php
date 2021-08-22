@@ -63,7 +63,20 @@ final class Loader {
 
         add_shortcode('remind-me', [$this, 'handle_shortcode']);
         add_shortcode('remind-me-settings', [$this, 'handle_settings_shortcode']);
+        add_shortcode('svelte-test', [$this, 'svelte']);
 
+    }
+
+    public function svelte($attributes) : string {
+        wp_enqueue_script(
+            'remind-me-svelte',
+            plugins_url('dist/js/remind-me-svelte.js', $this->file),
+            ['wp-i18n', 'wp-polyfill'],
+            $this->version,
+            true
+        );
+
+        return '<div id="remind-me-frontend-form"></div>';
     }
 
     /**
@@ -93,7 +106,7 @@ final class Loader {
      * @param array $attributes
      * @return string
      */
-    public function handle_shortcode(array $attributes) : string {
+    public function handle_shortcode($attributes) : string {
         $attributes = shortcode_atts(['events' => '', 'name' => __('Subscription', 'remind-me')], $attributes);
 
         $events = explode(',', $attributes['events']);
