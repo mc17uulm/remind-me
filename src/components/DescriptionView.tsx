@@ -1,5 +1,4 @@
 import React, {Fragment, useState} from "react";
-import {Icon} from "./Icon";
 import {__} from "@wordpress/i18n";
 
 interface DescriptionViewProps {

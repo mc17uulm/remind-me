@@ -1,7 +1,6 @@
 import React, { Fragment } from "react"
-import {Button, Modal} from "semantic-ui-react";
+import {Button, Icon, Modal} from "semantic-ui-react";
 import {__} from "@wordpress/i18n";
-import {Icon} from "../Icon";
 
 interface DeleteModalProps {
     title: string,
@@ -20,7 +19,7 @@ export const DeleteModal = (props : DeleteModalProps) => {
             </Modal.Content>
             <Modal.Actions>
                 <Button color="black" onClick={props.onClose}>{__('Back', 'remind-me')}</Button>
-                <Button color="red" loading={props.loading} onClick={props.onDelete}><Icon class="trash" /> {__('Delete', 'remind-me')}</Button>
+                <Button color="red" loading={props.loading} onClick={props.onDelete}><Icon name='trash' /> {__('Delete', 'remind-me')}</Button>
             </Modal.Actions>
         </Fragment>
     )

@@ -2,6 +2,8 @@
 
 namespace RemindMe\mail;
 
+require_once ABSPATH . WPINC . '/class-phpmailer.php';
+
 use PHPMailer\PHPMailer\PHPMailer;
 use RemindMe\api\APIException;
 use RemindMe\api\objects\Event;
@@ -114,8 +116,10 @@ final class MailHandler {
             $mailer->Body = $content;
             $mailer->AltBody = strip_tags($content);
 
+            // if script is executed in development on a local machine => use smtp settings in dev.mail.php
 	        if($_SERVER['REMOTE_ADDR'] === '127.0.0.1'){
-                self::dev_send_mail($mailer);
+	            require_once REMIND_ME_DIR . '/dev.mail.php';
+	            send_dev_mail($mailer);
             }
 
             if(!$mailer->send()) throw new PluginException($mailer->ErrorInfo);
@@ -123,21 +127,6 @@ final class MailHandler {
         } catch (Exception $e) {
             throw new PluginException($e->getMessage());
         }
-    }
-
-    /**
-     * @param PHPMailer $mailer
-     */
-    private static function dev_send_mail(PHPMailer &$mailer) : void {
-        $mailer->SMTPDebug = 0;
-        $mailer->isSMTP();
-        $mailer->SMTPAuth = true;
-        $mailer->Username = "test@code-leaf.de";
-        $mailer->Password = "deploy123";
-        $mailer->Port = 25;
-        $mailer->Host = 'code-leaf.de';
-        $mailer->FromName = get_bloginfo('name');
-        $mailer->From = 'test@code-leaf.de';
     }
 
 }

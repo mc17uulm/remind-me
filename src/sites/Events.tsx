@@ -1,11 +1,10 @@
 import React, {Fragment, useContext, useEffect} from "react";
-import {Button, Checkbox, Form, Label, Table} from "semantic-ui-react";
+import {Button, Checkbox, Form, Icon, Label, Table} from "semantic-ui-react";
 import {APIEvent, Event, EventHandler, get_repetition} from "../api/handler/EventHandler";
 import {__} from "@wordpress/i18n";
 import {toast} from "react-toastify";
 import {HandleEventModal} from "../components/modals/HandleEventModal";
 import "../styles/events.scss";
-import {Icon} from "../components/Icon";
 import CopyToClipboard from "react-copy-to-clipboard";
 import {useCheckbox} from "../hooks/useCheckbox";
 import {useModal} from "../hooks/useModal";
@@ -69,7 +68,7 @@ export const Events = () => {
                         onCopy={() => toast.success(__('Shortcode copied to clipboard', 'remind-me'))}
                     >
                         <Button>
-                            <Icon class="copy" />
+                            <Icon name='copy' />
                         </Button>
                     </CopyToClipboard>
                 }
@@ -125,12 +124,12 @@ export const Events = () => {
                                                 className="remind-me-edit-link remind-me-small"
                                                 onClick={(e) => modal.edit(e, event)}
                                             >
-                                                <Icon class="cogs" /> {__('Edit', 'remind-me')}
+                                                <Icon name="cogs" /> {__('Edit', 'remind-me')}
                                             </a> <a
                                             className="remind-me-delete-link remind-me-small"
                                             onClick={(e) =>  modal.delete(e, [event])} color="red"
                                         >
-                                            <Icon class="trash" /> {__('Delete', 'remind-me')}
+                                            <Icon name="trash" /> {__('Delete', 'remind-me')}
                                         </a>
                                         </Table.Cell>
                                         <Table.Cell className='remind-me-description'>

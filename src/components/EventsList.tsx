@@ -1,8 +1,7 @@
-import {List} from "semantic-ui-react";
+import {Icon, List} from "semantic-ui-react";
 import {APIEvent, get_repetition} from "../api/handler/EventHandler";
 import React, {useState, MouseEvent, Fragment} from "react";
-import {__, _n, sprintf} from "@wordpress/i18n";
-import {Icon} from "./Icon";
+import {__, sprintf} from "@wordpress/i18n";
 
 interface EventsListProps {
     events : APIEvent[],
@@ -21,7 +20,7 @@ export const EventsList = (props: EventsListProps) => {
     return (
         <Fragment>
             <a className='remind-me-link' onClick={toggle}>
-                <Icon class='list' />{" "}
+                <Icon name='list' />{" "}
                 {sprintf(props.events.length === 1 ? __('%d Event', ' remind-me') : __('%d Events', 'remind-me'), props.events.length)}
             </a>
             <List>

@@ -116,7 +116,7 @@ final class Loader {
     public function register_menu() : void {
         add_menu_page(
             'Dashboard',
-            'Reminder',
+            'RemindMe',
             'manage_options',
             'remind-me',
             function() { echo '<div id="remind_me_container"></div>'; },
@@ -228,7 +228,7 @@ final class Loader {
                     'nonce' => wp_create_nonce('wp_rest'),
                     'slug' => 'remind-me',
                     'version' => 'v1',
-                    'site' => esc_js($_GET["page"]),
+                    'site' => sanitize_text_field($_GET["page"]),
                     'base' => admin_url('admin.php'),
                     'active' =>  $settings->license->active ? 'true' : 'false'
                 ]
@@ -318,9 +318,7 @@ final class Loader {
      * @throws PluginException
      */
     public function register_block() : void {
-        var_dump(is_admin());
         if(is_admin()) {
-            var_dump('is admin');
             $this->load_backend_block_script();
         } else {
             $this->load_frontend_block_scripts();
@@ -359,7 +357,7 @@ final class Loader {
                 'nonce' => wp_create_nonce('wp_rest'),
                 'slug' => 'remind-me',
                 'version' => 'v1',
-                'site' => esc_js($_GET["page"]),
+                'site' => sanitize_text_field($_GET["page"]),
                 'base' => admin_url('admin.php'),
                 'active' =>  $settings->license->active ? 'true' : 'false'
             ]

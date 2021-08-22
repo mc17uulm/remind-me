@@ -1,10 +1,9 @@
 import React, {Fragment, MouseEvent, useContext, useEffect, useState} from "react";
-import {Button, Checkbox, Label, Table} from "semantic-ui-react";
+import {Button, Checkbox, Icon, Label, Table} from "semantic-ui-react";
 import {__} from "@wordpress/i18n";
 import {APISubscriber, SubscriberHandler} from "../api/handler/SubscriberHandler";
 import {APIEvent, EventHandler} from "../api/handler/EventHandler";
 import {toast} from "react-toastify";
-import {Icon} from "../components/Icon";
 import {useCheckbox} from "../hooks/useCheckbox";
 import {LoadingContent} from "../components/LoadingContent";
 import {useModal} from "../hooks/useModal";
@@ -78,7 +77,7 @@ export const Subscribers = () => {
     const renderDate = (timestamp : number) => {
         return (
             <Fragment>
-                <Icon class="clock-o" /> {dayjs(timestamp).format('LLLL')}
+                <Icon name='clock' /> {dayjs(timestamp).format('LLLL')}
             </Fragment>
         )
     }
@@ -121,12 +120,12 @@ export const Subscribers = () => {
                                                 className={'remind-me-edit-link' + (settings.active ? '' : ' remind-me-disabled')}
                                                 onClick={(e) => modal.edit(e, subscriber)}
                                             >
-                                                <Icon class='cogs' /> {__('Edit', 'remind-me')}
+                                                <Icon name='cogs' /> {__('Edit', 'remind-me')}
                                             </a> <a
                                             className={'remind-me-delete-link' + (settings.active ? '' : ' remind-me-disabled')}
                                             onClick={(e) => modal.delete(e, [subscriber])}
                                         >
-                                            <Icon class='trash' /> {__('Delete', 'remind-me')}
+                                            <Icon name='trash' /> {__('Delete', 'remind-me')}
                                         </a>
                                         </Table.Cell>
                                         <Table.Cell>
