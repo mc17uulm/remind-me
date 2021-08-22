@@ -3,8 +3,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const DependencyExtractionWebpackPlugin = require('@wordpress/dependency-extraction-webpack-plugin');
 const { ESBuildMinifyPlugin } = require('esbuild-loader');
 
-const base = '/wp-content/plugins/remind-me/';
-
 const exclude = [
     /node_modules/,
     /dist/,
@@ -35,7 +33,7 @@ const rules = [
     }, {
         test: /\.s?[ac]ss$/,
         use: [
-            MiniCssExtractPlugin.loader,
+            {loader: MiniCssExtractPlugin.loader},
             {loader: 'css-loader', options: {sourceMap: true}},
             {loader: 'sass-loader', options: {sourceMap: true}}
         ]
@@ -44,9 +42,8 @@ const rules = [
         use: {
             loader: "file-loader",
             options: {
-                name: '[name].[ext]',
-                outputPath: 'img/',
-                publicPath: `${base}dist/img/`
+                name: 'img/[name].[ext]',
+                publicPath: '../'
             }
         }
     }, {
@@ -62,9 +59,8 @@ const rules = [
         use: {
             loader: 'file-loader',
             options: {
-                name: '[name].[ext]',
-                outputPath: 'fonts/',
-                publicPath: `${base}dist/fonts/`
+                name: 'fonts/[name].[ext]',
+                publicPath: '../'
             }
         }
     }
@@ -74,14 +70,39 @@ module.exports = (env, argv) => {
     return {
         name: "handler",
         entry: {
-            block: './src/block',
-            dashboard: "./src/index",
-            events: "./src/events",
-            subscribers: "./src/subscribers",
-            settings: "./src/settings",
-            templates: "./src/templates",
-            'new-form': "./src/new-form",
-            'edit-form': './src/edit-form'
+            block: {
+                import: './src/block',
+                dependOn: 'vendor'
+            },
+            dashboard: {
+                import: "./src/index",
+                dependOn: 'vendor'
+            },
+            events: {
+                import: "./src/events",
+                dependOn: 'vendor'
+            },
+            subscribers: {
+                import: "./src/subscribers",
+                dependOn: 'vendor'
+            },
+            settings: {
+                import: "./src/settings",
+                dependOn: 'vendor'
+            },
+            templates: {
+                import: "./src/templates",
+                dependOn: 'vendor'
+            },
+            'new-form': {
+                import: "./src/new-form",
+                dependOn: 'vendor'
+            },
+            'edit-form': {
+                import: './src/edit-form',
+                dependOn: 'vendor'
+            },
+            vendor: ['react', 'react-dom']
         },
         optimization: {
             minimizer: [
@@ -102,13 +123,7 @@ module.exports = (env, argv) => {
         ],
         output: {
             filename: 'js/remind-me-[name].js',
-            path: resolve(__dirname, 'dist/'),
-            publicPath: base
-        },
-        externals: {
-            '@wordpress/i18n': "wp.i18n",
-            'react': 'React',
-            'react-dom': 'ReactDOM'
+            path: resolve(__dirname, 'dist/')
         },
         resolve: {
             extensions: [".js", ".jsx", ".ts", ".tsx", ".scss"]

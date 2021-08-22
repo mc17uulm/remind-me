@@ -20,12 +20,28 @@ final class Loader {
      * @var string
      */
     private string $file;
+    /**
+     * @var string|false
+     */
+    private string $version;
+    /**
+     * @var array
+     */
+    private array $dependencies;
 
     /**
      * @param string $file
      */
     public function __construct(string $file) {
         $this->file = $file;
+        $this->version = defined("REMIND_ME_VERSION") ? REMIND_ME_VERSION : false;
+        $path = plugin_dir_path($this->file) . 'dist/js/remind-me-vendor.asset.php';
+        $dependencies = file_exists($path) ? require($path) : [];
+        if(array_key_exists('dependencies', $dependencies)) {
+            $this->dependencies = $dependencies['dependencies'];
+        } else {
+            $this->dependencies = [];
+        }
     }
 
     /**
@@ -168,6 +184,16 @@ final class Loader {
         }
     }
 
+    private function load_vendor() : void {
+        wp_enqueue_script(
+            'remind-me-vendor',
+            plugins_url('dist/js/remind-me-vendor.js', $this->file),
+            $this->dependencies,
+            $this->version,
+            true
+        );
+    }
+
     /**
      * @throws PluginException
      */
@@ -176,30 +202,22 @@ final class Loader {
         if($token !== "") {
 
             $settings = Settings::get();
-            $version = defined("REMIND_ME_VERSION") ? REMIND_ME_VERSION : false;
 
-            wp_enqueue_script(
-                'react-js',
-                "https://unpkg.com/react@17/umd/react.production.min.js"
-            );
-            wp_enqueue_script(
-                'react-js-dom',
-                "https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"
-            );
+            $this->load_vendor();
 
             wp_enqueue_script(
                 "remind-me-$token-runtime",
-                plugin_dir_url($this->file) . "dist/js/remind-me-$token.js",
+                plugins_url("dist/js/remind-me-$token.js", $this->file),
                 ['wp-i18n'],
-                $version,
+                $this->version,
                 true
             );
 
             wp_enqueue_style(
                 'remind-me-style',
-                plugin_dir_url($this->file) . "dist/css/remind-me-$token.css",
+                plugins_url("dist/css/remind-me-$token.css", $this->file),
                 [],
-                $version
+                $this->version
             );
 
             wp_localize_script(
@@ -226,22 +244,13 @@ final class Loader {
 
     public function register_frontend_scripts() : void {
 
-        $version = defined("REMIND_ME_VERSION") ? REMIND_ME_VERSION : false;
-
-        wp_enqueue_script(
-            'react-js',
-            "https://unpkg.com/react@17/umd/react.production.min.js"
-        );
-        wp_enqueue_script(
-            'react-js-dom',
-            "https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"
-        );
+        $this->load_vendor();
 
         wp_register_script(
             'remind-me-new-form-runtime',
             plugin_dir_url($this->file) . "dist/js/remind-me-new-form.js",
             ['wp-i18n'],
-            $version,
+            $this->version,
             true
         );
 
@@ -249,7 +258,7 @@ final class Loader {
             'remind-me-edit-form-runtime',
             plugin_dir_url($this->file) . "dist/js/remind-me-edit-form.js",
             ['wp-i18n'],
-            $version,
+            $this->version,
             true
         );
 
@@ -257,7 +266,7 @@ final class Loader {
             'remind-me-frontend-style',
             plugin_dir_url($this->file) . "dist/css/remind-me-new-form.css",
             [],
-            $version
+            $this->version
         );
 
     }
@@ -309,7 +318,9 @@ final class Loader {
      * @throws PluginException
      */
     public function register_block() : void {
+        var_dump(is_admin());
         if(is_admin()) {
+            var_dump('is admin');
             $this->load_backend_block_script();
         } else {
             $this->load_frontend_block_scripts();
@@ -321,20 +332,21 @@ final class Loader {
      */
     private function load_backend_block_script() : void {
         $settings = Settings::get();
-        $version = defined("REMIND_ME_VERSION") ? REMIND_ME_VERSION : false;
+
+        $this->load_vendor();
 
         wp_enqueue_style(
             'remind-me-block-style',
             plugin_dir_url($this->file) . "dist/css/remind-me-block.css",
             [],
-            $version
+            $this->version
         );
 
         wp_enqueue_script(
             'remind-me-block-runtime',
             plugin_dir_url($this->file) . "dist/js/remind-me-block.js",
             ['wp-blocks', 'wp-editor', 'wp-i18n', 'wp-element'],
-            $version,
+            $this->version,
             true
         );
 
