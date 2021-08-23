@@ -41,7 +41,7 @@ final class Shortcode
     public function render() : string {
         $list = implode(',', $this->events);
         $title = $this->name;
-        return "<div id='remind-me-frontend-form' data-title='$title' datalist-events='$list'></div>";
+        return "<div id='remind-me-frontend-form' data-title='$title' datalist-events='[$list]'></div>";
     }
 
 

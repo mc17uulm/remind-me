@@ -1,13 +1,7 @@
-import {
-    APIEvent,
-    ClockingList,
-    empty_event,
-    EventHandler,
-    get_repetition
-} from "../../api/handler/EventHandler";
+import { APIEvent, ClockingList, empty_event, EventHandler, get_repetition } from "../../api/handler/EventHandler";
 import React, {Fragment, useEffect} from "react";
 import {Button, DropdownItemProps, Form, List, Message, Modal, ModalActions} from "semantic-ui-react";
-import {__, _n, sprintf} from "@wordpress/i18n";
+import {__, sprintf} from "@wordpress/i18n";
 import {DeleteModal} from "./DeleteModal";
 import {toast} from "react-toastify";
 import {Either} from "../../api/Either";
@@ -260,7 +254,7 @@ export const HandleEventModal = (props : ModalProps<APIEvent>) => {
                 </Modal.Content>
                 <ModalActions>
                     <Button color='black' onClick={props.onClose}>{__('Back', 'remind-me')}</Button>
-                    <Button color='green' loading={loading} onClick={() => onSubmit()}>
+                    <Button color='green' disabled={loading} loading={loading} onClick={() => onSubmit()}>
                         {__('Save', 'remind-me')}
                     </Button>
                 </ModalActions>

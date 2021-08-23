@@ -1,6 +1,6 @@
 import {APISubscriber, SubscriberHandler} from "../api/handler/SubscriberHandler";
 import {APIEvent, EventHandler} from "../api/handler/EventHandler";
-import {PublicSettings, Settings, SettingsHandler} from "../api/handler/SettingsHandler";
+import {PublicSettings, SettingsHandler} from "../api/handler/SettingsHandler";
 import {InitializeStates, useInitializer} from "../hooks/useInitializer";
 import React, {Fragment, useEffect} from "react";
 import {Either} from "../api/Either";

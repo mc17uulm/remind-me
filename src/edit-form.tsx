@@ -2,8 +2,7 @@ import {FrontendDefinitions} from "./View";
 import {Request} from "./api/Request";
 import ReactDOM from "react-dom";
 import React from "react";
-// @ts-ignore
-import {Subscription} from "./frontend/Subscription.tsx";
+import {Subscription} from "./frontend/Subscription";
 import "./styles/frontend.scss";
 
 declare var remind_me_definitions : FrontendDefinitions;

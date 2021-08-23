@@ -1,6 +1,6 @@
 # Shortcode
 
-RemindMe stellt den `[remind-me]` zur Verfügung um ein Anmeldeformular auf Ihrer Seite
+RemindMe stellt den `[remind-me]` Shortcode zur Verfügung, um ein Anmeldeformular auf Ihrer Seite
 einzurichten. Hier werden wir nicht auf den Nutzen und Aufbau des Anmeldeformulares eingehen. Mehr
 Information dazu finden Sie unter: [Gutenberg Block](block.md).
 
@@ -17,5 +17,5 @@ Der Shortcode hätten dann folgende Form:
 
 `[remind-me title='Anmeldung' events='[2,3,5]']`
 
-Wenn Sie den Shortcode nicht selbst erstellen möchten können Sie unter `Reminder` => `Ereignisse` die gewünschten 
+Wenn Sie den Shortcode nicht selbst erstellen möchten, können Sie unter `Reminder` => `Ereignisse` die gewünschten 
 Ereignisse auswählen und den Shortcode oben rechts einfach kopieren.

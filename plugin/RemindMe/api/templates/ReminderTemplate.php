@@ -40,7 +40,10 @@ final class ReminderTemplate extends Template
             'remind-me-action' => 'edit',
             'remind-me-token' => $subscriber->get_token()
         ], LinkHandler::get_site());
-        $list = "<li>" . implode("</li><li>", array_map(fn(int $id) => Event::get($id)->get_name(), $subscriber->events)) . "</li>";
+        $events = array_map(fn(int $id) => Event::get($id), $subscriber->events);
+        $list = "<li>" . implode("</li><li>", array_map(function(Event $event) {
+                return $event->get_name() . "<br /><small>" . $event->get_description() . "</small>";
+        }, $events)) . "</li>";
         $message = str_replace('${event_list}', "<ul>$list</ul>", $this->html);
         return str_replace('${unsubscribe_link}', "<a href='$edit_url'>" . __('Unsubscribe or edit subscription', 'remind-me') . "</a>", $message);
     }

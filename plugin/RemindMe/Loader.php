@@ -63,20 +63,7 @@ final class Loader {
 
         add_shortcode('remind-me', [$this, 'handle_shortcode']);
         add_shortcode('remind-me-settings', [$this, 'handle_settings_shortcode']);
-        add_shortcode('svelte-test', [$this, 'svelte']);
 
-    }
-
-    public function svelte($attributes) : string {
-        wp_enqueue_script(
-            'remind-me-svelte',
-            plugins_url('dist/js/remind-me-svelte.js', $this->file),
-            ['wp-i18n', 'wp-polyfill'],
-            $this->version,
-            true
-        );
-
-        return '<div id="remind-me-frontend-form"></div>';
     }
 
     /**
@@ -132,12 +119,13 @@ final class Loader {
      *
      */
     public function register_menu() : void {
+
         add_menu_page(
             'Dashboard',
             'RemindMe',
             'manage_options',
             'remind-me',
-            function() { echo '<div id="remind_me_container"></div>'; },
+            ReactContainer::render(),
             'dashicons-megaphone'
         );
 
@@ -155,7 +143,7 @@ final class Loader {
             __('Events', 'remind-me'),
             'manage_options',
             'remind-me-events',
-            function() { echo '<div id="remind_me_container"></div>'; }
+            ReactContainer::render()
         );
 
         add_submenu_page(
@@ -164,7 +152,7 @@ final class Loader {
             __('Subscribers', 'remind-me'),
             'manage_options',
             'remind-me-subscribers',
-            function() { echo '<div id="remind_me_container"></div>'; }
+            ReactContainer::render()
         );
 
         add_submenu_page(
@@ -173,7 +161,7 @@ final class Loader {
             __('Email templates', 'remind-me'),
             'manage_options',
             'remind-me-templates',
-            function() { echo '<div id="remind_me_container"></div>'; }
+            ReactContainer::render()
         );
 
         add_submenu_page(
@@ -182,7 +170,7 @@ final class Loader {
             __('Settings', 'remind-me'),
             'manage_options',
             'remind-me-settings',
-            function() { echo '<div id="remind_me_container"></div>'; }
+            ReactContainer::render()
         );
     }
 

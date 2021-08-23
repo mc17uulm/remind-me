@@ -140,7 +140,7 @@ export const HandleSubscriberModal = (props : ModalProps<APISubscriber>) => {
                         {__('The owner of the email address has to verify his subscription. If you save, a welcome email is sent to the new subscriber', 'remind-me')}
                     </Message>
                     <Button color='black' onClick={props.onClose}>{__('Back', 'remind-me')}</Button>
-                    <Button color='green' loading={loading} onClick={() => onSubmit()}>
+                    <Button color='green' disabled={loading} loading={loading} onClick={() => onSubmit()}>
                         {__('Save', 'remind-me')}
                     </Button>
                 </Modal.Actions>

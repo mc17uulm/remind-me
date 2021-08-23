@@ -19,7 +19,7 @@ export const DeleteModal = (props : DeleteModalProps) => {
             </Modal.Content>
             <Modal.Actions>
                 <Button color="black" onClick={props.onClose}>{__('Back', 'remind-me')}</Button>
-                <Button color="red" loading={props.loading} onClick={props.onDelete}><Icon name='trash' /> {__('Delete', 'remind-me')}</Button>
+                <Button color="red" disabled={props.loading} loading={props.loading} onClick={props.onDelete}><Icon name='trash' /> {__('Delete', 'remind-me')}</Button>
             </Modal.Actions>
         </Fragment>
     )

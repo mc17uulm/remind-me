@@ -221,7 +221,7 @@ export const SubscriptionForm = (props : RegisterFormProps) => {
                     </div>
                     <div className='row btn-row'>
                         {(typeof props.subscriber !== "undefined") ? (
-                            <a onClick={() => setStep(1)}>{__('Unsubscribe')}</a>
+                            <a onClick={() => setStep(1)}>{__('Unsubscribe', 'remind-me')}</a>
                         ) : ""}
                         <ButtonMessage msg={message} />
                         <button type='button' disabled={submitting} onClick={onSubmit}>

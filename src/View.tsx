@@ -44,7 +44,7 @@ export class View {
             remind_me_definitions.version
         );
 
-        const elem = document.getElementById("remind_me_container");
+        const elem = document.getElementById("remind-me-container");
         elem ? ReactDOM.render(
             <PluginContext.Provider value={Settings}>
                 <Container>
