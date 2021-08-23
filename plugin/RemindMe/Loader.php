@@ -126,7 +126,7 @@ final class Loader {
             'manage_options',
             'remind-me',
             ReactContainer::render(),
-            'dashicons-megaphone'
+            'dashicons-bell'
         );
 
         add_submenu_page(
