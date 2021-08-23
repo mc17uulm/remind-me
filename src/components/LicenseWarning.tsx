@@ -1,5 +1,5 @@
 import {Message} from "semantic-ui-react";
-import {__, sprintf} from "@wordpress/i18n";
+import {__} from "@wordpress/i18n";
 import React, {useEffect, useState} from "react";
 import { Fragment } from "react";
 import {useCookie} from "../hooks/useCookie";

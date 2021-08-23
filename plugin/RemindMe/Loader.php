@@ -23,7 +23,7 @@ final class Loader {
     /**
      * @var string|false
      */
-    private string $version;
+    private $version;
     /**
      * @var array
      */
@@ -100,10 +100,15 @@ final class Loader {
         Settings::delete();
         Templates::delete();
         CronJob::remove();
+        // Remove license notice hide cookie if set
+        if(isset($_COOKIE['remind-me-license-notice'])) {
+            unset($_COOKIE['remind-me-license-notice']);
+            setcookie('remind-me-license-notice', '', time() - 3600, '/');
+        }
     }
 
     /**
-     * @param array $attributes
+     * @param array|string $attributes
      * @return string
      */
     public function handle_shortcode($attributes) : string {
