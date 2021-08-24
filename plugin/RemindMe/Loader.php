@@ -175,11 +175,10 @@ final class Loader {
     }
 
     /**
-     * @param string|null $site
+     * @param string $site
      * @return string
      */
-    public function get_token (?string $site) : string {
-        if(is_null($site)) return "";
+    public function get_token (string $site) : string {
         switch($site) {
             case 'remind-me': return 'dashboard';
             case 'remind-me-events': return 'events';
@@ -204,7 +203,7 @@ final class Loader {
      * @throws PluginException
      */
     public function register_backend_scripts() : void {
-        $token = $this->get_token(sanitize_text_field($_GET["page"]));
+        $token = $this->get_token(sanitize_text_field($_GET["page"] ?? ""));
         if($token !== "") {
 
             $settings = Settings::get();
