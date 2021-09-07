@@ -58,7 +58,7 @@ final class License
      * @throws PluginException
      */
     private function doCheck() : void {
-        $response = $this->send_request('https://plugins.code-leaf.de/license/check');
+        $response = $this->send_request('https://auth.move78.de/license/check');
         $this->active = $response;
         $this->status = $this->active ? 'License is active' : 'License is not active';
     }
@@ -67,7 +67,7 @@ final class License
      * @throws PluginException
      */
     private function doRegister() : void {
-        $response = $this->send_request('https://plugins.code-leaf.de/license/register');
+        $response = $this->send_request('https://auth.move78.de/license/register');
         if($response === true) {
             $this->active = true;
             $this->status = 'License is activated';

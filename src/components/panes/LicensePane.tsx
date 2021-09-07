@@ -35,7 +35,7 @@ export const LicensePane = (props : FormikProps<APISettings> & {update: () => Pr
             <Message info>
                 <Message.Header>{__('License info', 'remind-me')}</Message.Header>
                 {__('With a license you can add multiple events, add and export subscribers and use the reliable backend of our service. More information at: ', 'remind-me')}
-                <a href='https://code-leaf.de'>CodeLeaf</a>
+                <a href='https://move78.de'>move78</a>
             </Message>
             <h3>{__('Your license', 'remind-me')}</h3>
             <Form.Group inline>

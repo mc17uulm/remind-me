@@ -1,5 +1,5 @@
 === RemindMe ===
-Contributors: CodeLeaf
+Contributors: move78
 Tags: reminder, form
 Requires at least: 5.5
 Tested up to: 5.8
@@ -37,14 +37,14 @@ See the Installation guide for more details.
 - Extensive documentation
 - Build with a special attention to security, reliability and efficiency
 
-You can find the full documentation under [mc17uulm.github.io/RemindMe](https://mc17uulm.github.io/remind-me/).
+You can find the full documentation under [move-78-io.github.io/RemindMe](https://move-78-io.github.io/remind-me-docs/#/).
 
 == Installation ==
 
-RemindMe can be easily installed in your WorpPress backend. Click in your backend on the `Plugins` site and there on `Install`.
+RemindMe can be easily installed in your WordPress backend. Click in your backend on the `Plugins` site and there on `Install`.
 Insert into the search form `RemindMe`. The plugin should be listed, with a simple click on `Install now` the plugin gets installed.
 
-You can find the full documentation under [mc17uulm.github.io/RemindMe](https://mc17uulm.github.io/remind-me/).
+You can find the full documentation under [move-78-io.github.io/RemindMe](https://move-78-io.github.io/remind-me-docs/#/).
 
 == Changelog ==
 

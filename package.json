@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "WP Plugin for reminder handling",
   "main": "index.js",
-  "author": "CodeLeaf <plugins@code-leaf.de>",
+  "author": "move78 <plugins@move78.de>",
   "license": "MIT",
   "scripts": {
     "tsc": "tsc",

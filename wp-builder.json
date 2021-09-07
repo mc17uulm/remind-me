@@ -4,8 +4,8 @@
   "version": "0.1.0",
   "type": "plugin",
   "author": {
-    "name": "CodeLeaf",
-    "email": "memosyne@code-leaf.de"
+    "name": "move78",
+    "email": "remind-me@move-78.de"
   },
   "build": {
     "includes": [

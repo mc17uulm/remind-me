@@ -12,7 +12,7 @@ Plugin wird installiert.
 ### Manuelle Installation
 
 Wenn Sie die manuelle Installation von RemindMe nutzen möchten, müssen Sie zuerst die aktuelle Version
-des Plugins unter [https://plugin.code-leaf.de/remind-me](https://plugin.code-leaf.de/remind-me) herunterladen.
+des Plugins unter [https://plugin.move78.de/remind-me](https://plugin.move78.de/remind-me) herunterladen.
 In Ihrem WordPress Backend finden Sie unter `Plugins` => `Installieren` die Option `Plugin hochladen`.
 
 Wählen Sie hier die heruntergeladene `remind-me.zip` Datei aus und klicken auf `Jetzt installieren`.

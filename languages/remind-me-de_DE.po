@@ -23,12 +23,12 @@ msgid "Plugin for reminder handling"
 msgstr "WordPress Plugin für die Bereitstellung von Erinnerungen"
 
 #. Author of the plugin
-msgid "CodeLeaf"
-msgstr "CodeLeaf"
+msgid "move78"
+msgstr "move78"
 
 #. Author URI of the plugin
-msgid "https://plugins.code-leaf.de"
-msgstr "https://plugins.code-leaf.de"
+msgid "https://move78.de"
+msgstr "https://move78.de"
 
 #: plugin/RemindMe/api/handler/LinkHandler.php:49
 msgid "Subscription settings"

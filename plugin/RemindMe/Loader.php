@@ -95,7 +95,7 @@ final class Loader {
     }
 
     /**
-     * @param array|string $attributes
+     * @param array $attributes
      * @return string
      */
     public function handle_shortcode($attributes) : string {

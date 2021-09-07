@@ -29,7 +29,7 @@ export const LicenseWarning = (props : {active: boolean}) => {
             <Message.Header>{__('Plugin not licensed', 'remind-me')}</Message.Header>
             <p>
                 {__('You have no license added. Some functions are therefore not available. Learn more at ', 'remind-me')}
-                <a href='https://code-leaf.de'>CodeLeaf.de</a>
+                <a href='https://move78.de'>move78.de</a>
             </p>
         </Message>
     ) : <Fragment></Fragment>;

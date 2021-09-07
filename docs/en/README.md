@@ -28,8 +28,8 @@ Check out the [Showcase](showcase.md) to see RemindMe in use.
 
 ## Buy License
 
-RemindMe can be used for free. Some extra features (like export subscribers, add own clients, no events limit) require a CodeLeaf license. 
-You can get a license on [code-leaf.de](https://code-leaf.de).
+RemindMe can be used for free. Some extra features (like export subscribers, add own clients, no events limit) require a move78 license. 
+You can get a license on [move78.de](https://move78.de).
 
 
 

@@ -1,11 +1,11 @@
 {
-    "name": "code-leaf/remind-me",
+    "name": "move78/remind-me",
     "description": "WP Plugin for reminder handling",
     "type": "library",
     "authors": [
         {
-            "name": "CodeLeaf",
-            "email": "plugins@code-leaf.de"
+            "name": "move78",
+            "email": "plugins@move78.de"
         }
     ],
     "require": {

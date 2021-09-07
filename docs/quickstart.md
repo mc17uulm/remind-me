@@ -37,4 +37,4 @@ Mehr Informationen unter: [E-Mail-Vorlagen](emails.md).
 
 ### Fragen
 
-Sollten bei Ihnen trotz der Dokumentation noch Fragen offen bleiben, scheuen Sie nicht uns zu kontaktieren: [plugins@code-leaf.de](mailto:plugins@code-leaf.de).
+Sollten bei Ihnen trotz der Dokumentation noch Fragen offen bleiben, scheuen Sie nicht uns zu kontaktieren: [plugins@move78.de](mailto:plugins@move78.de).
