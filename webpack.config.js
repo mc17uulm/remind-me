@@ -1,6 +1,7 @@
 const { resolve } = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const DependencyExtractionWebpackPlugin = require('@wordpress/dependency-extraction-webpack-plugin');
+const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 const { ESBuildMinifyPlugin } = require('esbuild-loader');
 
 const exclude = [
@@ -120,7 +121,12 @@ module.exports = (env, argv) => {
             new MiniCssExtractPlugin({
                 filename: 'css/remind-me-[name].css'
             }),
-            new DependencyExtractionWebpackPlugin({injectPolyfill: true})
+            new DependencyExtractionWebpackPlugin({injectPolyfill: true}),
+            new BrowserSyncPlugin({
+                host: 'localhost',
+                port: 3000,
+                proxy: 'http://dev.local'
+            })
         ],
         output: {
             filename: 'js/remind-me-[name].js',

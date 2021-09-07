@@ -23,7 +23,7 @@
  * === Plugin Information ===
  *
  * Version: 0.1.0
- * Date: 26.03.2021
+ * Date: 01.10.2021
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the GNU
  * General Public License version 2, as published by the Free Software Foundation. You may NOT assume
@@ -50,7 +50,6 @@ define('REMIND_ME_PATH', plugin_dir_path(__FILE__));
 define('REMIND_ME_BASENAME', plugin_basename(__FILE__));
 define("REMIND_ME_DIR", __DIR__);
 define("REMIND_ME_DEBUG", true);
-define("REMIND_ME_LOG_FILE", __DIR__ . "/remind-me.log");
 define("REMIND_ME_SCHEMAS", __DIR__ . "/schemas/");
 
 require_once __DIR__ . "/vendor/autoload.php";

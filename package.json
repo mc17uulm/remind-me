@@ -34,6 +34,8 @@
     "@wordpress/env": "^4.1.0",
     "@wordpress/scripts": "^17.0.0",
     "babel-loader": "^8.2.2",
+    "browser-sync": "^2.27.5",
+    "browser-sync-webpack-plugin": "^2.3.0",
     "css-loader": "^5.2.0",
     "esbuild-loader": "^2.13.1",
     "eslint": "^7.26.0",
