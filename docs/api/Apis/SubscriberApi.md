@@ -4,14 +4,14 @@ All URIs are relative to *http://}*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**deleteSubscriberById**](SubscriberApi.md#deleteSubscriberById) | **DELETE** /subscriber/{id} | Deletes an subscriber by id
-[**deleteSubscriberByToken**](SubscriberApi.md#deleteSubscriberByToken) | **DELETE** /subscriber/{token} | Deletes an subscriber by token
-[**findSubscriberByToken**](SubscriberApi.md#findSubscriberByToken) | **GET** /subscriber/{token} | Find a subscriber by token
-[**getAllSubscriber**](SubscriberApi.md#getAllSubscriber) | **GET** /subscribers | Get all subscriber
-[**setNewSubscriberAdmin**](SubscriberApi.md#setNewSubscriberAdmin) | **POST** /subscriber | Add new subscriber
-[**setNewSubscriberOpen**](SubscriberApi.md#setNewSubscriberOpen) | **POST** /subscribe | Add new subscriber
-[**updateSubscriberById**](SubscriberApi.md#updateSubscriberById) | **PUT** /subscriber/{id} | Updates an existing subscriber
-[**updateSubscriberByToken**](SubscriberApi.md#updateSubscriberByToken) | **PUT** /subscriber/{token} | Updates an existing subscriber
+[**deleteSubscriberById**](api/Apis/SubscriberApi.md#deleteSubscriberById) | **DELETE** /subscriber/{id} | Deletes an subscriber by id
+[**deleteSubscriberByToken**](api/Apis/SubscriberApi.md#deleteSubscriberByToken) | **DELETE** /subscriber/{token} | Deletes an subscriber by token
+[**findSubscriberByToken**](api/Apis/SubscriberApi.md#findSubscriberByToken) | **GET** /subscriber/{token} | Find a subscriber by token
+[**getAllSubscriber**](api/Apis/SubscriberApi.md#getAllSubscriber) | **GET** /subscribers | Get all subscriber
+[**setNewSubscriberAdmin**](api/Apis/SubscriberApi.md#setNewSubscriberAdmin) | **POST** /subscriber | Add new subscriber
+[**setNewSubscriberOpen**](api/Apis/SubscriberApi.md#setNewSubscriberOpen) | **POST** /subscribe | Add new subscriber
+[**updateSubscriberById**](api/Apis/SubscriberApi.md#updateSubscriberById) | **PUT** /subscriber/{id} | Updates an existing subscriber
+[**updateSubscriberByToken**](api/Apis/SubscriberApi.md#updateSubscriberByToken) | **PUT** /subscriber/{token} | Updates an existing subscriber
 
 
 <a name="deleteSubscriberById"></a>
@@ -28,11 +28,11 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**Boolean**](../Models/boolean.md)
+[**Boolean**](api/Models/boolean.md)
 
 ### Authorization
 
-[cookie](../README.md#cookie), [nonce](../README.md#nonce)
+[cookie](api/README.md#cookie), [nonce](api/README.md#nonce)
 
 ### HTTP request headers
 
@@ -53,11 +53,11 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**Boolean**](../Models/boolean.md)
+[**Boolean**](api/Models/boolean.md)
 
 ### Authorization
 
-[cookie](../README.md#cookie), [nonce](../README.md#nonce)
+[cookie](api/README.md#cookie), [nonce](api/README.md#nonce)
 
 ### HTTP request headers
 
@@ -78,11 +78,11 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**subscriber**](../Models/subscriber.md)
+[**subscriber**](api/Models/subscriber.md)
 
 ### Authorization
 
-[cookie](../README.md#cookie), [nonce](../README.md#nonce)
+[cookie](api/README.md#cookie), [nonce](api/README.md#nonce)
 
 ### HTTP request headers
 
@@ -100,11 +100,11 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**List**](../Models/subscriber.md)
+[**List**](api/Models/subscriber.md)
 
 ### Authorization
 
-[cookie](../README.md#cookie), [nonce](../README.md#nonce)
+[cookie](api/README.md#cookie), [nonce](api/README.md#nonce)
 
 ### HTTP request headers
 
@@ -123,15 +123,15 @@ Add new subscriber
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **Subscriber** | [**Subscriber**](../Models/Subscriber.md)| Subscriber object | [optional]
+ **Subscriber** | [**Subscriber**](api/Models/Subscriber.md)| Subscriber object | [optional]
 
 ### Return type
 
-[**BigDecimal**](../Models/number.md)
+[**BigDecimal**](api/Models/number.md)
 
 ### Authorization
 
-[cookie](../README.md#cookie), [nonce](../README.md#nonce)
+[cookie](api/README.md#cookie), [nonce](api/README.md#nonce)
 
 ### HTTP request headers
 
@@ -150,15 +150,15 @@ Add new subscriber
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **Subscriber** | [**Subscriber**](../Models/Subscriber.md)| Subscriber object | [optional]
+ **Subscriber** | [**Subscriber**](api/Models/Subscriber.md)| Subscriber object | [optional]
 
 ### Return type
 
-[**BigDecimal**](../Models/number.md)
+[**BigDecimal**](api/Models/number.md)
 
 ### Authorization
 
-[cookie](../README.md#cookie), [nonce](../README.md#nonce)
+[cookie](api/README.md#cookie), [nonce](api/README.md#nonce)
 
 ### HTTP request headers
 
@@ -178,15 +178,15 @@ Updates an existing subscriber
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **Long**|  | [default to null]
- **Subscriber** | [**Subscriber**](../Models/Subscriber.md)| Subscriber object | [optional]
+ **Subscriber** | [**Subscriber**](api/Models/Subscriber.md)| Subscriber object | [optional]
 
 ### Return type
 
-[**Boolean**](../Models/boolean.md)
+[**Boolean**](api/Models/boolean.md)
 
 ### Authorization
 
-[cookie](../README.md#cookie), [nonce](../README.md#nonce)
+[cookie](api/README.md#cookie), [nonce](api/README.md#nonce)
 
 ### HTTP request headers
 
@@ -206,15 +206,15 @@ Updates an existing subscriber
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **token** | **String**|  | [default to null]
- **Subscriber** | [**Subscriber**](../Models/Subscriber.md)| Subscriber object | [optional]
+ **Subscriber** | [**Subscriber**](api/Models/Subscriber.md)| Subscriber object | [optional]
 
 ### Return type
 
-[**Boolean**](../Models/boolean.md)
+[**Boolean**](api/Models/boolean.md)
 
 ### Authorization
 
-[cookie](../README.md#cookie), [nonce](../README.md#nonce)
+[cookie](api/README.md#cookie), [nonce](api/README.md#nonce)
 
 ### HTTP request headers
 

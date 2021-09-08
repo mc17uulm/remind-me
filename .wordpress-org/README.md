@@ -20,7 +20,7 @@ Simple and modern plugin for delivering reminders to your WordPress site
 ## Was ist RemindMe
 
 RemindMe hilt Ihnen Erinnerungen für Ihre Kunden zu erstellen. Erzeugen Sie einfach wiederkehrende Ereignisse, für
-welche sich Ihre Kunden registieren können. RemindMe schickt Ihren Kunden dann automatisch am Tag des Ereignisses eine
+welche sich Ihre Kunden registrieren können. RemindMe schickt Ihren Kunden dann automatisch am Tag des Ereignisses eine
 Erinnerung per E-Mail. Um das RemindMe-Plugin nutzen zu können, installieren Sie einfach die `remind-me.zip` Datei in
 Ihrem WordPress Backend.
 

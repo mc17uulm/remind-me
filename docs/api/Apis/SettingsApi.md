@@ -4,8 +4,8 @@ All URIs are relative to *http://}*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**getSettings**](SettingsApi.md#getSettings) | **GET** /settings | Get settings
-[**updateSettings**](SettingsApi.md#updateSettings) | **PUT** /settings | Update settings
+[**getSettings**](api/Apis/SettingsApi.md#getSettings) | **GET** /settings | Get settings
+[**updateSettings**](api/Apis/SettingsApi.md#updateSettings) | **PUT** /settings | Update settings
 
 
 <a name="getSettings"></a>
@@ -19,11 +19,11 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**settings**](../Models/settings.md)
+[**settings**](api/Models/settings.md)
 
 ### Authorization
 
-[cookie](../README.md#cookie), [nonce](../README.md#nonce)
+[cookie](api/README.md#cookie), [nonce](api/README.md#nonce)
 
 ### HTTP request headers
 
@@ -40,15 +40,15 @@ Update settings
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **Settings** | [**Settings**](../Models/Settings.md)| Settings object | [optional]
+ **Settings** | [**Settings**](api/Models/Settings.md)| Settings object | [optional]
 
 ### Return type
 
-[**Boolean**](../Models/boolean.md)
+[**Boolean**](api/Models/boolean.md)
 
 ### Authorization
 
-[cookie](../README.md#cookie), [nonce](../README.md#nonce)
+[cookie](api/README.md#cookie), [nonce](api/README.md#nonce)
 
 ### HTTP request headers
 

@@ -1,14 +1,14 @@
 # EventApi
 
-All URIs are relative to *http://}*
+All URIs are relative to *http://*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**deleteEvent**](EventApi.md#deleteEvent) | **DELETE** /event/{eventId} | Deletes an event
-[**findEventById**](EventApi.md#findEventById) | **GET** /event/{eventId} | Finds a event by id
-[**getAllEvents**](EventApi.md#getAllEvents) | **GET** /events | Get all events
-[**setNewEvent**](EventApi.md#setNewEvent) | **POST** /event | Add new event
-[**updateEvent**](EventApi.md#updateEvent) | **PUT** /event/{eventId} | Updates an existing event
+[**deleteEvent**](api/Apis/EventApi.md#deleteEvent) | **DELETE** /event/{eventId} | Deletes an event
+[**findEventById**](api/Apis/EventApi.md#findEventById) | **GET** /event/{eventId} | Finds a event by id
+[**getAllEvents**](api/Apis/EventApi.md#getAllEvents) | **GET** /events | Get all events
+[**setNewEvent**](api/Apis/EventApi.md#setNewEvent) | **POST** /event | Add new event
+[**updateEvent**](api/Apis/EventApi.md#updateEvent) | **PUT** /event/{eventId} | Updates an existing event
 
 
 <a name="deleteEvent"></a>
@@ -25,11 +25,11 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**Boolean**](../Models/boolean.md)
+[**Boolean**](api/Models/boolean.md)
 
 ### Authorization
 
-[cookie](../README.md#cookie), [nonce](../README.md#nonce)
+[cookie](api/README.md#cookie), [nonce](api/README.md#nonce)
 
 ### HTTP request headers
 
@@ -50,11 +50,11 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**event**](../Models/event.md)
+[**event**](api/Models/event.md)
 
 ### Authorization
 
-[cookie](../README.md#cookie), [nonce](../README.md#nonce)
+[cookie](api/README.md#cookie), [nonce](api/README.md#nonce)
 
 ### HTTP request headers
 
@@ -72,11 +72,11 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**List**](../Models/event.md)
+[**List**](api/Models/event.md)
 
 ### Authorization
 
-[cookie](../README.md#cookie), [nonce](../README.md#nonce)
+[cookie](api/README.md#cookie), [nonce](api/README.md#nonce)
 
 ### HTTP request headers
 
@@ -93,15 +93,15 @@ Add new event
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **Event** | [**Event**](../Models/Event.md)| Event object | [optional]
+ **Event** | [**Event**](api/Models/Event.md)| Event object | [optional]
 
 ### Return type
 
-[**BigDecimal**](../Models/number.md)
+[**BigDecimal**](api/Models/number.md)
 
 ### Authorization
 
-[cookie](../README.md#cookie), [nonce](../README.md#nonce)
+[cookie](api/README.md#cookie), [nonce](api/README.md#nonce)
 
 ### HTTP request headers
 
@@ -119,15 +119,15 @@ Updates an existing event
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **eventId** | **Long**|  | [default to null]
- **Event** | [**Event**](../Models/Event.md)| Event object | [optional]
+ **Event** | [**Event**](api/Models/Event.md)| Event object | [optional]
 
 ### Return type
 
-[**Boolean**](../Models/boolean.md)
+[**Boolean**](api/Models/boolean.md)
 
 ### Authorization
 
-[cookie](../README.md#cookie), [nonce](../README.md#nonce)
+[cookie](api/README.md#cookie), [nonce](api/README.md#nonce)
 
 ### HTTP request headers
 

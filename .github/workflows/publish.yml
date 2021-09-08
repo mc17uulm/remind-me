@@ -1,14 +1,16 @@
-name: Publish plugin to plugins server
+name: Publish plugin to WordPress.org repository and release on GitHub
 
 on:
   release:
     types: [published]
 
 jobs:
-  build:
+  tag:
+    name: New release
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
       - name: Validate composer.json and composer.lock
         run: composer validate
@@ -42,14 +44,20 @@ jobs:
       - name: Build plugin
         run: yarn build
 
-      - name: Pack to zip
-        run: ./pack.sh
-
-      - name: Push to production server
-        uses: fjogeleit/http-request-action@master
+      - name: WordPress Plugin Deploy
+        id: deploy
+        uses: 10up/action-wordpress-plugin-deploy@stable
         with:
-          url: 'https://plugins.move78.de/plugin/remind-me/0.0.1'
-          method: 'PUT'
-          contentType: 'application/zip'
-          files: './remind-me.zip'
-          customHeaders: '{"X-Auth-Token":"${{ secrets.AUTH_TOKEN }}"}'
+          generate-zip: true
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+      - name: Upload release asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ${{ steps.deploy.outputs.zip-path }}
+          asset_name: ${{ github.event.repository.name }}.zip
+          asset_content_type: application/zip
