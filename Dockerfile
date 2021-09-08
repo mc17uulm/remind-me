@@ -14,7 +14,7 @@ RUN curl https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.ph
     && chmod +x /usr/local/bin/wp
 
 # install phpunit
-RUN curl -L https://phar.phpunit.de/phpunit-7.phar -o /usr/local/bin/phpunit \
+RUN curl -L https://phar.phpunit.de/phpunit-8.phar -o /usr/local/bin/phpunit \
     && chmod +x /usr/local/bin/phpunit
 
 RUN cd /var/www/html \

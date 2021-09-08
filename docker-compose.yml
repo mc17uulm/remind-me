@@ -31,7 +31,7 @@ services:
         depends_on:
             - db
         container_name: wordpress_test
-        build: ./Dockerfile
+        build: ./
         restart: always
         stdin_open: true
         volumes:
