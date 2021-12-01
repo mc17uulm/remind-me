@@ -362,7 +362,7 @@ final class Loader {
                 'nonce' => wp_create_nonce('wp_rest'),
                 'slug' => 'remind-me',
                 'version' => 'v1',
-                'site' => sanitize_text_field($_GET["page"]),
+                'site' => sanitize_text_field($_GET["page"] ?? ''),
                 'base' => admin_url('admin.php'),
                 'active' =>  $settings->license->active ? 'true' : 'false'
             ]

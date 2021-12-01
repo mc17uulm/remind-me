@@ -1,47 +1,51 @@
-version: "3.3"
+version: "3.9"
 
 services:
 
     db:
-        image: mysql:5.7
+        image: mysql:8.0
         volumes:
             - db_data:/var/lib/mysql
+        restart: always
         environment:
             MYSQL_DATABASE: wordpress
             MYSQL_USER: wordpress
             MYSQL_PASSWORD: 123
-            MYSQL_ROOT_PASSWORD: 1234
+            MYSQL_ROOT_PASSWORD: root
         networks:
             - intranet
 
     phpmyadmin:
         depends_on:
-            -   db
+            - db
         image: phpmyadmin/phpmyadmin
         restart: always
         ports:
-            - "3001:80"
+            - "8081:80"
         environment:
             PMA_HOST: db
-            MYSQL_ROOT_PASSWORD: 1234
+            MYSQL_ROOT_PASSWORD: root
         networks:
             - intranet
 
     wordpress:
         depends_on:
             - db
-        container_name: wordpress_test
-        build: ./
+        container_name: wordpress
+        image: wordpress:php8.0-apache
         restart: always
         stdin_open: true
         volumes:
             - ./:/var/www/html/wp-content/plugins/remind-me
         tty: true
+        ports:
+            - "8080:80"
         environment:
-            WORDPRESS_DB_HOST: db:3306
+            WORDPRESS_DB_HOST: db
             WORDPRESS_DB_USER: wordpress
             WORDPRESS_DB_PASSWORD: 123
             WORDPRESS_DB_NAME: wordpress
+            WORDPRESS_DEBUG: 1
         networks:
         - intranet
 

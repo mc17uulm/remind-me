@@ -2,7 +2,8 @@
 
 namespace RemindMe\mail;
 
-require_once ABSPATH . WPINC . '/class-phpmailer.php';
+require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
+require_once ABSPATH . WPINC . '/PHPMailer/SMTP.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use RemindMe\api\APIException;
@@ -90,17 +91,6 @@ final class MailHandler {
      * @param array $to
      * @param string $subject
      * @param string $content
-     */
-    private static function wp_send_mail(array $to, string $subject, string $content) : void {
-        $headers[] = 'From: ' . get_bloginfo('name') . ' <noreply@' . get_site_url() . '>';
-
-        wp_mail($to['email'], $subject, $content, $headers);
-    }
-
-    /**
-     * @param array $to
-     * @param string $subject
-     * @param string $content
      * @throws PluginException
      */
     private static function send_mail(array $to, string $subject, string $content) : void {
@@ -117,7 +107,7 @@ final class MailHandler {
             $mailer->AltBody = strip_tags($content);
 
             // if script is executed in development on a local machine => use smtp settings in dev.mail.php
-	        if($_SERVER['REMOTE_ADDR'] === '127.0.0.1'){
+            if(REMIND_ME_DEBUG){
 	            require_once REMIND_ME_DIR . '/dev.mail.php';
 	            send_dev_mail($mailer);
             }

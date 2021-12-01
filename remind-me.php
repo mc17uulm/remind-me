@@ -49,7 +49,7 @@ define("REMIND_ME_URL", plugin_dir_url(__FILE__));
 define('REMIND_ME_PATH', plugin_dir_path(__FILE__));
 define('REMIND_ME_BASENAME', plugin_basename(__FILE__));
 define("REMIND_ME_DIR", __DIR__);
-define("REMIND_ME_DEBUG", true);
+define("REMIND_ME_DEBUG", WP_DEBUG);
 define("REMIND_ME_SCHEMAS", __DIR__ . "/schemas/");
 
 require_once __DIR__ . "/vendor/autoload.php";

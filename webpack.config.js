@@ -125,7 +125,7 @@ module.exports = (env, argv) => {
             new BrowserSyncPlugin({
                 host: 'localhost',
                 port: 3000,
-                proxy: 'http://dev.local'
+                proxy: 'localhost:8080'
             })
         ],
         output: {

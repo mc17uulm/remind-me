@@ -1,8 +1,11 @@
 <?php
 
-require_once ABSPATH . WPINC . '/class-smtp.php';
+require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
+require_once ABSPATH . WPINC . '/PHPMailer/SMTP.php';
 
-function send_dev_mail(\PHPMailer\PHPMailer\PHPMailer &$mailer) : void {
+use PHPMailer\PHPMailer\PHPMailer;
+
+function send_dev_mail(PHPMailer &$mailer) : void {
     $mailer->SMTPDebug = 0;
     $mailer->isSMTP();
     $mailer->SMTPAuth = true;

@@ -2,7 +2,7 @@ name: Deploy to development server
 
 on:
   push:
-    branches: [ develop ]
+    branches: [ development ]
 
 jobs:
   build:
@@ -15,14 +15,23 @@ jobs:
       - name: Validate composer.json and composer.lock
         run: composer validate
 
+      - name: Transpile to php7.1
+        run: |
+          composer install
+          vendor/bin/rector process
+          sed -i "s/Requires PHP: 8.0/Requires PHP: 7.0/" remind-me.php
+          sed -i "s/\"php\": \">=8.0\"/\"php\": \">=7.1\"/" composer.json
+          composer update
+          rm -rf vendor/
+
       - name: Cache Composer package
         id: composer-cache
         uses: actions/cache@v2
         with:
           path: vendor
-          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
-            ${{ runner.os }}-php-
+            ${{ runner.os }}-composer-
 
       - name: Cache node modules
         uses: actions/cache@v2
@@ -35,7 +44,7 @@ jobs:
 
       - name: Install composer dependencies
         if: steps.composer-cache.outputs.cache-hit != 'true'
-        run: composer install --no-ansi --no-dev --no-interaction --no-plugins --no-progress --no-scripts --optimize-autoloader --prefer-dist --no-suggest
+        run: composer install --no-ansi --no-dev --no-interaction --no-plugins --no-progress --no-scripts --optimize-autoloader --prefer-dist
 
       - name: Install yarn dependencies
         if: steps.yarn-cache.outputs.cache-hit != 'true'
@@ -55,11 +64,18 @@ jobs:
             --exclude /deploy_key \
             --exclude /.git/ \
             --exclude /.github/ \
+            --exclude /.wordpress-org/ \
             --exclude /node_modules/ \
             --exclude /src/ \
             --exclude /tests/ \
+            --exclude /.gitignore \
+            --exclude /.phpcs.xml.dist \
+            --exclude /dev.mail.php \
+            --exclude /docker-compose.yml \
             --exclude /phpstan.neon \
+            --exclude /phpunit.xml.dist \
             --exclude /tsconfig.json \
             --exclude /webpack.config.js \
+            --exclude /wp-builder.json \
             --exclude /yarn.lock \
             ./ ${{ env.dest }}
