@@ -1,9 +1,9 @@
-import {FrontendDefinitions} from "./View";
-import {Request} from "./api/Request";
+import {FrontendDefinitions} from "../View";
 import ReactDOM from "react-dom";
 import React from "react";
-import {Subscription} from "./frontend/Subscription";
-import "./styles/frontend.scss";
+import "../styles/frontend.scss";
+import {Request} from "../api/Request";
+import {Subscription} from "../frontend/Subscription";
 
 declare var remind_me_definitions : FrontendDefinitions;
 

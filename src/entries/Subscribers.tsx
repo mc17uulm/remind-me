@@ -11,16 +11,15 @@ import {HandleSubscriberModal} from "../components/modals/HandleSubscriberModal"
 import {InitializeStates, useInitializer} from "../hooks/useInitializer";
 import {EventsList} from "../components/EventsList";
 import dayjs from "dayjs";
-import {PluginContext, PluginSettings} from "../View";
+import {View} from "../View";
 
 
-export const Subscribers = () => {
+const Subscribers = () => {
 
     const [modal] = useModal<APISubscriber>();
     const checkbox = useCheckbox();
     const [subscribers, loadSubscribers] = useInitializer<APISubscriber[]>();
     const [events, setEvents] = useState<APIEvent[]>([]);
-    const settings : PluginSettings = useContext(PluginContext);
 
     const load = async () => {
         const _subscribers = await loadSubscribers(SubscriberHandler.get_all);
@@ -68,7 +67,7 @@ export const Subscribers = () => {
         }
     }
 
-    const active = settings.active && (events.length > 0);
+    const active = events.length > 0;
 
     const renderActive = (active : boolean) => {
         return active ? (<Label color="green">{__('Active', 'remind-me')}</Label>) : (<Label color="red">{__('Inactive', 'remind-me')}</Label>);
@@ -117,12 +116,12 @@ export const Subscribers = () => {
                                         <Table.Cell>
                                             <strong>{subscriber.email}</strong><br />
                                             <a
-                                                className={'remind-me-edit-link' + (settings.active ? '' : ' remind-me-disabled')}
+                                                className={'remind-me-edit-link'}
                                                 onClick={(e) => modal.edit(e, subscriber)}
                                             >
                                                 <Icon name='cogs' /> {__('Edit', 'remind-me')}
                                             </a> <a
-                                            className={'remind-me-delete-link' + (settings.active ? '' : ' remind-me-disabled')}
+                                            className={'remind-me-delete-link'}
                                             onClick={(e) => modal.delete(e, [subscriber])}
                                         >
                                             <Icon name='trash' /> {__('Delete', 'remind-me')}
@@ -138,8 +137,8 @@ export const Subscribers = () => {
                             </Table.Body>
                         </Table>
                         <a
-                            className={'remind-me-float-left remind-me-delete-link' + (checkbox.filtered().length === 0 || !settings.active ? ' remind-me-disabled' : '')}
-                            onClick={(e) => {settings.active ? modal.delete(e, val.filter((subscriber , index) => checkbox.get(index))) : null}}
+                            className={'remind-me-float-left remind-me-delete-link' + (checkbox.filtered().length === 0 ? ' remind-me-disabled' : '')}
+                            onClick={(e) => {modal.delete(e, val.filter((subscriber , index) => checkbox.get(index)))}}
                         >
                             {__('Delete selected', 'remind-me')}
                         </a>
@@ -160,7 +159,7 @@ export const Subscribers = () => {
             {renderTable()}
             <a
                 onClick={(e) => {active ? handleExport(e) : null;}}
-                className={'remind-me-float-right remind-me-link' + (checkbox.filtered().length === 0 || !settings.active ? ' remind-me-disabled' : '')}
+                className={'remind-me-float-right remind-me-link' + (checkbox.filtered().length === 0 ? ' remind-me-disabled' : '')}
             >
                 {__('Export selected', 'remind-me')}
             </a>
@@ -176,3 +175,5 @@ export const Subscribers = () => {
     );
 
 }
+
+View(<Subscribers />);

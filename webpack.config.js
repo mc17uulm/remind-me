@@ -1,4 +1,5 @@
-const { resolve } = require('path');
+const { resolve, join } = require('path');
+const fs = require('fs');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const DependencyExtractionWebpackPlugin = require('@wordpress/dependency-extraction-webpack-plugin');
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
@@ -67,10 +68,49 @@ const rules = [
     }
 ];
 
+const get_all_files = (path, files, parent = '') => {
+
+    const readFiles = fs.readdirSync(path);
+    files = files || [];
+
+    readFiles.forEach((file) => {
+        if(fs.statSync(path + "/" + file).isDirectory()) {
+            files = get_all_files(path + "/" + file, files, file);
+        } else {
+            files.push(join(parent, file));
+        }
+    });
+
+    return files;
+
+}
+
+const get_entries = () => {
+    const dir = resolve(__dirname, 'src', 'entries');
+
+    const files = get_all_files(dir)
+        .filter((file) => file.includes('.tsx') || file.includes('.ts'))
+        .map((file) => file.replace('.tsx', '').replace('.ts', ''));
+
+    let entry = {};
+    files.forEach((file) => {
+        const filename = file.replaceAll('\\', '/');
+        const name = filename.toLowerCase().replaceAll('/', '.');
+        entry[name] = {
+            import: `./src/entries/${filename}`,
+            dependOn: 'vendor'
+        };
+    });
+    entry['vendor'] = ['react', 'react-dom'];
+    return entry;
+}
+
 module.exports = (env, argv) => {
 
     return {
         name: "handler",
+        entry: get_entries(),
+        /**
         entry: {
             block: {
                 import: './src/block',
@@ -105,7 +145,7 @@ module.exports = (env, argv) => {
                 dependOn: 'vendor'
             },
             vendor: ['react', 'react-dom']
-        },
+        },*/
         optimization: {
             minimizer: [
                 new ESBuildMinifyPlugin({

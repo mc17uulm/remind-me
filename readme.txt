@@ -1,5 +1,5 @@
 === RemindMe ===
-Contributors: move78
+Contributors: CodeLeaf
 Tags: reminder, form
 Requires at least: 5.5
 Tested up to: 5.8

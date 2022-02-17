@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "WP Plugin for reminder handling",
   "main": "index.js",
-  "author": "move78 <plugins@move78.de>",
+  "author": "CodeLeaf <development@code-leaf.de>",
   "license": "MIT",
   "scripts": {
     "tsc": "tsc",
@@ -11,6 +11,8 @@
     "build": "webpack --mode production",
     "doc:show": "docsify serve ./docs",
     "zip": "./.scripts/build_zip",
+    "up": "docker-compose up -d",
+    "down": "docker-compose down",
     "php:analyse": "./vendor/bin/phpstan analyse --memory-limit=-1 -c phpstan.neon",
     "php:test": "phpunit",
     "wp:lang:build": "cp ./languages/remind-me.pot ./languages/remind-me.backup.pot && wp i18n make-pot . ./languages/remind-me.pot --domain='remind-me' --debug --exclude='tests'",

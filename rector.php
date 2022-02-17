@@ -14,8 +14,9 @@ return static function (ContainerConfigurator $configurator) : void {
 
     $configurator->import(DowngradeSetList::PHP_80);
     $configurator->import(DowngradeSetList::PHP_74);
-    $configurator->import(DowngradeSetList::PHP_73);
-    $configurator->import(DowngradeSetList::PHP_72);
-    $configurator->import(DowngradeSetList::PHP_71);
+
+    if (!defined('ABSPATH')) {
+        define('ABSPATH', '');
+    }
 
 };

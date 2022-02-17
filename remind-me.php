@@ -3,15 +3,15 @@
  * RemindMe
  *
  * @package     RemindMe
- * @author      move78
- * @copyright   2021 move78
+ * @author      CodeLeaf
+ * @copyright   2021 CodeLeaf
  * @license     GPL-2.0-or-later
  *
  * @wordpress-plugin
  * Plugin Name: RemindMe
  * Description: Plugin for reminder handling
- * Author: move78
- * Author URI: https://move78.de
+ * Author: CodeLeaf
+ * Author URI: https://code-leaf.de
  * Version: 0.1.0
  * Text Domain: remind-me
  * Domain Path: /languages/

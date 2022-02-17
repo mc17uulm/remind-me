@@ -1,5 +1,5 @@
 === RemindMe ===
-Contributors: move78
+Contributors: CodeLeaf
 Tags: reminder
 Requires at least: 5.5
 Tested up to: 5.8
@@ -45,8 +45,8 @@ Unter dem Menüpunkt **Nutzung** sehen Sie Beispiele und Anleitungen wie RemindM
 ## Lizenz erwerben
 
 RemindMe kann kostenlos genutzt werden. Um einige extra Funktionen nutzen zu können (Kunden exportieren, bestehende Kunden hinzufügen,
-kein Limit bei der Anzahl von Ereignissen, zuverlässige Ausführung durch unsere Server), brauchen Sie eine move78-Lizenz. Die
-Lizenz erhalten Sie hier: [move78.de](https://move78.de).
+kein Limit bei der Anzahl von Ereignissen, zuverlässige Ausführung durch unsere Server), brauchen Sie eine CodeLeaf-Lizenz. Die
+Lizenz erhalten Sie hier: [code-leaf.de](https://code-leaf.de).
 
 == Installation ==
 
