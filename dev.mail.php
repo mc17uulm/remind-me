@@ -5,8 +5,20 @@ require_once ABSPATH . WPINC . '/PHPMailer/SMTP.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 
+/**
+ *
+ * Allow sending emails for development and testing on localhost
+ *
+ * @param PHPMailer $mailer
+ * @return void
+ */
 function send_dev_mail(PHPMailer &$mailer) : void {
 
+    /**
+     * Get SMTP account for testing email delivery
+     *
+     * Requires array values given by 'dev.env.php.config'
+     */
     $env = require_once __DIR__ . '/dev.env.php';
 
     $mailer->SMTPDebug = 0;

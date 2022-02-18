@@ -23,7 +23,7 @@ final class Loader {
     /**
      * @var string|false
      */
-    private $version;
+    private string|false $version;
     /**
      * @var array
      */
@@ -87,11 +87,6 @@ final class Loader {
         Settings::delete();
         Templates::delete();
         CronJob::remove();
-        // Remove license notice hide cookie if set
-        if(isset($_COOKIE['remind-me-license-notice'])) {
-            unset($_COOKIE['remind-me-license-notice']);
-            setcookie('remind-me-license-notice', '', time() - 3600, '/');
-        }
     }
 
     /**
@@ -179,14 +174,14 @@ final class Loader {
      * @return string
      */
     public function get_token (string $site) : string {
-        switch($site) {
-            case 'remind-me': return 'dashboard';
-            case 'remind-me-events': return 'events';
-            case 'remind-me-subscribers': return 'subscribers';
-            case 'remind-me-settings': return 'settings';
-            case 'remind-me-templates': return 'templates';
-            default: return '';
-        }
+        return match ($site) {
+            'remind-me' => 'dashboard',
+            'remind-me-events' => 'events',
+            'remind-me-subscribers' => 'subscribers',
+            'remind-me-settings' => 'settings',
+            'remind-me-templates' => 'templates',
+            default => '',
+        };
     }
 
     private function load_vendor() : void {
@@ -252,16 +247,16 @@ final class Loader {
         $this->load_vendor();
 
         wp_register_script(
-            'remind-me-new-form-runtime',
-            plugin_dir_url($this->file) . "dist/js/remind-me-new-form.js",
+            'remind-me-subscription-form-runtime',
+            plugin_dir_url($this->file) . "dist/js/remind-me-subscription-form.js",
             ['wp-i18n'],
             $this->version,
             true
         );
 
         wp_register_script(
-            'remind-me-edit-form-runtime',
-            plugin_dir_url($this->file) . "dist/js/remind-me-edit-form.js",
+            'remind-me-update-form-runtime',
+            plugin_dir_url($this->file) . "dist/js/remind-me-update-form.js",
             ['wp-i18n'],
             $this->version,
             true
@@ -269,7 +264,7 @@ final class Loader {
 
         wp_enqueue_style(
             'remind-me-frontend-style',
-            plugin_dir_url($this->file) . "dist/css/remind-me-new-form.css",
+            plugin_dir_url($this->file) . "dist/css/remind-me-subscription-form.css",
             [],
             $this->version
         );
@@ -278,9 +273,9 @@ final class Loader {
 
     private function register_new_form() : void {
         $this->register_frontend_scripts();
-        wp_enqueue_script('remind-me-new-form-runtime');
+        wp_enqueue_script('remind-me-subscription-form-runtime');
         wp_localize_script(
-            'remind-me-new-form-runtime',
+            'remind-me-subscription-form-runtime',
             'remind_me_definitions',
             [
                 'root' => esc_url_raw(rest_url()),
@@ -291,7 +286,7 @@ final class Loader {
             ]
         );
         wp_set_script_translations(
-            'remind-me-new-form-runtime',
+            'remind-me-subscription-form-runtime',
             'remind-me',
             plugin_dir_path($this->file) . "languages/"
         );
@@ -299,9 +294,9 @@ final class Loader {
 
     private function register_edit_form() : void {
         $this->register_frontend_scripts();
-        wp_enqueue_script('remind-me-edit-form-runtime');
+        wp_enqueue_script('remind-me-update-form-runtime');
         wp_localize_script(
-            'remind-me-edit-form-runtime',
+            'remind-me-update-form-runtime',
             'remind_me_definitions',
             [
                 'root' => esc_url_raw(rest_url()),
@@ -313,7 +308,7 @@ final class Loader {
         );
 
         wp_set_script_translations(
-            'remind-me-edit-form-runtime',
+            'remind-me-update-form-runtime',
             'remind-me',
             plugin_dir_path($this->file) . "languages/"
         );

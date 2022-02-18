@@ -95,7 +95,7 @@ const get_entries = () => {
     let entry = {};
     files.forEach((file) => {
         const filename = file.replaceAll('\\', '/');
-        const name = filename.toLowerCase().replaceAll('/', '.');
+        const name = filename.split(/(?=[A-Z])/).join('-').toLowerCase().replaceAll('/', '.');
         entry[name] = {
             import: `./src/entries/${filename}`,
             dependOn: 'vendor'

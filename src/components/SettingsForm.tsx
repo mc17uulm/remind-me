@@ -77,7 +77,7 @@ export const SettingsForm = (props : SettingsFormProps) => {
                             }}
                             panes={[
                                 {menuItem: __('Messages', 'remind-me'), render: () => <MessagePane {..._props} />},
-                                {menuItem: __('License', 'remind-me'), render: () => <LicensePane {..._props} update={update} />}
+                                {menuItem: __('License', 'remind-me'), pane: {active: false}}
                             ]}
                         />
                         <SubmitBtnContainer message={message}>
