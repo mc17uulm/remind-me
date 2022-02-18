@@ -3,9 +3,10 @@ import React, {ReactNode} from "react";
 import ReactDOM from "react-dom";
 import {Container} from "semantic-ui-react";
 import {ToastContainer} from "react-toastify";
+import {Request} from "./api/Request";
 import 'semantic-ui-css/semantic.min.css';
 import 'react-toastify/dist/ReactToastify.css';
-import {Request} from "./api/Request";
+import './styles/main.scss';
 
 export interface FrontendDefinitions {
     root : string,

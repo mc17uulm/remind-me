@@ -233,7 +233,12 @@ final class Subscriber
             sanitize_email($resource["email"]),
             json_encode($resource["events"])
         );
-        MailHandler::send_confirm(new Subscriber($token, sanitize_email($resource["email"]), $resource["events"], $id));
+        try {
+            MailHandler::send_confirm(new Subscriber($token, sanitize_email($resource["email"]), $resource["events"], $id));
+        } catch (Exception $e) {
+            $db->delete("DELETE FROM {$db->get_table_name('subscribers')} WHERE id = %d", $id);
+            throw $e;
+        }
         return $id;
     }
 

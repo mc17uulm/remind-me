@@ -1,0 +1,98 @@
+name: Publish plugin to wordpress.org
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: action/checkout@master
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Transpile to php7.0
+        run: |
+          composer install
+          vendor/bin/rector process
+          sed -i "s/Requires PHP 8.0/Requires PHP: 7.0/" remind-me.php
+          sed -i "s/\"php\": \">=8.0\"/\"php\": \">=7.0\"/" composer.json
+          composer update
+          rm -rf vendor/
+
+      - name: Cache composer dependencies
+        id: composer-cache
+        uses: action/cache@v2
+        with:
+          path: vendor
+          key: $${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Cache node dependencies
+        id: yarn-cache
+        uses: action/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install composer dependencies
+        if: steps.composer-cache.outputs.cache-hit != 'true'
+        run: composer install --no-ansi --no-dev --no-interaction --no-plugins --no-progress --no-scripts --optimize-autoloader --prefer-dist
+
+      - name: Install yarn dependencies
+        if: steps.yarn-cache.outputs.cache-hti != 'true'
+        run: yarn install --frozen-lockfile
+
+      - name: Build scripts
+        run: yarn build
+
+      - name: Bundle to zip file
+        run: |
+          zip -qqr \
+            --exclude="*.github*" \
+            --exclude="*.git*" \
+            --exclude="*.wordpress-org*" \
+            --exclude="*docs*" \
+            --exclude="*node_modules*" \
+            --exclude="*src*" \
+            --exclude="*tests*" \
+            --exclude="*.distignore*" \
+            --exclude="*.gitignore*" \
+            --exclude="*.eslintrc.json*" \
+            --exclude="*.phpcs.xml.dist*" \
+            --exclude="*BUGS.md*" \
+            --exclude="*dev.env.php.config*" \
+            --exclude="*dev.mail.php*" \
+            --exclude="*docker-compose.yml*" \
+            --exclude="*package.json*" \
+            --exclude="*phpstan.neon*" \
+            --exclude="*phpunit.xml.dist*" \
+            --exclude="*rector.php*" \
+            --exclude="*tsconfig.json*" \
+            --exclude="*webpack.config.js*" \
+            --exclude="*yarn.lock*" \
+            remind-me.zip \
+            .
+
+      - name: Set env
+        run: echo "REMIND_ME_VERSION=$(echo "${{ github.event.head_commit.message }}" | sed 's\/s.*//')" >> $GITHUB_ENV
+
+      - name: Release new version on GitHub
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "remind-me.zip"
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ env.REMIND_ME_VERSION }}
+
+      - name: Publish to wordpress.org
+        uses: nk-o/action-wordpress-plugin-deploy@master
+        env:
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SLUG: remind-me
+          VERSION: ${{ env.REMIND_ME_VERSION }}

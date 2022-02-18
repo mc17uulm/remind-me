@@ -87,7 +87,8 @@ export class Request {
                 return Either.success(content);
             } else {
                 const error : Error = this.compile<Error>(ErrorSchema, JSON.parse(response.content));
-                return Either.error(error.message);
+                const message : string = (error.message === "") ? 'Internal Server Error' : error.message;
+                return Either.error(message);
             }
         } catch (err) {
             return Either.error("Invalid response");

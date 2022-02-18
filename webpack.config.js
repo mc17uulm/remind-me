@@ -110,42 +110,6 @@ module.exports = (env, argv) => {
     return {
         name: "handler",
         entry: get_entries(),
-        /**
-        entry: {
-            block: {
-                import: './src/block',
-                dependOn: 'vendor'
-            },
-            dashboard: {
-                import: "./src/index",
-                dependOn: 'vendor'
-            },
-            events: {
-                import: "./src/events",
-                dependOn: 'vendor'
-            },
-            subscribers: {
-                import: "./src/subscribers",
-                dependOn: 'vendor'
-            },
-            settings: {
-                import: "./src/settings",
-                dependOn: 'vendor'
-            },
-            templates: {
-                import: "./src/templates",
-                dependOn: 'vendor'
-            },
-            'new-form': {
-                import: "./src/new-form",
-                dependOn: 'vendor'
-            },
-            'edit-form': {
-                import: './src/edit-form',
-                dependOn: 'vendor'
-            },
-            vendor: ['react', 'react-dom']
-        },*/
         optimization: {
             minimizer: [
                 new ESBuildMinifyPlugin({
