@@ -1,0 +1,468 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "RemindMe API",
+    "description": "API specification for the RemindMe WordPress plugin",
+    "version": "0.1.0",
+    "contact": {
+      "email": "plugins@code-leaf.de",
+      "name": "CodeLeaf"
+    }
+  },
+  "servers": [
+    {
+      "url": "{{wp_rest_url}}"
+    }
+  ],
+  "tags": [
+    {
+      "name": "event",
+      "description": "Repeating event to send reminder"
+    }, {
+      "name": "subscriber",
+      "description": "Subscriber of repeating event"
+    }, {
+      "name": "settings",
+      "description": "Configuration for plugin behaviour"
+    }
+  ],
+  "components": {
+    "responses": {
+      "error": {
+        "description": "internal server error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "./../../schemas/error.schema.json"
+            }
+          }
+        }
+      },
+      "set": {
+        "description": "successful add resource",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "number"
+            }
+          }
+        }
+      },
+      "update": {
+        "description": "successful updated resource",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "successful deleted resource",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "nonce": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-WP-Nonce"
+      },
+      "cookie": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "wordpress_logged_in_{token}"
+      }
+    }
+  },
+  "paths": {
+    "/events": {
+      "get": {
+        "tags": ["event"],
+        "summary": "Get all events",
+        "description": "",
+        "operationId": "getAllEvents",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "./../../schemas/event.schema.json"
+                  }
+                }
+              }
+            }
+          },
+          "400": {"$ref": "#/components/responses/error"}
+        }
+      }
+    },
+    "/event": {
+      "post": {
+        "tags": ["event"],
+        "summary": "Add new event",
+        "description": "",
+        "operationId": "setNewEvent",
+        "requestBody": {
+          "description": "Event object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./../../schemas/event.schema.json"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {"$ref": "#/components/responses/set"},
+          "400": {"$ref": "#/components/responses/error"}
+        }
+      }
+    },
+    "/event/{eventId}": {
+      "get": {
+        "tags": ["event"],
+        "summary": "Finds a event by id",
+        "description": "",
+        "operationId": "findEventById",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./../../schemas/event.schema.json"
+                }
+              }
+            }
+          },
+          "400" : {"$ref": "#/components/responses/error"}
+        }
+      },
+      "put": {
+        "tags": ["event"],
+        "summary": "Updates an existing event",
+        "operationId": "updateEvent",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Event object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./../../schemas/event.schema.json"
+              },
+              "examples": {
+                "basic": {
+                  "value": {
+                    "name": "Reminder",
+                    "clocking": 1,
+                    "start": 1621181376
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {"$ref": "#/components/responses/update"},
+          "400": {"$ref": "#/components/responses/error"}
+        }
+      },
+      "delete": {
+        "tags": ["event"],
+        "summary": "Deletes an event",
+        "operationId": "deleteEvent",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {"$ref": "#/components/responses/delete"},
+          "400": {"$ref": "#/components/responses/error"}
+        }
+      }
+    },
+    "/subscribers": {
+      "get": {
+        "tags": ["subscriber"],
+        "summary": "Get all subscriber",
+        "description": "",
+        "operationId": "getAllSubscriber",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "./../../schemas/subscriber.schema.json"
+                  }
+                }
+              }
+            }
+          },
+          "400": {"$ref": "#/components/responses/error"}
+        }
+      }
+    },
+    "/subscriber": {
+      "post": {
+        "tags": ["subscriber"],
+        "summary": "Add new subscriber",
+        "description": "For admin only: add a new subscriber",
+        "operationId": "setNewSubscriberAdmin",
+        "requestBody": {
+          "description": "Subscriber object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./../../schemas/subscriber.schema.json"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {"$ref": "#/components/responses/set"},
+          "400": {"$ref": "#/components/responses/error"}
+        }
+      }
+    },
+    "/subscriber/{id}": {
+      "put": {
+        "tags": ["subscriber"],
+        "summary": "Updates an existing subscriber",
+        "description": "Admin can update his subscription settings",
+        "operationId": "updateSubscriberById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Subscriber object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./../../schemas/subscriber.schema.json"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {"$ref": "#/components/responses/update"},
+          "400": {"$ref": "#/components/responses/error"}
+        }
+      },
+      "delete": {
+        "tags": ["subscriber"],
+        "summary": "Deletes an subscriber by id",
+        "operationId": "deleteSubscriberById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {"$ref": "#/components/responses/delete"},
+          "400": {"$ref": "#/components/responses/error"}
+        }
+      }
+    },
+    "/subscriber/token/{token}": {
+      "get": {
+        "tags": ["subscriber"],
+        "summary": "Find a subscriber by token",
+        "description": "",
+        "operationId": "findSubscriberByToken",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./../../schemas/subscriber.schema.json"
+                }
+              }
+            }
+          },
+          "400" : {"$ref": "#/components/responses/error"}
+        }
+      },
+      "put": {
+        "tags": ["subscriber"],
+        "summary": "Updates an existing subscriber",
+        "description": "A user can update his subscription settings",
+        "operationId": "updateSubscriberByToken",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Subscriber object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./../../schemas/subscriber.schema.json"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {"$ref": "#/components/responses/update"},
+          "400": {"$ref": "#/components/responses/error"}
+        }
+      },
+      "delete": {
+        "tags": ["subscriber"],
+        "summary": "Deletes an subscriber by token",
+        "operationId": "deleteSubscriberByToken",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {"$ref": "#/components/responses/delete"},
+          "400": {"$ref": "#/components/responses/error"}
+        }
+      }
+    },
+    "/subscribe": {
+      "post": {
+        "tags": ["subscriber"],
+        "summary": "Add new subscriber",
+        "description": "A user can add a subscription",
+        "operationId": "setNewSubscriberOpen",
+        "requestBody": {
+          "description": "Subscriber object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./../../schemas/subscriber.schema.json"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {"$ref": "#/components/responses/set"},
+          "400": {"$ref": "#/components/responses/error"}
+        }
+      }
+    },
+    "/settings": {
+      "get": {
+        "tags": ["settings"],
+        "summary": "Get settings",
+        "description": "",
+        "operationId": "getSettings",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./../../schemas/settings.schema.json"
+                }
+              }
+            }
+          },
+          "400": {"$ref": "#/components/responses/error"}
+        }
+      },
+      "put": {
+        "tags": ["settings"],
+        "summary": "Update settings",
+        "operationId": "updateSettings",
+        "requestBody": {
+          "description": "Settings object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "./../../schemas/settings.schema.json"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {"$ref": "#/components/responses/update"},
+          "400": {"$ref": "#/components/responses/error"}
+        }
+      }
+    }
+  },
+  "security": [
+    {"nonce": [], "cookie": []}
+  ]
+}

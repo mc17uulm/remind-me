@@ -89,13 +89,11 @@ final class API
                     }
                     return $res->build();
                 },
-                'args' => $args
+                'args' => $args,
+                'permission_callback' => $needs_permission ?
+                    fn() => current_user_can('edit_posts') :
+                    fn() => true
             ];
-            if($needs_permission) {
-                $route['permission_callback'] = function() {
-                    return current_user_can('edit_posts');
-                };
-            }
             register_rest_route($this->plugin_slug, $path, $route);
         }
     }

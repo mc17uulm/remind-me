@@ -13,6 +13,7 @@
     - [Shortcode](shortcode.md)
     - [Einstellungen](settings.md)
 
+- [API](api/README.md)
 - [Zukünftige Funktionen](future.md)
 - [Fehler](bugs.md)
 - [Versionen](changelog.md)

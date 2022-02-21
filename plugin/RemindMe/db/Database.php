@@ -62,7 +62,7 @@ final class Database
     public function select(string $query, ...$fields) : array {
         global $wpdb;
 
-        return $wpdb->get_results($wpdb->prepare($query, $fields), ARRAY_A);
+        return $wpdb->get_results($this->prepare($query, $fields), ARRAY_A);
     }
 
     /**
@@ -74,7 +74,7 @@ final class Database
     public function insert(string $query, ...$fields) : int {
         global $wpdb;
 
-        $result = $wpdb->query($wpdb->prepare($query, $fields));
+        $result = $wpdb->query($this->prepare($query, $fields));
         if(!$result) throw new DatabaseException("Error inserting db entry: '{$wpdb->last_error}'");
         return $wpdb->insert_id;
     }
@@ -87,7 +87,7 @@ final class Database
     public function update(string $query, ...$fields) : bool {
         global $wpdb;
 
-        $result = $wpdb->query($wpdb->prepare($query, $fields));
+        $result = $wpdb->query($this->prepare($query, $fields));
         return $result > 0;
     }
 
@@ -98,6 +98,15 @@ final class Database
      */
     public function delete(string $query, ...$fields) : bool {
         return $this->update($query, ...$fields);
+    }
+
+    private function prepare(string $query, ...$fields) : string {
+        global $wpdb;
+
+        if(str_contains($query, "%") && count($fields) > 0) {
+            return $wpdb->prepare($query, ...$fields);
+        }
+        return $query;
     }
 
     /**

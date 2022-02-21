@@ -1,8 +1,8 @@
 # Kontakt
 
-RemindMe ist ein Produkt von **move78**.
+RemindMe ist ein Produkt von **CodeLeaf**.
 
-> **move78**
+> **CodeLeaf**
 >
-> [plugins@move78.de](mailto:plugins@move78.de)\
-> [https://move78.de](https://move78.de)
+> [plugins@code-leaf.de](mailto:plugins@code-leaf.de)\
+> [https://code-leaf.de](https://code-leaf.de)

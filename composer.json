@@ -1,15 +1,15 @@
 {
-    "name": "move78/remind-me",
+    "name": "code-leaf/remind-me",
     "description": "WP Plugin for reminder handling",
     "type": "library",
     "authors": [
         {
-            "name": "move78",
-            "email": "plugins@move78.de"
+            "name": "CodeLeaf",
+            "email": "development@code-leaf.de"
         }
     ],
     "require": {
-        "php": ">=7.4",
+        "php": ">=8.0",
         "opis/json-schema": "^1.0",
         "ext-json": "*"
     },
@@ -19,9 +19,9 @@
         }
     },
     "require-dev": {
-        "phpstan/phpstan": "^0.12.82",
-        "szepeviktor/phpstan-wordpress": "^0.7.5",
+        "phpstan/phpstan": "^1.2.0",
+        "szepeviktor/phpstan-wordpress": "^1.0.2",
         "phpunit/phpunit": "^9.5",
-        "brain/monkey": "2.*"
+        "rector/rector": "^0.12.5"
     }
 }

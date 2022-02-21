@@ -3,15 +3,15 @@
  * RemindMe
  *
  * @package     RemindMe
- * @author      move78
- * @copyright   2021 move78
+ * @author      CodeLeaf
+ * @copyright   2021 CodeLeaf
  * @license     GPL-2.0-or-later
  *
  * @wordpress-plugin
  * Plugin Name: RemindMe
  * Description: Plugin for reminder handling
- * Author: move78
- * Author URI: https://move78.de
+ * Author: CodeLeaf
+ * Author URI: https://code-leaf.de
  * Version: 0.1.0
  * Text Domain: remind-me
  * Domain Path: /languages/
@@ -49,7 +49,7 @@ define("REMIND_ME_URL", plugin_dir_url(__FILE__));
 define('REMIND_ME_PATH', plugin_dir_path(__FILE__));
 define('REMIND_ME_BASENAME', plugin_basename(__FILE__));
 define("REMIND_ME_DIR", __DIR__);
-define("REMIND_ME_DEBUG", true);
+define("REMIND_ME_DEBUG", WP_DEBUG);
 define("REMIND_ME_SCHEMAS", __DIR__ . "/schemas/");
 
 require_once __DIR__ . "/vendor/autoload.php";

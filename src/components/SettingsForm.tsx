@@ -6,7 +6,6 @@ import {toast} from "react-toastify";
 import * as yup from "yup";
 import {Formik, FormikHelpers, FormikProps} from "formik";
 import {MessagePane} from "./panes/MessagePane";
-import {LicensePane} from "./panes/LicensePane";
 import {SubmitBtnContainer} from "./SubmitBtnContainer";
 import {IMessage} from "../frontend/Message";
 
@@ -76,8 +75,7 @@ export const SettingsForm = (props : SettingsFormProps) => {
                                 pointing: true
                             }}
                             panes={[
-                                {menuItem: __('Messages', 'remind-me'), render: () => <MessagePane {..._props} />},
-                                {menuItem: __('License', 'remind-me'), render: () => <LicensePane {..._props} update={update} />}
+                                {menuItem: __('Messages', 'remind-me'), render: () => <MessagePane {..._props} />}
                             ]}
                         />
                         <SubmitBtnContainer message={message}>
