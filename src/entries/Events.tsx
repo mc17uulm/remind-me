@@ -10,15 +10,14 @@ import {useCheckbox} from "../hooks/useCheckbox";
 import {useModal} from "../hooks/useModal";
 import {LoadingContent} from "../components/LoadingContent";
 import {InitializeStates, useInitializer} from "../hooks/useInitializer";
-import {PluginContext, PluginSettings} from "../View";
 import {DescriptionView} from "../components/DescriptionView";
+import {View} from "../View";
 
-export const Events = () => {
+const Events = () => {
 
     const [modal] = useModal<APIEvent>();
     const checkbox = useCheckbox<APIEvent>();
     const [events, loadEvents] = useInitializer<APIEvent[]>();
-    const settings : PluginSettings = useContext(PluginContext);
 
     const load = async () : Promise<void> => {
         const _events = await loadEvents(EventHandler.get_all);
@@ -78,7 +77,7 @@ export const Events = () => {
 
     const isDisabled = () : boolean => {
         if(events.state === InitializeStates.Success) {
-            return !settings.active && events.value.length >= 5;
+            return events.value.length >= 5;
         }
         return false;
     }
@@ -183,5 +182,6 @@ export const Events = () => {
         </Fragment>
     );
 
-
 }
+
+View(<Events />);

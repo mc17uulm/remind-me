@@ -16,7 +16,10 @@ final class ReactContainer
         return function() use($key) {
             ?>
             <div id='<?php echo $key ?>'>
-                <h3><?php echo __('If you see this message more than a few seconds, please report an error', 'remind-me') ?></h3>
+                <div class="ui container center aligned">
+                    <div class="ui active centered inline loader"></div>
+                    <h3><?php echo __('If you see this message more than a few seconds, please report an error', 'remind-me') ?></h3>
+                </div>
             </div>
             <?php
         };

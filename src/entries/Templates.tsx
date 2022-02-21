@@ -5,8 +5,9 @@ import {Templates, TemplatesHandler} from "../api/handler/TemplatesHandler";
 import {Loader} from "../components/Loader";
 import {Error} from "../components/Error";
 import { TemplatesForm } from "../components/TemplatesForm";
+import {View} from "../View";
 
-export const TemplateSite = () => {
+const TemplateSite = () => {
 
     const [initObject, _load] = useInitializer<Templates>();
 
@@ -34,3 +35,5 @@ export const TemplateSite = () => {
     );
 
 }
+
+View(<TemplateSite />);

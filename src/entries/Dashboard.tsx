@@ -8,10 +8,11 @@ import {Button, Card, Grid, Label, Table} from "semantic-ui-react";
 import {LoadingContent} from "../components/LoadingContent";
 import dayjs from "dayjs";
 import localized from "dayjs/plugin/localizedFormat";
+import {View} from "../View";
 
 dayjs.extend(localized);
 
-export const Dashboard = () => {
+const Dashboard = () => {
 
     const [subscribers, loadSubscribers] = useInitializer<APISubscriber[]>();
     const [events, loadEvents] = useInitializer<APIEvent[]>();
@@ -140,6 +141,8 @@ export const Dashboard = () => {
             </Grid>
 
         </Fragment>
-    )
+    );
 
 }
+
+View(<Dashboard />);

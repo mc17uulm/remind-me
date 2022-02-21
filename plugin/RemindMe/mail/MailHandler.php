@@ -4,15 +4,16 @@ namespace RemindMe\mail;
 
 require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
 require_once ABSPATH . WPINC . '/PHPMailer/SMTP.php';
+require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 use RemindMe\api\APIException;
 use RemindMe\api\objects\Event;
 use RemindMe\api\objects\settings\Templates;
 use RemindMe\api\objects\Subscriber;
 use RemindMe\PluginException;
 use RemindMe\db\DatabaseException;
-use Exception;
 
 /**
  * Class MailHandler

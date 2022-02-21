@@ -5,8 +5,9 @@ import {SettingsForm} from "../components/SettingsForm";
 import {InitializeStates, useInitializer} from "../hooks/useInitializer";
 import {Error} from "../components/Error";
 import {__} from "@wordpress/i18n";
+import {View} from "../View";
 
-export const SettingsView = () => {
+const SettingsView = () => {
 
     const [initObject, _load] = useInitializer<APISettings>();
 
@@ -33,6 +34,8 @@ export const SettingsView = () => {
             <h3>{__('Settings', 'remind-me')}</h3>
             {loadContent()}
         </Fragment>
-    )
+    );
 
 }
+
+View(<SettingsView />);

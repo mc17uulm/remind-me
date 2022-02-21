@@ -15,12 +15,12 @@ jobs:
       - name: Validate composer.json and composer.lock
         run: composer validate
 
-      - name: Transpile to php7.1
+      - name: Transpile to php7.0
         run: |
           composer install
           vendor/bin/rector process
           sed -i "s/Requires PHP: 8.0/Requires PHP: 7.0/" remind-me.php
-          sed -i "s/\"php\": \">=8.0\"/\"php\": \">=7.1\"/" composer.json
+          sed -i "s/\"php\": \">=8.0\"/\"php\": \">=7.0\"/" composer.json
           composer update
           rm -rf vendor/
 
@@ -55,7 +55,7 @@ jobs:
 
       - name: Sync to development server
         env:
-          dest: '${{ secrets.USER }}@${{ secrets.HOST }}:/var/www/vhosts/code-leaf.de/development.code-leaf.de/wp-content/plugins/remind-me'
+          dest: '${{ secrets.USER }}@${{ secrets.HOST }}:{{ secrets.PATH }}'
         run: |
           echo "${{ secrets.DEPLOY_KEY }}" > deploy_key
           chmod 600 ./deploy_key

@@ -1,10 +1,10 @@
-# Copyright (C) 2021 move78
+# Copyright (C) 2021 CodeLeaf
 # This file is distributed under the GNU General Public License v2 or later.
 msgid ""
 msgstr ""
 "Project-Id-Version: RemindMe 0.1.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/remind-me\n"
-"Last-Translator: move78 <plugins@move78.de>\n"
+"Last-Translator: CodeLeaf <plugins@code-leaf.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,11 +23,11 @@ msgid "Plugin for reminder handling"
 msgstr ""
 
 #. Author of the plugin
-msgid "move78"
+msgid "CodeLeaf"
 msgstr ""
 
 #. Author URI of the plugin
-msgid "https://move78.de"
+msgid "https://code-leaf.de"
 msgstr ""
 
 #: plugin/RemindMe/api/handler/LinkHandler.php:49

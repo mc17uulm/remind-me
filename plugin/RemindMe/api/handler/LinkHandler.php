@@ -2,6 +2,7 @@
 
 namespace RemindMe\api\handler;
 
+use JetBrains\PhpStorm\NoReturn;
 use RemindMe\api\objects\Subscriber;
 use RemindMe\api\objects\Token;
 use RemindMe\db\DatabaseException;
@@ -119,6 +120,7 @@ final class LinkHandler {
         return $post;
     }
 
+    #[NoReturn]
     private static function redirect() : void {
         wp_redirect(get_site_url());
         exit;

@@ -9,6 +9,7 @@ yarn-error.log
 test.php
 log.txt
 remind-me.zip
+dev.env.php
 languages/backup
 tests/lib
 tests/bootstrap.php

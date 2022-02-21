@@ -5,8 +5,8 @@
     "description": "API specification for the RemindMe WordPress plugin",
     "version": "0.1.0",
     "contact": {
-      "email": "plugins@move78.de",
-      "name": "move78"
+      "email": "plugins@code-leaf.de",
+      "name": "CodeLeaf"
     }
   },
   "servers": [
