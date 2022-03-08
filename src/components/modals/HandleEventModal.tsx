@@ -30,7 +30,7 @@ const MonthList : DropdownItemProps[] = [
 const Today : DateForm = DateForm.create_by_string(dayjs().format('YYYY-MM-DD'));
 
 const EventSchema : yup.SchemaOf<any> = yup.object({
-    name: yup.string().required(__('Please insert a event name'))
+    name: yup.string().required(__('Please insert a event name', 'remind-me'))
 });
 
 export const HandleEventModal = (props : ModalProps<APIEvent>) => {

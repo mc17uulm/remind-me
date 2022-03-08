@@ -1,9 +1,8 @@
 # BUGS
 
 - [X] loading css style on react render
-- [ ] (optional) add/edit event: on day +1 (over limit) increase month (and year)
-- [ ] Add/edit event: i18n error on error msg
-- [ ] remove token from export file (subscribers)
+- [ ] Add/edit event: i18n error on error msg => TODO: pdo update
+- [X] remove token from export file (subscribers)
 - [ ] (optional) better email layout
 - [ ] (optional) add 'add picture' functionality to email layouts (via WordPress mediathek)
 - [ ] Settings => spelling errors in predefined texts

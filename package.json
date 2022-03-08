@@ -10,7 +10,6 @@
     "start": "webpack --mode development --watch --progress",
     "build": "webpack --mode production",
     "doc:show": "docsify serve ./docs",
-    "zip": "./.scripts/build_zip",
     "up": "docker-compose up -d",
     "down": "docker-compose down",
     "php:analyse": "./vendor/bin/phpstan analyse --memory-limit=-1 -c phpstan.neon",

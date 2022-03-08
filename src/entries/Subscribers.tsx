@@ -52,10 +52,10 @@ const Subscribers = () => {
         e.preventDefault();
         if(subscribers.state === InitializeStates.Success) {
             const selected = subscribers.value.filter((subscriber : APISubscriber, index : number) => checkbox.get(index));
-            let csv = "token,email,events,active\n";
+            let csv = "email,events,active,registered\n";
             csv += selected.map((subscriber : APISubscriber) => {
                 const _events = "[" + events.filter((event : APIEvent) => subscriber.events.includes(event.id)).map((event : APIEvent) => event.name).join("|") + "]";
-                return `${subscriber.token},${subscriber.email},${_events},${subscriber.active}`;
+                return `${subscriber.email},${_events},${subscriber.active},${subscriber.registered}`;
             }).join("\n");
             const dwnl = document.createElement('a');
             dwnl.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv));
